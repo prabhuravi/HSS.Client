@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --prod",
-    "start-dev": "npm run copy-ds-files && ng serve --base-href /PoseidonNext/projecty/",
+    "start-dev": "npm run copy-ds-files && ng serve",
     "build": "npm run copy-ds-files && ng build --prod --base-href /projecty",
     "build-dev": "ng build --base-href /PoseidonNext/projecty/",
     "copy-ds-files": "copyfiles --up 2 ..\\..\\node_modules\\@kognifai\\design-system\\**\\* .",
