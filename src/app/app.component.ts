@@ -9,7 +9,7 @@ import { Sublocation, NavigationSubitemsService } from '@kognifai/poseidon-ng-na
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
     public initializing: boolean;
