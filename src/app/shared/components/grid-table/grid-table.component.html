@@ -1,0 +1,47 @@
+<table class="kx-table kx-table--hover kx-table--outer-border  kx-table--slim-rows">
+    <thead>
+        <tr>
+            <th>
+                Vessel Name
+                <div class="kx-form__element">
+                    <input class="kx-field kx-field--size-base" [(ngModel)]="VesselNameSearch" (ngModelChange)="searchRow('VesselName')" name="vessel-name-search-input" type="text" />
+                </div>
+            </th>
+            <th>IMO Number 
+                <i (click)="sortRow('IMONumber', 'desc')" class="kx-icon kx-icon--size-base">
+                    <svg focusable="false">
+                        <use href="../../assets/img/icons/sprites/icons.svg#caret-down"></use>
+                    </svg>
+                </i>
+                <i (click)="sortRow('IMONumber', 'asc')" class="kx-icon kx-icon--size-base">
+                    <svg focusable="false">
+                        <use href="../../assets/img/icons/sprites/icons.svg#caret-up"></use>
+                    </svg>
+                </i>
+            </th>
+            <th>File Upload Status </th>
+            <th>Disable Time (Optional) </th>
+            <th>Action Log </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of vesselConnectivityControlList; let i = index;">
+            <td>{{item.VesselName}}</td>
+            <td>{{item.IMONumber}}</td>
+            <td>
+                <ul class="kx-select-group">
+                    <li class="kx-select-item">
+                        <label class="kx-selector kx-selector__switch">
+                            <input type="checkbox" name="IsUploadEnabled{{i}}" [(ngModel)]="item.IsUploadEnabled" />
+                            <div class="kx-selector__indicator"></div>
+                            <span *ngIf="!item.IsUploadEnabled" class="label-text">OFF</span>
+                            <span *ngIf="item.IsUploadEnabled" class="label-text">ON</span>
+                        </label>
+                    </li>
+                </ul>
+            </td>
+            <td>{{item.DisableTime}}</td>
+            <td>Action Log Enabled By {{item.EnabledBy}}</td>
+        </tr>
+    </tbody>
+</table>
