@@ -1,0 +1,9 @@
+{
+  "name": "projecty",
+  "version": "0.1.0",
+  "description": "projecty application package",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Kongsberg Digital",
+  "scripts": {
+  }
+}

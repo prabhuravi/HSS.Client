@@ -1,0 +1,9 @@
+{
+    "id": "509c836e-987e-4b6c-9492-ff0fff2f18f4",
+    "name": "projecty",
+    "url": "/projecty/",
+    "oidcClientId": "projecty",
+    "entitlements": [
+        { "id": "5a1286e4-7a3a-4fb5-80ef-09ffb6f9c632", "name": "Access Application" }
+    ]
+}

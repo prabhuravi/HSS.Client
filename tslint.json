@@ -1,0 +1,6 @@
+{
+  "extends": "@kognifai/poseidon-tslint/tslint-ng",
+  "rulesDirectory": [
+    "codelyzer"
+  ]
+}
