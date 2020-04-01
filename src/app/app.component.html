@@ -3,7 +3,7 @@
 <app-header *ngIf="!initializing" class="kx-page__header kx-flex"></app-header>
 
 <div class="app-main-content">
-  <app-sidebar *ngIf="!initializing" class="kx-page__nav sidebar_scroll"></app-sidebar>
+  <app-sidebar *ngIf="!initializing" class="sidebar_scroll"></app-sidebar>
   <app-main *ngIf="!initializing" class="kx-page__main" [ngStyle]="{'height': navigationVisible ? '' : '100%'}"></app-main>
 </div>
 

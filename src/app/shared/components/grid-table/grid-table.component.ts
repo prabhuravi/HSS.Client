@@ -13,7 +13,7 @@ export class GridTableComponent implements OnInit {
     IpAddress: '10.113.32.20',
     EnabledTime: '2020-03-04T09:07:35.687',
     TimeLimit: 0.0,
-    IsUploadEnabled: false,
+    IsUploadEnabled: true,
     RemainingMinutes: 0.0,
     RemainingTime: null,
     DisableTime: '2020-03-04T09:47:55.66',
@@ -99,21 +99,25 @@ export class GridTableComponent implements OnInit {
     NodeNumber: 17858,
     IMONumber: 1111454
   }];
-  VesselNameSearch = '';
+  displayActionLogModal: boolean;
 
   constructor() { }
 
   ngOnInit() {
   }
-  searchRow(keyValue: string): void {
+  searchRow(keyValue: string, event: any): void {
+    const searchInput = event.target.value;
     this.vesselConnectivityControlList = this.vesselConnectivityControlList.filter((item) => {
-      return item[keyValue].toLowerCase().indexOf(this.VesselNameSearch.toLowerCase()) !== -1;
+      return item[keyValue].toString().toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
     });
   }
-  sortRow(keyValue: string, sortType: string) {
+  sortRow(keyValue: string, sortType: string): void {
     this.vesselConnectivityControlList.sort((a, b) => {
       return (sortType === 'desc') ? a[keyValue] - b[keyValue] : b[keyValue] - a[keyValue];
     });
+  }
+  toggleActivityLog(modalStatus: boolean): void {
+    this.displayActionLogModal = !this.displayActionLogModal;
   }
 
 }

@@ -1,4 +1,7 @@
-<app-navigation-tab [routeList]=connectivityControlRouteList></app-navigation-tab>
-<div class="u--paddingRegular">
-    <router-outlet></router-outlet>
+<!-- u--marginTopReducer class is used to reduce the app-header height to match the overflow ideally it should be removed once poseidon gives alternative soln-->
+<div class="kx-ml--large u--marginTopReducer">
+    <app-navigation-tab [routeList]=connectivityControlRouteList></app-navigation-tab>
+    <div class="kx-p--medium">
+        <router-outlet></router-outlet>
+    </div>
 </div>

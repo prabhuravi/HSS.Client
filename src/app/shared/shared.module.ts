@@ -5,14 +5,15 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { NavigationTabComponent } from './components/navigation-tab/navigation-tab.component';
 import { GridTableComponent } from './components/grid-table/grid-table.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
-  declarations: [NavigationTabComponent, GridTableComponent],
+  declarations: [NavigationTabComponent, GridTableComponent, ModalComponent],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule
   ],
-  exports: [NavigationTabComponent, GridTableComponent]
+  exports: [NavigationTabComponent, GridTableComponent, ModalComponent]
 })
 export class SharedModule { }
