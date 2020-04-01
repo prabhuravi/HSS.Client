@@ -1,45 +1,30 @@
 
 <div *ngIf="displayMe" class="kx-modal" tabindex="-1" role="dialog" aria-labelledby="--39751">
-    <div class="kx-modal__dialog" role="document">
+    <div class="kx-modal__dialog kx-modal--size-large" role="document">
         <div class="kx-modal__content">
             <!-- BUTTON Component -->
-            <button class="kx-btn kx-btn--size-base kx-btn--icon kx-modal__close" aria-label="Close">
+            <!-- <button class="kx-btn kx-btn--size-base kx-btn--icon kx-modal__close" aria-label="Close">
                 <span class="kx-btn__inner">
-                    <i (click)="closeModal(true)" class="kx-icon kx-icon--size-moderate u--cursorPointer">
+                    <i class="kx-icon kx-icon--size-moderate u--cursorPointer">
                         <svg focusable="false">
                             <use href="../../assets/img/icons/sprites/icons.svg#close"></use>
                         </svg>
                     </i>
                     <span class="kx-btn__txt kx-is-vishidden">Close</span>
                 </span>
-            </button>
+            </button> -->
             <div class="kx-modal__header">
-                <div class="kx-modal__title" id="--39751">Default</div>
+                <div class="kx-modal__title" id="--39751">
+                    <ng-content select=".modal-header"></ng-content>
+                </div>
             </div>
             <div class="kx-modal__body">
-                Modals are used to display content in a layer above the app and allows the user to perform tasks within
-                the current context.
+                <ng-content select=".modal-body"></ng-content>
             </div>
 
             <div class="kx-modal__footer">
-                <!-- BUTTON-GROUP Component -->
-                <div class="kx-btngroup kx-flex kx-flex-wrap kx-btngroup--spacing  kx-justify-content-right "
-                    role="group" aria-label="">
-                    <!-- BUTTON Component -->
-                    <button (click)="closeModal(true)" class="kx-btn kx-btn--skin-secondary kx-btn--size-base u--cursorPointer">
-                        <span class="kx-btn__inner">
-                            <span class="kx-btn__txt">Cancel</span>
-                        </span>
-                    </button>
-                    <!-- BUTTON Component -->
-                    <button class="kx-btn kx-btn--skin-primary kx-btn--size-base">
-                        <span class="kx-btn__inner">
-                            <span class="kx-btn__txt u--cursorPointer">Save changes</span>
-                        </span>
-                    </button>
-                </div>
+                <ng-content select=".modal-footer"></ng-content>
             </div>
-
         </div>
     </div>
     <div class="kx-modal__backdrop"></div>

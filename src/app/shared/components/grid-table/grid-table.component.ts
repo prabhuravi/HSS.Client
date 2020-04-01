@@ -100,6 +100,7 @@ export class GridTableComponent implements OnInit {
     IMONumber: 1111454
   }];
   displayActionLogModal: boolean;
+  activeVessel: any = {};
 
   constructor() { }
 
@@ -116,8 +117,10 @@ export class GridTableComponent implements OnInit {
       return (sortType === 'desc') ? a[keyValue] - b[keyValue] : b[keyValue] - a[keyValue];
     });
   }
-  toggleActivityLog(modalStatus: boolean): void {
+  toggleActivityLogModal(): void {
     this.displayActionLogModal = !this.displayActionLogModal;
   }
-
+  loadVesselActivityLog(vesselDetail): void {
+    this.activeVessel = vesselDetail;
+  }
 }
