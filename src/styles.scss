@@ -8,3 +8,23 @@
 .u--cursorPointer{
     cursor: pointer;
 }
+
+.ui-paginator-bottom{
+    float: right;
+    padding: 1rem 0;
+}
+.ui-table-wrapper{
+    table{
+        width: 100%!important;
+    }
+}
+.ui-paginator-page{
+    font-size: 1rem;
+    margin: 2rem;
+    color: #02689e;
+    cursor: pointer;
+    &.ui-state-active{
+        color: #262a2f;
+        cursor: initial;
+    }
+}

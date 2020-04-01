@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { TableModule } from 'primeng/table';
+import { FormsModule } from '@angular/forms';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FdsTrafficComponent } from './components/fds-traffic/fds-traffic.component';
@@ -25,7 +27,9 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
-    SharedModule
+    SharedModule,
+    TableModule,
+    FormsModule
   ],
   exports: [RouterModule]
 })
