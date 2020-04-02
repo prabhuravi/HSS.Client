@@ -14,10 +14,10 @@
 }
 
 .sidebar_scroll{
-    position: fixed;
-    bottom: 0;
+    // position: fixed;
+    // bottom: 0;
     z-index: 1030;
-    overflow-y: auto;
+    overflow: visible;
     border-radius: 0;
 }
 
