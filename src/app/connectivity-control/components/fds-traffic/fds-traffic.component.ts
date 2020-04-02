@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { WhitelistCountriesService } from 'src/app/services/whitelist-countries.service';
 
 @Component({
   selector: 'app-fds-traffic',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FdsTrafficComponent implements OnInit {
 
-  constructor() { }
+  vesselList: IVesselList[] = [];
+  activeVessel: IVesselList;
+
+  constructor(
+    private whitelistCountriesService: WhitelistCountriesService
+  ) { }
 
   ngOnInit() {
+    this.vesselList = this.whitelistCountriesService.getVesselList();
+    this.activeVessel = this.vesselList[0];
   }
 
 }

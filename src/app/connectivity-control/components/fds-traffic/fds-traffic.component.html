@@ -1,1 +1,32 @@
-<p>fds-traffic works!</p>
+<div class="kx-card kx-card--skin-default">
+    <div class="kx-p--medium">
+        <div class="kx-row">
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">Select Vessel</label>
+                <div class="kx-mt--tiny">
+                    <p-dropdown [options]="vesselList" [(ngModel)]="activeVessel" optionLabel="VesselName"
+                        filter="true"></p-dropdown>
+                </div>
+            </div>
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">From Date</label>
+                <div class="kx-mt--tiny">
+                    <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"  showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)"></p-calendar>
+                </div>
+            </div>
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">To Date</label>
+                <div class="kx-mt--tiny">
+                    <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"  showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)"></p-calendar>
+                </div>
+            </div>
+            <div class="kx-col">
+                <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--base">
+                    <span class="kx-btn__inner">
+                        <span class="kx-btn__txt">Get Logs</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

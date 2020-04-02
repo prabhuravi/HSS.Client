@@ -1,1 +1,55 @@
-<p>vessel-upload-status works!</p>
+<div class="kx-card kx-card--skin-default">
+    <div class="kx-p--medium">
+        <div class="kx-row">
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">Select Vessel</label>
+                <div class="kx-mt--tiny">
+                    <p-dropdown [options]="vesselList" [(ngModel)]="activeVessel" optionLabel="VesselName"
+                        filter="true"></p-dropdown>
+                </div>
+            </div>
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">From Mission</label>
+                <div class="kx-mt--tiny">
+                    <p-dropdown [options]="vesselList" [(ngModel)]="activeVessel" optionLabel="VesselName"
+                        filter="true"></p-dropdown>
+                </div>
+            </div>
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">To Mission</label>
+                <div class="kx-mt--tiny">
+                    <p-dropdown [options]="vesselList" [(ngModel)]="activeVessel" optionLabel="VesselName"
+                        filter="true"></p-dropdown>
+                </div>
+            </div>
+            <div class="kx-col">
+                <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--base">
+                    <span class="kx-btn__inner">
+                        <span class="kx-btn__txt">Get Status</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="kx-card kx-card--skin-default kx-mt--small">
+    <div class="kx-p--medium">
+        <div class="kx-row">
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">Total Files: </label>
+            </div>
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">Uploaded Files: </label>
+            </div>
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">Not Uploaded Files: </label>
+            </div>
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">In Progress Files: </label>
+            </div>
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">Exclusion Count: </label>
+            </div>
+        </div>
+    </div>
+</div>
