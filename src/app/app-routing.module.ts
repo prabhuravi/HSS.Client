@@ -17,6 +17,10 @@ const routes: Routes = [
         path: 'vessel-configuration',
         loadChildren: () => import('./connectivity-control/connectivity-control.module').then((m) => m.ConnectivityControlModule)
       },
+      {
+        path: 'vessel-monitoring',
+        loadChildren: () => import('./connectivity-monitoring/connectivity-monitoring.module').then((m) => m.ConnectivityMonitoringModule)
+      },
       { path: 'appsettings', component: AppSettingsComponent, pathMatch: 'full' },
       { path: 'globalsettings', component: GlobalSettingsComponent, pathMatch: 'full' },
       { path: '', redirectTo: '/vessel-configuration', pathMatch: 'full' },
