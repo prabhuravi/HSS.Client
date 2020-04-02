@@ -32,7 +32,7 @@
                     <div *ngSwitchCase="'DisableTime'">
                         <span *ngIf="rowData.IsUploadEnabled">Always on enabled</span>
                         <span *ngIf="!rowData.IsUploadEnabled">
-                            {{rowData[col.field]}}
+                            <p-calendar showTime="true" hourFormat="24"></p-calendar>
                         </span>
                     </div>
                     <div *ngSwitchCase="'EnabledBy'">
@@ -75,17 +75,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Always on enabled by sarvan</td>
-                                <td>03/31/2020 10:43</td>
-                            </tr>
-                            <tr>
-                                <td>Always on enabled by Admin</td>
-                                <td>03/30/2020 10:43</td>
-                            </tr>
-                            <tr>
-                                <td>Always on enabled by sarvan</td>
-                                <td>03/29/2020 10:43</td>
+                            <tr *ngFor="let logItem of vesselConnectivityActionLogList; let i = index;">
+                                <td>{{logItem.Action}} by {{logItem.User}}</td>
+                                <td>{{logItem.ActionTime}}</td>
                             </tr>
                         </tbody>
                     </table>

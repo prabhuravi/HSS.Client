@@ -9,6 +9,7 @@ import { ConnectivityControlService } from '../../../services/connectivity-contr
 export class ConnectivityControlComponent implements OnInit {
 
   vesselConnectivityControlList: IConnectivityControl[] = [];
+  vesselConnectivityActionLogList: IConnectivityActionLog[] = [];
   cols = [
     { field: 'VesselName', header: 'Vessel Name', filterMatchMode: 'contains' },
     { field: 'IMONumber', header: 'IMO Number', filterMatchMode: 'contains' },
@@ -31,6 +32,7 @@ export class ConnectivityControlComponent implements OnInit {
   }
   loadVesselActivityLog(vesselDetail): void {
     this.activeVessel = vesselDetail;
+    this.vesselConnectivityActionLogList = this.connectivityControlService.getConnectivityActionLog(this.activeVessel.Id);
   }
 
 }

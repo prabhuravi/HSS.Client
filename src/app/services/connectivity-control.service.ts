@@ -7,7 +7,7 @@ export class ConnectivityControlService {
 
   constructor() { }
 
-  getConnectivityData() {
+  getConnectivityData(): IConnectivityControl[] {
     return [{
       Id: 1,
       VesselName: 'Talisman',
@@ -99,6 +99,46 @@ export class ConnectivityControlService {
       EnabledBy: '',
       NodeNumber: 17858,
       IMONumber: 1111454
+    }];
+  }
+
+  getConnectivityActionLog(VesselId: number): IConnectivityActionLog[] {
+    return [{
+      Id: 1795,
+      VesselId: 2,
+      Action: 'Enabled',
+      ActionTime: '2020-04-02T04:36:34.883',
+      User: 'admin'
+    }, {
+      Id: 1794,
+      VesselId: 2,
+      Action: 'Always on disabled',
+      ActionTime: '2020-04-02T04:36:01.127',
+      User: 'admin'
+    }, {
+      Id: 1793,
+      VesselId: 2,
+      Action: 'Always on enabled',
+      ActionTime: '2020-04-02T04:35:56.853',
+      User: 'admin'
+    }, {
+      Id: 1792,
+      VesselId: 2,
+      Action: 'Always on disabled',
+      ActionTime: '2020-04-01T11:31:24.673',
+      User: 'admin'
+    }, {
+      Id: 1790,
+      VesselId: 2,
+      Action: 'Always on enabled',
+      ActionTime: '2020-04-01T11:28:10.323',
+      User: 'admin'
+    }, {
+      Id: 1789,
+      VesselId: 2,
+      Action: 'Always on enabled',
+      ActionTime: '2020-04-01T11:28:02.363',
+      User: 'admin'
     }];
   }
 }

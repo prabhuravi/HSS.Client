@@ -18,7 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
     private navigationVisibilitySubscription: Subscription;
     private sublocations: Sublocation[] = [
-        new Sublocation('Settings', 'settings')
+        new Sublocation('Connectivity Control', 'vessel-configuration')
     ];
 
     constructor(

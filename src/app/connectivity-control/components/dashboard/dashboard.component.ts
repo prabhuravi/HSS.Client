@@ -10,19 +10,19 @@ export class DashboardComponent implements OnInit {
   connectivityControlRouteList: IRouteList[] = [
     {
       label: 'Connectivity Control',
-      route: '/connectivity-control/'
+      route: '/vessel-configuration'
     },
     {
       label: 'FDS Traffic',
-      route: '/connectivity-control/fds-traffic'
+      route: '/vessel-configuration/fds-traffic'
     },
     {
       label: 'Vessel Upload Status',
-      route: '/connectivity-control/vessel-upload-status'
+      route: '/vessel-configuration/vessel-upload-status'
     },
     {
       label: 'Whitelist Countries',
-      route: '/connectivity-control/whitelist-countries'
+      route: '/vessel-configuration/whitelist-countries'
     }
   ];
 

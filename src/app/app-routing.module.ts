@@ -14,12 +14,12 @@ const routes: Routes = [
     canActivate: [ApplicationsGuardService],
     children: [
       {
-        path: 'connectivity-control',
+        path: 'vessel-configuration',
         loadChildren: () => import('./connectivity-control/connectivity-control.module').then((m) => m.ConnectivityControlModule)
       },
       { path: 'appsettings', component: AppSettingsComponent, pathMatch: 'full' },
       { path: 'globalsettings', component: GlobalSettingsComponent, pathMatch: 'full' },
-      { path: '', redirectTo: '/connectivity-control', pathMatch: 'full' },
+      { path: '', redirectTo: '/vessel-configuration', pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent }
     ]
   }
