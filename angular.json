@@ -99,6 +99,8 @@
                 "lazy": true,
                 "bundleName":"app-dusk-theme"
               },
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/primeng.min.css",
               "src/styles.scss"
             ],
             "extractCss": true,

@@ -32,7 +32,7 @@
                     <div *ngSwitchCase="'DisableTime'">
                         <span *ngIf="rowData.IsUploadEnabled">Always on enabled</span>
                         <span *ngIf="!rowData.IsUploadEnabled">
-                            <p-calendar showTime="true" hourFormat="24"></p-calendar>
+                            <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"  showButtonBar="true"></p-calendar>
                         </span>
                     </div>
                     <div *ngSwitchCase="'EnabledBy'">
@@ -50,7 +50,6 @@
         </tr>
     </ng-template>
 </p-table>
-
 <app-modal [displayMe]="displayActionLogModal" (hideMe)="toggleActivityLog($event)">
     <div class="modal-header">
         Upload Enable/Disable Action Log
@@ -67,7 +66,7 @@
                     </div>
                 </div>
                 <div class="kx-row kx-mt--medium">
-                    <table class="kx-table kx-table--hover kx-table--outer-border kx-table--slim-rows">
+                    <table class="kx-table kx-table--hover kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
                         <thead>
                             <tr>
                                 <th>Action</th>
