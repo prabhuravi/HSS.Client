@@ -27,7 +27,7 @@
 </div>
 
 <div class="kx-pt--small">
-    <p-table #tt class="kx-table" [value]="whiteListedCountries" [columns]="cols" [paginator]="true"
+    <p-table #tt [value]="whiteListedCountries" [columns]="cols" [paginator]="true"
         [rows]="5">
         <ng-template pTemplate="header" let-columns>
             <tr>

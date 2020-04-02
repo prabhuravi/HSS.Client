@@ -41,12 +41,16 @@
         th {
             &.kx-p--xlarge{
                 padding: 1rem 0 !important;
+                background-color: #f6f6f6!important;
             }
         }
     }
 }
-.ui-inputwrapper-filled{
+.ui-dropdown{
     border: 1px solid #f6f6f6;
     border-radius: 4px;
-    padding: 0.5rem;
+    padding: 0.4rem;
+}
+.ui-datepicker{
+    background-color: #ffffff!important;
 }

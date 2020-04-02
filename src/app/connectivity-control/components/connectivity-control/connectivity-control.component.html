@@ -1,4 +1,4 @@
-<p-table #tt class="kx-table" [value]="vesselConnectivityControlList" [columns]="cols"
+<p-table #tt [value]="vesselConnectivityControlList" [columns]="cols"
     [paginator]="true" [rows]="5">
     <ng-template pTemplate="header" let-columns>
         <tr>
@@ -9,11 +9,11 @@
         <tr>
             <th *ngFor="let col of columns" [ngSwitch]="col.field">
                 <input *ngSwitchCase="'VesselName'" pInputText type="text" class="kx-field kx-field--size-base"
-                    placeholder="vessel name" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    placeholder="Enter Vessel Name" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                 <input *ngSwitchCase="'IMONumber'" pInputText type="text" class="kx-field kx-field--size-base"
-                    placeholder="IMO number" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    placeholder="Enter IMO Number" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                 <input *ngSwitchCase="'EnabledBy'" pInputText type="text" class="kx-field kx-field--size-base"
-                    placeholder="enabled by" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    placeholder="Enter Enabled By User" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
             </th>
         </tr>
     </ng-template>
