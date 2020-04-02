@@ -18,7 +18,7 @@
         table-layout: fixed;
     }
 }
-.ui-paginator-bottom{
+.ui-paginator-bottom {
     padding: 2rem;
 }
 .ui-paginator-page {
@@ -30,9 +30,23 @@
         color: #262a2f;
     }
 }
-.ui-dropdown{
+.ui-dropdown {
     width: 80%;
-    .ui-dropdown-panel{
+    .ui-dropdown-panel {
         background: #fff;
     }
+}
+.ui-table-wrapper {
+    .ui-table-thead {
+        th {
+            &.kx-p--xlarge{
+                padding: 1rem 0 !important;
+            }
+        }
+    }
+}
+.ui-inputwrapper-filled{
+    border: 1px solid #f6f6f6;
+    border-radius: 4px;
+    padding: 0.5rem;
 }

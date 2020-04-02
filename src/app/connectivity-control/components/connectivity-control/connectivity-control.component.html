@@ -2,7 +2,7 @@
     [paginator]="true" [rows]="5">
     <ng-template pTemplate="header" let-columns>
         <tr>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer">
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--xlarge">
                 {{col.header}}
             </th>
         </tr>
