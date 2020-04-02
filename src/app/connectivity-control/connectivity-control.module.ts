@@ -5,7 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
-import {DropdownModule} from 'primeng/dropdown';
+import { DropdownModule } from 'primeng/dropdown';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FdsTrafficComponent } from './components/fds-traffic/fds-traffic.component';

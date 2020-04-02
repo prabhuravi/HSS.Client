@@ -18,6 +18,18 @@
         table-layout: fixed;
     }
 }
+.u--bgDanger{
+    background-color: #d1232c;
+    color: #ffffff;
+}
+.u--bgSuccess{
+    background-color: #1cb077;
+    color: #ffffff;
+}
+.u--textCenter{
+    text-align: center;
+}
+
 .ui-paginator-bottom {
     padding: 2rem;
 }
@@ -42,6 +54,7 @@
             &.kx-p--xlarge{
                 padding: 1rem 0 !important;
                 background-color: #f6f6f6!important;
+                text-align: left;
             }
         }
     }

@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
+import { TableModule } from 'primeng/table';
+import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ConnectivityMonitoringComponent } from './components/connectivity-monitoring/connectivity-monitoring.component';
@@ -19,7 +22,10 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
-    SharedModule
+    SharedModule,
+    TableModule,
+    FormsModule,
+    CalendarModule
   ],
   exports: [RouterModule]
 })
