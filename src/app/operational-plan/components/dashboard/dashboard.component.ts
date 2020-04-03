@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
+  connectivityMonitoringRouteList: IRouteList[] = [
+    {
+      label: 'Operational Plan',
+      route: '/operational-plan'
+    }
+  ];
+
   constructor() { }
 
   ngOnInit() {
