@@ -11,15 +11,21 @@
             <td *ngFor="let col of columns">
                 <div [ngSwitch]="col.field">
                     <div *ngSwitchCase="'Status'">
-                        <div *ngIf="rowData[col.field] === 'Down'" class="u--bgDanger u--textCenter">
+                        <div *ngIf="rowData[col.field] === 'Down'" class="u--bgDanger u--textCenter u--withBorderRadius">
                             {{rowData[col.field]}}
                         </div>
-                        <div *ngIf="rowData[col.field] === 'Up'" class="u--bgSuccess u--textCenter">
+                        <div *ngIf="rowData[col.field] === 'Up'" class="u--bgSuccess u--textCenter u--withBorderRadius">
                             {{rowData[col.field]}}
                         </div>
                     </div>
                     <div *ngSwitchCase="'Cacti'">
-                        <a routerLink="">****</a>
+                        <a routerLink="/connectivity-monitoring/cacti">
+                            <i class="kx-icon kx-icon--size-base">
+                                <svg focusable="false">
+                                    <use href="../../assets/img/icons/sprites/icons.svg#charts"></use>
+                                </svg>
+                            </i>
+                        </a>
                     </div>
                     <div *ngSwitchDefault>{{rowData[col.field]}}</div>
                 </div>

@@ -8,17 +8,19 @@ import { CalendarModule } from 'primeng/calendar';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ConnectivityMonitoringComponent } from './components/connectivity-monitoring/connectivity-monitoring.component';
 import { Routes, RouterModule } from '@angular/router';
+import { VesselHistoryComponent } from './components/vessel-history/vessel-history.component';
 
 const routes: Routes = [
   {
     path: '', component: DashboardComponent, children: [
-      { path: '', component: ConnectivityMonitoringComponent, pathMatch: 'full' }
+      { path: '', component: ConnectivityMonitoringComponent, pathMatch: 'full' },
+      { path: 'cacti', component: VesselHistoryComponent }
     ]
   }
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, ConnectivityMonitoringComponent],
+  declarations: [DashboardComponent, ConnectivityMonitoringComponent, VesselHistoryComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

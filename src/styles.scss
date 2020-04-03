@@ -29,6 +29,9 @@
 .u--textCenter{
     text-align: center;
 }
+.u--withBorderRadius{
+    border-radius: 10px;
+}
 
 .ui-paginator-bottom {
     padding: 2rem;
@@ -52,7 +55,7 @@
     .ui-table-thead {
         th {
             &.kx-p--xlarge{
-                padding: 1rem 0 !important;
+                padding: 1rem 0.5rem !important;
                 background-color: #f6f6f6!important;
                 text-align: left;
             }
