@@ -18,8 +18,12 @@ const routes: Routes = [
         loadChildren: () => import('./connectivity-control/connectivity-control.module').then((m) => m.ConnectivityControlModule)
       },
       {
-        path: 'vessel-monitoring',
+        path: 'connectivity-monitoring',
         loadChildren: () => import('./connectivity-monitoring/connectivity-monitoring.module').then((m) => m.ConnectivityMonitoringModule)
+      },
+      {
+        path: 'operational-plan',
+        loadChildren: () => import('./operational-plan/operational-plan.module').then((m) => m.OperationalPlanModule)
       },
       { path: 'appsettings', component: AppSettingsComponent, pathMatch: 'full' },
       { path: 'globalsettings', component: GlobalSettingsComponent, pathMatch: 'full' },
