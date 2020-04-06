@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div *ngSwitchCase="'Cacti'">
-                        <a routerLink="/connectivity-monitoring/cacti">
+                        <a [routerLink]="['/connectivity-monitoring/cacti',rowData[cols[0].field]]">
                             <i class="kx-icon kx-icon--size-base">
                                 <svg focusable="false">
                                     <use href="../../assets/img/icons/sprites/icons.svg#charts"></use>
