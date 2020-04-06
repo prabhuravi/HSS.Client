@@ -83,7 +83,7 @@
       
         <label class="kx-label" >Vessel Position:</label>
         <div class="kx-mt--tiny">
-            View History
+           <a (click)="showMap=!showMap">View History</a> 
         </div>
     </div>
     
@@ -128,7 +128,10 @@
         </div>
 </div>
 </div>
-
+<div class="row" >
+    <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data" [options]="chart.options">
+    </google-chart>
+</div>
 <div class="row">
     <div class="charts">
         <app-chart [chartId]="'chart1'"></app-chart>
@@ -136,6 +139,6 @@
       
 </div>
 
-<div class="row">
+<div class="row" *ngIf="showMap">
     <app-map></app-map>
 </div>

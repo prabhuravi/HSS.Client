@@ -23,8 +23,6 @@ export class MapComponent implements OnInit {
     // antPolyline = L.polyline.antPath(latlngs, options);
     // antPolyline.addTo(map);
   
-    // https://github.com/rubenspgcavalcante/leaflet-ant-path
-    antPath([[43.068661, 141.350755], [42.768651, 141.750955]], {color: '#FF0000', weight: 5, opacity: 0.6}).addTo(this.map);
     antPath([[43.668661, 140.250755], [42.368651, 141.150955]], {color: '#0000FF', weight: 5, opacity: 0.6, reverse: true,}).addTo(this.map);
   }
 }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
@@ -13,6 +13,7 @@ import { ChartComponent } from './components/chart/chart.component';
 
 import {icon, Marker} from 'leaflet';
 import { MapComponent } from './components/map/map.component';
+import { GoogleChartsModule } from 'angular-google-charts';
 const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
 const iconUrl = 'assets/leaflet/marker-icon.png';
 const shadowUrl = 'assets/leaflet/marker-shadow.png';
@@ -45,8 +46,11 @@ const routes: Routes = [
     TableModule,
     FormsModule,
     CalendarModule,
-    DropdownModule
+    DropdownModule,
+    GoogleChartsModule.forRoot()
   ],
+  
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   exports: [RouterModule]
 })
 export class ConnectivityMonitoringModule { }
