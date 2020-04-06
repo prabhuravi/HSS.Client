@@ -18,7 +18,7 @@ export class AddPlanComponent implements OnInit {
   planStatusList: IPlanStatus[] = [];
   formType = FormType;
   config = {
-    formTitle: 'Add Plan',
+    formTitle: 'Plan',
     formList: []
   };
 

@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
     },
     {
       label: 'Add Operator',
-      route: '/operational-plan/operator/add'
+      route: '/operational-plan/operator'
     },
     {
       label: 'Add Operation Type',

@@ -34,6 +34,33 @@ export class OperationalPlanService {
       LastUpdatedBy: 'Fredrik Thoresen',
       LastUpdatedDate: '2019-05-21T08:04:48.273',
       Action: null
+    },
+    {
+      PlanId: 6,
+      VesselName: 'Apo',
+      ImoNumber: 9233337,
+      VesselId: 2,
+      RobotSystemId: 2,
+      RobotSerialNumber: 'TalismanRobot (P1a)',
+      OperationDes: 'Test',
+      OperationDate: '2019-04-23T08:00:00',
+      OperationLoc: 'Kaohsiung(TW KHH)',
+      PortCode: 'TW KHH',
+      LocalTimeZone: 'GMT+8:00',
+      OperationTypeId: 1,
+      OperationType: 'Cleaning',
+      Status: 'New',
+      ETADate: '2019-04-26T15:00:00',
+      OperatorId: 1,
+      OperatorName: 'Manuel Juan Santonja',
+      PlannerId: 1,
+      Planner: 'Manuel Juan Santonja',
+      Comments: 'Testing connection to robot',
+      CreatedBy: 'Manuel Juan Santonja',
+      CreatedDate: '2019-04-23T13:19:24.22',
+      LastUpdatedBy: 'Manuel Juan Santonja',
+      LastUpdatedDate: '2019-05-21T08:04:48.273',
+      Action: null
     }];
   }
 
