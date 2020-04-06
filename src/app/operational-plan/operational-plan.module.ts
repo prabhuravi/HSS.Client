@@ -8,19 +8,21 @@ import { Routes, RouterModule } from '@angular/router';
 import { ManagePlansComponent } from './components/manage-plans/manage-plans.component';
 import { AddPlanComponent } from './components/add-plan/add-plan.component';
 import { OperatorComponent } from './components/operator/operator.component';
+import { OperationTypeComponent } from './components/operation-type/operation-type.component';
 
 const routes: Routes = [
   {
     path: '', component: DashboardComponent, children: [
       { path: '', component: ManagePlansComponent, pathMatch: 'full' },
       { path: 'plan', component: AddPlanComponent },
-      { path: 'operator', component: OperatorComponent }
+      { path: 'operator', component: OperatorComponent },
+      { path: 'operation-type', component: OperationTypeComponent }
     ]
   }
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, ManagePlansComponent, AddPlanComponent, OperatorComponent],
+  declarations: [DashboardComponent, ManagePlansComponent, AddPlanComponent, OperatorComponent, OperationTypeComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

@@ -24,15 +24,15 @@ export class DashboardComponent implements OnInit {
     },
     {
       label: 'Add Operation Type',
-      route: '/operational-plan/operation-type/add'
+      route: '/operational-plan/operation-type'
     },
     {
       label: 'Add Vessel',
-      route: '/operational-plan/vessel/add'
+      route: '/operational-plan/vessel'
     },
     {
       label: 'Add Robot System',
-      route: '/operational-plan/robot-system/add'
+      route: '/operational-plan/robot-system'
     }
   ];
 
