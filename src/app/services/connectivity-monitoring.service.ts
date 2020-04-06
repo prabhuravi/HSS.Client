@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http'
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConnectivityMonitoringService {
-
-  constructor() { }
+  allVesselLinks:IVesselLinks[];
+  constructor(public http: HttpClient) { }
 
   getVesselLinks(): IVesselLinks[] {
-    return [{
+    this.allVesselLinks = [{
       NodeNumber: 17536.0,
       Name: 'Talisman',
       Status: 'Down',
@@ -36,5 +38,19 @@ export class ConnectivityMonitoringService {
       CreatedBy: 'Andreas Iversen',
       IPAddress: '10.112.221.20'
     }];
+    return this.allVesselLinks
+  }
+  getVesselLinksByNodeNumber(nodeNumber:number):IVesselLinks{
+    this.allVesselLinks = this.getVesselLinks();
+      const vessel = this.allVesselLinks.filter((vessel:IVesselLinks)=>{
+        return vessel.NodeNumber===nodeNumber;
+      });
+    
+      return vessel[0];
+
+  }
+  public getChartData(): Observable<any> {
+    return this.http.get("./assets/vesselChartData.json");
+
   }
 }

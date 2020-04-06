@@ -1,1 +1,141 @@
-<p>vessel-history works!</p>
+
+<div class="kx-row">
+    <!-- COLUMN -->
+    <div class="kx-col  kx-col--2">
+        <!-- YOUR CONTENT -->
+
+        <label class="kx-label" >Node Number:</label>
+        <div class="kx-mt--tiny">
+            123456
+        </div>
+        
+    </div>
+    <div class="kx-col  kx-col--2">
+        <!-- YOUR CONTENT -->
+        <label class="kx-label" >Vessel:</label>
+        <div class="kx-mt--tiny">
+            FullPictureLab
+        </div>
+        
+    </div>
+    <div class="kx-col  kx-col--2">
+        <label class="kx-label" >Status:</label>
+        <div class="kx-mt--tiny">
+            Up
+        </div>
+    </div>
+    <div class="kx-col  kx-col--2">
+        <!-- YOUR CONTENT -->
+        <label class="kx-label" >Latency:</label>
+        <div class="kx-mt--tiny">
+            Up
+        </div>
+    </div>
+    <div class="kx-col  kx-col--2">
+        <!-- YOUR CONTENT -->
+        <label class="kx-label" >APN:</label>
+        <div class="kx-mt--tiny">
+            Up
+        </div>
+    </div>
+    <div class="kx-col  kx-col--2">
+        <!-- YOUR CONTENT -->
+       
+        <label class="kx-label" >Provider Name:</label>
+        <div class="kx-mt--tiny">
+            N Telendar
+        </div>
+    </div>
+</div>
+
+<div class="kx-row">
+    <!-- COLUMN -->
+    <div class="kx-col  kx-col--2">
+        <!-- YOUR CONTENT -->
+        <label class="kx-label" >Network Type:</label>
+        <div class="kx-mt--tiny">
+            LTE
+        </div>
+    </div>
+    <div class="kx-col  kx-col--2">
+        <!-- YOUR CONTENT -->
+        <label class="kx-label" >MCC:</label>
+        <div class="kx-mt--tiny">
+            244
+        </div>
+    </div>
+    <div class="kx-col  kx-col--2">
+        <!-- YOUR CONTENT -->
+        <label class="kx-label" >Country:</label>
+        <div class="kx-mt--tiny">
+            Norway
+        </div>
+    </div>
+    <div class="kx-col  kx-col--2">
+        <!-- YOUR CONTENT -->
+        <label class="kx-label" >Router Position:</label>
+        <div class="kx-mt--tiny">
+            LTE
+        </div>
+    </div>
+    <div class="kx-col  kx-col--2">
+        <!-- YOUR CONTENT -->
+      
+        <label class="kx-label" >Vessel Position:</label>
+        <div class="kx-mt--tiny">
+            View History
+        </div>
+    </div>
+    
+</div>
+
+<div class="kx-card kx-card--skin-default  custom-margin">
+    <div class="kx-p--medium">
+        <div class="kx-row">
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">Select Vessel</label>
+                <div class="kx-mt--tiny">
+                    <p-dropdown [options]="presetOptions" (onClick)="onDropDownSelection();" [(ngModel)]="selectedPreset" optionLabel="name"
+                       ></p-dropdown>
+                </div>
+            </div>
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">From Date</label>
+                <div class="kx-mt--tiny">
+                    <p-calendar inputStyleClass="kx-field kx-field--size-base" [(ngModel)]="fromDate" showTime="true" hourFormat="24"  showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)"></p-calendar>
+                </div>
+            </div>
+            <div class="kx-col">
+                <label class="kx-label" for="selectbox1">To Date</label>
+                <div class="kx-mt--tiny">
+                    <p-calendar inputStyleClass="kx-field kx-field--size-base" [(ngModel)]="toDate" showTime="true" hourFormat="24"  showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)"></p-calendar>
+                </div>
+            </div>
+            <div class="kx-col">
+                <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
+                    <span class="kx-btn__inner">
+                        <span class="kx-btn__txt">Filter</span>
+                    </span>
+                </button>
+            </div>
+            <div class="kx-col">
+                <button (click)="resetDate()" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium" >
+                    <span class="kx-btn__inner">
+                        <span class="kx-btn__txt">Reset</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+</div>
+</div>
+
+<div class="row">
+    <div class="charts">
+        <app-chart [chartId]="'chart1'"></app-chart>
+      </div>
+      
+</div>
+
+<div class="row">
+    <app-map></app-map>
+</div>
