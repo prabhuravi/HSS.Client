@@ -9,6 +9,8 @@ import { ManagePlansComponent } from './components/manage-plans/manage-plans.com
 import { AddPlanComponent } from './components/add-plan/add-plan.component';
 import { OperatorComponent } from './components/operator/operator.component';
 import { OperationTypeComponent } from './components/operation-type/operation-type.component';
+import { VesselComponent } from './components/vessel/vessel.component';
+import { RobotSystemComponent } from './components/robot-system/robot-system.component';
 
 const routes: Routes = [
   {
@@ -16,13 +18,15 @@ const routes: Routes = [
       { path: '', component: ManagePlansComponent, pathMatch: 'full' },
       { path: 'plan', component: AddPlanComponent },
       { path: 'operator', component: OperatorComponent },
-      { path: 'operation-type', component: OperationTypeComponent }
+      { path: 'operation-type', component: OperationTypeComponent },
+      { path: 'vessel', component: VesselComponent },
+      { path: 'robot-system', component: RobotSystemComponent }
     ]
   }
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, ManagePlansComponent, AddPlanComponent, OperatorComponent, OperationTypeComponent],
+  declarations: [DashboardComponent, ManagePlansComponent, AddPlanComponent, OperatorComponent, OperationTypeComponent, VesselComponent, RobotSystemComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

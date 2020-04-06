@@ -31,6 +31,16 @@
                             type="text" />
                     </div>
                 </div>
+                <div *ngSwitchCase="inputTypes.checkbox" class="kx-col kx-col--12">
+                    <div class="kx-form__element">
+                        <label class="kx-selector kx-selector__switch">
+                            <input type="checkbox" [formControlName]="formItem.key" />
+                            <div class="kx-selector__indicator"></div>
+                            <span *ngIf="!form.value[formItem.key]" class="label-text">OFF</span>
+                            <span *ngIf="form.value[formItem.key]" class="label-text">ON</span>
+                        </label>
+                    </div>
+                </div>
                 <div *ngSwitchDefault class="kx-col kx-col--5">
                     {{formItem.type}} : input type is not handled
                 </div>
