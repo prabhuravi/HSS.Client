@@ -1,0 +1,49 @@
+<div class="kx-card kx-card--skin-default">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="kx-p--medium">
+            <h3>{{config.formTitle}}</h3>
+            <hr class="kx-my--small"/>
+            <div class="kx-row kx-mb--small" *ngFor="let formItem of config.formList; let i = index;"
+                [ngSwitch]="formItem.type">
+                <div class="kx-col kx-col--12">
+                    <label class="kx-label" [for]="formItem.key">
+                        {{formItem.label}}
+                        <span *ngIf="form.value[formItem.key]==='' && isFormSubmitted" class="u--textDanger">Required</span>
+                        <span *ngIf="form.value[formItem.key]===''" class="u--textDanger">*</span>
+                    </label>
+                </div>
+                <div *ngSwitchCase="inputTypes.dropdown" class="kx-col kx-col--5">
+                    <div class="kx-mt--tiny">
+                        <p-dropdown styleClass="u--fullWidth" placeholder="Select {{formItem.label}}" [formControlName]="formItem.key" [options]="formItem.options"
+                            [optionLabel]="formItem.optionLabel" filter="true"></p-dropdown>
+                    </div>
+                </div>
+                <div *ngSwitchCase="inputTypes.datepicker" class="kx-col kx-col--5">
+                    <div class="kx-mt--tiny">
+                        <p-calendar [formControlName]="formItem.key" inputStyleClass="kx-field kx-field--size-base"
+                            showTime="true" hourFormat="24" showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)">
+                        </p-calendar>
+                    </div>
+                </div>
+                <div *ngSwitchCase="inputTypes.text" class="kx-col kx-col--5">
+                    <div class="kx-form__element">
+                        <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
+                            type="text" />
+                    </div>
+                </div>
+                <div *ngSwitchDefault class="kx-col kx-col--5">
+                    {{formItem.type}} : input type is not handled
+                </div>
+            </div>
+            <div class="kx-row">
+                <div class="kx-col kx-col--5">
+                    <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-large">
+                        <span class="kx-btn__inner">
+                            <span class="kx-btn__txt">Submit</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

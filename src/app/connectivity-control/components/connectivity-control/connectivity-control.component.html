@@ -4,6 +4,7 @@
         <tr>
             <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--xlarge">
                 {{col.header}}
+                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
             </th>
         </tr>
         <tr>
@@ -31,9 +32,7 @@
                     </div>
                     <div *ngSwitchCase="'DisableTime'">
                         <span *ngIf="rowData.IsUploadEnabled">Always on enabled</span>
-                        <span *ngIf="!rowData.IsUploadEnabled">
-                            <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"  showButtonBar="true"></p-calendar>
-                        </span>
+                        <p-calendar *ngIf="!rowData.IsUploadEnabled" inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24" showButtonBar="true"></p-calendar>
                     </div>
                     <div *ngSwitchCase="'EnabledBy'">
                         Always on enabled By {{rowData[col.field]}}

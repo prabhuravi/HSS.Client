@@ -22,6 +22,9 @@
     background-color: #d1232c;
     color: #ffffff;
 }
+.u--textDanger{
+    color: #d1232c;
+}
 .u--bgSuccess{
     background-color: #1cb077;
     color: #ffffff;
@@ -45,12 +48,6 @@
         color: #262a2f;
     }
 }
-.ui-dropdown {
-    width: 80%;
-    .ui-dropdown-panel {
-        background: #fff;
-    }
-}
 .ui-table-wrapper {
     .ui-table-thead {
         th {
@@ -63,10 +60,25 @@
     }
 }
 .ui-dropdown{
-    border: 1px solid #f6f6f6;
+    border: 1px solid #bac0c4;
     border-radius: 4px;
     padding: 0.4rem;
+    width: 80%;
+    .ui-dropdown-panel {
+        background: #fff;
+    }
 }
 .ui-datepicker{
     background-color: #ffffff!important;
+}
+.ui-calendar{
+    width: 100%;
+    input {
+        width: 100%;
+    }
+}
+.u--fullWidth{
+    &.ui-dropdown {
+        width: 100%;
+    }
 }
