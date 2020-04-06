@@ -1,0 +1,39 @@
+<div class="kx-card kx-card--skin-default">
+    {{formType | json}}
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="kx-p--medium">
+            <div class="kx-row" *ngFor="let formItem of config.formList; let i = index;" [ngSwitch]="formItem.type">
+                <div class="kx-col kx-col--12">
+                    <label class="kx-label" [for]="formItem.key">{{formItem.label}}</label>
+                </div>
+                <div *ngSwitchCase="'dropdown'" class="kx-col kx-col--5">
+                    <div class="kx-mt--tiny">
+                        <p-dropdown [formControlName]="formItem.key" [options]="formItem.options"
+                            optionLabel="VesselName" filter="true"></p-dropdown>
+                    </div>
+                </div>
+                <div *ngSwitchCase="'datepicker'" class="kx-col kx-col--5">
+                    <div class="kx-mt--tiny">
+                        <p-calendar [formControlName]="formItem.key" inputStyleClass="kx-field kx-field--size-base"
+                            showTime="true" hourFormat="24" showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)">
+                        </p-calendar>
+                    </div>
+                </div>
+                <div *ngSwitchDefault class="kx-col kx-col--5">
+                    <div class="kx-form__element">
+                        <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="kx-row">
+                <div class="kx-col kx-col--5">
+                    <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-large">
+                        <span class="kx-btn__inner">
+                            <span class="kx-btn__txt">Submit</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

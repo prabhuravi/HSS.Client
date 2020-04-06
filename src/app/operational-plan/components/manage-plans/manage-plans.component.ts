@@ -25,6 +25,17 @@ export class ManagePlansComponent implements OnInit {
     { field: 'LastUpdatedDate', header: 'Updated Date (UTC Time)', filterMatchMode: 'contains' },
     { field: 'PlanId', header: 'Action', filterMatchMode: 'contains' }
   ];
+  subOperationsList: ISubOperations[] = [];
+  subOperationCols = [
+    { field: 'SubOperationStartTime', header: 'Sub Operation Start Time' },
+    { field: 'SubOperationEndTime', header: 'Sub Operation End Time' },
+    { field: 'SubOperationDes', header: 'Description' },
+    { field: 'Status', header: 'Status' },
+    { field: 'CreatedBy', header: 'Created By' },
+    { field: 'LastUpdatedBy', header: 'Updated By' },
+    { field: 'LastUpdatedDate', header: 'Updated Date' },
+    { field: 'SubPlanId', header: 'Action' }
+  ];
 
   constructor(
     private operationalPlanService: OperationalPlanService
@@ -36,6 +47,10 @@ export class ManagePlansComponent implements OnInit {
 
   getPlanList(): void {
     this.operationalPlansList = this.operationalPlanService.getOperationPlans();
+  }
+
+  loadSubOperations(operationData): void {
+    this.subOperationsList = this.operationalPlanService.getSubOperations(operationData);
   }
 
 }
