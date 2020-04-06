@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormType } from '../../../app.constants';
-import { WhitelistCountriesService } from 'src/app/services/whitelist-countries.service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
@@ -23,12 +22,11 @@ export class AddPlanComponent implements OnInit {
   };
 
   constructor(
-    private whitelistCountriesService: WhitelistCountriesService,
     private operationalPlanService: OperationalPlanService
   ) { }
 
   ngOnInit(): void {
-    this.vesselList = this.whitelistCountriesService.getVesselList();
+    this.vesselList = this.operationalPlanService.getVesselList();
     this.robotsystemList = this.operationalPlanService.getRobotSystemDetails();
     this.operationtypeList = this.operationalPlanService.getOperationTypes();
     this.operatorList = this.operationalPlanService.getOperators();

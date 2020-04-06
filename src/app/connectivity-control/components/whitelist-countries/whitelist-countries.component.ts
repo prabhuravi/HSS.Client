@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WhitelistCountriesService } from 'src/app/services/whitelist-countries.service';
+import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
   selector: 'app-whitelist-countries',
@@ -20,14 +21,15 @@ export class WhitelistCountriesComponent implements OnInit {
   operatorCountryList: IOperatorCountryList[] = [];
   activeOperatorCountry: IOperatorCountryList;
   constructor(
-    private whitelistCountriesService: WhitelistCountriesService
+    private whitelistCountriesService: WhitelistCountriesService,
+    private operationalPlanService: OperationalPlanService
   ) { }
 
   ngOnInit() {
     this.whiteListedCountries = this.whitelistCountriesService.getWhiteListedCountries(1);
-    this.vesselList = this.whitelistCountriesService.getVesselList();
+    this.vesselList = this.operationalPlanService.getVesselList();
     this.activeVessel = this.vesselList[0];
-    this.operatorCountryList = this.whitelistCountriesService.getOperatorCountryList();
+    this.operatorCountryList = this.operationalPlanService.getOperatorCountryList();
     this.activeOperatorCountry = this.operatorCountryList[0];
   }
 

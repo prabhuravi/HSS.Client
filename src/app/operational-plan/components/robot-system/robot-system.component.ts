@@ -12,7 +12,7 @@ export class RobotSystemComponent implements OnInit {
   robotsystemList: IRobotSystemDetails[] = [];
   formType = FormType;
   config = {
-    formTitle: 'Plan',
+    formTitle: 'Robot System',
     formList: []
   };
   cols = [
