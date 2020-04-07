@@ -5,7 +5,7 @@
                 <div class="kx-col">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
-                        <p-dropdown [formControlName]="'VesselName'" [options]="vesselList" [(ngModel)]="activeVessel"
+                        <p-dropdown placeholder="Select Vessel" [formControlName]="'VesselName'" [options]="vesselList"
                             optionLabel="VesselName" filter="true"></p-dropdown>
                     </div>
                 </div>
@@ -13,7 +13,7 @@
                     <label class="kx-label" for="selectbox1">From Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar [formControlName]="'FromDate'" inputStyleClass="kx-field kx-field--size-large"
-                            showTime="true" hourFormat="24" showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)">
+                            placeholder="MM/dd/yyyy (UTC)">
                         </p-calendar>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                     <label class="kx-label" for="selectbox1">To Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar [formControlName]="'ToDate'" inputStyleClass="kx-field kx-field--size-large"
-                            showTime="true" hourFormat="24" showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)">
+                            placeholder="MM/dd/yyyy (UTC)">
                         </p-calendar>
                     </div>
                 </div>
@@ -51,16 +51,16 @@
             <tr>
                 <th *ngFor="let col of columns" [ngSwitch]="col.field">
                     <input *ngSwitchCase="'Mission'" pInputText type="text" class="kx-field kx-field--size-base"
-                        placeholder="Enter Mission Name"
+                        placeholder="Mission Name" style="width: 120px;"
                         (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     <input *ngSwitchCase="'FileName'" pInputText type="text" class="kx-field kx-field--size-base"
-                        placeholder="Enter File Name"
+                        placeholder="File Name" style="width: 120px;"
                         (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     <input *ngSwitchCase="'FileType'" pInputText type="text" class="kx-field kx-field--size-base"
-                        placeholder="Enter File Type"
+                        placeholder="File Type" style="width: 120px;"
                         (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     <input *ngSwitchCase="'UploadStatus'" pInputText type="text" class="kx-field kx-field--size-base"
-                        placeholder="Enter Status"
+                        placeholder="Status" style="width: 120px;"
                         (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                 </th>
             </tr>
@@ -69,29 +69,9 @@
             <tr>
                 <td *ngFor="let col of columns">
                     <div [ngSwitch]="col.field">
-                        <div *ngSwitchCase="'IsUploadEnabled'">
-                            <label class="kx-selector kx-selector__switch">
-                                <input type="checkbox" name="IsUploadEnabled" [(ngModel)]="rowData[col.field]" />
-                                <div class="kx-selector__indicator"></div>
-                                <span *ngIf="!rowData[col.field]" class="label-text">OFF</span>
-                                <span *ngIf="rowData[col.field]" class="label-text">ON</span>
-                            </label>
+                        <div *ngSwitchDefault>
+                            <div class="u--withEllipsis">{{rowData[col.field]}}</div>
                         </div>
-                        <div *ngSwitchCase="'DisableTime'">
-                            <span *ngIf="rowData.IsUploadEnabled">Always on enabled</span>
-                            <p-calendar *ngIf="!rowData.IsUploadEnabled" inputStyleClass="kx-field kx-field--size-base"
-                                showTime="true" hourFormat="24" showButtonBar="true"></p-calendar>
-                        </div>
-                        <div *ngSwitchCase="'EnabledBy'">
-                            Always on enabled By {{rowData[col.field]}}
-                            <i (click)="toggleActivityLogModal(); loadVesselActivityLog(rowData)"
-                                class="kx-icon kx-icon--size-base u--floatRight u--cursorPointer">
-                                <svg focusable="false">
-                                    <use href="../../assets/img/icons/sprites/icons.svg#view-list"></use>
-                                </svg>
-                            </i>
-                        </div>
-                        <div *ngSwitchDefault>{{rowData[col.field]}}</div>
                     </div>
                 </td>
             </tr>

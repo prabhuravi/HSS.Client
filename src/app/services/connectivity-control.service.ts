@@ -240,8 +240,20 @@ export class ConnectivityControlService {
       User: 'admin'
     }];
   }
-
+  getMissionList(VesselName: string): IBasicDropdown[] {
+    return [
+      {
+        name: 532,
+        value: 532
+      },
+      {
+        name: 535,
+        value: 535
+      }
+    ];
+  }
   getVesselUploadStatus(VesselMissionData: IVesselMissionData): IVesselUploadStatus {
+    console.log(VesselMissionData);
     return this.vesselUploadStatus;
   }
   getVesselHistoricalStatus(VesselMissionData: IVesselHistoricalData): IVesselUploadStatus {

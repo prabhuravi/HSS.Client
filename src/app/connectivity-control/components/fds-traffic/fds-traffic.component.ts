@@ -13,7 +13,6 @@ export class FdsTrafficComponent implements OnInit {
   form: FormGroup;
   isFormSubmitted = false;
   vesselList: IVesselList[] = [];
-  activeVessel: IVesselList;
   vesselHistoricalUploadStatus: IVesselUploadStatus;
   cols = [
     { field: 'FileUploadedDate', header: 'Uploaded Date', filterMatchMode: 'contains' },
@@ -37,19 +36,21 @@ export class FdsTrafficComponent implements OnInit {
 
   ngOnInit() {
     this.vesselList = this.operationalPlanService.getVesselList();
-    this.activeVessel = this.vesselList[0];
     this.form = this.buildForm();
   }
 
   buildForm() {
     const group = this.fb.group({});
-    group.addControl('VesselName', this.fb.control({value: '', disabled: false}, [Validators.required]));
-    group.addControl('FromDate', this.fb.control({value: '', disabled: false}, [Validators.required]));
-    group.addControl('ToDate', this.fb.control({value: '', disabled: false}, [Validators.required]));
+    group.addControl('VesselName', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    group.addControl('FromDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    group.addControl('ToDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
     return group;
   }
   onSubmit() {
-    this.vesselHistoricalUploadStatus = this.connectivityControlService.getVesselHistoricalStatus(this.form.value);
+    this.isFormSubmitted = true;
+    if (this.form.valid) {
+      this.vesselHistoricalUploadStatus = this.connectivityControlService.getVesselHistoricalStatus(this.form.value);
+    }
   }
 
 }
