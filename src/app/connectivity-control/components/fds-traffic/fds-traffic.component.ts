@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WhitelistCountriesService } from 'src/app/services/whitelist-countries.service';
+import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
   selector: 'app-fds-traffic',
@@ -12,11 +12,11 @@ export class FdsTrafficComponent implements OnInit {
   activeVessel: IVesselList;
 
   constructor(
-    private whitelistCountriesService: WhitelistCountriesService
+    private operationalPlanService: OperationalPlanService
   ) { }
 
   ngOnInit() {
-    this.vesselList = this.whitelistCountriesService.getVesselList();
+    this.vesselList = this.operationalPlanService.getVesselList();
     this.activeVessel = this.vesselList[0];
   }
 

@@ -56,6 +56,21 @@
                 background-color: #f6f6f6!important;
                 text-align: left;
             }
+            &.kx-p--small{
+                padding: 0.05rem !important;
+                background-color: #f6f6f6!important;
+                text-align: left;
+                font-size: 13px;
+            }
+        }
+    }
+    .ui-table-tbody{
+        td {
+            &.kx-p--small{
+                padding: 0.05rem !important;
+                text-align: left;
+                font-size: 13px;
+            }
         }
     }
 }

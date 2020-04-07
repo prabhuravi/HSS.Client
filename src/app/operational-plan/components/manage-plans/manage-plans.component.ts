@@ -50,7 +50,7 @@ export class ManagePlansComponent implements OnInit {
   }
 
   loadSubOperations(operationData): void {
-    this.subOperationsList = this.operationalPlanService.getSubOperations(operationData);
+    this.subOperationsList = this.operationalPlanService.getSubOperations();
   }
 
 }
