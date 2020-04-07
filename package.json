@@ -63,6 +63,7 @@
     "@kognifai/poseidon-sidebar-visibilityservice": "^5.0.0",
     "@kognifai/poseidon-toolsmenu": "^5.0.0",
     "@types/leaflet": "^1.5.12",
+    "angular-google-charts": "^0.1.6",
     "core-js": "^2.5.4",
     "d3": "^4.11.0",
     "leaflet": "1.5.1",

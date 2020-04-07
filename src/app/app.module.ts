@@ -2,7 +2,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import { AppLocationsService } from '@kognifai/poseidon-ng-applocationsservice';
 import { AuthenticationInterceptor } from '@kognifai/poseidon-ng-authenticationinterceptor';
@@ -31,7 +31,7 @@ import { HomeComponent } from './home/home.component';
 import { AppSettingsComponent } from './app-settings/app-settings.component';
 import { NavigationSubitemsService } from '@kognifai/poseidon-ng-navigation-subitems-service';
 import { PageNotFoundModule } from '@kognifai/poseidon-ng-page-not-found-component';
-
+import { GoogleChartsModule } from 'angular-google-charts';
 export function initConfig(config: ConfigurationService<IConfiguration>) {
   return () => config.load();
 }
@@ -50,7 +50,8 @@ export function initConfig(config: ConfigurationService<IConfiguration>) {
     GlobalSettingsModule,
     LoadingComponentModule,
     PageNotFoundModule,
-    AppRoutingModule
+    AppRoutingModule,
+    GoogleChartsModule.forRoot()
   ],
   declarations: [
     AppComponent,
