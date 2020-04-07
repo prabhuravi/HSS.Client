@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { ReactiveFormsModule  } from '@angular/forms';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
@@ -11,11 +14,13 @@ import { OperatorComponent } from './components/operator/operator.component';
 import { OperationTypeComponent } from './components/operation-type/operation-type.component';
 import { VesselComponent } from './components/vessel/vessel.component';
 import { RobotSystemComponent } from './components/robot-system/robot-system.component';
+import { SubOperationalPlanComponent } from './components/sub-operational-plan/sub-operational-plan.component';
 
 const routes: Routes = [
   {
     path: '', component: DashboardComponent, children: [
       { path: '', component: ManagePlansComponent, pathMatch: 'full' },
+      { path: 'sub-operational-plan', component: SubOperationalPlanComponent },
       { path: 'plan', component: AddPlanComponent },
       { path: 'operator', component: OperatorComponent },
       { path: 'operation-type', component: OperationTypeComponent },
@@ -26,12 +31,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, ManagePlansComponent, AddPlanComponent, OperatorComponent, OperationTypeComponent, VesselComponent, RobotSystemComponent],
+  declarations: [DashboardComponent, ManagePlansComponent, AddPlanComponent, OperatorComponent, OperationTypeComponent, VesselComponent, RobotSystemComponent, SubOperationalPlanComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
     SharedModule,
-    TableModule
+    TableModule,
+    CalendarModule,
+    DropdownModule,
+    ReactiveFormsModule
   ]
 })
 export class OperationalPlanModule { }

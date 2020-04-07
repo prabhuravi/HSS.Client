@@ -64,7 +64,7 @@ export class OperationalPlanService {
     }];
   }
 
-  getSubOperations(operationData: IOperationalPlan): ISubOperations[] {
+  getSubOperations(): ISubOperations[] {
     return [{
       SubPlanId: 34,
       PlanId: 3,

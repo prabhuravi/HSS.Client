@@ -19,6 +19,10 @@ import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.com
     DropdownModule,
     ReactiveFormsModule
   ],
-  exports: [NavigationTabComponent, ModalComponent, DynamicFormComponent]
+  exports: [
+    NavigationTabComponent,
+    ModalComponent,
+    DynamicFormComponent
+  ]
 })
 export class SharedModule { }
