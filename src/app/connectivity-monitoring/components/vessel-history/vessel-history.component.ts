@@ -3,6 +3,7 @@ import { ConnectivityMonitoringService } from 'src/app/services/connectivity-mon
 import * as d3 from 'd3';
 declare var google: any;
 import { GoogleChartComponent } from 'angular-google-charts';
+import { ThemeService } from '@kognifai/poseidon-ng-theming';
 @Component({
   selector: 'app-vessel-history',
   templateUrl: './vessel-history.component.html',
@@ -48,11 +49,14 @@ export class VesselHistoryComponent implements OnInit {
   selectedPreset: any = { name: "Last Day", value: 24 };
   fromDate: Date;
   toDate: Date;
-  constructor(private connectivityMonitoringService: ConnectivityMonitoringService) {
+  constructor(private connectivityMonitoringService: ConnectivityMonitoringService,private themeservice: ThemeService) {
 
   }
 
   ngOnInit() {
+    this.themeservice.themeChanged.subscribe((changes:any)=>{
+      console.log(changes);
+    })
     this.vesselDetails = this.connectivityMonitoringService.getVesselLinksByNodeNumber(12234);
     // setInterval(() => {
     //   let a = (Math.random() * (-100 - (-50)) + (-50)).toFixed(0);

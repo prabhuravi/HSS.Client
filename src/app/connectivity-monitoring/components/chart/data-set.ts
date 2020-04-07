@@ -15,6 +15,10 @@ export class ChartDataSet {
   public loadData() {
    // this.data = dataFile[0].data as IDataPoint[];
     [this.xMin, this.xMax] = d3.extent<any, Date>(this.data, d => d3.isoParse(d.TimeStamp));
-    [this.yMin, this.yMax] = d3.extent<any, number>(this.data, d => d.LatencyValue).reverse();
+    let LatencyValue =  d3.extent<any, number>(this.data, d => d.LatencyValue)
+    let SignalStrength =  d3.extent<any, number>(this.data, d => d.SignalStrength);
+      LatencyValue[0]=SignalStrength[1]+(-50);
+      [this.yMin, this.yMax]=LatencyValue.reverse();
+    
   }
 }
