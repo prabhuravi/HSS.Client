@@ -54,6 +54,8 @@ export class ChartComponent implements AfterViewInit {
   private areaElement: d3.Selection<any, any, any, any>;
   private line: d3.Line<IDataPoint>;
   private lineElement: d3.Selection<any, any, any, any>;
+  private signalStrengthLine: d3.Line<IDataPoint>;
+  private signallineElement: d3.Selection<any, any, any, any>;
   
   ngAfterViewInit() {
     this.connectivityMonitoringService.getChartData()
@@ -122,7 +124,6 @@ export class ChartComponent implements AfterViewInit {
     this.yScale = d3.scaleLinear()
         .domain([this.dataSet.yMin, this.dataSet.yMax])
         .range([0, this.height]);
-
     this.yAxis = d3.axisLeft(this.yScale);
 
     this.yAxisElement = this.axesContainer.append('g')
@@ -144,12 +145,19 @@ export class ChartComponent implements AfterViewInit {
         .x(d => this.xScale(d3.isoParse(d.TimeStamp)))
         .y(d => this.yScale(d.LatencyValue))
         .defined(d => !d.isGap);
-
+    this.signalStrengthLine = d3.line<IDataPoint>()
+    .x(d => this.xScale(d3.isoParse(d.TimeStamp)))
+    .y(d => this.yScale(d.SignalStrength))
+    .defined(d => !d.isGap);
     this.lineElement = this.chartBody.append('path')
         .attr('fill', 'none')
         .attr('stroke', 'red')
         .attr('stroke-opacity', '0.0');
 
+    this.signallineElement = this.chartBody.append('path')
+    .attr('fill', 'none')
+    .attr('stroke', 'blue')
+    .attr('stroke-opacity', '0.0');
     // Zoom
     this.setupZooming();
 
@@ -267,12 +275,14 @@ export class ChartComponent implements AfterViewInit {
         .attr('cx', d => this.xScale(d3.isoParse(d.TimeStamp)))
         .attr('cy', d => this.yScale(d.LatencyValue));
 
-    this.scatterPoints.exit().remove();
 
     // Line
     this.lineElement
         .transition().duration(transitionSpeed)
         .attr('d', this.line(this.dataSet.data))
         .attr('stroke-opacity', '0.7');
+      this.signallineElement.transition().duration(transitionSpeed)
+      .attr('d', this.signalStrengthLine(this.dataSet.data))
+      .attr('stroke-opacity', '0.7');
   }
 }

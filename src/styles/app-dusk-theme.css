@@ -1,0 +1,9 @@
+.tick > text {
+    fill: #71767a !Important;
+}
+.tick > line {
+    stroke: #71767a;
+}
+.domain{
+    stroke: #71767a;
+}
