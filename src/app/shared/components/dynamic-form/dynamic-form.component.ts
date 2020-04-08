@@ -9,8 +9,8 @@ import { getInputTypes } from '../../../app.constants';
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
 
-  @Input() config;
-  @Input() formValues;
+  @Input() config: any;
+  @Input() formValues: any;
   @Output() formSubmitted: EventEmitter<any> = new EventEmitter<any>();
   inputTypes: any;
   form: FormGroup;
@@ -35,13 +35,20 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     this.config.formList.forEach((control) => {
       const validatorList = [];
       control.validators.forEach((validator) => {
-        validatorList.push(Validators[validator]);
+        switch (validator) {
+          case 'required':
+            validatorList.push(Validators.required);
+            break;
+          default:
+            break;
+        }
       });
       group.addControl(control.key, this.fb.control({ value: control.value, disabled: control.disabled }, validatorList));
     });
     return group;
   }
   onSubmit(): void {
+    console.log(this.form.errors);
     this.isFormSubmitted = true;
     if (this.form.valid) {
       this.formSubmitted.emit(this.form.value);

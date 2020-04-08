@@ -70,7 +70,7 @@
                 <td *ngFor="let col of columns">
                     <div [ngSwitch]="col.field">
                         <div *ngSwitchDefault>
-                            <div class="u--withEllipsis">{{rowData[col.field]}}</div>
+                            <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">{{rowData[col.field]}}</div>
                         </div>
                     </div>
                 </td>

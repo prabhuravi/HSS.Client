@@ -25,13 +25,3 @@ interface IFilesUploadStatus {
     RecordCreatedDate: string,
     RecordModifiedDate: string
 }
-interface IVesselMissionData {
-    VesselName: string,
-    FromMission: string,
-    ToMission: string
-}
-interface IVesselHistoricalData {
-    VesselName: string,
-    FromDate: string,
-    ToDate: string
-}

@@ -65,8 +65,11 @@ export class ManagePlansComponent implements OnInit {
     group.addControl('ShowLogs', this.fb.control({ value: '', disabled: false }, [Validators.required]));
     return group;
   }
+  editData(data: IOperationalPlan) {
+    console.log(data);
+  }
 
-  onSubmit() {
+  searchFormOnSubmit() {
     if (this.form.valid) {
       console.log(this.form.value);
     }
