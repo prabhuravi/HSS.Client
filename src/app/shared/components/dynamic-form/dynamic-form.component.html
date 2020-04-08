@@ -41,6 +41,12 @@
                         </label>
                     </div>
                 </div>
+                <div *ngSwitchCase="inputTypes.number" class="kx-col kx-col--12">
+                    <div class="kx-form__element">
+                        <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
+                            type="number" />
+                    </div>
+                </div>
                 <div *ngSwitchDefault class="kx-col kx-col--5">
                     {{formItem.type}} : input type is not handled
                 </div>

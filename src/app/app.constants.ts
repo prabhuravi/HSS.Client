@@ -2,7 +2,8 @@ export enum FormType {
     text,
     dropdown,
     datepicker,
-    checkbox
+    checkbox,
+    number
 }
 export function getInputTypes() {
     return FormType;

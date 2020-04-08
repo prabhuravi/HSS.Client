@@ -10,7 +10,7 @@ import { FormType } from 'src/app/app.constants';
 export class OperationTypeComponent implements OnInit {
 
   config = {
-    formTitle: 'Operation Type',
+    formTitle: 'Add Operation Type',
     formList: []
   };
   operationtypeList: IOperationTypes[] = [];
@@ -18,6 +18,7 @@ export class OperationTypeComponent implements OnInit {
     { field: 'OperationTypeName', header: 'Operation Type' },
     { field: 'Action', header: 'Action' }
   ];
+  formValues: any;
 
   constructor(
     private operationalPlanService: OperationalPlanService
@@ -34,10 +35,18 @@ export class OperationTypeComponent implements OnInit {
         label: 'Operation Type',
         value: '',
         key: 'OperationTypeName',
-        validators: [],
+        validators: ['required'],
         disabled: false
       }
     ];
+  }
+  editData(data: IOperationTypes): void {
+    this.config.formTitle = 'Edit Operation Type';
+    this.formValues = data;
+  }
+
+  formSubmitted(data: any): void {
+    console.log(data);
   }
 
 }
