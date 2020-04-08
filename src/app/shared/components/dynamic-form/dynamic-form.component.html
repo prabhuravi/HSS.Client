@@ -8,9 +8,9 @@
                 <div class="kx-col kx-col--12">
                     <label class="kx-label" [for]="formItem.key">
                         {{formItem.label}}
-                        <!-- <span *ngIf="form.value[formItem.key]==='' && isFormSubmitted"
+                        <span *ngIf="form.value[formItem.key]==='' && isFormSubmitted"
                             class="u--textDanger">Required</span>
-                        <span *ngIf="form.value[formItem.key]===''" class="u--textDanger">*</span> -->
+                        <span *ngIf="form.value[formItem.key]===''" class="u--textDanger">*</span>
                     </label>
                 </div>
                 <div *ngIf="formItem.key.invalid && (formItem.key.dirty || formItem.key.touched)" class="u--textDanger">

@@ -20,6 +20,7 @@ export class AddPlanComponent implements OnInit {
     formTitle: 'Add Plan',
     formList: []
   };
+  formValues: any;
 
   constructor(
     private operationalPlanService: OperationalPlanService
@@ -34,7 +35,6 @@ export class AddPlanComponent implements OnInit {
     this.planStatusList = this.operationalPlanService.getPlanStatus();
     this.constructForm();
   }
-
   constructForm(): void {
     this.config.formList = [
       {

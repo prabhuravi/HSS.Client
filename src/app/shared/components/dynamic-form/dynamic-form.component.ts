@@ -27,7 +27,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   }
   ngOnChanges(): void {
     if (this.formValues !== null && this.formValues !== undefined) {
-      this.form.patchValue(this.formValues);
+      console.log(this.formValues);
+      setTimeout(() => {
+        this.form.patchValue(this.formValues);
+      });
     }
   }
   buildForm() {
@@ -48,7 +51,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     return group;
   }
   onSubmit(): void {
-    console.log(this.form.errors);
+    console.log(this.form.value);
     this.isFormSubmitted = true;
     if (this.form.valid) {
       this.formSubmitted.emit(this.form.value);
