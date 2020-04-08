@@ -33,6 +33,19 @@ export class AddPlanComponent implements OnInit {
     this.operatorList = this.operationalPlanService.getOperators();
     this.timeZoneList = this.operationalPlanService.getTimeZone();
     this.planStatusList = this.operationalPlanService.getPlanStatus();
+    if (history && history.state && history.state.actionType) {
+      this.config.formTitle = `${history.state.actionType} Plan`;
+      this.formValues = history.state;
+      this.formValues.VesselId = this.vesselList.find((e) => e.Id === this.formValues.VesselId);
+      this.formValues.RobotSystemId = this.robotsystemList.find((e) => e.RobotSystemId === this.formValues.RobotSystemId);
+      this.formValues.OperationDate = new Date(this.formValues.OperationDate);
+      this.formValues.ETADate = new Date(this.formValues.ETADate);
+      this.formValues.LocalTimeZone = this.timeZoneList.find((e) => e.offset === this.formValues.LocalTimeZone);
+      this.formValues.OperationTypeId = this.operationtypeList.find((e) => e.Id === this.formValues.OperationTypeId);
+      this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
+      this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
+      this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
+    }
     this.constructForm();
   }
   constructForm(): void {

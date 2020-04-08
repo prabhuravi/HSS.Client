@@ -81,12 +81,12 @@
                             <div *ngSwitchCase="'PlanId'">
                                 <div class="kx-btngroup kx-flex kx-flex-wrap" role="group"
                                     aria-label="Aria label example">
-                                    <a [routerLink]="['/operational-plan/plan']" [state]=rowData class="kx-btn kx-btn--skin-primary kx-btn--size-small kx-mr--tiny kx-mt--tiny">
+                                    <button (click)="openPlanComponent('Edit', rowData)" class="kx-btn kx-btn--skin-primary kx-btn--size-small kx-mr--tiny kx-mt--tiny">
                                         <span class="kx-btn__inner">
                                             <span class="kx-btn__txt">Edit</span>
                                         </span>
-                                    </a>
-                                    <button class="kx-btn kx-btn--skin-primary kx-btn--size-small kx-mr--tiny kx-mt--tiny">
+                                    </button>
+                                    <button (click)="openPlanComponent('Copy', rowData)" class="kx-btn kx-btn--skin-primary kx-btn--size-small kx-mr--tiny kx-mt--tiny">
                                         <span class="kx-btn__inner">
                                             <span class="kx-btn__txt">Copy</span>
                                         </span>
