@@ -1,4 +1,4 @@
-
+<app-load *ngIf="!cachedVesselDetails"></app-load>
 <div class="kx-row">
     <!-- COLUMN -->
     <div class="kx-col  kx-col--2">
@@ -6,7 +6,7 @@
 
         <label class="kx-label" >Node Number:</label>
         <div class="kx-mt--tiny">
-            123456
+            {{cachedVesselDetails && cachedVesselDetails.NodeNumber  ? cachedVesselDetails.NodeNumber : noData}}
         </div>
         
     </div>
@@ -14,28 +14,28 @@
         <!-- YOUR CONTENT -->
         <label class="kx-label" >Vessel:</label>
         <div class="kx-mt--tiny">
-            FullPictureLab
+            {{cachedVesselDetails && cachedVesselDetails.Name  ? cachedVesselDetails.Name : noData}}
         </div>
         
     </div>
     <div class="kx-col  kx-col--2">
         <label class="kx-label" >Status:</label>
         <div class="kx-mt--tiny">
-            Up
+            {{cachedVesselDetails && cachedVesselDetails.Status  ? cachedVesselDetails.Status : noData}}
         </div>
     </div>
     <div class="kx-col  kx-col--2">
         <!-- YOUR CONTENT -->
         <label class="kx-label" >Latency:</label>
         <div class="kx-mt--tiny">
-            Up
+            {{cachedVesselDetails && cachedVesselDetails.LastLatency  ? cachedVesselDetails.LastLatency : noData}}
         </div>
     </div>
     <div class="kx-col  kx-col--2">
         <!-- YOUR CONTENT -->
         <label class="kx-label" >APN:</label>
         <div class="kx-mt--tiny">
-            Up
+            {{ vesselDetails && vesselDetails.ApnName ? vesselDetails.ApnName : noData}}
         </div>
     </div>
     <div class="kx-col  kx-col--2">
@@ -43,7 +43,7 @@
        
         <label class="kx-label" >Provider Name:</label>
         <div class="kx-mt--tiny">
-            N Telendar
+            {{ vesselDetails && vesselDetails.ProviderName ? vesselDetails.ProviderName : noData}}
         </div>
     </div>
 </div>
@@ -54,28 +54,32 @@
         <!-- YOUR CONTENT -->
         <label class="kx-label" >Network Type:</label>
         <div class="kx-mt--tiny">
-            LTE
+            {{ vesselDetails && vesselDetails.NetworkType ? vesselDetails.NetworkType : noData}}
         </div>
     </div>
     <div class="kx-col  kx-col--2">
         <!-- YOUR CONTENT -->
         <label class="kx-label" >MCC:</label>
         <div class="kx-mt--tiny">
-            244
+            {{ vesselDetails && vesselDetails.MCC ? vesselDetails.MCC : noData}}
         </div>
     </div>
     <div class="kx-col  kx-col--2">
         <!-- YOUR CONTENT -->
         <label class="kx-label" >Country:</label>
         <div class="kx-mt--tiny">
-            Norway
+            {{ vesselDetails && vesselDetails.CountryName ? vesselDetails.CountryName : noData}}
         </div>
     </div>
     <div class="kx-col  kx-col--2">
         <!-- YOUR CONTENT -->
         <label class="kx-label" >Router Position:</label>
         <div class="kx-mt--tiny">
-            LTE
+            <span  *ngIf="vesselDetails && !vesselDetails.Latitude">{{noData}}</span>
+            <span *ngIf="vesselDetails && vesselDetails.Latitude">
+                {{  vesselDetails.Latitude }}
+                {{ vesselDetails.Longitude }}</span>
+            <a (click)="viewMeOnMap(vesselDetails.Latitude,vesselDetails.Longitude)">View on Map</a> 
         </div>
     </div>
     <div class="kx-col  kx-col--2">
@@ -128,7 +132,7 @@
         </div>
 </div>
 </div>
-<div class="row" >
+<div class="row" *ngIf="chart && chart.data">
     <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data" [options]="chart.options">
     </google-chart>
 </div>

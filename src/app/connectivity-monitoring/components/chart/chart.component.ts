@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { ChartDataSet } from './data-set';
 import { IDataPoint } from './data-point';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
@@ -9,11 +9,12 @@ import * as d3 from 'd3';
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation:ViewEncapsulation.None
 })
 export class ChartComponent implements AfterViewInit {
   @Input() chartId: string;
-  @ViewChild('chart',null) chartElement: ElementRef;
+  @ViewChild('chart', null) chartElement: ElementRef;
 
   private dataSet: ChartDataSet;
 
@@ -56,19 +57,19 @@ export class ChartComponent implements AfterViewInit {
   private lineElement: d3.Selection<any, any, any, any>;
   private signalStrengthLine: d3.Line<IDataPoint>;
   private signallineElement: d3.Selection<any, any, any, any>;
-  
+
   ngAfterViewInit() {
     this.connectivityMonitoringService.getChartData()
-    .subscribe((data: any)=> {
-        
-      console.log(data);
+      .subscribe((data: any) => {
 
-      this.dataSet= new ChartDataSet(data);
-      this.setupChart();
-    });
+        console.log(data);
+
+        this.dataSet = new ChartDataSet(data);
+        this.setupChart();
+      });
   }
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService) {
-   
+
   }
 
   setupChart() {
@@ -81,11 +82,12 @@ export class ChartComponent implements AfterViewInit {
 
     this.margin = { top: 5, right: 5, bottom: 30, left: 35 };
     this.width = this.hostWidth - this.margin.left - this.margin.right,
-    this.height = this.hostHeight - this.margin.top - this.margin.bottom;
+      this.height = this.hostHeight - this.margin.top - this.margin.bottom;
 
     this.svg = this.chartBody = this.host.append('svg')
-        .attr('width', this.hostWidth)
-        .attr('height', this.hostHeight);
+      .attr('width', this.hostWidth)
+      .attr('height', this.hostHeight);
+    // for grid lines
 
     // Create a clip path
     const clipPathId = `clip${this.chartId}`;
@@ -93,42 +95,43 @@ export class ChartComponent implements AfterViewInit {
 
     this.clipPath = this.svg.append('clipPath').attr('id', clipPathId)
       .append('rect')
-        .attr('width', this.width)
-        .attr('height', this.height);
+      .attr('width', this.width)
+      .attr('height', this.height);
 
     // Create separate containers to hold the chart body and axes
     this.chartBody = this.svg.append('g')
-        .attr('clip-path', `url(${clipPathUrl})`)
-        .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
-        .attr('width', this.width)
-        .attr('height', this.height);
+      .attr('clip-path', `url(${clipPathUrl})`)
+      .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
+      .attr('width', this.width)
+      .attr('height', this.height);
 
     this.axesContainer = this.svg.append('g')
-        .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
-        .attr('width', this.width)
-        .attr('height', this.height);
+      .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
+      .attr('width', this.width)
+      .attr('height', this.height);
 
     // X-Axis
     this.xScale = d3.scaleTime()
-        .domain([this.dataSet.xMin, this.dataSet.xMax])
-        .range([0, this.width]);
+      .domain([this.dataSet.xMin, this.dataSet.xMax])
+      .range([0, this.width]);
 
     this.xAxis = d3.axisBottom(this.xScale);
 
     this.xAxisElement = this.axesContainer.append('g')
-        .classed('x-axis', true)
-        .attr('transform', `translate(0,${this.height})`)
-        .call(this.xAxis);
+      .classed('x-axis', true)
+      .attr('transform', `translate(0,${this.height})`)
+      .call(this.xAxis);
 
+   
     // Y-Axis
     this.yScale = d3.scaleLinear()
-        .domain([this.dataSet.yMin, this.dataSet.yMax])
-        .range([0, this.height]);
+      .domain([this.dataSet.yMin, this.dataSet.yMax])
+      .range([0, this.height]);
     this.yAxis = d3.axisLeft(this.yScale);
 
     this.yAxisElement = this.axesContainer.append('g')
-        .classed('y-axis', true)
-        .call(this.yAxis);
+      .classed('y-axis', true)
+      .call(this.yAxis);
 
     // Setup area / line generators
     this.area = d3.area<IDataPoint>()
@@ -141,23 +144,38 @@ export class ChartComponent implements AfterViewInit {
       .attr('fill', '#6a3d9a')
       .attr('fill-opacity', '0.1');
 
+      this.svg.append("g")
+  		.attr("class","grid")
+  		.attr("transform",`translate(${this.margin.left},${this.height})`)
+  		.style("stroke-dasharray",("3,3"))
+  		.call(this.make_x_gridlines(this.xScale)
+            .tickSize(-this.height) .tickFormat(null)
+         )
+  this.svg.append("g")
+  		.attr("class","grid")
+      .style("stroke-dasharray",("3,3"))
+      .attr("transform",`translate(${this.margin.left+5},${this.margin.top})`)
+  		.call(this.make_y_gridlines(this.yScale)
+            .tickSize(-this.width) .tickFormat(null)
+         )
+
     this.line = d3.line<IDataPoint>()
-        .x(d => this.xScale(d3.isoParse(d.TimeStamp)))
-        .y(d => this.yScale(d.LatencyValue))
-        .defined(d => !d.isGap);
+      .x(d => this.xScale(d3.isoParse(d.TimeStamp)))
+      .y(d => this.yScale(d.LatencyValue))
+      .defined(d => !d.isGap);
     this.signalStrengthLine = d3.line<IDataPoint>()
-    .x(d => this.xScale(d3.isoParse(d.TimeStamp)))
-    .y(d => this.yScale(d.SignalStrength))
-    .defined(d => !d.isGap);
+      .x(d => this.xScale(d3.isoParse(d.TimeStamp)))
+      .y(d => this.yScale(d.SignalStrength))
+      .defined(d => !d.isGap);
     this.lineElement = this.chartBody.append('path')
-        .attr('fill', 'none')
-        .attr('stroke', 'red')
-        .attr('stroke-opacity', '0.0');
+      .attr('fill', 'none')
+      .attr('stroke', 'red')
+      .attr('stroke-opacity', '0.0');
 
     this.signallineElement = this.chartBody.append('path')
-    .attr('fill', 'none')
-    .attr('stroke', 'blue')
-    .attr('stroke-opacity', '0.0');
+      .attr('fill', 'none')
+      .attr('stroke', 'blue')
+      .attr('stroke-opacity', '0.0');
     // Zoom
     this.setupZooming();
 
@@ -170,6 +188,14 @@ export class ChartComponent implements AfterViewInit {
 
     // Draw initial data
     this.update(0);
+  }
+  make_x_gridlines(x){
+    return d3.axisBottom(x)
+    	.ticks(8)
+  }
+  make_y_gridlines(y){
+    return d3.axisLeft(y)
+    .ticks(5)
   }
 
   setupBrushing(): void {
@@ -190,11 +216,11 @@ export class ChartComponent implements AfterViewInit {
 
     this.brushElement = this.chartBody
       .append('g')
-        .classed('brush-area', true)
-        .attr('width', this.width)
-        .attr('height', this.height)
-        .style('pointer-events', 'all')
-        .call(this.brush);
+      .classed('brush-area', true)
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .style('pointer-events', 'all')
+      .call(this.brush);
   }
 
   setupZooming(): void {
@@ -206,25 +232,25 @@ export class ChartComponent implements AfterViewInit {
 
     this.zoomXElement = this.xAxisElement
       .append('rect')
-        .attr('fill', 'red')
-        .attr('fill-opacity', 0)
-        .style('pointer-events', 'all')
-        .attr('width', this.width)
-        .attr('height', this.hostHeight)
-        // TODO: Uncommenting this line means that zooming with the wheel works on the
-        // whole chart area, but steals other mouse inputs too, so brushing doesn't work:
-        //.attr('transform', `translate(0,-${this.height})`)
-        .call(this.zoomX);
+      .attr('fill', 'red')
+      .attr('fill-opacity', 0)
+      .style('pointer-events', 'all')
+      .attr('width', this.width)
+      .attr('height', this.hostHeight)
+      // TODO: Uncommenting this line means that zooming with the wheel works on the
+      // whole chart area, but steals other mouse inputs too, so brushing doesn't work:
+      //.attr('transform', `translate(0,-${this.height})`)
+      .call(this.zoomX);
 
     this.zoomYElement = this.yAxisElement
       .append('rect')
-        .attr('fill', 'lime')
-        .attr('fill-opacity', 0)
-        .style('pointer-events', 'all')
-        .attr('width', this.margin.left)
-        .attr('height', this.height)
-        .attr('transform', `translate(-${this.margin.left}, 0)`)
-        .call(this.zoomY);
+      .attr('fill', 'lime')
+      .attr('fill-opacity', 0)
+      .style('pointer-events', 'all')
+      .attr('width', this.margin.left)
+      .attr('height', this.height)
+      .attr('transform', `translate(-${this.margin.left}, 0)`)
+      .call(this.zoomY);
   }
 
   onZoomX(): void {
@@ -264,24 +290,24 @@ export class ChartComponent implements AfterViewInit {
   update(transitionSpeed: number): void {
     // Scatter
     this.scatterPoints = this.chartBody.selectAll('circle')
-        .data(this.dataSet.data, (d: IDataPoint) => d.TimeStamp.toString());
+      .data(this.dataSet.data, (d: IDataPoint) => d.TimeStamp.toString());
 
     this.scatterPoints.enter().append('circle')
-        .attr('r', 2.5)
-        .attr('fill', '#6a3d9a')
-        .attr('fill-opacity', d => d.isGap ? '0' : '0.5')
+      .attr('r', 2.5)
+      .attr('fill', '#6a3d9a')
+      .attr('fill-opacity', d => d.isGap ? '0' : '0.5')
       .merge(this.scatterPoints)
-        .transition().duration(transitionSpeed)
-        .attr('cx', d => this.xScale(d3.isoParse(d.TimeStamp)))
-        .attr('cy', d => this.yScale(d.LatencyValue));
+      .transition().duration(transitionSpeed)
+      .attr('cx', d => this.xScale(d3.isoParse(d.TimeStamp)))
+      .attr('cy', d => this.yScale(d.LatencyValue));
 
 
     // Line
     this.lineElement
-        .transition().duration(transitionSpeed)
-        .attr('d', this.line(this.dataSet.data))
-        .attr('stroke-opacity', '0.7');
-      this.signallineElement.transition().duration(transitionSpeed)
+      .transition().duration(transitionSpeed)
+      .attr('d', this.line(this.dataSet.data))
+      .attr('stroke-opacity', '0.7');
+    this.signallineElement.transition().duration(transitionSpeed)
       .attr('d', this.signalStrengthLine(this.dataSet.data))
       .attr('stroke-opacity', '0.7');
   }

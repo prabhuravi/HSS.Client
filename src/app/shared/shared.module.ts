@@ -8,9 +8,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { NavigationTabComponent } from './components/navigation-tab/navigation-tab.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
-  declarations: [NavigationTabComponent, ModalComponent, DynamicFormComponent],
+  declarations: [NavigationTabComponent, ModalComponent, DynamicFormComponent,LoaderComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -22,7 +23,8 @@ import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.com
   exports: [
     NavigationTabComponent,
     ModalComponent,
-    DynamicFormComponent
+    DynamicFormComponent,
+    LoaderComponent
   ]
 })
 export class SharedModule { }

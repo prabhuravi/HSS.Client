@@ -7,3 +7,52 @@
 .domain{
     stroke: #71767a;
 }
+
+.ui-table-wrapper .ui-table-thead th.kx-p--xlarge {
+    padding: 1rem 0.5rem !important;
+    background-color: #373c41 !important;
+    text-align: left;
+}
+.ui-table-wrapper .ui-table-thead th.kx-p--small {
+    padding: 0.05rem !important;
+    background-color: #373c41 !important;
+    text-align: left;
+    font-size: 13px;
+}
+.ui-dropdown .ui-dropdown-panel {
+    background: #373c41;
+    border: 1px solid #71767a;
+}
+
+.ui-dropdown-filter{
+    font-size: 1rem;
+    line-height: 1.46667rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: rgba(255,255,255,0);
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    color: #f6f6f6;
+    background: #373c41;
+    background-clip: padding-box;
+    border: 0;
+    border-radius: 2px;
+    border: .06667rem solid #71767a;
+    transition: all .1s ease-in-out;
+}
+
+.ui-datepicker {
+    background: #373c41;
+    border: .06667rem solid #71767a;
+    transition: all .1s ease-in-out;
+}
+
+.grid line {
+    stroke: #71767a !important;
+    stroke-opacity: 0.1;
+    shape-rendering: crispEdges
+  }
+  .grid path {
+    stroke-width: 0;
+  }

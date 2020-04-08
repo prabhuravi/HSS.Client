@@ -1,53 +1,52 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConnectivityMonitoringService {
-  allVesselLinks:IVesselLinks[];
+  allVesselLinks: IVesselLinks[];
+  vesselSubject = new Subject<IVesselLinks>();
   constructor(public http: HttpClient) { }
+  domainURL = 'https://hgstest.kognif.ai/VesselLinkQualityAPIService/API/VesselLinkQuality/'
+  getVesselLinks(): Observable<any> {
 
-  getVesselLinks(): IVesselLinks[] {
-    this.allVesselLinks = [{
-      NodeNumber: 17536.0,
-      Name: 'Talisman',
-      Status: 'Down',
-      LastSeen: '2019-10-29T12:06:39',
-      LastLatency: 270,
-      LastSeenUTC: '29/10/2019 12:06:39',
-      CreatedBy: 'Andreas Iversen',
-      IPAddress: '10.113.32.20'
-    }, {
-      NodeNumber: 17618.0,
-      Name: 'BergeApo',
-      Status: 'Up',
-      LastSeen: '2020-03-01T08:41:39',
-      LastLatency: 344,
-      LastSeenUTC: '01/03/2020 08:41:39',
-      CreatedBy: 'Andreas Iversen',
-      IPAddress: '10.113.52.148'
-    }, {
-      NodeNumber: 17268.0,
-      Name: 'Maalfrid',
-      Status: 'Down',
-      LastSeen: '2020-02-28T13:45:36',
-      LastLatency: 279,
-      LastSeenUTC: '28/02/2020 13:45:36',
-      CreatedBy: 'Andreas Iversen',
-      IPAddress: '10.112.221.20'
-    }];
-    return this.allVesselLinks
+    const url = 'GetVesselLinks';
+
+    return this.http.get(`${this.domainURL + url}`);
+
   }
-  getVesselLinksByNodeNumber(nodeNumber:number):IVesselLinks{
-    this.allVesselLinks = this.getVesselLinks();
-      const vessel = this.allVesselLinks.filter((vessel:IVesselLinks)=>{
-        return vessel.NodeNumber===nodeNumber;
-      });
-    
-      return vessel[0];
+  setAllVesselLinks(IVesselLinks: IVesselLinks[]) {
+    this.allVesselLinks = IVesselLinks;
+  }
+  getVesselLinksByNodeNumber(nodeNumber: number) {
+   // if (!this.allVesselLinks) {
+      this.getVesselLinks().subscribe((data) => {
+        this.allVesselLinks = data;
+        const vessel = this.allVesselLinks.filter((vessel: IVesselLinks) => {
+          return vessel.NodeNumber.toFixed(0) == nodeNumber;
+        });
+        this.vesselSubject.next(vessel[0]);
+      })
 
+    // } else {
+    //   const vessel = this.allVesselLinks.filter((vessel: IVesselLinks) => {
+    //     return vessel.NodeNumber.toFixed(0) == nodeNumber;
+    //   });
+    //   this.vesselSubject.next(vessel[0]);
+    // }
+
+
+
+  }
+  getVesselSubject(): Observable<any> {
+    return this.vesselSubject.asObservable();
+  }
+
+  getSnMPData(nodeNumber: number) {
+    const url = 'GetSNMPData/' + nodeNumber
+    return this.http.get(`${this.domainURL + url}`);
   }
   public getChartData(): Observable<any> {
     return this.http.get("./assets/vesselChartData.json");

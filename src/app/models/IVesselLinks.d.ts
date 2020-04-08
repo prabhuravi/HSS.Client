@@ -1,5 +1,5 @@
 interface IVesselLinks {
-    NodeNumber: number,
+    NodeNumber:any,
     Name: string,
     Status: string,
     LastSeen: string,
@@ -8,3 +8,4 @@ interface IVesselLinks {
     CreatedBy: string,
     IPAddress: string
 }
+
