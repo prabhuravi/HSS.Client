@@ -18,22 +18,28 @@
         table-layout: fixed;
     }
 }
-.u--bgDanger{
+.u--bgDanger {
     background-color: #d1232c;
     color: #ffffff;
 }
-.u--textDanger{
+.u--textDanger {
     color: #d1232c;
 }
-.u--bgSuccess{
+.u--bgSuccess {
     background-color: #1cb077;
     color: #ffffff;
 }
-.u--textCenter{
+.u--textCenter {
     text-align: center;
 }
-.u--withBorderRadius{
+.u--withBorderRadius {
     border-radius: 10px;
+}
+.u--withEllipsis {
+    white-space: nowrap;
+    width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .ui-paginator-bottom {
@@ -51,22 +57,22 @@
 .ui-table-wrapper {
     .ui-table-thead {
         th {
-            &.kx-p--xlarge{
+            &.kx-p--xlarge {
                 padding: 1rem 0.5rem !important;
-                background-color: #f6f6f6!important;
+                background-color: #f6f6f6 !important;
                 text-align: left;
             }
-            &.kx-p--small{
+            &.kx-p--small {
                 padding: 0.05rem !important;
-                background-color: #f6f6f6!important;
+                background-color: #f6f6f6 !important;
                 text-align: left;
                 font-size: 13px;
             }
         }
     }
-    .ui-table-tbody{
+    .ui-table-tbody {
         td {
-            &.kx-p--small{
+            &.kx-p--small {
                 padding: 0.05rem !important;
                 text-align: left;
                 font-size: 13px;
@@ -74,26 +80,49 @@
         }
     }
 }
-.ui-dropdown{
+.ui-dropdown {
     border: 1px solid #bac0c4;
     border-radius: 4px;
     padding: 0.4rem;
-    width: 80%;
+    width: 85%;
+    min-width: inherit;
     .ui-dropdown-panel {
         background: #fff;
     }
 }
+
 .ui-datepicker{
     background-color: #ffffff;
 }
-.ui-calendar{
+.ui-calendar {
     width: 100%;
     input {
         width: 100%;
     }
 }
-.u--fullWidth{
+.u--fullWidth {
     &.ui-dropdown {
         width: 100%;
+    }
+}
+
+// poseidon overridings
+
+.kx-field--size-large {
+    &::-webkit-input-placeholder {
+        /* Chrome/Opera/Safari */
+        font-size: 15px !important;
+    }
+    &::-moz-placeholder {
+        /* Firefox 19+ */
+        font-size: 15px !important;
+    }
+    &:-ms-input-placeholder {
+        /* IE 10+ */
+        font-size: 15px !important;
+    }
+    &:-moz-placeholder {
+        /* Firefox 18- */
+        font-size: 15px !important;
     }
 }
