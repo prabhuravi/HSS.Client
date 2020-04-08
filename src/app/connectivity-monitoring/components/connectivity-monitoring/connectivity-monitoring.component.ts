@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
-
 @Component({
   selector: 'app-connectivity-monitoring',
   templateUrl: './connectivity-monitoring.component.html',
@@ -19,13 +18,22 @@ export class ConnectivityMonitoringComponent implements OnInit {
     { field: 'LastLatency', header: 'Last Latency' },
     { field: 'Cacti', header: 'Cacti' }
   ];
-
+  showLoader=true;
   constructor(
     private connectivityMonitoringService: ConnectivityMonitoringService
   ) { }
 
   ngOnInit() {
-    this.vesselLinksList = this.connectivityMonitoringService.getVesselLinks();
+    this.connectivityMonitoringService.getVesselLinks().subscribe((data: IVesselLinks[])=>{
+      if(data && data.length>0){
+        this.showLoader=false;
+        this.vesselLinksList =data;
+        //setting the all vessels to the service object to avoid making dublicate requests
+
+      this.connectivityMonitoringService.setAllVesselLinks(data);
+      }
+    
+    });
   }
 
 }

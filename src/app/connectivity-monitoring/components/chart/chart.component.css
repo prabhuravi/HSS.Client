@@ -6,27 +6,14 @@
 .chart svg text {
   pointer-events: none;
 }
-
-.tick text {
-  font-family: 'Lato';
-  font-size: 9px;
-  fill: rgb(155, 41, 41);
+.dot {
+  fill: IndianRed;
 }
 .area {
-  fill: lightsteelblue;
+  fill: none;
 }
-
-.x-axis .domain,
-.y-axis .domain,
-.x-axis .tick line,
-.y-axis .tick line {
-  visibility: hidden;
-}
-
-.x-axis:hover {
-  cursor: ew-resize;
-}
-
-.y-axis:hover {
-  cursor: ns-resize;
+text.shadow {
+  stroke: white;
+  stroke-width: 4px;
+  opacity: 1
 }
