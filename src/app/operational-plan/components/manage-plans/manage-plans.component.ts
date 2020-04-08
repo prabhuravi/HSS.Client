@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
@@ -8,6 +9,8 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
 })
 export class ManagePlansComponent implements OnInit {
 
+  form: FormGroup;
+  isFormSubmitted = false;
   operationalPlansList: IOperationalPlan[] = [];
   cols = [
     { field: 'VesselName', header: 'Vessel', filterMatchMode: 'contains' },
@@ -38,11 +41,13 @@ export class ManagePlansComponent implements OnInit {
   ];
 
   constructor(
-    private operationalPlanService: OperationalPlanService
+    private operationalPlanService: OperationalPlanService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.getPlanList();
+    this.form = this.buildForm();
   }
 
   getPlanList(): void {
@@ -51,6 +56,20 @@ export class ManagePlansComponent implements OnInit {
 
   loadSubOperations(operationData): void {
     this.subOperationsList = this.operationalPlanService.getSubOperations();
+  }
+
+  buildForm() {
+    const group = this.fb.group({});
+    group.addControl('OperationFromDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    group.addControl('OperationToDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    group.addControl('ShowLogs', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    return group;
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      console.log(this.form.value);
+    }
   }
 
 }
