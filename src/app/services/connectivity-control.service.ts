@@ -253,7 +253,6 @@ export class ConnectivityControlService {
     ];
   }
   getVesselUploadStatus(VesselMissionData: IVesselMissionData): IVesselUploadStatus {
-    console.log(VesselMissionData);
     return this.vesselUploadStatus;
   }
   getVesselHistoricalStatus(VesselMissionData: IVesselHistoricalData): IVesselUploadStatus {

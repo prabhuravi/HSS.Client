@@ -10,7 +10,7 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
 export class OperatorComponent implements OnInit {
 
   config = {
-    formTitle: 'Operator',
+    formTitle: 'Add Operator',
     formList: []
   };
   operatorList: IOperators[] = [];
@@ -18,6 +18,7 @@ export class OperatorComponent implements OnInit {
     { field: 'OperatorName', header: 'Operator Name' },
     { field: 'Action', header: 'Action' }
   ];
+  formValues: any = null;
 
   constructor(
     private operationalPlanService: OperationalPlanService
@@ -34,9 +35,16 @@ export class OperatorComponent implements OnInit {
         label: 'Operator Name',
         value: '',
         key: 'OperatorName',
-        validators: [],
+        validators: ['required'],
         disabled: false
       }
     ];
+  }
+  editData(data: IOperators): void {
+    this.config.formTitle = 'Edit Operator';
+    this.formValues = data;
+  }
+  formSubmitted(data): void {
+    console.log(data);
   }
 }

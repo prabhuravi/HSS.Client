@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-plans',
@@ -42,7 +43,8 @@ export class ManagePlansComponent implements OnInit {
 
   constructor(
     private operationalPlanService: OperationalPlanService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -60,16 +62,25 @@ export class ManagePlansComponent implements OnInit {
 
   buildForm() {
     const group = this.fb.group({});
-    group.addControl('OperationFromDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
-    group.addControl('OperationToDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
-    group.addControl('ShowLogs', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    group.addControl('OperationFromDate', this.fb.control({ value: '', disabled: false }, []));
+    group.addControl('OperationToDate', this.fb.control({ value: '', disabled: false }, []));
+    group.addControl('ShowLogs', this.fb.control({ value: '', disabled: false }, []));
     return group;
   }
 
-  onSubmit() {
+  searchFormOnSubmit() {
     if (this.form.valid) {
       console.log(this.form.value);
     }
+  }
+
+  openPlanComponent(actionType: string, data: any): void {
+    this.router.navigateByUrl('/operational-plan/plan', {
+      state: {
+        ...data,
+        actionType
+      }
+    });
   }
 
 }

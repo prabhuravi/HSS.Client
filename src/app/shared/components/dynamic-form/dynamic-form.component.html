@@ -2,19 +2,30 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="kx-p--medium">
             <h3>{{config.formTitle}}</h3>
-            <hr class="kx-my--small"/>
+            <hr class="kx-my--small" />
             <div class="kx-row kx-mb--small" *ngFor="let formItem of config.formList; let i = index;"
                 [ngSwitch]="formItem.type">
                 <div class="kx-col kx-col--12">
                     <label class="kx-label" [for]="formItem.key">
                         {{formItem.label}}
-                        <span *ngIf="form.value[formItem.key]==='' && isFormSubmitted" class="u--textDanger">Required</span>
+                        <span *ngIf="form.value[formItem.key]==='' && isFormSubmitted"
+                            class="u--textDanger">Required</span>
                         <span *ngIf="form.value[formItem.key]===''" class="u--textDanger">*</span>
                     </label>
                 </div>
+                <div *ngIf="formItem.key.invalid && (formItem.key.dirty || formItem.key.touched)" class="u--textDanger">
+
+                    <div *ngIf="formItem.key.errors.required">
+                        {{formItem.label}} is required.
+                    </div>
+                    <div *ngIf="formItem.key.errors.minlength">
+                        {{formItem.label}} must be at least 4 characters long.
+                    </div>
+                </div>
                 <div *ngSwitchCase="inputTypes.dropdown" class="kx-col kx-col--12">
                     <div class="kx-mt--tiny">
-                        <p-dropdown styleClass="u--fullWidth" placeholder="Select {{formItem.label}}" [formControlName]="formItem.key" [options]="formItem.options"
+                        <p-dropdown styleClass="u--fullWidth" placeholder="Select {{formItem.label}}"
+                            [formControlName]="formItem.key" [options]="formItem.options"
                             [optionLabel]="formItem.optionLabel" filter="true"></p-dropdown>
                     </div>
                 </div>
@@ -39,6 +50,12 @@
                             <span *ngIf="!form.value[formItem.key]" class="label-text">OFF</span>
                             <span *ngIf="form.value[formItem.key]" class="label-text">ON</span>
                         </label>
+                    </div>
+                </div>
+                <div *ngSwitchCase="inputTypes.number" class="kx-col kx-col--12">
+                    <div class="kx-form__element">
+                        <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
+                            type="number" />
                     </div>
                 </div>
                 <div *ngSwitchDefault class="kx-col kx-col--5">
