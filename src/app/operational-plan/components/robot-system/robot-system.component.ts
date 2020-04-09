@@ -12,7 +12,7 @@ export class RobotSystemComponent implements OnInit {
   robotsystemList: IRobotSystemDetails[] = [];
   formType = FormType;
   config = {
-    formTitle: 'Robot System',
+    formTitle: 'Add Robot System',
     formList: []
   };
   cols = [
@@ -21,6 +21,7 @@ export class RobotSystemComponent implements OnInit {
     { field: 'IPAddress', header: 'Gateway Address' },
     { field: 'Action', header: 'Action' }
   ];
+  formValues: any;
 
   constructor(
     private operationalPlanService: OperationalPlanService
@@ -38,15 +39,15 @@ export class RobotSystemComponent implements OnInit {
         label: 'Robot Serial Number',
         value: '',
         key: 'RobotSerialNumber',
-        validators: [],
+        validators: ['required'],
         disabled: false
       },
       {
-        type: FormType.text,
+        type: FormType.number,
         label: 'Node Number',
         value: '',
         key: 'NodeNumber',
-        validators: [],
+        validators: ['required'],
         disabled: false
       },
       {
@@ -54,7 +55,7 @@ export class RobotSystemComponent implements OnInit {
         label: 'Operational Gateway Address',
         value: '',
         key: 'IPAddress',
-        validators: [],
+        validators: ['required'],
         disabled: false
       },
       {
@@ -74,6 +75,14 @@ export class RobotSystemComponent implements OnInit {
         disabled: false
       }
     ];
+  }
+  editData(data: IRobotSystemDetails): void {
+    this.config.formTitle = 'Edit Robot System';
+    this.formValues = data;
+  }
+
+  formSubmitted(data: any): void {
+    console.log(data);
   }
 
 }

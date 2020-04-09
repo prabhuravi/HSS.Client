@@ -12,7 +12,7 @@ export class VesselComponent implements OnInit {
   vesselList: IVesselList[] = [];
   formType = FormType;
   config = {
-    formTitle: 'Vessel',
+    formTitle: 'Add Vessel',
     formList: []
   };
   cols = [
@@ -20,6 +20,8 @@ export class VesselComponent implements OnInit {
     { field: 'IMONumber', header: 'IMO Number' },
     { field: 'Action', header: 'Action' }
   ];
+  formValues: any;
+
   constructor(
     private operationalPlanService: OperationalPlanService
   ) { }
@@ -35,18 +37,25 @@ export class VesselComponent implements OnInit {
         label: 'Vessel Name',
         value: '',
         key: 'VesselName',
-        validators: [],
+        validators: ['required'],
         disabled: false
       },
       {
-        type: FormType.text,
+        type: FormType.number,
         label: 'IMO Number',
         value: '',
         key: 'IMONumber',
-        validators: [],
+        validators: ['required'],
         disabled: false
       }
     ];
+  }
+  editData(data: IVesselList): void {
+    this.config.formTitle = 'Edit Vessel';
+    this.formValues = data;
+  }
+  formSubmitted(data: any): void {
+    console.log(data);
   }
 
 }

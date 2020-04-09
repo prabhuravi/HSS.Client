@@ -6,6 +6,7 @@ import { TableModule } from 'primeng/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FdsTrafficComponent } from './components/fds-traffic/fds-traffic.component';
@@ -34,7 +35,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     CalendarModule,
-    DropdownModule
+    DropdownModule,
+    TooltipModule
   ],
   exports: [RouterModule]
 })
