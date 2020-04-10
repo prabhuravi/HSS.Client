@@ -17,7 +17,7 @@ export class VesselComponent implements OnInit {
   };
   cols = [
     { field: 'VesselName', header: 'Vessel Name' },
-    { field: 'IMONumber', header: 'IMO Number' },
+    { field: 'ImoNumber', header: 'IMO Number' },
     { field: 'Action', header: 'Action' }
   ];
   formValues: any;
@@ -27,7 +27,9 @@ export class VesselComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.vesselList = this.operationalPlanService.getVesselList();
+    this.operationalPlanService.getVesselList().subscribe((data) => {
+      this.vesselList = data;
+    });
     this.constructForm();
   }
   constructForm(): void {
@@ -44,7 +46,7 @@ export class VesselComponent implements OnInit {
         type: FormType.number,
         label: 'IMO Number',
         value: '',
-        key: 'IMONumber',
+        key: 'ImoNumber',
         validators: ['required'],
         disabled: false
       }

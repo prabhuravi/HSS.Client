@@ -4,7 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
-import { ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
@@ -39,6 +39,7 @@ const routes: Routes = [
     TableModule,
     CalendarModule,
     DropdownModule,
+    FormsModule,
     ReactiveFormsModule
   ]
 })

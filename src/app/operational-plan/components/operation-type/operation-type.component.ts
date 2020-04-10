@@ -25,7 +25,9 @@ export class OperationTypeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.operationtypeList = this.operationalPlanService.getOperationTypes();
+    this.operationalPlanService.getOperationTypes().subscribe((operationtypeData) => {
+      this.operationtypeList = operationtypeData;
+    });
     this.constructForm();
   }
   constructForm() {

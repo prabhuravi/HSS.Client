@@ -1,222 +1,79 @@
 import { Injectable } from '@angular/core';
+import { HttpService } from './http.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OperationalPlanService {
 
-  constructor() { }
+  constructor(
+    private http: HttpService
+  ) { }
 
-  getOperationPlans(): IOperationalPlan[] {
-    return [{
-      PlanId: 6,
-      VesselName: 'Berge Apo',
-      ImoNumber: 9233337,
-      VesselId: 2,
-      RobotSystemId: 2,
-      RobotSerialNumber: 'BergeApoRobot (P1a)',
-      OperationDes: 'Test',
-      OperationDate: '2019-04-23T08:00:00',
-      OperationLoc: 'Kaohsiung(TW KHH)',
-      PortCode: 'TW KHH',
-      LocalTimeZone: 'GMT+08:00',
-      OperationTypeId: 1,
-      OperationType: 'Maintenance',
-      Status: 'Completed',
-      ETADate: '2019-04-26T15:00:00',
-      OperatorId: 1,
-      OperatorName: 'Fredrik Thoresen',
-      PlannerId: 1,
-      Planner: 'Fredrik Thoresen',
-      Comments: 'Testing connection to robot',
-      CreatedBy: 'Fredrik Thoresen',
-      CreatedDate: '2019-04-23T13:19:24.22',
-      LastUpdatedBy: 'Fredrik Thoresen',
-      LastUpdatedDate: '2019-05-21T08:04:48.273',
-      Action: null
-    },
-    {
-      PlanId: 6,
-      VesselName: 'Apo',
-      ImoNumber: 9233337,
-      VesselId: 2,
-      RobotSystemId: 2,
-      RobotSerialNumber: 'TalismanRobot (P1a)',
-      OperationDes: 'Test',
-      OperationDate: '2019-04-23T08:00:00',
-      OperationLoc: 'Kaohsiung(TW KHH)',
-      PortCode: 'TW KHH',
-      LocalTimeZone: 'GMT+08:00',
-      OperationTypeId: 1,
-      OperationType: 'Cleaning',
-      Status: 'New',
-      ETADate: '2019-04-26T15:00:00',
-      OperatorId: 1,
-      OperatorName: 'Manuel Juan Santonja',
-      PlannerId: 1,
-      Planner: 'Manuel Juan Santonja',
-      Comments: 'Testing connection to robot',
-      CreatedBy: 'Manuel Juan Santonja',
-      CreatedDate: '2019-04-23T13:19:24.22',
-      LastUpdatedBy: 'Manuel Juan Santonja',
-      LastUpdatedDate: '2019-05-21T08:04:48.273',
-      Action: null
-    }];
+  getOperationPlans(formData: any): Observable<IOperationalPlan[]> {
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetOperationPlans',
+      data: formData
+    };
+    return this.http.postData(requestData);
   }
 
-  getSubOperations(): ISubOperations[] {
-    return [{
-      SubPlanId: 34,
-      PlanId: 3,
-      SubOperationDes: 'Some Description',
-      SubOperationStartTime: '2019-05-29T00:00:00',
-      SubOperationEndTime: '2019-06-25T00:00:00',
-      Status: 'Completed',
-      OperatorName: null,
-      CreatedBy: 'Nishtha Katara',
-      CreatedDate: '2019-06-19T07:12:32.213',
-      LastUpdatedBy: 'Nishtha Katara',
-      LastUpdatedDate: '2019-06-19T07:15:55.3'
-    }, {
-      SubPlanId: 35,
-      PlanId: 3,
-      SubOperationDes: 'dzfg',
-      SubOperationStartTime: '2019-05-26T00:00:00',
-      SubOperationEndTime: '2019-06-04T00:00:00',
-      Status: 'New',
-      OperatorName: null,
-      CreatedBy: 'Nishtha Katara',
-      CreatedDate: '2019-06-19T07:13:21.3',
-      LastUpdatedBy: 'Nishtha Katara',
-      LastUpdatedDate: '2019-06-19T07:13:21.3'
-    }, {
-      SubPlanId: 42,
-      PlanId: 3,
-      SubOperationDes: 'dsgdfg',
-      SubOperationStartTime: '2019-06-06T00:03:00',
-      SubOperationEndTime: '2019-08-06T16:56:00',
-      Status: 'New',
-      OperatorName: null,
-      CreatedBy: 'Deepa Sharma',
-      CreatedDate: '2019-08-19T12:54:30.243',
-      LastUpdatedBy: 'Deepa Sharma',
-      LastUpdatedDate: '2019-08-19T12:54:30.243'
-    }];
+  searchOperationPlans(formData: any): Observable<IOperationalPlan[]> {
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/SearchOperationPlan',
+      data: formData
+    };
+    return this.http.postData(requestData);
   }
 
-  getRobotSystemDetails(): IRobotSystemDetails[] {
-    return [{
-      RobotSystemId: 1,
-      RobotSerialNumber: 'TalismanRobot (P1a)',
-      IPAddress: '10.113.32.20',
-      NodeNumber: 17536,
-      ConnectivityControl: false,
-      ConnectivityMonitoring: false,
-      CreatedBy: null,
-      CreatedDate: '0001-01-01T00:00:00',
-      LastUpdatedBy: null,
-      LastUpdatedDate: '0001-01-01T00:00:00'
-    }, {
-      RobotSystemId: 2,
-      RobotSerialNumber: 'BergeApoRobot (P1a)',
-      IPAddress: '10.113.52.148',
-      NodeNumber: 17618,
-      ConnectivityControl: false,
-      ConnectivityMonitoring: false,
-      CreatedBy: null,
-      CreatedDate: '0001-01-01T00:00:00',
-      LastUpdatedBy: null,
-      LastUpdatedDate: '0001-01-01T00:00:00'
-    }, {
-      RobotSystemId: 3,
-      RobotSerialNumber: 'Robot6 (P1b)',
-      IPAddress: '10.113.112.148',
-      NodeNumber: 17858,
-      ConnectivityControl: false,
-      ConnectivityMonitoring: false,
-      CreatedBy: null,
-      CreatedDate: '0001-01-01T00:00:00',
-      LastUpdatedBy: null,
-      LastUpdatedDate: '0001-01-01T00:00:00'
-    }];
+  getSubOperations(planData): Observable<ISubOperations[]> {
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetSubOperations',
+      data: planData
+    };
+    return this.http.postData(requestData);
   }
 
-  getOperationTypes(): IOperationTypes[] {
-    return [{
-      Id: 1,
-      OperationTypeName: 'Maintenance',
-      CreatedDate: '2019-03-25T06:17:38.627',
-      CreatedBy: 'admin',
-      LastUpdatedBy: 'Sandeep Kumar',
-      LastUpdatedDate: '2019-04-02T10:22:34.483'
-    }, {
-      Id: 2,
-      OperationTypeName: 'Cleaning',
-      CreatedDate: '2019-03-25T06:17:46.473',
-      CreatedBy: 'admin',
-      LastUpdatedBy: 'admin',
-      LastUpdatedDate: '2019-03-25T06:17:46.473'
-    }, {
-      Id: 3,
-      OperationTypeName: 'Inspection',
-      CreatedDate: '2019-03-25T06:17:53.507',
-      CreatedBy: 'admin',
-      LastUpdatedBy: 'admin',
-      LastUpdatedDate: '2019-03-25T06:17:53.507'
-    }, {
-      Id: 4,
-      OperationTypeName: 'Training',
-      CreatedDate: '2019-05-22T05:44:24.547',
-      CreatedBy: 'Fredrik Thoresen',
-      LastUpdatedBy: 'Fredrik Thoresen',
-      LastUpdatedDate: '2019-05-22T05:44:24.547'
-    }, {
-      Id: 6,
-      OperationTypeName: 'Testing',
-      CreatedDate: '2019-07-02T06:32:36.597',
-      CreatedBy: 'Fredrik Thoresen',
-      LastUpdatedBy: 'Fredrik Thoresen',
-      LastUpdatedDate: '2019-07-02T06:32:36.597'
-    }, {
-      Id: 7,
-      OperationTypeName: 'Full operation',
-      CreatedDate: '2019-09-20T08:44:23.077',
-      CreatedBy: 'Fredrik Thoresen',
-      LastUpdatedBy: 'Fredrik Thoresen',
-      LastUpdatedDate: '2019-09-20T08:44:23.077'
-    }];
+  getRobotSystemDetails(): Observable<IRobotSystemDetails[]> {
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetRobotSystemDetails'
+    };
+    return this.http.getData(requestData);
   }
 
-  getOperators(): IOperators[] {
-    return [{
-      Id: 1,
-      OperatorName: 'Fredrik Thoresen',
-      CreatedDate: '2019-03-25T06:16:54.88',
-      CreatedBy: 'admin',
-      LastUpdatedBy: 'admin',
-      LastUpdatedDate: '2019-04-16T05:59:14.36'
-    }, {
-      Id: 4,
-      OperatorName: 'Federico Sogorb',
-      CreatedDate: '2019-05-02T06:31:50.1',
-      CreatedBy: 'Fredrik Thoresen',
-      LastUpdatedBy: 'Fredrik Thoresen',
-      LastUpdatedDate: '2019-05-02T06:31:50.1'
-    }, {
-      Id: 5,
-      OperatorName: 'Manuel Juan Santonja',
-      CreatedDate: '2019-05-22T05:45:21.96',
-      CreatedBy: 'Fredrik Thoresen',
-      LastUpdatedBy: 'Fredrik Thoresen',
-      LastUpdatedDate: '2019-05-22T05:45:21.96'
-    }, {
-      Id: 7,
-      OperatorName: 'Per Magnus Auby',
-      CreatedDate: '2019-09-04T05:53:03.1',
-      CreatedBy: 'Fredrik Thoresen',
-      LastUpdatedBy: 'Fredrik Thoresen',
-      LastUpdatedDate: '2019-09-04T05:53:03.1'
-    }];
+  getOperationTypes(): Observable<IOperationTypes[]> {
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetOperationTypes'
+    };
+    return this.http.getData(requestData);
+  }
+
+  getOperators(): Observable<IOperators[]> {
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetOperators'
+    };
+    return this.http.getData(requestData);
+  }
+
+  addOperator(operatorData): Observable<ISubOperations[]> {
+    operatorData.CreatedBy = 'admin';
+    operatorData.LastUpdatedBy = 'admin';
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/AddOperator',
+      data: operatorData
+    };
+    return this.http.postData(requestData);
+  }
+
+  deleteOperator(operatorData): Observable<ISubOperations[]> {
+    operatorData.CreatedBy = 'admin';
+    operatorData.LastUpdatedBy = 'admin';
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteOperator',
+      data: operatorData
+    };
+    return this.http.postData(requestData);
   }
 
   getTimeZone(): ITimeZone[] {
@@ -637,46 +494,10 @@ export class OperationalPlanService {
     }];
   }
 
-  getVesselList(): IVesselList[] {
-    return [{
-      Id: 1,
-      VesselName: 'Talisman',
-      IpAddress: '10.113.32.20',
-      EnabledTime: '2020-03-04T10:34:02.353',
-      TimeLimit: 0.0,
-      IsUploadEnabled: true,
-      RemainingMinutes: 0.0,
-      RemainingTime: '1 Day(s), 22 Hour(s), 50 Minutes',
-      DisableTime: '2020-03-06T09:47:55',
-      EnabledBy: 'admin',
-      NodeNumber: 17536,
-      IMONumber: 9191319
-    }, {
-      Id: 2,
-      VesselName: 'BergeApo',
-      IpAddress: '10.113.52.148',
-      EnabledTime: '2020-03-04T09:37:38.757',
-      TimeLimit: 0.0,
-      IsUploadEnabled: false,
-      RemainingMinutes: 0.0,
-      RemainingTime: null,
-      DisableTime: '2020-03-04T09:47:56.62',
-      EnabledBy: '',
-      NodeNumber: 17618,
-      IMONumber: 9233337
-    }, {
-      Id: 4,
-      VesselName: 'Maalfrid',
-      IpAddress: '10.112.221.20',
-      EnabledTime: '2019-06-07T09:19:08.28',
-      TimeLimit: 0.0,
-      IsUploadEnabled: false,
-      RemainingMinutes: 0.0,
-      RemainingTime: null,
-      DisableTime: '2019-06-07T09:27:03.87',
-      EnabledBy: '',
-      NodeNumber: 17268,
-      IMONumber: 11122
-    }];
+  getVesselList(): Observable<IVesselList[]> {
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetVesselDetails'
+    };
+    return this.http.getData(requestData);
   }
 }

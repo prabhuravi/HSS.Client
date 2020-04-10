@@ -15,6 +15,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   inputTypes: any;
   form: FormGroup;
   isFormSubmitted = false;
+  ipAddressPattern = '/^([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})$/';
 
   constructor(
     private fb: FormBuilder
@@ -37,14 +38,19 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     this.config.formList.forEach((control) => {
       const validatorList = [];
       control.validators.forEach((validator) => {
+        console.log(validator);
         switch (validator) {
           case 'required':
             validatorList.push(Validators.required);
+            break;
+          case 'ipaddress':
+            validatorList.push(Validators.pattern(this.ipAddressPattern));
             break;
           default:
             break;
         }
       });
+      console.log(validatorList);
       group.addControl(control.key, this.fb.control({ value: control.value, disabled: control.disabled }, validatorList));
     });
     return group;

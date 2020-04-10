@@ -28,7 +28,9 @@ export class RobotSystemComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.robotsystemList = this.operationalPlanService.getRobotSystemDetails();
+    this.operationalPlanService.getRobotSystemDetails().subscribe((robotsystemData) => {
+      this.robotsystemList = robotsystemData;
+    });
     this.constructForm();
   }
 

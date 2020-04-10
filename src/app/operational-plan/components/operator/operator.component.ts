@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormType } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-operator',
@@ -19,14 +21,20 @@ export class OperatorComponent implements OnInit {
     { field: 'Action', header: 'Action' }
   ];
   formValues: any = null;
+  activeId = 0;
 
   constructor(
     private operationalPlanService: OperationalPlanService
   ) { }
 
   ngOnInit() {
-    this.operatorList = this.operationalPlanService.getOperators();
+    this.getOperatorList();
     this.constructForm();
+  }
+  getOperatorList(): void {
+    this.operationalPlanService.getOperators().pipe(take(1)).subscribe((operatorData) => {
+      this.operatorList = operatorData;
+    });
   }
   constructForm() {
     this.config.formList = [
@@ -41,10 +49,21 @@ export class OperatorComponent implements OnInit {
     ];
   }
   editData(data: IOperators): void {
+    this.activeId = data.Id;
     this.config.formTitle = 'Edit Operator';
     this.formValues = data;
   }
   formSubmitted(data): void {
-    console.log(data);
+    if (this.activeId !== 0) {
+      data.Id = this.activeId;
+    }
+    this.operationalPlanService.addOperator(data).subscribe((success) => {
+      this.getOperatorList();
+    });
+  }
+  deleteData(data): void {
+    this.operationalPlanService.deleteOperator(data).subscribe((success) => {
+      this.getOperatorList();
+    });
   }
 }

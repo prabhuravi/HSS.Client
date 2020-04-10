@@ -30,7 +30,12 @@ export class SubOperationalPlanComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.subOperationsList = this.operationalPlanService.getSubOperations();
+    if (history && history.state && history.state.actionType) {
+      this.config.formTitle = `${history.state.actionType}`;
+      this.operationalPlanService.getSubOperations(history.state).subscribe((data) => {
+        this.subOperationsList = data;
+      });
+    }
     this.planStatusList = this.operationalPlanService.getPlanStatus();
     this.constructForm();
   }
@@ -42,7 +47,7 @@ export class SubOperationalPlanComponent implements OnInit {
         label: 'Start Time ( Start and End Time should be greater than Operation End Time)',
         value: '',
         key: 'SubOperationStartTime',
-        validators: [],
+        validators: ['required'],
         disabled: false
       },
       {
@@ -50,7 +55,7 @@ export class SubOperationalPlanComponent implements OnInit {
         label: 'End Time ( Start and End Time should be greater than Operation End Time)',
         value: '',
         key: 'SubOperationEndTime',
-        validators: [],
+        validators: ['required'],
         disabled: false
       },
       {
@@ -59,7 +64,7 @@ export class SubOperationalPlanComponent implements OnInit {
         options: this.planStatusList,
         value: this.planStatusList[0],
         key: 'Status',
-        validators: ['required'],
+        validators: [],
         optionLabel: 'name',
         disabled: true
       },
@@ -72,6 +77,9 @@ export class SubOperationalPlanComponent implements OnInit {
         disabled: false
       }
     ];
+  }
+  formSubmitted(data: any): void {
+    console.log(data);
   }
 
 }

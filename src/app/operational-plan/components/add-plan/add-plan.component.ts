@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormType } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-plan',
@@ -27,26 +29,36 @@ export class AddPlanComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.vesselList = this.operationalPlanService.getVesselList();
-    this.robotsystemList = this.operationalPlanService.getRobotSystemDetails();
-    this.operationtypeList = this.operationalPlanService.getOperationTypes();
-    this.operatorList = this.operationalPlanService.getOperators();
-    this.timeZoneList = this.operationalPlanService.getTimeZone();
-    this.planStatusList = this.operationalPlanService.getPlanStatus();
-    if (history && history.state && history.state.actionType) {
-      this.config.formTitle = `${history.state.actionType} Plan`;
-      this.formValues = history.state;
-      this.formValues.VesselId = this.vesselList.find((e) => e.Id === this.formValues.VesselId);
-      this.formValues.RobotSystemId = this.robotsystemList.find((e) => e.RobotSystemId === this.formValues.RobotSystemId);
-      this.formValues.OperationDate = new Date(this.formValues.OperationDate);
-      this.formValues.ETADate = new Date(this.formValues.ETADate);
-      this.formValues.LocalTimeZone = this.timeZoneList.find((e) => e.offset === this.formValues.LocalTimeZone);
-      this.formValues.OperationTypeId = this.operationtypeList.find((e) => e.Id === this.formValues.OperationTypeId);
-      this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
-      this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
-      this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
-    }
-    this.constructForm();
+    this.operationalPlanService.getVesselList().subscribe((vesselData) => {
+      this.vesselList = vesselData;
+      this.operationalPlanService.getRobotSystemDetails().subscribe((robotsystemData) => {
+        this.robotsystemList = robotsystemData;
+        this.operationalPlanService.getOperationTypes().subscribe((operationtypeData) => {
+          this.operationtypeList = operationtypeData;
+          this.operationalPlanService.getOperators().subscribe((operatorData) => {
+            this.operatorList = operatorData;
+            this.timeZoneList = this.operationalPlanService.getTimeZone();
+            this.planStatusList = this.operationalPlanService.getPlanStatus();
+            this.constructForm();
+            setTimeout(() => {
+              if (history && history.state && history.state.actionType) {
+                this.config.formTitle = `${history.state.actionType} Plan`;
+                this.formValues = history.state;
+                // this.formValues.VesselId = this.vesselList.find((e) => e.Id === this.formValues.VesselId);
+                this.formValues.RobotSystemId = this.robotsystemList.find((e) => e.RobotSystemId === this.formValues.RobotSystemId);
+                this.formValues.OperationDate = new Date(this.formValues.OperationDate);
+                this.formValues.ETADate = new Date(this.formValues.ETADate);
+                this.formValues.LocalTimeZone = this.timeZoneList.find((e) => e.offset === this.formValues.LocalTimeZone);
+                this.formValues.OperationTypeId = this.operationtypeList.find((e) => e.Id === this.formValues.OperationTypeId);
+                this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
+                this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
+                this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
+              }
+            }, 2000);
+          });
+        });
+      });
+    });
   }
   constructForm(): void {
     this.config.formList = [

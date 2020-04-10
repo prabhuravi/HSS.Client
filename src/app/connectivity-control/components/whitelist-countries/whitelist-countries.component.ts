@@ -27,7 +27,9 @@ export class WhitelistCountriesComponent implements OnInit {
 
   ngOnInit() {
     this.whiteListedCountries = this.whitelistCountriesService.getWhiteListedCountries(1);
-    this.vesselList = this.operationalPlanService.getVesselList();
+    this.operationalPlanService.getVesselList().subscribe((data) => {
+      this.vesselList = data;
+    });
     this.activeVessel = this.vesselList[0];
     this.operatorCountryList = this.operationalPlanService.getOperatorCountryList();
     this.activeOperatorCountry = this.operatorCountryList[0];

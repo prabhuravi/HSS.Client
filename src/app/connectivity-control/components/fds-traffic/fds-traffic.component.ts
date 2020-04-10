@@ -35,8 +35,10 @@ export class FdsTrafficComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.vesselList = this.operationalPlanService.getVesselList();
-    this.form = this.buildForm();
+    this.operationalPlanService.getVesselList().subscribe((data) => {
+      this.vesselList = data;
+      this.form = this.buildForm();
+    });
   }
 
   buildForm() {
