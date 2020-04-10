@@ -1,19 +1,20 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation, SimpleChanges, SimpleChange, OnChanges } from '@angular/core';
 import { ChartDataSet } from './data-set';
 import { IDataPoint } from './data-point';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import * as d3 from 'd3';
+import { LatencyRequest } from 'src/app/models/LatencyRequest';
 
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation:ViewEncapsulation.None
 })
-export class ChartComponent implements AfterViewInit {
+export class ChartComponent implements AfterViewInit, OnChanges {
   @Input() chartId: string;
+  @Input() latencyRequest: LatencyRequest;
   @ViewChild('chart', null) chartElement: ElementRef;
 
   private dataSet: ChartDataSet;
@@ -71,7 +72,10 @@ export class ChartComponent implements AfterViewInit {
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService) {
 
   }
-
+  ngOnChanges(changes: SimpleChanges) {
+    const currentItem: SimpleChange = changes.item;
+    console.log(changes);
+  }
   setupChart() {
 
     this.dataSet.loadData();

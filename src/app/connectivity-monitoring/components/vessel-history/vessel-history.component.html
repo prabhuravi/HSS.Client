@@ -99,7 +99,7 @@
             <div class="kx-col">
                 <label class="kx-label" for="selectbox1">Select Vessel</label>
                 <div class="kx-mt--tiny">
-                    <p-dropdown [options]="presetOptions" (onClick)="onDropDownSelection();" [(ngModel)]="selectedPreset" optionLabel="name"
+                    <p-dropdown [options]="presetOptions" (onChange)="onDropDownSelection();" [(ngModel)]="selectedPreset" optionLabel="name"
                        ></p-dropdown>
                 </div>
             </div>
@@ -138,7 +138,7 @@
 </div>
 <div class="row">
     <div class="charts">
-        <app-chart [chartId]="'chart1'"></app-chart>
+        <app-chart [chartId]="'chart1'" [latencyRequest]="latencyRequest"></app-chart>
       </div>
       
 </div>

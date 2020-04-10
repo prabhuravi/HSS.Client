@@ -6,6 +6,7 @@ import { GoogleChartComponent } from 'angular-google-charts';
 import { ThemeService } from '@kognifai/poseidon-ng-theming';
 import { ActivatedRoute } from '@angular/router';
 import { IVesselDetails } from 'src/app/models/IVesselDetails';
+import { LatencyRequest } from 'src/app/models/LatencyRequest';
 @Component({
   selector: 'app-vessel-history',
   templateUrl: './vessel-history.component.html',
@@ -31,8 +32,10 @@ export class VesselHistoryComponent implements OnInit {
       minorTicks: 15,
     }
   };
+  latencyRequest = new LatencyRequest();
   vesselDetails: IVesselDetails ;
   cachedVesselDetails :IVesselLinks;
+  selectedVesselNodeNumber: string;
   presetOptions = [{
     name: 'Last Hour',
     value: 1
@@ -56,6 +59,7 @@ export class VesselHistoryComponent implements OnInit {
   }
   getVesselDetails(nodeNumber :number){
     if(nodeNumber){
+      this.selectedVesselNodeNumber = nodeNumber.toString();
       this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
         this.connectivityMonitoringService.getVesselSubject().subscribe((data)=>{
           if(data){
@@ -93,12 +97,23 @@ export class VesselHistoryComponent implements OnInit {
     this.toDate = new Date();
     this.fromDate = new Date();
     this.fromDate = new Date(this.fromDate.setDate(this.toDate.getDate() - 1));
+    this.getLatencyTrendData();
+  }
+  getLatencyTrendData(){
+    var a: any= {};
+    a.NodeNumber = this.selectedVesselNodeNumber;
+    a.FromDate =  this.fromDate.toISOString();
+   a.ToDate = this.toDate.toISOString();
+   
+   this.latencyRequest = Object.assign({},a);
+    console.log(this.latencyRequest);
   }
   onDropDownSelection() {
     console.log(this.fromDate)
     console.log(this.selectedPreset);
     this.toDate = new Date();
     this.fromDate = this.getDateFromDropDown(this.selectedPreset.value);
+    this.getLatencyTrendData();
   }
 
   getDateFromDropDown(substractNumber: number): Date {
