@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormType } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
-import { Subscription } from 'rxjs';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -22,17 +22,22 @@ export class OperatorComponent implements OnInit {
   ];
   formValues: any = null;
   activeId = 0;
+  isDataLoading: boolean;
 
   constructor(
-    private operationalPlanService: OperationalPlanService
+    private operationalPlanService: OperationalPlanService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
-    this.getOperatorList();
+    this.loadData();
     this.constructForm();
   }
-  getOperatorList(): void {
+  loadData(): void {
+    this.isDataLoading = true;
     this.operationalPlanService.getOperators().pipe(take(1)).subscribe((operatorData) => {
+      this.isDataLoading = false;
       this.operatorList = operatorData;
     });
   }
@@ -54,16 +59,42 @@ export class OperatorComponent implements OnInit {
     this.formValues = data;
   }
   formSubmitted(data): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      accept: () => {
+        this.updateData(data);
+      }
+    });
+  }
+  updateData(data): void {
     if (this.activeId !== 0) {
       data.Id = this.activeId;
     }
     this.operationalPlanService.addOperator(data).subscribe((success) => {
-      this.getOperatorList();
+      this.triggerToast('success', 'Success Message', `Data ${(this.activeId !== 0) ? 'Updated' : 'Added'} Successfully`);
+      this.loadData();
     });
   }
   deleteData(data): void {
     this.operationalPlanService.deleteOperator(data).subscribe((success) => {
-      this.getOperatorList();
+      this.triggerToast('success', 'Success Message', `Data Deleted Successfully`);
+      this.loadData();
     });
+  }
+  confirm(data) {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      accept: () => {
+        this.deleteData(data);
+      }
+    });
+  }
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
   }
 }
