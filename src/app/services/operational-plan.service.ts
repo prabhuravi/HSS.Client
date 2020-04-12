@@ -516,6 +516,24 @@ export class OperationalPlanService {
     };
     return this.http.getData(requestData);
   }
+  addVessel(vesselData): Observable<any> {
+    vesselData.CreatedBy = 'admin';
+    vesselData.LastUpdatedBy = 'admin';
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/AddVesselDetail',
+      data: vesselData
+    };
+    return this.http.postData(requestData);
+  }
+  deleteVessel(vesselData): Observable<any> {
+    vesselData.CreatedBy = 'admin';
+    vesselData.LastUpdatedBy = 'admin';
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteVessel',
+      data: vesselData
+    };
+    return this.http.postData(requestData);
+  }
 
   getOperationalData(): Observable<any[]> {
     const vesselRequestData = {
