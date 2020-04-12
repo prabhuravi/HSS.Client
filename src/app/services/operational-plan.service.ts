@@ -48,6 +48,24 @@ export class OperationalPlanService {
     };
     return this.http.getData(requestData);
   }
+  addOperationType(operationTypeData): Observable<any> {
+    operationTypeData.CreatedBy = 'admin';
+    operationTypeData.LastUpdatedBy = 'admin';
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/AddOperationType',
+      data: operationTypeData
+    };
+    return this.http.postData(requestData);
+  }
+  deleteOperationType(operationTypeData): Observable<any> {
+    operationTypeData.CreatedBy = 'admin';
+    operationTypeData.LastUpdatedBy = 'admin';
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteOperationType',
+      data: operationTypeData
+    };
+    return this.http.postData(requestData);
+  }
 
   getOperators(): Observable<IOperators[]> {
     const requestData = {
@@ -55,8 +73,7 @@ export class OperationalPlanService {
     };
     return this.http.getData(requestData);
   }
-
-  addOperator(operatorData): Observable<ISubOperations[]> {
+  addOperator(operatorData): Observable<any> {
     operatorData.CreatedBy = 'admin';
     operatorData.LastUpdatedBy = 'admin';
     const requestData = {
@@ -65,8 +82,7 @@ export class OperationalPlanService {
     };
     return this.http.postData(requestData);
   }
-
-  deleteOperator(operatorData): Observable<ISubOperations[]> {
+  deleteOperator(operatorData): Observable<any> {
     operatorData.CreatedBy = 'admin';
     operatorData.LastUpdatedBy = 'admin';
     const requestData = {
