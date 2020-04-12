@@ -29,6 +29,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.formValues !== null && this.formValues !== undefined) {
       setTimeout(() => {
+        console.log('dynamic', this.formValues);
         this.form.patchValue(this.formValues);
       });
     }

@@ -64,9 +64,9 @@ export class VesselComponent implements OnInit {
       }
     ];
   }
-  editData(data: IOperators): void {
+  editData(data: IVesselList): void {
     this.activeId = data.Id;
-    this.config.formTitle = 'Edit Operator';
+    this.config.formTitle = 'Edit Vessel';
     this.formValues = data;
   }
   formSubmitted(data): void {

@@ -41,6 +41,24 @@ export class OperationalPlanService {
     };
     return this.http.getData(requestData);
   }
+  addRobotSystemDetail(robotSystemData): Observable<any> {
+    robotSystemData.CreatedBy = 'admin';
+    robotSystemData.LastUpdatedBy = 'admin';
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/AddRobotSystemDetail',
+      data: robotSystemData
+    };
+    return this.http.postData(requestData);
+  }
+  deleteRobotSystemDetail(robotSystemData): Observable<any> {
+    robotSystemData.CreatedBy = 'admin';
+    robotSystemData.LastUpdatedBy = 'admin';
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteRobotSystem',
+      data: robotSystemData
+    };
+    return this.http.postData(requestData);
+  }
 
   getOperationTypes(): Observable<IOperationTypes[]> {
     const requestData = {
