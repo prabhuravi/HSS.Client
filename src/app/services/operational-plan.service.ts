@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -499,5 +499,25 @@ export class OperationalPlanService {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/GetVesselDetails'
     };
     return this.http.getData(requestData);
+  }
+
+  getOperationalData(): Observable<any[]> {
+    const vesselRequestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetVesselDetails'
+    };
+    const vesselData = this.http.getData(vesselRequestData);
+    const operatorRequestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetOperators'
+    };
+    const operatorData = this.http.getData(operatorRequestData);
+    const operationTypeRequestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetOperationTypes'
+    };
+    const operationTypeData = this.http.getData(operationTypeRequestData);
+    const robotSystemRequestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetRobotSystemDetails'
+    };
+    const robotSystemData = this.http.getData(robotSystemRequestData);
+    return forkJoin([vesselData, operatorData, operationTypeData, robotSystemData]);
   }
 }

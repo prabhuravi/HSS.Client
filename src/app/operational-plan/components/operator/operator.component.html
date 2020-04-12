@@ -29,7 +29,7 @@
                                                 <span class="kx-btn__txt">Edit</span>
                                             </span>
                                         </button>
-                                        <button (click)="confirm(rowData)" class="kx-btn kx-btn--skin-primary kx-btn--size-small">
+                                        <button [disabled]="disableDeleteButton" (click)="deleteDataConfirm(rowData)" class="kx-btn kx-btn--skin-primary kx-btn--size-small">
                                             <span class="kx-btn__inner">
                                                 <span class="kx-btn__txt">Delete</span>
                                             </span>

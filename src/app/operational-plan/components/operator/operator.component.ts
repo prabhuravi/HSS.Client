@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormType } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -23,6 +23,8 @@ export class OperatorComponent implements OnInit {
   formValues: any = null;
   activeId = 0;
   isDataLoading: boolean;
+  disableDeleteButton: boolean;
+  @ViewChild('dynamicFormSubmitButton', { read: '', static: false }) dynamicFormSubmitButton: ElementRef;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -59,6 +61,7 @@ export class OperatorComponent implements OnInit {
     this.formValues = data;
   }
   formSubmitted(data): void {
+    console.log(this.dynamicFormSubmitButton);
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
       accept: () => {
@@ -76,12 +79,14 @@ export class OperatorComponent implements OnInit {
     });
   }
   deleteData(data): void {
+    this.disableDeleteButton = true;
     this.operationalPlanService.deleteOperator(data).subscribe((success) => {
+      this.disableDeleteButton = false;
       this.triggerToast('success', 'Success Message', `Data Deleted Successfully`);
       this.loadData();
     });
   }
-  confirm(data) {
+  deleteDataConfirm(data) {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
       accept: () => {

@@ -38,7 +38,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     this.config.formList.forEach((control) => {
       const validatorList = [];
       control.validators.forEach((validator) => {
-        console.log(validator);
         switch (validator) {
           case 'required':
             validatorList.push(Validators.required);
@@ -50,7 +49,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             break;
         }
       });
-      console.log(validatorList);
       group.addControl(control.key, this.fb.control({ value: control.value, disabled: control.disabled }, validatorList));
     });
     return group;
