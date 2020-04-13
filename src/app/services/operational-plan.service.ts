@@ -19,6 +19,16 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
 
+  updateOperationPlan(planData: any): Observable<IOperationalPlan[]> {
+    planData.CreatedBy = 'admin';
+    planData.LastUpdatedBy = 'admin';
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/UpdateOperationPlan',
+      data: planData
+    };
+    return this.http.postData(requestData);
+  }
+
   searchOperationPlans(formData: any): Observable<IOperationalPlan[]> {
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/SearchOperationPlan',
@@ -570,6 +580,14 @@ export class OperationalPlanService {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/GetRobotSystemDetails'
     };
     const robotSystemData = this.http.getData(robotSystemRequestData);
-    return forkJoin([vesselData, operatorData, operationTypeData, robotSystemData]);
+    return forkJoin([vesselData, robotSystemData, operationTypeData, operatorData]);
+  }
+
+  filterPortLocations(portData: any): Observable<any[]> {
+    const requestData = {
+      endPoint: '/OperationPlanAPI/api/OperationalPlan/FilterPortLocations',
+      data: portData
+    };
+    return this.http.postData(requestData);
   }
 }

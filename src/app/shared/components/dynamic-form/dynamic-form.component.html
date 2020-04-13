@@ -23,15 +23,15 @@
                 </div>
                 <div *ngSwitchCase="inputTypes.datepicker" class="kx-col kx-col--12">
                     <div class="kx-mt--tiny">
-                        <p-calendar [formControlName]="formItem.key" inputStyleClass="kx-field kx-field--size-base"
-                            showTime="true" hourFormat="24" showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)">
+                        <p-calendar hideOnDateTimeSelect="true" [formControlName]="formItem.key" inputStyleClass="kx-field kx-field--size-base"
+                            showTime="true" hourFormat="24" showButtonBar="true" placeholder="MM/dd/yyyy HH:mm">
                         </p-calendar>
                     </div>
                 </div>
                 <div *ngSwitchCase="inputTypes.text" class="kx-col kx-col--12">
                     <div class="kx-form__element">
                         <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
-                            type="text" />
+                            type="text" placeholder="Enter {{formItem.label}}" />
                     </div>
                 </div>
                 <div *ngSwitchCase="inputTypes.checkbox" class="kx-col kx-col--12">
@@ -48,6 +48,13 @@
                     <div class="kx-form__element">
                         <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
                             type="number" />
+                    </div>
+                </div>
+                <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col kx-col--12">
+                    <div class="kx-mt--tiny">
+                        <p-autoComplete [formControlName]="formItem.key" [suggestions]="portLocations"
+                            (completeMethod)="filterPortLocations($event)" field="PortName" [size]="30"
+                            placeholder="Type for suggestions..." [minLength]="1"></p-autoComplete>
                     </div>
                 </div>
                 <div *ngSwitchDefault class="kx-col kx-col--5">

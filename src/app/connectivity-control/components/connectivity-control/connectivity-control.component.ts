@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectivityControlService } from '../../../services/connectivity-control.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-connectivity-control',
@@ -19,20 +20,34 @@ export class ConnectivityControlComponent implements OnInit {
   ];
   displayActionLogModal: boolean;
   activeVessel: any = {};
+  isDataLoading: boolean;
 
   constructor(
     private connectivityControlService: ConnectivityControlService
   ) { }
 
   ngOnInit() {
-    this.vesselConnectivityControlList = this.connectivityControlService.getConnectivityData();
+    this.loadData();
+  }
+  loadData(): void {
+    this.isDataLoading = true;
+    this.connectivityControlService.getConnectivityData().pipe(take(1)).subscribe((data) => {
+      this.isDataLoading = false;
+      this.vesselConnectivityControlList = data;
+    });
   }
   toggleActivityLogModal(): void {
     this.displayActionLogModal = !this.displayActionLogModal;
   }
   loadVesselActivityLog(vesselDetail): void {
     this.activeVessel = vesselDetail;
-    this.vesselConnectivityActionLogList = this.connectivityControlService.getConnectivityActionLog(this.activeVessel.Id);
+    this.connectivityControlService.getConnectivityActionLog(this.activeVessel.Id).pipe(take(1)).subscribe((data) => {
+      this.isDataLoading = false;
+      this.vesselConnectivityActionLogList = data;
+    });
+  }
+  updateUploadStatus(data: IConnectivityControl): void {
+    console.log(data);
   }
 
 }

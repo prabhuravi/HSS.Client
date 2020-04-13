@@ -3,6 +3,7 @@ import { FormType } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-plan',
@@ -26,7 +27,8 @@ export class AddPlanComponent implements OnInit {
   formValues: any = null;
 
   constructor(
-    private operationalPlanService: OperationalPlanService
+    private operationalPlanService: OperationalPlanService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -41,8 +43,9 @@ export class AddPlanComponent implements OnInit {
       if (history && history.state && history.state.actionType) {
         this.config.formTitle = `${history.state.actionType} Plan`;
         this.formValues = history.state;
+        console.log(this.formValues);
         this.formValues.VesselId = this.vesselList.find((e) => e.Id === this.formValues.VesselId);
-        this.formValues.RobotSystemId = this.robotsystemList.find((e) => e.RobotSystemId === this.formValues.RobotSystemId);
+        this.formValues.RobotSystemId = this.robotsystemList.find((e) => e.RobotSerialNumber === this.formValues.RobotSystemId);
         this.formValues.OperationDate = new Date(this.formValues.OperationDate);
         this.formValues.ETADate = new Date(this.formValues.ETADate);
         this.formValues.LocalTimeZone = this.timeZoneList.find((e) => e.offset === this.formValues.LocalTimeZone);
@@ -103,7 +106,7 @@ export class AddPlanComponent implements OnInit {
         disabled: false
       },
       {
-        type: FormType.text,
+        type: FormType.autocomplete,
         label: 'Location',
         value: '',
         key: 'OperationLoc',
@@ -128,7 +131,7 @@ export class AddPlanComponent implements OnInit {
         key: 'Status',
         validators: ['required'],
         optionLabel: 'name',
-        disabled: true
+        disabled: (history && history.state && history.state.actionType) ? false : true
       },
       {
         type: FormType.text,
@@ -169,8 +172,28 @@ export class AddPlanComponent implements OnInit {
     ];
   }
 
-  formSubmitted(formData: any) {
-    console.log('formData', formData);
+  formSubmitted(formData: any): void {
+    console.log(formData);
+    const plandData = {
+      Status: 'New',
+      Action: (history && history.state && history.state.actionType) ? formData.Status.value : 'Add',
+      VesselId: formData.VesselId.Id,
+      RobotSystemId: formData.RobotSystemId.RobotSystemId,
+      LocalTimeZone: formData.LocalTimeZone.offset,
+      OperationLoc: formData.OperationLoc.PortName,
+      portCode: formData.OperationLoc.PortCode,
+      OperationTypeId: formData.OperationTypeId.Id,
+      OperationDes: formData.OperationDes,
+      PlannerId: formData.PlannerId.Id,
+      OperatorId: formData.OperatorId.Id,
+      Comments: formData.Comments,
+      OperationDate: formData.OperationDate,
+      ETADate: formData.ETADate
+    };
+    console.log(plandData);
+    // this.operationalPlanService.updateOperationPlan(plandData).subscribe((data) => {
+    //   this.router.navigateByUrl('/operational-plan');
+    // });
   }
 
 }

@@ -48,7 +48,8 @@
 </div>
 <div class="kx-row kx-mt--small">
     <div class="kx-col">
-        <p-table #tt [value]="operationalPlansList" [columns]="cols" [paginator]="true" [rows]="5" dataKey="PlanId">
+        <app-load *ngIf="isDataLoading"></app-load>
+        <p-table *ngIf="!isDataLoading" #tt [value]="operationalPlansList" [columns]="cols" [paginator]="true" [rows]="5" dataKey="PlanId">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 1.5em" class="u--cursorPointer kx-p--small"></th>
@@ -102,7 +103,7 @@
                                             <span class="kx-btn__txt">Complete</span>
                                         </span>
                                     </button>
-                                    <i (click)="openPlanComponent('Sub Operation', rowData, '/operational-plan/sub-operational-plan')"
+                                    <i title="add sub operation plan" (click)="openPlanComponent('Sub Operation', rowData, '/operational-plan/sub-operational-plan')"
                                         class="kx-icon kx-icon--size-base kx-mt--tiny u--cursorPointer addIcon">
                                         <svg focusable="false">
                                             <use href="../../assets/img/icons/sprites/icons.svg#plus"></use>
@@ -121,7 +122,8 @@
                         <div class="kx-card kx-card--skin-default kx-p--small kx-m--base">
                             <div class="kx-row">
                                 <div class="kx-col">
-                                    <p-table #tt [value]="subOperationsList" [columns]="subOperationCols">
+                                    <app-load *ngIf="isSubOperationDataLoading"></app-load>
+                                    <p-table *ngIf="!isSubOperationDataLoading" #tt [value]="subOperationsList" [columns]="subOperationCols">
                                         <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--small">

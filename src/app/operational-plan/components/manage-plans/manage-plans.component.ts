@@ -41,6 +41,8 @@ export class ManagePlansComponent implements OnInit {
     { field: 'SubPlanId', header: 'Action' }
   ];
   showLogs = false;
+  isDataLoading: boolean;
+  isSubOperationDataLoading: boolean;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -57,13 +59,17 @@ export class ManagePlansComponent implements OnInit {
   }
 
   getPlanList(): void {
+    this.isDataLoading = true;
     this.operationalPlanService.getOperationPlans({showLogs: this.showLogs}).subscribe((data) => {
+      this.isDataLoading = false;
       this.operationalPlansList = data;
     });
   }
 
   loadSubOperations(planData): void {
+    this.isSubOperationDataLoading = true;
     this.operationalPlanService.getSubOperations(planData).subscribe((data) => {
+      this.isSubOperationDataLoading = false;
       this.subOperationsList = data;
     });
   }
@@ -77,8 +83,10 @@ export class ManagePlansComponent implements OnInit {
 
   searchFormOnSubmit() {
     if (this.form.valid) {
+      this.isDataLoading = true;
       this.form.value.showLogs = this.showLogs;
       this.operationalPlanService.searchOperationPlans(this.form.value).subscribe((data) => {
+        this.isDataLoading = false;
         this.operationalPlansList = data;
       });
     }
