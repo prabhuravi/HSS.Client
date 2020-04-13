@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { FormType } from '../../../app.constants';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-sub-operational-plan',
@@ -24,22 +25,32 @@ export class SubOperationalPlanComponent implements OnInit {
     { field: 'Operator', header: 'Operator' },
     { field: 'Action', header: 'Action' }
   ];
+  isDataLoading: boolean;
+  formValues: any = null;
+  planDetails: any;
+  activeId = 0;
 
   constructor(
-    private operationalPlanService: OperationalPlanService
+    private operationalPlanService: OperationalPlanService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit() {
+    this.planStatusList = this.operationalPlanService.getPlanStatus();
     if (history && history.state && history.state.actionType) {
       this.config.formTitle = `${history.state.actionType}`;
-      this.operationalPlanService.getSubOperations(history.state).subscribe((data) => {
-        this.subOperationsList = data;
-      });
+      this.planDetails = history.state;
+      this.loadData();
     }
-    this.planStatusList = this.operationalPlanService.getPlanStatus();
     this.constructForm();
   }
-
+  loadData(): void {
+    this.isDataLoading = true;
+    this.operationalPlanService.getSubOperations(this.planDetails).subscribe((data) => {
+      this.isDataLoading = false;
+      this.subOperationsList = data;
+    });
+  }
   constructForm(): void {
     this.config.formList = [
       {
@@ -78,8 +89,32 @@ export class SubOperationalPlanComponent implements OnInit {
       }
     ];
   }
-  formSubmitted(data: any): void {
-    console.log(data);
+  formSubmitted(formData: any): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      accept: () => {
+        this.updateData(formData);
+      }
+    });
+  }
+  editData(data: any): void {
+    this.activeId = data.SubPlanId;
+    data.SubOperationStartTime = new Date(data.SubOperationStartTime);
+    data.SubOperationEndTime = new Date(data.SubOperationEndTime);
+    this.formValues = data;
+    console.log(this.formValues);
+  }
+  updateData(formData: any): void {
+    console.log(formData);
+    if (history && history.state && history.state.actionType) {
+      formData.PlanId = this.planDetails.PlanId;
+    }
+    if (this.activeId !== 0) {
+      formData.SubPlanId = this.activeId;
+    }
+    this.operationalPlanService.updateSubOperationPlan(formData).subscribe((data) => {
+      this.loadData();
+    });
   }
 
 }

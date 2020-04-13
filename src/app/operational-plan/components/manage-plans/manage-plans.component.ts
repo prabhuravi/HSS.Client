@@ -40,7 +40,7 @@ export class ManagePlansComponent implements OnInit {
     { field: 'LastUpdatedDate', header: 'Updated Date' },
     { field: 'SubPlanId', header: 'Action' }
   ];
-  showLogs = false;
+  showLogs = true;
   isDataLoading: boolean;
   isSubOperationDataLoading: boolean;
 
