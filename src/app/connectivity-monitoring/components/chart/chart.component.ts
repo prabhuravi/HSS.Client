@@ -10,7 +10,7 @@ import { LatencyRequest } from 'src/app/models/LatencyRequest';
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css'],
-  encapsulation:ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None
 })
 export class ChartComponent implements AfterViewInit, OnChanges {
   @Input() chartId: string;
@@ -58,13 +58,28 @@ export class ChartComponent implements AfterViewInit, OnChanges {
   private lineElement: d3.Selection<any, any, any, any>;
   private signalStrengthLine: d3.Line<IDataPoint>;
   private signallineElement: d3.Selection<any, any, any, any>;
-
+  private showChart: boolean = false;
   ngAfterViewInit() {
-    this.connectivityMonitoringService.getChartData()
+
+    this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
+      if (nodeNumber) {
+        this.latencyRequest.NodeNumber = nodeNumber;
+        this.getChartData(this.latencyRequest);
+      }
+    })
+  }
+  getChartData(latencyRequest: LatencyRequest) {
+    this.connectivityMonitoringService.getChartData(latencyRequest)
       .subscribe((data: any) => {
 
         console.log(data);
-
+        const cacheData : ILatencyCacheData = {
+          NodeNumber:latencyRequest.NodeNumber,
+          FromDate:latencyRequest.FromDate,
+          ToDate:latencyRequest.ToDate,
+          data:data
+        };
+        this.connectivityMonitoringService.setLatencyChartData(cacheData);
         this.dataSet = new ChartDataSet(data);
         this.setupChart();
       });
@@ -72,14 +87,22 @@ export class ChartComponent implements AfterViewInit, OnChanges {
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService) {
 
   }
+
   ngOnChanges(changes: SimpleChanges) {
     const currentItem: SimpleChange = changes.item;
     console.log(changes);
+    if(!changes.latencyRequest.previousValue){
+      console.log("########");
+      let cacheData = this.connectivityMonitoringService.returncacheVesselLatencyChart();
+      if(cacheData && cacheData.NodeNumber == this.latencyRequest.NodeNumber){
+        this.dataSet = new ChartDataSet(cacheData.data);
+        this.setupChart();
+      }
+    }
   }
   setupChart() {
-
+    d3.select('#' + this.chartId).remove();
     this.dataSet.loadData();
-    console.log()
     this.host = d3.select(this.chartElement.nativeElement);
     this.hostWidth = parseInt(this.host.style('width'), 10);
     this.hostHeight = 400;
@@ -90,9 +113,22 @@ export class ChartComponent implements AfterViewInit, OnChanges {
 
     this.svg = this.chartBody = this.host.append('svg')
       .attr('width', this.hostWidth)
+      .attr('id', this.chartId)
       .attr('height', this.hostHeight);
-    // for grid lines
+    //ha
+    if (this.dataSet.data.length === 0) {
+      this.svg.append("text")
+        .text("No Data Available")
+        .attr('x', (this.hostWidth /2.5)+ (this.margin.left+this.margin.right))
+        .attr('y', this.height / 2)
+        .style("font-size", "40px");
+        this.showChart =true;
+      return;
+    }else{
+      this.showChart =true;
+    }
 
+    // for grid lines
     // Create a clip path
     const clipPathId = `clip${this.chartId}`;
     const clipPathUrl = `${window.location.protocol}//${window.location.host}/#clip${this.chartId}`;
@@ -126,7 +162,7 @@ export class ChartComponent implements AfterViewInit, OnChanges {
       .attr('transform', `translate(0,${this.height})`)
       .call(this.xAxis);
 
-   
+
     // Y-Axis
     this.yScale = d3.scaleLinear()
       .domain([this.dataSet.yMin, this.dataSet.yMax])
@@ -148,21 +184,22 @@ export class ChartComponent implements AfterViewInit, OnChanges {
       .attr('fill', '#6a3d9a')
       .attr('fill-opacity', '0.1');
 
-      this.svg.append("g")
-  		.attr("class","grid")
-  		.attr("transform",`translate(${this.margin.left},${this.height})`)
-  		.style("stroke-dasharray",("3,3"))
-  		.call(this.make_x_gridlines(this.xScale)
-            .tickSize(-this.height) .tickFormat(null)
-         )
-  this.svg.append("g")
-  		.attr("class","grid")
-      .style("stroke-dasharray",("3,3"))
-      .attr("transform",`translate(${this.margin.left+5},${this.margin.top})`)
-  		.call(this.make_y_gridlines(this.yScale)
-            .tickSize(-this.width) .tickFormat(null)
-         )
-
+    let verticalGrid = this.svg.append("g")
+      .attr("class", "grid")
+      .attr("transform", `translate(${this.margin.left},${this.height})`)
+      .style("stroke-dasharray", ("3,3"))
+      .call(this.make_x_gridlines(this.xScale)
+        .tickSize(-this.height).tickFormat(null)
+      )
+    let horizontalGrid = this.svg.append("g")
+      .attr("class", "grid")
+      .style("stroke-dasharray", ("3,3"))
+      .attr("transform", `translate(${this.margin.left + 5},${this.margin.top})`)
+      .call(this.make_y_gridlines(this.yScale)
+        .tickSize(-this.width).tickFormat(null)
+      )
+    verticalGrid.selectAll("text").remove();
+    horizontalGrid.selectAll("text").remove();
     this.line = d3.line<IDataPoint>()
       .x(d => this.xScale(d3.isoParse(d.TimeStamp)))
       .y(d => this.yScale(d.LatencyValue))
@@ -193,13 +230,13 @@ export class ChartComponent implements AfterViewInit, OnChanges {
     // Draw initial data
     this.update(0);
   }
-  make_x_gridlines(x){
+  make_x_gridlines(x) {
     return d3.axisBottom(x)
-    	.ticks(8)
+      .ticks(8)
   }
-  make_y_gridlines(y){
+  make_y_gridlines(y) {
     return d3.axisLeft(y)
-    .ticks(5)
+      .ticks(5)
   }
 
   setupBrushing(): void {
@@ -293,6 +330,15 @@ export class ChartComponent implements AfterViewInit, OnChanges {
 
   update(transitionSpeed: number): void {
     // Scatter
+    var tooltip = d3.select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("height", "50px")
+      .style("width", "180px")
+      .style("background", "#fff")
+      .style("color", "#000")
+      .style("visibility", "hidden")
     this.scatterPoints = this.chartBody.selectAll('circle')
       .data(this.dataSet.data, (d: IDataPoint) => d.TimeStamp.toString());
 
@@ -300,10 +346,18 @@ export class ChartComponent implements AfterViewInit, OnChanges {
       .attr('r', 2.5)
       .attr('fill', '#6a3d9a')
       .attr('fill-opacity', d => d.isGap ? '0' : '0.5')
+      
+      .on("mouseover", function (d) {
+        tooltip.text(`${d.TimeStamp} Latency  ${d.LatencyValue}`);
+        return tooltip.style("visibility", "visible");
+      })
+      .on("mousemove", function () { return tooltip.style("top", ((event as any).pageY - 10) + "px").style("left", ((event as any).pageX + 10) + "px"); })
+      .on("mouseout", function () { return tooltip.style("visibility", "hidden"); })
       .merge(this.scatterPoints)
       .transition().duration(transitionSpeed)
       .attr('cx', d => this.xScale(d3.isoParse(d.TimeStamp)))
-      .attr('cy', d => this.yScale(d.LatencyValue));
+      .attr('cy', d => this.yScale(d.LatencyValue))
+    ;
 
 
     // Line
