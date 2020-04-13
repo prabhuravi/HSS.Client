@@ -1,4 +1,5 @@
-<p-table #tt [value]="vesselConnectivityControlList" [columns]="cols"
+<app-load *ngIf="isDataLoading"></app-load>
+<p-table *ngIf="!isDataLoading" #tt [value]="vesselConnectivityControlList" [columns]="cols"
     [paginator]="true" [rows]="5">
     <ng-template pTemplate="header" let-columns>
         <tr>
@@ -24,7 +25,7 @@
                 <div [ngSwitch]="col.field">
                     <div *ngSwitchCase="'IsUploadEnabled'">
                         <label class="kx-selector kx-selector__switch">
-                            <input type="checkbox" name="IsUploadEnabled" [(ngModel)]="rowData[col.field]" />
+                            <input type="checkbox" name="IsUploadEnabled" [(ngModel)]="rowData[col.field]" (ngModelChange)="updateUploadStatus(rowData)" />
                             <div class="kx-selector__indicator"></div>
                             <span *ngIf="!rowData[col.field]" class="label-text">OFF</span>
                             <span *ngIf="rowData[col.field]" class="label-text">ON</span>
@@ -88,16 +89,9 @@
         <div class="kx-btngroup kx-flex kx-flex-wrap kx-btngroup--spacing  kx-justify-content-right " role="group"
             aria-label="">
             <!-- BUTTON Component -->
-            <button (click)="toggleActivityLogModal()"
-                class="kx-btn kx-btn--skin-secondary kx-btn--size-base u--cursorPointer">
-                <span class="kx-btn__inner">
-                    <span class="kx-btn__txt">Cancel</span>
-                </span>
-            </button>
-            <!-- BUTTON Component -->
             <button (click)="toggleActivityLogModal()" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
                 <span class="kx-btn__inner">
-                    <span class="kx-btn__txt u--cursorPointer">Save changes</span>
+                    <span class="kx-btn__txt u--cursorPointer">Close</span>
                 </span>
             </button>
         </div>

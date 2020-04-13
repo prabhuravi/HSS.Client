@@ -1,12 +1,13 @@
 <div class="kx-row">
     <div class="kx-col kx-col--4  kx-p--small">
-        <app-dynamic-form [config]="config" (formSubmitted)="formSubmitted($event)">
+        <app-dynamic-form [formValues]="formValues" [config]="config" (formSubmitted)="formSubmitted($event)">
         </app-dynamic-form>
     </div>
     <div class="kx-col kx-col--8 kx-p--small">
         <div class="kx-card kx-card--skin-default">
             <div class="kx-p--medium">
-                <p-table #tt [value]="subOperationsList" [columns]="subOperationCols">
+                <app-load *ngIf="isDataLoading"></app-load>
+                <p-table *ngIf="!isDataLoading" #tt [value]="subOperationsList" [columns]="subOperationCols">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns" [pSortableColumn]="col.field"
@@ -23,7 +24,7 @@
                             <td *ngFor="let col of columns">
                                 <div [ngSwitch]="col.field">
                                     <div *ngSwitchCase="'Action'">
-                                        <button class="kx-btn kx-btn--skin-primary kx-btn--size-small kx-mr--tiny">
+                                        <button (click)="editData(rowData)" class="kx-btn kx-btn--skin-primary kx-btn--size-small kx-mr--tiny">
                                             <span class="kx-btn__inner">
                                                 <span class="kx-btn__txt">Edit</span>
                                             </span>

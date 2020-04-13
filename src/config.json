@@ -11,6 +11,8 @@
   "customerApiUrl": "https://localhost:9446/",
   "homeUrl": "/",
   "userProfileUrl":  "https://INBEN10286/PoseidonNext/poseidon-user-profile",
+  "userInfoApiUrl": "https://INBEN10286/PoseidonNext/kognifaiidp/api/v1/Users/",
+  "environment": "dev",
   "entitlementsApiUrl":  "https://INBEN10286/PoseidonNext/entitlements.api",
   "logging": {
     "logLevel": 4,

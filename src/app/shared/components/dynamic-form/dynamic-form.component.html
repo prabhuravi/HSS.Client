@@ -5,6 +5,7 @@
             <hr class="kx-my--small" />
             <div class="kx-row kx-mb--small" *ngFor="let formItem of config.formList; let i = index;"
                 [ngSwitch]="formItem.type">
+                {{formItem.key.valid}}
                 <div class="kx-col kx-col--12">
                     <label class="kx-label" [for]="formItem.key">
                         {{formItem.label}}
@@ -12,15 +13,6 @@
                             class="u--textDanger">Required</span>
                         <span *ngIf="form.value[formItem.key]===''" class="u--textDanger">*</span>
                     </label>
-                </div>
-                <div *ngIf="formItem.key.invalid && (formItem.key.dirty || formItem.key.touched)" class="u--textDanger">
-
-                    <div *ngIf="formItem.key.errors.required">
-                        {{formItem.label}} is required.
-                    </div>
-                    <div *ngIf="formItem.key.errors.minlength">
-                        {{formItem.label}} must be at least 4 characters long.
-                    </div>
                 </div>
                 <div *ngSwitchCase="inputTypes.dropdown" class="kx-col kx-col--12">
                     <div class="kx-mt--tiny">
@@ -31,15 +23,15 @@
                 </div>
                 <div *ngSwitchCase="inputTypes.datepicker" class="kx-col kx-col--12">
                     <div class="kx-mt--tiny">
-                        <p-calendar [formControlName]="formItem.key" inputStyleClass="kx-field kx-field--size-base"
-                            showTime="true" hourFormat="24" showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)">
+                        <p-calendar hideOnDateTimeSelect="true" [formControlName]="formItem.key" inputStyleClass="kx-field kx-field--size-base"
+                            showTime="true" hourFormat="24" showButtonBar="true" placeholder="MM/dd/yyyy HH:mm">
                         </p-calendar>
                     </div>
                 </div>
                 <div *ngSwitchCase="inputTypes.text" class="kx-col kx-col--12">
                     <div class="kx-form__element">
                         <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
-                            type="text" />
+                            type="text" placeholder="Enter {{formItem.label}}" />
                     </div>
                 </div>
                 <div *ngSwitchCase="inputTypes.checkbox" class="kx-col kx-col--12">
@@ -56,6 +48,13 @@
                     <div class="kx-form__element">
                         <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
                             type="number" />
+                    </div>
+                </div>
+                <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col kx-col--12">
+                    <div class="kx-mt--tiny">
+                        <p-autoComplete [formControlName]="formItem.key" [suggestions]="portLocations"
+                            (completeMethod)="filterPortLocations($event)" field="PortName" [size]="30"
+                            placeholder="Type for suggestions..." [minLength]="1"></p-autoComplete>
                     </div>
                 </div>
                 <div *ngSwitchDefault class="kx-col kx-col--5">

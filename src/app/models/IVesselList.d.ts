@@ -10,5 +10,5 @@ interface IVesselList {
     DisableTime: string,
     EnabledBy: string,
     NodeNumber: number,
-    IMONumber: number
+    ImoNumber: number
 }

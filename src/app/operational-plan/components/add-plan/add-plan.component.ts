@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormType } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-add-plan',
@@ -20,33 +24,41 @@ export class AddPlanComponent implements OnInit {
     formTitle: 'Add Plan',
     formList: []
   };
-  formValues: any;
+  isDataLoading = true;
+  formValues: any = null;
 
   constructor(
-    private operationalPlanService: OperationalPlanService
+    private operationalPlanService: OperationalPlanService,
+    private router: Router,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
-    this.vesselList = this.operationalPlanService.getVesselList();
-    this.robotsystemList = this.operationalPlanService.getRobotSystemDetails();
-    this.operationtypeList = this.operationalPlanService.getOperationTypes();
-    this.operatorList = this.operationalPlanService.getOperators();
-    this.timeZoneList = this.operationalPlanService.getTimeZone();
-    this.planStatusList = this.operationalPlanService.getPlanStatus();
-    if (history && history.state && history.state.actionType) {
-      this.config.formTitle = `${history.state.actionType} Plan`;
-      this.formValues = history.state;
-      this.formValues.VesselId = this.vesselList.find((e) => e.Id === this.formValues.VesselId);
-      this.formValues.RobotSystemId = this.robotsystemList.find((e) => e.RobotSystemId === this.formValues.RobotSystemId);
-      this.formValues.OperationDate = new Date(this.formValues.OperationDate);
-      this.formValues.ETADate = new Date(this.formValues.ETADate);
-      this.formValues.LocalTimeZone = this.timeZoneList.find((e) => e.offset === this.formValues.LocalTimeZone);
-      this.formValues.OperationTypeId = this.operationtypeList.find((e) => e.Id === this.formValues.OperationTypeId);
-      this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
-      this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
-      this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
-    }
-    this.constructForm();
+    this.operationalPlanService.getOperationalData().subscribe((data) => {
+      this.vesselList = data[0];
+      this.robotsystemList = data[1];
+      this.operationtypeList = data[2];
+      this.operatorList = data[3];
+      this.timeZoneList = this.operationalPlanService.getTimeZone();
+      this.planStatusList = this.operationalPlanService.getPlanStatus();
+      this.isDataLoading = false;
+      if (history && history.state && history.state.actionType) {
+        this.config.formTitle = `${history.state.actionType} Plan`;
+        this.formValues = history.state;
+        console.log(this.formValues);
+        this.formValues.VesselId = this.vesselList.find((e) => e.Id === this.formValues.VesselId);
+        this.formValues.RobotSystemId = this.robotsystemList.find((e) => e.RobotSerialNumber === this.formValues.RobotSerialNumber);
+        this.formValues.OperationDate = new Date(this.formValues.OperationDate);
+        this.formValues.ETADate = new Date(this.formValues.ETADate);
+        this.formValues.LocalTimeZone = this.timeZoneList.find((e) => e.offset === this.formValues.LocalTimeZone);
+        this.formValues.OperationTypeId = this.operationtypeList.find((e) => e.Id === this.formValues.OperationTypeId);
+        this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
+        this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
+        this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
+        this.formValues.OperationLoc = this.formValues.PortName;
+      }
+      this.constructForm();
+    });
   }
   constructForm(): void {
     this.config.formList = [
@@ -97,7 +109,7 @@ export class AddPlanComponent implements OnInit {
         disabled: false
       },
       {
-        type: FormType.text,
+        type: FormType.autocomplete,
         label: 'Location',
         value: '',
         key: 'OperationLoc',
@@ -122,7 +134,7 @@ export class AddPlanComponent implements OnInit {
         key: 'Status',
         validators: ['required'],
         optionLabel: 'name',
-        disabled: true
+        disabled: (history && history.state && history.state.actionType) ? false : true
       },
       {
         type: FormType.text,
@@ -163,8 +175,39 @@ export class AddPlanComponent implements OnInit {
     ];
   }
 
-  formSubmitted(formData: any) {
-    console.log('formData', formData);
+  formSubmitted(formData: any): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      accept: () => {
+        this.updateData(formData);
+      }
+    });
+  }
+  updateData(formData): void {
+    console.log(formData);
+    const plandData: any = {
+      Status: (history && history.state && history.state.actionType) ? formData.Status.value : 'New',
+      Action: (history && history.state && history.state.actionType) ? 'Edit' : 'Add',
+      VesselId: formData.VesselId.Id,
+      RobotSystemId: formData.RobotSystemId.RobotSystemId,
+      LocalTimeZone: formData.LocalTimeZone.offset,
+      OperationLoc: formData.OperationLoc.PortName,
+      portCode: formData.OperationLoc.PortCode,
+      OperationTypeId: formData.OperationTypeId.Id,
+      OperationDes: formData.OperationDes,
+      PlannerId: formData.PlannerId.Id,
+      OperatorId: formData.OperatorId.Id,
+      Comments: formData.Comments,
+      OperationDate: formData.OperationDate,
+      ETADate: formData.ETADate
+    };
+    if (history && history.state && history.state.actionType) {
+      plandData.PlanId = this.formValues.PlanId;
+    }
+    console.log(plandData);
+    this.operationalPlanService.updateOperationPlan(plandData).subscribe((data) => {
+      this.router.navigateByUrl('/operational-plan');
+    });
   }
 
 }

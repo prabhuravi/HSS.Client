@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { getInputTypes } from '../../../app.constants';
+import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -15,9 +16,12 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   inputTypes: any;
   form: FormGroup;
   isFormSubmitted = false;
+  ipAddressPattern = '/^([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})$/';
+  portLocations: any[] = [];
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private operationalPlanService: OperationalPlanService
   ) {
   }
 
@@ -28,6 +32,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.formValues !== null && this.formValues !== undefined) {
       setTimeout(() => {
+        console.log('dynamic', this.formValues);
         this.form.patchValue(this.formValues);
       });
     }
@@ -40,6 +45,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         switch (validator) {
           case 'required':
             validatorList.push(Validators.required);
+            break;
+          case 'ipaddress':
+            validatorList.push(Validators.pattern(this.ipAddressPattern));
             break;
           default:
             break;
@@ -54,6 +62,15 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     if (this.form.valid) {
       this.formSubmitted.emit(this.form.value);
     }
+  }
+
+  filterPortLocations(event) {
+    const query = {
+      PortName: event.query
+    };
+    this.operationalPlanService.filterPortLocations(query).subscribe((data) => {
+      this.portLocations = data;
+    });
   }
 
 }

@@ -1,4 +1,4 @@
-# vesselinsight
+# ProjectY
 
 This project was generated with [@kognifai/generator-poseidon](https://www.npmjs.com/package/@kognifai/generator-poseidon) - a generator for Kognifai applications.
 

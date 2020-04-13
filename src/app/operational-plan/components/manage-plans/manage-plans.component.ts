@@ -40,6 +40,9 @@ export class ManagePlansComponent implements OnInit {
     { field: 'LastUpdatedDate', header: 'Updated Date' },
     { field: 'SubPlanId', header: 'Action' }
   ];
+  showLogs = true;
+  isDataLoading: boolean;
+  isSubOperationDataLoading: boolean;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -51,31 +54,46 @@ export class ManagePlansComponent implements OnInit {
     this.getPlanList();
     this.form = this.buildForm();
   }
-
-  getPlanList(): void {
-    this.operationalPlansList = this.operationalPlanService.getOperationPlans();
+  loadLogs(data: any): void {
+    this.getPlanList();
   }
 
-  loadSubOperations(operationData): void {
-    this.subOperationsList = this.operationalPlanService.getSubOperations();
+  getPlanList(): void {
+    this.isDataLoading = true;
+    this.operationalPlanService.getOperationPlans({showLogs: this.showLogs}).subscribe((data) => {
+      this.isDataLoading = false;
+      this.operationalPlansList = data;
+    });
+  }
+
+  loadSubOperations(planData): void {
+    this.isSubOperationDataLoading = true;
+    this.operationalPlanService.getSubOperations(planData).subscribe((data) => {
+      this.isSubOperationDataLoading = false;
+      this.subOperationsList = data;
+    });
   }
 
   buildForm() {
     const group = this.fb.group({});
-    group.addControl('OperationFromDate', this.fb.control({ value: '', disabled: false }, []));
-    group.addControl('OperationToDate', this.fb.control({ value: '', disabled: false }, []));
-    group.addControl('ShowLogs', this.fb.control({ value: '', disabled: false }, []));
+    group.addControl('OperationFromDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    group.addControl('OperationToDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
     return group;
   }
 
   searchFormOnSubmit() {
     if (this.form.valid) {
-      console.log(this.form.value);
+      this.isDataLoading = true;
+      this.form.value.showLogs = this.showLogs;
+      this.operationalPlanService.searchOperationPlans(this.form.value).subscribe((data) => {
+        this.isDataLoading = false;
+        this.operationalPlansList = data;
+      });
     }
   }
 
-  openPlanComponent(actionType: string, data: any): void {
-    this.router.navigateByUrl('/operational-plan/plan', {
+  openPlanComponent(actionType: string, data: any, route: string): void {
+    this.router.navigateByUrl(route, {
       state: {
         ...data,
         actionType

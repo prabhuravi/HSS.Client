@@ -5,8 +5,9 @@
     </div>
     <div class="kx-col kx-col--8 kx-p--small">
         <div class="kx-card kx-card--skin-default">
-            <div class="kx-p--medium">
-                <p-table #tt [value]="operatorList" [columns]="cols">
+            <div class="kx-p--medium"> 
+                <app-load *ngIf="isDataLoading"></app-load>
+                <p-table *ngIf="!isDataLoading" #tt [value]="operatorList" [columns]="cols">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns" [pSortableColumn]="col.field"
@@ -28,7 +29,7 @@
                                                 <span class="kx-btn__txt">Edit</span>
                                             </span>
                                         </button>
-                                        <button class="kx-btn kx-btn--skin-primary kx-btn--size-small">
+                                        <button [disabled]="disableDeleteButton" (click)="deleteDataConfirm(rowData)" class="kx-btn kx-btn--skin-primary kx-btn--size-small">
                                             <span class="kx-btn__inner">
                                                 <span class="kx-btn__txt">Delete</span>
                                             </span>

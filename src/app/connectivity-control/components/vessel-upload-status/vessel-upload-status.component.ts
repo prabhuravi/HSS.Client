@@ -36,7 +36,6 @@ export class VesselUploadStatusComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.vesselList = this.operationalPlanService.getVesselList();
     this.missionList = this.connectivityControlService.getMissionList(this.vesselList[0].VesselName);
     this.form = this.buildForm();
   }

@@ -2,7 +2,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule, APP_INITIALIZER ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppLocationsService } from '@kognifai/poseidon-ng-applocationsservice';
 import { AuthenticationInterceptor } from '@kognifai/poseidon-ng-authenticationinterceptor';
@@ -59,18 +59,18 @@ export function initConfig(config: ConfigurationService<IConfiguration>) {
     MainComponent,
     HomeComponent
   ],
-  entryComponents: [ ],
+  entryComponents: [],
   providers: [
     {
-        provide: HTTP_INTERCEPTORS,
-        useClass: AuthenticationInterceptor,
-        multi: true
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationInterceptor,
+      multi: true
     },
     {
-        provide: APP_INITIALIZER,
-        useFactory: initConfig,
-        deps: [ConfigurationService],
-        multi: true
+      provide: APP_INITIALIZER,
+      useFactory: initConfig,
+      deps: [ConfigurationService],
+      multi: true
     },
     AppLocationsService,
     ApplicationsGuardService,
@@ -86,6 +86,6 @@ export function initConfig(config: ConfigurationService<IConfiguration>) {
     SidebarsVisibilityService,
     NavigationSubitemsService
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
