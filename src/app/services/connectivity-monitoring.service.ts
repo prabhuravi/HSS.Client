@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable, Subject } from 'rxjs';
+import { LatencyRequest } from '../models/LatencyRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,8 @@ import { Observable, Subject } from 'rxjs';
 export class ConnectivityMonitoringService {
   allVesselLinks: IVesselLinks[];
   vesselSubject = new Subject<IVesselLinks>();
+  cachedVesselLatencyChart:ILatencyCacheData;
+  nodeChangeSubject = new Subject();
   constructor(public http: HttpClient) { }
   domainURL = 'https://hgstest.kognif.ai/VesselLinkQualityAPIService/API/VesselLinkQuality/'
   getVesselLinks(): Observable<any> {
@@ -16,6 +19,13 @@ export class ConnectivityMonitoringService {
 
     return this.http.get(`${this.domainURL + url}`);
 
+  }
+  
+  setNodeChangeSubject(nodeNumber: number){
+    this.nodeChangeSubject.next(nodeNumber);
+  }
+  getNodeNumberSubject(){
+   return this.nodeChangeSubject.asObservable();
   }
   setAllVesselLinks(IVesselLinks: IVesselLinks[]) {
     this.allVesselLinks = IVesselLinks;
@@ -43,13 +53,19 @@ export class ConnectivityMonitoringService {
   getVesselSubject(): Observable<any> {
     return this.vesselSubject.asObservable();
   }
-
+  returncacheVesselLatencyChart(){
+    return this.cachedVesselLatencyChart;
+  }
+  setLatencyChartData(data:ILatencyCacheData){
+    this.cachedVesselLatencyChart =data;
+  }
   getSnMPData(nodeNumber: number) {
     const url = 'GetSNMPData/' + nodeNumber
     return this.http.get(`${this.domainURL + url}`);
   }
-  public getChartData(): Observable<any> {
-    return this.http.get("./assets/vesselChartData.json");
+  public getChartData(latencyRequest: LatencyRequest): Observable<any> {
+    const url = 'LatencyTrendData'
+    return this.http.post(`${this.domainURL + url}`,latencyRequest);
 
   }
 }

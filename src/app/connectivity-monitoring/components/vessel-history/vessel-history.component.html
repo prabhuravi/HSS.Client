@@ -79,7 +79,7 @@
             <span *ngIf="vesselDetails && vesselDetails.Latitude">
                 {{  vesselDetails.Latitude }}
                 {{ vesselDetails.Longitude }}</span>
-            <a (click)="viewMeOnMap(vesselDetails.Latitude,vesselDetails.Longitude)">View on Map</a> 
+            <a  class="hand-cursor" (click)="viewMeOnMap(vesselDetails.Latitude,vesselDetails.Longitude)">View on Map</a> 
         </div>
     </div>
     <div class="kx-col  kx-col--2">
@@ -87,7 +87,7 @@
       
         <label class="kx-label" >Vessel Position:</label>
         <div class="kx-mt--tiny">
-           <a (click)="showMap=!showMap">View History</a> 
+           <a class="hand-cursor" (click)="showMap=!showMap">View History</a> 
         </div>
     </div>
     
@@ -97,7 +97,7 @@
     <div class="kx-p--medium">
         <div class="kx-row">
             <div class="kx-col">
-                <label class="kx-label" for="selectbox1">Select Vessel</label>
+                <label class="kx-label" for="selectbox1">Presets</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown [options]="presetOptions" (onChange)="onDropDownSelection();" [(ngModel)]="selectedPreset" optionLabel="name"
                        ></p-dropdown>
@@ -106,17 +106,17 @@
             <div class="kx-col kx-col--2" style="margin-right: 20px;">
                 <label class="kx-label" for="selectbox1">From Date</label>
                 <div class="kx-mt--tiny">
-                    <p-calendar inputStyleClass="kx-field kx-field--size-base" [(ngModel)]="fromDate" showTime="true" hourFormat="24"  showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)"></p-calendar>
+                    <p-calendar inputStyleClass="kx-field kx-field--size-base" (onSelect)="getLatencyTrendData()"  [(ngModel)]="fromDate" showTime="true" hourFormat="24"  showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)"></p-calendar>
                 </div>
             </div>
             <div class="kx-col kx-col--2">
                 <label class="kx-label" for="selectbox1">To Date</label>
                 <div class="kx-mt--tiny">
-                    <p-calendar inputStyleClass="kx-field kx-field--size-base" [(ngModel)]="toDate" showTime="true" hourFormat="24"  showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)"></p-calendar>
+                    <p-calendar inputStyleClass="kx-field kx-field--size-base" (onSelect)="getLatencyTrendData()" [(ngModel)]="toDate" showTime="true" hourFormat="24"  showButtonBar="true" placeholder="MM/dd/yyyy HH:mm (UTC)"></p-calendar>
                 </div>
             </div>
             <div class="kx-col">
-                <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
+                <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium" (click)="filterData()">
                     <span class="kx-btn__inner">
                         <span class="kx-btn__txt">Filter</span>
                     </span>
@@ -132,17 +132,22 @@
         </div>
 </div>
 </div>
-<div class="row" *ngIf="chart && chart.data">
-    <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data" [options]="chart.options">
-    </google-chart>
+<div class="kx-row" *ngIf="!showMap">
+    <div class="kx-col  kx-col--10 inline-flex">
+        <div class="charts">
+            <app-chart [chartId]="'chart1'" [latencyRequest]="latencyRequest"></app-chart>
+          </div>
+    </div>
+    <div class="kx-col  kx-col--2"  *ngIf="chart && chart.data">
+    <div class="kx-row chart-margin">
+        <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data" [options]="chart.options">
+        </google-chart>
+    </div>    
+    <div class="kx-row">
+        <label class="extra-margin">Signal Strength</label>
+    </div>
+    </div>
 </div>
-<div class="row">
-    <div class="charts">
-        <app-chart [chartId]="'chart1'" [latencyRequest]="latencyRequest"></app-chart>
-      </div>
-      
-</div>
-
 <div class="row" *ngIf="showMap">
     <app-map></app-map>
 </div>
