@@ -1,44 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
-import { AuthenticationService } from '@kognifai/poseidon-authenticationservice';
-import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
-import { Configuration } from '../configuration';
-import { User } from 'oidc-client';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OperationalPlanService {
 
-  username: string = '';
-
   constructor(
-    public httpClient: HttpClient,
-    private http: HttpService,
-    private authenticationService: AuthenticationService,
-    public configurationService: ConfigurationService<Configuration>
+    private http: HttpService
   ) {
-    if (this.authenticationService && this.authenticationService.userManager) {
-      this.authenticationService.userManager.getUser().then((user: User) => {
-        this.getUserInfo(user);
-      });
-    }
-  }
-  getUserInfo(user) {
-    this.getLoggedInUserInfo(user).subscribe((userInfo: any) => {
-      this.username = userInfo.username;
-    });
-  }
-
-  getLoggedInUserInfo(user: User): Observable<any> {
-    const reqHeader = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + user.access_token
-    });
-    const url = this.configurationService.config.userInfoApiUrl + user.profile.sub;
-    return this.httpClient.get(url, { headers: reqHeader });
   }
 
   getOperationPlans(formData: any): Observable<IOperationalPlan[]> {
@@ -48,10 +19,7 @@ export class OperationalPlanService {
     };
     return this.http.postData(requestData);
   }
-
   updateOperationPlan(planData: any): Observable<IOperationalPlan[]> {
-    planData.CreatedBy = this.username;
-    planData.LastUpdatedBy = this.username;
     planData.LastUpdatedDate = new Date();
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/UpdateOperationPlan',
@@ -59,7 +27,6 @@ export class OperationalPlanService {
     };
     return this.http.postData(requestData);
   }
-
   searchOperationPlans(formData: any): Observable<IOperationalPlan[]> {
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/SearchOperationPlan',
@@ -67,7 +34,6 @@ export class OperationalPlanService {
     };
     return this.http.postData(requestData);
   }
-
   getSubOperations(planData): Observable<ISubOperations[]> {
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/GetSubOperations',
@@ -76,9 +42,6 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
   updateSubOperationPlan(planData: any): Observable<IOperationalPlan[]> {
-    planData.CreatedBy = this.username;
-    planData.LastUpdatedBy = this.username;
-    planData.LastUpdatedDate = new Date();
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/UpdateSubOperation',
       data: planData
@@ -93,8 +56,6 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
   addRobotSystemDetail(robotSystemData): Observable<any> {
-    robotSystemData.CreatedBy = this.username;
-    robotSystemData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/AddRobotSystemDetail',
       data: robotSystemData
@@ -102,8 +63,6 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
   deleteRobotSystemDetail(robotSystemData): Observable<any> {
-    robotSystemData.CreatedBy = this.username;
-    robotSystemData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteRobotSystem',
       data: robotSystemData
@@ -118,8 +77,6 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
   addOperationType(operationTypeData): Observable<any> {
-    operationTypeData.CreatedBy = this.username;
-    operationTypeData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/AddOperationType',
       data: operationTypeData
@@ -127,8 +84,6 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
   deleteOperationType(operationTypeData): Observable<any> {
-    operationTypeData.CreatedBy = this.username;
-    operationTypeData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteOperationType',
       data: operationTypeData
@@ -143,8 +98,6 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
   addOperator(operatorData): Observable<any> {
-    operatorData.CreatedBy = this.username;
-    operatorData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/AddOperator',
       data: operatorData
@@ -152,8 +105,6 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
   deleteOperator(operatorData): Observable<any> {
-    operatorData.CreatedBy = this.username;
-    operatorData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteOperator',
       data: operatorData
@@ -164,376 +115,112 @@ export class OperationalPlanService {
   getTimeZone(): ITimeZone[] {
     return [
       {
-        offset: 'GMT-12:00',
-        name: 'Etc/GMT-12'
+        name: 'GMT',
+        offset: 'GMT'
       },
       {
-        offset: 'GMT-11:00',
-        name: 'Etc/GMT-11'
+        name: 'GMT+1:00',
+        offset: 'GMT+1:00'
       },
       {
-        offset: 'GMT-11:00',
-        name: 'Pacific/Midway'
+        name: 'GMT+2:00',
+        offset: 'GMT+2:00'
       },
       {
-        offset: 'GMT-10:00',
-        name: 'America/Adak'
+        name: 'GMT+3:00',
+        offset: 'GMT+3:00'
       },
       {
-        offset: 'GMT-09:00',
-        name: 'America/Anchorage'
+        name: 'GMT+3:30',
+        offset: 'GMT+3:30'
       },
       {
-        offset: 'GMT-09:00',
-        name: 'Pacific/Gambier'
+        name: 'GMT+4:00',
+        offset: 'GMT+4:00'
       },
       {
-        offset: 'GMT-08:00',
-        name: 'America/Dawson_Creek'
+        name: 'GMT+5:00',
+        offset: 'GMT+5:00'
       },
       {
-        offset: 'GMT-08:00',
-        name: 'America/Ensenada'
+        name: 'GMT+5:30',
+        offset: 'GMT+5:30'
       },
       {
-        offset: 'GMT-08:00',
-        name: 'America/Los_Angeles'
+        name: 'GMT+6:00',
+        offset: 'GMT+6:00'
       },
       {
-        offset: 'GMT-07:00',
-        name: 'America/Chihuahua'
+        name: 'GMT+7:00',
+        offset: 'GMT+7:00'
       },
       {
-        offset: 'GMT-07:00',
-        name: 'America/Denver'
+        name: 'GMT+8:00',
+        offset: 'GMT+8:00'
       },
       {
-        offset: 'GMT-06:00',
-        name: 'America/Belize'
+        name: 'GMT+9:00',
+        offset: 'GMT+9:00'
       },
       {
-        offset: 'GMT-06:00',
-        name: 'America/Cancun'
+        name: 'GMT+9:30',
+        offset: 'GMT+9:30'
       },
       {
-        offset: 'GMT-06:00',
-        name: 'America/Chicago'
+        name: 'GMT+10:00',
+        offset: 'GMT+10:00'
       },
       {
-        offset: 'GMT-06:00',
-        name: 'Chile/EasterIsland'
+        name: 'GMT+11:00',
+        offset: 'GMT+11:00'
       },
       {
-        offset: 'GMT-05:00',
-        name: 'America/Bogota'
+        name: 'GMT+12:00',
+        offset: 'GMT+12:00'
       },
       {
-        offset: 'GMT-05:00',
-        name: 'America/Havana'
+        name: 'GMT-11:00',
+        offset: 'GMT-11:00'
       },
       {
-        offset: 'GMT-05:00',
-        name: 'America/New_York'
+        name: 'GMT-10:00',
+        offset: 'GMT-10:00'
       },
       {
-        offset: 'GMT-04:30',
-        name: 'America/Caracas'
+        name: 'GMT-9:00',
+        offset: 'GMT-9:00'
       },
       {
-        offset: 'GMT-04:00',
-        name: 'America/Campo_Grande'
+        name: 'GMT-8:00',
+        offset: 'GMT-8:00'
       },
       {
-        offset: 'GMT-04:00',
-        name: 'America/Glace_Bay'
+        name: 'GMT-7:00',
+        offset: 'GMT-7:00'
       },
       {
-        offset: 'GMT-04:00',
-        name: 'America/Goose_Bay'
+        name: 'GMT-6:00',
+        offset: 'GMT-6:00'
       },
       {
-        offset: 'GMT-04:00',
-        name: 'America/Santiago'
+        name: 'GMT-5:00',
+        offset: 'GMT-5:00'
       },
       {
-        offset: 'GMT-04:00',
-        name: 'America/La_Paz'
+        name: 'GMT-4:00',
+        offset: 'GMT-4:00'
       },
       {
-        offset: 'GMT-03:00',
-        name: 'America/Argentina/Buenos_Aires'
+        name: 'GMT-3:30',
+        offset: 'GMT-3:30'
       },
       {
-        offset: 'GMT-03:00',
-        name: 'America/Montevideo'
+        name: 'GMT-3:00',
+        offset: 'GMT-3:00'
       },
       {
-        offset: 'GMT-03:00',
-        name: 'America/Araguaina'
-      },
-      {
-        offset: 'GMT-03:00',
-        name: 'America/Godthab'
-      },
-      {
-        offset: 'GMT-03:00',
-        name: 'America/Miquelon'
-      },
-      {
-        offset: 'GMT-03:00',
-        name: 'America/Sao_Paulo'
-      },
-      {
-        offset: 'GMT-03:30',
-        name: 'America/St_Johns'
-      },
-      {
-        offset: 'GMT-02:00',
-        name: 'America/Noronha'
-      },
-      {
-        offset: 'GMT-01:00',
-        name: 'Atlantic/Cape_Verde'
-      },
-      {
-        offset: 'GMT',
-        name: 'Europe/Belfast'
-      },
-      {
-        offset: 'GMT',
-        name: 'Africa/Abidjan'
-      },
-      {
-        offset: 'GMT',
-        name: 'Europe/Dublin'
-      },
-      {
-        offset: 'GMT',
-        name: 'Europe/Lisbon'
-      },
-      {
-        offset: 'GMT',
-        name: 'Europe/London'
-      },
-      {
-        offset: 'UTC',
-        name: 'UTC'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Africa/Algiers'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Africa/Windhoek'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Atlantic/Azores'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Atlantic/Stanley'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Europe/Amsterdam'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Europe/Belgrade'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Europe/Brussels'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Africa/Cairo'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Africa/Blantyre'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Asia/Beirut'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Asia/Damascus'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Asia/Gaza'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Asia/Jerusalem'
-      },
-      {
-        offset: 'GMT+03:00',
-        name: 'Africa/Addis_Ababa'
-      },
-      {
-        offset: 'GMT+03:00',
-        name: 'Asia/Riyadh89'
-      },
-      {
-        offset: 'GMT+03:00',
-        name: 'Europe/Minsk'
-      },
-      {
-        offset: 'GMT+03:30',
-        name: 'Asia/Tehran'
-      },
-      {
-        offset: 'GMT+04:00',
-        name: 'Asia/Dubai'
-      },
-      {
-        offset: 'GMT+04:00',
-        name: 'Asia/Yerevan'
-      },
-      {
-        offset: 'GMT+04:00',
-        name: 'Europe/Moscow'
-      },
-      {
-        offset: 'GMT+04:30',
-        name: 'Asia/Kabul'
-      },
-      {
-        offset: 'GMT+05:00',
-        name: 'Asia/Tashkent'
-      },
-      {
-        offset: 'GMT+05:30',
-        name: 'Asia/Kolkata'
-      },
-      {
-        offset: 'GMT+05:45',
-        name: 'Asia/Katmandu'
-      },
-      {
-        offset: 'GMT+06:00',
-        name: 'Asia/Dhaka'
-      },
-      {
-        offset: 'GMT+06:00',
-        name: 'Asia/Yekaterinburg'
-      },
-      {
-        offset: 'GMT+06:30',
-        name: 'Asia/Rangoon'
-      },
-      {
-        offset: 'GMT+07:00',
-        name: 'Asia/Bangkok'
-      },
-      {
-        offset: 'GMT+07:00',
-        name: 'Asia/Novosibirsk'
-      },
-      {
-        offset: 'GMT+08:00',
-        name: 'Etc/GMT+8'
-      },
-      {
-        offset: 'GMT+08:00',
-        name: 'Asia/Hong_Kong'
-      },
-      {
-        offset: 'GMT+08:00',
-        name: 'Asia/Krasnoyarsk'
-      },
-      {
-        offset: 'GMT+08:00',
-        name: 'Australia/Perth'
-      },
-      {
-        offset: 'GMT+08:45',
-        name: 'Australia/Eucla'
-      },
-      {
-        offset: 'GMT+09:00',
-        name: 'Asia/Irkutsk'
-      },
-      {
-        offset: 'GMT+09:00',
-        name: 'Asia/Seoul'
-      },
-      {
-        offset: 'GMT+09:00',
-        name: 'Asia/Tokyo'
-      },
-      {
-        offset: 'GMT+09:30',
-        name: 'Australia/Adelaide'
-      },
-      {
-        offset: 'GMT+09:30',
-        name: 'Australia/Darwin'
-      },
-      {
-        offset: 'GMT+09:30',
-        name: 'Pacific/Marquesas'
-      },
-      {
-        offset: 'GMT+10:00',
-        name: 'Etc/GMT+10'
-      },
-      {
-        offset: 'GMT+10:00',
-        name: 'Australia/Brisbane'
-      },
-      {
-        offset: 'GMT+10:00',
-        name: 'Australia/Hobart'
-      },
-      {
-        offset: 'GMT+10:00',
-        name: 'Asia/Yakutsk'
-      },
-      {
-        offset: 'GMT+10:30',
-        name: 'Australia/Lord_Howe'
-      },
-      {
-        offset: 'GMT+11:00',
-        name: 'Asia/Vladivostok'
-      },
-      {
-        offset: 'GMT+11:30',
-        name: 'Pacific/Norfolk'
-      },
-      {
-        offset: 'GMT+12:00',
-        name: 'Etc/GMT+12'
-      },
-      {
-        offset: 'GMT+12:00',
-        name: 'Asia/Anadyr'
-      },
-      {
-        offset: 'GMT+12:00',
-        name: 'Asia/Magadan'
-      },
-      {
-        offset: 'GMT+12:00',
-        name: 'Pacific/Auckland'
-      },
-      {
-        offset: 'GMT+12:45',
-        name: 'Pacific/Chatham'
-      },
-      {
-        offset: 'GMT+13:00',
-        name: 'Pacific/Tongatapu'
-      },
-      {
-        offset: 'GMT+14:00',
-        name: 'Pacific/Kiritimati'
+        name: 'GMT-1:00',
+        offset: 'GMT-1:00'
       }
     ];
   }
@@ -586,8 +273,6 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
   addVessel(vesselData): Observable<any> {
-    vesselData.CreatedBy = this.username;
-    vesselData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/AddVesselDetail',
       data: vesselData
@@ -595,8 +280,6 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
   deleteVessel(vesselData): Observable<any> {
-    vesselData.CreatedBy = this.username;
-    vesselData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteVessel',
       data: vesselData

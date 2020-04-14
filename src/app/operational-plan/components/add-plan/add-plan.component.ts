@@ -55,7 +55,9 @@ export class AddPlanComponent implements OnInit {
         this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
         this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
         this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
-        this.formValues.OperationLoc = this.formValues.PortName;
+        this.formValues.OperationLoc = {
+          PortName: this.formValues.OperationLoc
+        };
       }
       this.constructForm();
     });
@@ -88,7 +90,8 @@ export class AddPlanComponent implements OnInit {
         value: '',
         key: 'OperationDate',
         validators: ['required'],
-        disabled: false
+        disabled: false,
+        mindate: null
       },
       {
         type: FormType.datepicker,
@@ -96,7 +99,8 @@ export class AddPlanComponent implements OnInit {
         value: '',
         key: 'ETADate',
         validators: ['required'],
-        disabled: false
+        disabled: false,
+        mindate: null
       },
       {
         type: FormType.dropdown,
@@ -184,10 +188,9 @@ export class AddPlanComponent implements OnInit {
     });
   }
   updateData(formData): void {
-    console.log(formData);
     const plandData: any = {
       Status: (history && history.state && history.state.actionType) ? formData.Status.value : 'New',
-      Action: (history && history.state && history.state.actionType) ? 'Edit' : 'Add',
+      Action: (history && history.state && history.state.actionType) ? history.state.actionType : 'Add',
       VesselId: formData.VesselId.Id,
       RobotSystemId: formData.RobotSystemId.RobotSystemId,
       LocalTimeZone: formData.LocalTimeZone.offset,
@@ -204,7 +207,6 @@ export class AddPlanComponent implements OnInit {
     if (history && history.state && history.state.actionType) {
       plandData.PlanId = this.formValues.PlanId;
     }
-    console.log(plandData);
     this.operationalPlanService.updateOperationPlan(plandData).subscribe((data) => {
       this.router.navigateByUrl('/operational-plan');
     });

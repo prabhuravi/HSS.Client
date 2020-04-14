@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { ConnectivityControlService } from 'src/app/services/connectivity-control.service';
+import { AppConstants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-fds-traffic',
@@ -27,6 +28,7 @@ export class FdsTrafficComponent implements OnInit {
     { field: 'UploadedSize', header: 'Uploaded Size (KB)', filterMatchMode: 'contains' },
     { field: 'UploadCount', header: 'Upload Count', filterMatchMode: 'contains' }
   ];
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   constructor(
     private operationalPlanService: OperationalPlanService,

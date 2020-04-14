@@ -59,7 +59,8 @@ export class SubOperationalPlanComponent implements OnInit {
         value: '',
         key: 'SubOperationStartTime',
         validators: ['required'],
-        disabled: false
+        disabled: false,
+        mindate: new Date(this.planDetails.OperationDate)
       },
       {
         type: FormType.datepicker,
@@ -67,7 +68,8 @@ export class SubOperationalPlanComponent implements OnInit {
         value: '',
         key: 'SubOperationEndTime',
         validators: ['required'],
-        disabled: false
+        disabled: false,
+        mindate: new Date(this.planDetails.OperationDate)
       },
       {
         type: FormType.dropdown,
@@ -99,20 +101,28 @@ export class SubOperationalPlanComponent implements OnInit {
   }
   editData(data: any): void {
     this.activeId = data.SubPlanId;
+    data.Status = this.planStatusList.find((e) => e.name === data.Status).value;
     data.SubOperationStartTime = new Date(data.SubOperationStartTime);
     data.SubOperationEndTime = new Date(data.SubOperationEndTime);
     this.formValues = data;
-    console.log(this.formValues);
   }
   updateData(formData: any): void {
-    console.log(formData);
     if (history && history.state && history.state.actionType) {
       formData.PlanId = this.planDetails.PlanId;
     }
     if (this.activeId !== 0) {
       formData.SubPlanId = this.activeId;
+      formData.Status = formData.Status.value;
+    } else {
+      formData.Status = 'New';
     }
     this.operationalPlanService.updateSubOperationPlan(formData).subscribe((data) => {
+      this.loadData();
+    });
+  }
+  completeSubOperation(rowData: any): void {
+    rowData.Status = 'Completed';
+    this.operationalPlanService.updateSubOperationPlan(rowData).subscribe((data) => {
       this.loadData();
     });
   }

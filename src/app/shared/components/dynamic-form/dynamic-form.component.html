@@ -24,7 +24,7 @@
                 <div *ngSwitchCase="inputTypes.datepicker" class="kx-col kx-col--12">
                     <div class="kx-mt--tiny">
                         <p-calendar hideOnDateTimeSelect="true" [formControlName]="formItem.key" inputStyleClass="kx-field kx-field--size-base"
-                            showTime="true" hourFormat="24" showButtonBar="true" placeholder="MM/dd/yyyy HH:mm">
+                            showTime="true" hourFormat="24" [minDate]="formItem.mindate" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat">
                         </p-calendar>
                     </div>
                 </div>
@@ -47,12 +47,12 @@
                 <div *ngSwitchCase="inputTypes.number" class="kx-col kx-col--12">
                     <div class="kx-form__element">
                         <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
-                            type="number" />
+                            type="number" placeholder="Select {{formItem.label}}" />
                     </div>
                 </div>
                 <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col kx-col--12">
                     <div class="kx-mt--tiny">
-                        <p-autoComplete [formControlName]="formItem.key" [suggestions]="portLocations"
+                        <p-autoComplete [formControlName]="formItem.key" [suggestions]="portLocations" inputStyleClass="kx-field kx-field--size-base"
                             (completeMethod)="filterPortLocations($event)" field="PortName" [size]="30"
                             placeholder="Type for suggestions..." [minLength]="1"></p-autoComplete>
                     </div>

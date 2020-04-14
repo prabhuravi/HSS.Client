@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angu
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { getInputTypes } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { AppConstants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -18,6 +19,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   isFormSubmitted = false;
   ipAddressPattern = '/^([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})$/';
   portLocations: any[] = [];
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   constructor(
     private fb: FormBuilder,
@@ -32,7 +34,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.formValues !== null && this.formValues !== undefined) {
       setTimeout(() => {
-        console.log('dynamic', this.formValues);
+        if (this.form && this.form.controls[`Status`]) {
+          this.form.controls[`Status`].reset({ value: '', disabled: false });
+        }
         this.form.patchValue(this.formValues);
       });
     }
