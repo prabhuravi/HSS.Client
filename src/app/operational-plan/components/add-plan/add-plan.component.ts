@@ -90,7 +90,8 @@ export class AddPlanComponent implements OnInit {
         value: '',
         key: 'OperationDate',
         validators: ['required'],
-        disabled: false
+        disabled: false,
+        mindate: null
       },
       {
         type: FormType.datepicker,
@@ -98,7 +99,8 @@ export class AddPlanComponent implements OnInit {
         value: '',
         key: 'ETADate',
         validators: ['required'],
-        disabled: false
+        disabled: false,
+        mindate: null
       },
       {
         type: FormType.dropdown,

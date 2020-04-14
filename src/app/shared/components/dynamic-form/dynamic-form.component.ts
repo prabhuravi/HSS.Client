@@ -32,7 +32,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.formValues !== null && this.formValues !== undefined) {
       setTimeout(() => {
-        this.form.controls[`Status`].reset({value: '', disabled: false});
+        if (this.form && this.form.controls[`Status`]) {
+          this.form.controls[`Status`].reset({ value: '', disabled: false });
+        }
         this.form.patchValue(this.formValues);
       });
     }

@@ -1,8 +1,12 @@
 .grid line {
-    stroke: lightgrey;
-    stroke-opacity: 0.6;
-    shape-rendering: crispEdges
-  }
-  .grid path {
-    stroke-width: 0;
-  }
+  stroke: lightgrey;
+  stroke-opacity: 0.6;
+  shape-rendering: crispEdges;
+}
+.grid path {
+  stroke-width: 0;
+}
+.ui-dialog,
+.ui-toast{
+  background: #ffffff!important;
+}

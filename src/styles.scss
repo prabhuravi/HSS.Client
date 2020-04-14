@@ -91,13 +91,19 @@
     }
 }
 
-.ui-datepicker{
+.ui-datepicker {
     background-color: #ffffff;
 }
 .ui-calendar {
     width: 100%;
     input {
         width: 100%;
+    }
+}
+.ui-state-default {
+    cursor: pointer;
+    &.ui-state-disabled {
+        cursor: not-allowed!important;
     }
 }
 .u--fullWidth {
@@ -107,13 +113,13 @@
 }
 
 // poseidon overridings
-.u--field--size-large{
-    height: 2.25rem!important;
-    padding: 0.5rem!important;
+.u--field--size-large {
+    height: 2.25rem !important;
+    padding: 0.5rem !important;
 }
-.u--field--size-small{
-    height: 1.55rem!important;
-    padding: 0.5rem!important;
+.u--field--size-small {
+    height: 1.55rem !important;
+    padding: 0.5rem !important;
 }
 .u--field--size-large,
 .u--field--size-small {
@@ -138,4 +144,6 @@
         font-size: 13px !important;
     }
 }
-[hidden] { display: none !important;}
+[hidden] {
+    display: none !important;
+}

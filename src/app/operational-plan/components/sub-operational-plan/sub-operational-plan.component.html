@@ -1,10 +1,28 @@
-<div class="kx-row">
+<div class="kx-row" *ngIf="planDetails">
     <div class="kx-col kx-col--4  kx-p--small">
         <app-dynamic-form [formValues]="formValues" [config]="config" (formSubmitted)="formSubmitted($event)">
         </app-dynamic-form>
     </div>
     <div class="kx-col kx-col--8 kx-p--small">
         <div class="kx-card kx-card--skin-default">
+            <div class="kx-p--medium">
+                <div class="kx-row">
+                    <div class="kx-col">
+                        <div><strong>Vessel : </strong></div>
+                        <div>{{planDetails.VesselName}}</div>
+                    </div>
+                    <div class="kx-col">
+                        <div><strong>IMO : </strong></div>
+                        <div>{{planDetails.ImoNumber}}</div>
+                    </div>
+                    <div class="kx-col">
+                        <div><strong>Operation Time : </strong></div>
+                        <div>{{planDetails.OperationDate | date:'dd/MM/yyyy HH:mm'}} ({{planDetails.LocalTimeZone}})</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="kx-card kx-card--skin-default  kx-mt--small">
             <div class="kx-p--medium">
                 <app-load *ngIf="isDataLoading"></app-load>
                 <p-table *ngIf="!isDataLoading" #tt [value]="subOperationsList" [columns]="subOperationCols">

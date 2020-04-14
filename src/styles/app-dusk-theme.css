@@ -1,10 +1,10 @@
 .tick > text {
-    fill: #71767a !Important;
+    fill: #71767a !important;
 }
 .tick > line {
     stroke: #71767a;
 }
-.domain{
+.domain {
     stroke: #71767a;
 }
 
@@ -24,13 +24,13 @@
     border: 1px solid #71767a;
 }
 
-.ui-dropdown-filter{
+.ui-dropdown-filter {
     font-size: 1rem;
     line-height: 1.46667rem;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    -webkit-tap-highlight-color: rgba(255,255,255,0);
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     -webkit-tap-highlight-color: transparent;
     position: relative;
     color: #f6f6f6;
@@ -38,21 +38,25 @@
     background-clip: padding-box;
     border: 0;
     border-radius: 2px;
-    border: .06667rem solid #71767a;
-    transition: all .1s ease-in-out;
+    border: 0.06667rem solid #71767a;
+    transition: all 0.1s ease-in-out;
 }
 
 .ui-datepicker {
     background: #373c41;
-    border: .06667rem solid #71767a;
-    transition: all .1s ease-in-out;
+    border: 0.06667rem solid #71767a;
+    transition: all 0.1s ease-in-out;
 }
 
 .grid line {
     stroke: #71767a !important;
     stroke-opacity: 0.1;
-    shape-rendering: crispEdges
-  }
-  .grid path {
+    shape-rendering: crispEdges;
+}
+.grid path {
     stroke-width: 0;
-  }
+}
+.ui-dialog,
+.ui-toast {
+    background: #373c41;
+}
