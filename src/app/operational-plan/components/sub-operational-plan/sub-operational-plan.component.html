@@ -1,10 +1,28 @@
-<div class="kx-row">
+<div class="kx-row" *ngIf="planDetails">
     <div class="kx-col kx-col--4  kx-p--small">
         <app-dynamic-form [formValues]="formValues" [config]="config" (formSubmitted)="formSubmitted($event)">
         </app-dynamic-form>
     </div>
     <div class="kx-col kx-col--8 kx-p--small">
         <div class="kx-card kx-card--skin-default">
+            <div class="kx-p--medium">
+                <div class="kx-row">
+                    <div class="kx-col">
+                        <div><strong>Vessel : </strong></div>
+                        <div>{{planDetails.VesselName}}</div>
+                    </div>
+                    <div class="kx-col">
+                        <div><strong>IMO : </strong></div>
+                        <div>{{planDetails.ImoNumber}}</div>
+                    </div>
+                    <div class="kx-col">
+                        <div><strong>Operation Time : </strong></div>
+                        <div>{{planDetails.OperationDate | date:'dd/MM/yyyy HH:mm'}} ({{planDetails.LocalTimeZone}})</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="kx-card kx-card--skin-default  kx-mt--small">
             <div class="kx-p--medium">
                 <app-load *ngIf="isDataLoading"></app-load>
                 <p-table *ngIf="!isDataLoading" #tt [value]="subOperationsList" [columns]="subOperationCols">
@@ -23,15 +41,43 @@
                         <tr>
                             <td *ngFor="let col of columns">
                                 <div [ngSwitch]="col.field">
+                                    <div *ngSwitchCase="'SubOperationStartTime'">
+                                        {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
+                                    </div>
+                                    <div *ngSwitchCase="'SubOperationEndTime'">
+                                        {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
+                                    </div>
                                     <div *ngSwitchCase="'Action'">
-                                        <button (click)="editData(rowData)" class="kx-btn kx-btn--skin-primary kx-btn--size-small kx-mr--tiny">
+                                        <button [disabled]="rowData.Status !== 'New'"
+                                            class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                            aria-label="Edit Sub Operational Plan"
+                                            title="Edit Sub Operational Plan"
+                                            (click)="editData(rowData)">
                                             <span class="kx-btn__inner">
-                                                <span class="kx-btn__txt">Edit</span>
+                                                <i class="kx-icon kx-icon--size-moderate">
+                                                    <svg focusable="false">
+                                                        <use href="../../assets/img/icons/sprites/icons.svg#pencil">
+                                                        </use>
+                                                    </svg>
+                                                </i>
+                                                <span class="kx-btn__txt kx-is-vishidden">Edit Sub Operational
+                                                    Plan</span>
                                             </span>
                                         </button>
-                                        <button class="kx-btn kx-btn--skin-primary kx-btn--size-small">
+                                        <button [disabled]="rowData.Status !== 'New'"
+                                            class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                            aria-label="Complete Sub Operational Plan"
+                                            title="Complete Sub Operational Plan"
+                                            (click)="completeSubOperation(rowData)">
                                             <span class="kx-btn__inner">
-                                                <span class="kx-btn__txt">Complete</span>
+                                                <i class="kx-icon kx-icon--size-moderate">
+                                                    <svg focusable="false">
+                                                        <use href="../../assets/img/icons/sprites/icons.svg#check">
+                                                        </use>
+                                                    </svg>
+                                                </i>
+                                                <span class="kx-btn__txt kx-is-vishidden">Complete Sub Operational
+                                                    Plan</span>
                                             </span>
                                         </button>
                                     </div>

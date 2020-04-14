@@ -10,12 +10,12 @@
         </tr>
         <tr>
             <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                <input *ngSwitchCase="'VesselName'" pInputText type="text" class="kx-field kx-field--size-base"
-                    placeholder="Enter Vessel Name" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                <input *ngSwitchCase="'IMONumber'" pInputText type="text" class="kx-field kx-field--size-base"
-                    placeholder="Enter IMO Number" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                <input *ngSwitchCase="'EnabledBy'" pInputText type="text" class="kx-field kx-field--size-base"
-                    placeholder="Enter Enabled By User" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input *ngSwitchCase="'VesselName'" pInputText type="text" class="kx-field kx-field--size-base u--field--size-small"
+                    placeholder="Vessel Name" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input *ngSwitchCase="'IMONumber'" pInputText type="text" class="kx-field kx-field--size-base u--field--size-small"
+                    placeholder="IMO Number" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input *ngSwitchCase="'EnabledBy'" pInputText type="text" class="kx-field kx-field--size-base u--field--size-small"
+                    placeholder="Enabled By User" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
             </th>
         </tr>
     </ng-template>
@@ -33,7 +33,7 @@
                     </div>
                     <div *ngSwitchCase="'DisableTime'">
                         <span *ngIf="rowData.IsUploadEnabled">Always on enabled</span>
-                        <p-calendar *ngIf="!rowData.IsUploadEnabled" inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24" showButtonBar="true"></p-calendar>
+                        <p-calendar *ngIf="!rowData.IsUploadEnabled" inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
                     </div>
                     <div *ngSwitchCase="'EnabledBy'">
                         Always on enabled By {{rowData[col.field]}}

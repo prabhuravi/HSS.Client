@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { AppConstants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-manage-plans',
@@ -16,17 +18,17 @@ export class ManagePlansComponent implements OnInit {
   cols = [
     { field: 'VesselName', header: 'Vessel', filterMatchMode: 'contains' },
     { field: 'ImoNumber', header: 'IMO', filterMatchMode: 'contains' },
-    { field: 'OperationDate', header: 'Operation Date (Local Time)', filterMatchMode: 'contains' },
-    { field: 'ETADate', header: 'Vessel ETA Date (Local Time)', filterMatchMode: 'contains' },
+    { field: 'OperationDate', header: 'Date', filterMatchMode: 'contains' },
+    { field: 'ETADate', header: 'ETA Date', filterMatchMode: 'contains' },
     { field: 'OperationLoc', header: 'Location', filterMatchMode: 'contains' },
-    { field: 'OperationType', header: 'Operation Type', filterMatchMode: 'contains' },
+    { field: 'OperationType', header: 'Type', filterMatchMode: 'contains' },
     { field: 'OperationDes', header: 'Description', filterMatchMode: 'contains' },
     { field: 'Status', header: 'Status', filterMatchMode: 'contains' },
     { field: 'OperatorName', header: 'Operator', filterMatchMode: 'contains' },
     { field: 'Planner', header: 'Planner', filterMatchMode: 'contains' },
     { field: 'CreatedBy', header: 'Created By', filterMatchMode: 'contains' },
-    { field: 'LastUpdatedBy', header: 'Last Updated By', filterMatchMode: 'contains' },
-    { field: 'LastUpdatedDate', header: 'Updated Date (UTC Time)', filterMatchMode: 'contains' },
+    { field: 'LastUpdatedBy', header: 'Updated By', filterMatchMode: 'contains' },
+    { field: 'LastUpdatedDate', header: 'Updated Date', filterMatchMode: 'contains' },
     { field: 'PlanId', header: 'Action', filterMatchMode: 'contains' }
   ];
   subOperationsList: ISubOperations[] = [];
@@ -43,24 +45,23 @@ export class ManagePlansComponent implements OnInit {
   showLogs = true;
   isDataLoading: boolean;
   isSubOperationDataLoading: boolean;
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
     this.getPlanList();
     this.form = this.buildForm();
   }
-  loadLogs(data: any): void {
-    this.getPlanList();
-  }
 
   getPlanList(): void {
     this.isDataLoading = true;
-    this.operationalPlanService.getOperationPlans({showLogs: this.showLogs}).subscribe((data) => {
+    this.operationalPlanService.getOperationPlans({ showLogs: this.showLogs }).subscribe((data) => {
       this.isDataLoading = false;
       this.operationalPlansList = data;
     });
@@ -99,6 +100,27 @@ export class ManagePlansComponent implements OnInit {
         actionType
       }
     });
+  }
+  completeOperation(rowData: any) {
+    rowData.Status = 'Completed';
+    rowData.Action = 'Edit';
+    this.operationalPlanService.updateOperationPlan(rowData).subscribe((data) => {
+      this.getPlanList();
+    });
+  }
+  completeSubOperation(rowData: any): void {
+    rowData.Status = 'Completed';
+    this.operationalPlanService.updateSubOperationPlan(rowData).subscribe((data) => {
+      this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
+    });
+  }
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
   }
 
 }
