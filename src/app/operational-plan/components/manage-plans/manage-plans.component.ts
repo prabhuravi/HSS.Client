@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { AppConstants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-manage-plans',
@@ -44,6 +45,7 @@ export class ManagePlansComponent implements OnInit {
   showLogs = true;
   isDataLoading: boolean;
   isSubOperationDataLoading: boolean;
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   constructor(
     private operationalPlanService: OperationalPlanService,

@@ -57,6 +57,10 @@
     stroke-width: 0;
 }
 .ui-dialog,
-.ui-toast {
+.ui-toast,
+.ui-autocomplete-panel {
     background: #373c41;
+}
+.ui-autocomplete-panel {
+    color: #f6f6f6;
 }

@@ -17,7 +17,7 @@
                     <label class="kx-label" for="selectbox1">From Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar [formControlName]="'OperationFromDate'"
-                            inputStyleClass="kx-field kx-field--size-large u--field--size-large" placeholder="MM/dd/yyyy (UTC)">
+                            inputStyleClass="kx-field kx-field--size-large u--field--size-large" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat">
                         </p-calendar>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                     <label class="kx-label" for="selectbox1">To Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar [formControlName]="'OperationToDate'"
-                            inputStyleClass="kx-field kx-field--size-large u--field--size-large" placeholder="MM/dd/yyyy (UTC)">
+                            inputStyleClass="kx-field kx-field--size-large u--field--size-large" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat">
                         </p-calendar>
                     </div>
                 </div>

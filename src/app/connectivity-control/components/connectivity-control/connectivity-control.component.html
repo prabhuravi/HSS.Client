@@ -33,7 +33,7 @@
                     </div>
                     <div *ngSwitchCase="'DisableTime'">
                         <span *ngIf="rowData.IsUploadEnabled">Always on enabled</span>
-                        <p-calendar *ngIf="!rowData.IsUploadEnabled" inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24" showButtonBar="true"></p-calendar>
+                        <p-calendar *ngIf="!rowData.IsUploadEnabled" inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
                     </div>
                     <div *ngSwitchCase="'EnabledBy'">
                         Always on enabled By {{rowData[col.field]}}
