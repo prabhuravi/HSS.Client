@@ -1,9 +1,10 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation, SimpleChanges, SimpleChange, OnChanges } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation, SimpleChanges, SimpleChange, OnChanges, OnDestroy } from '@angular/core';
 import { ChartDataSet } from './data-set';
 import { IDataPoint } from './data-point';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import * as d3 from 'd3';
 import { LatencyRequest } from 'src/app/models/LatencyRequest';
+import { Subscriber, Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { LatencyRequest } from 'src/app/models/LatencyRequest';
   styleUrls: ['./chart.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ChartComponent implements AfterViewInit, OnChanges {
+export class ChartComponent implements AfterViewInit, OnChanges,OnDestroy {
   @Input() chartId: string;
   @Input() latencyRequest: LatencyRequest;
   @ViewChild('chart', null) chartElement: ElementRef;
@@ -59,14 +60,15 @@ export class ChartComponent implements AfterViewInit, OnChanges {
   private signalStrengthLine: d3.Line<IDataPoint>;
   private signallineElement: d3.Selection<any, any, any, any>;
   private showChart: boolean = false;
+  private NodeSuscription : Subscription;
   ngAfterViewInit() {
 
-    this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
+    this.NodeSuscription = this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
       if (nodeNumber) {
         this.latencyRequest.NodeNumber = nodeNumber;
         this.getChartData(this.latencyRequest);
       }
-    })
+    });
   }
   getChartData(latencyRequest: LatencyRequest) {
     this.connectivityMonitoringService.getChartData(latencyRequest)
@@ -87,18 +89,22 @@ export class ChartComponent implements AfterViewInit, OnChanges {
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService) {
 
   }
+  ngOnDestroy(): void {
+    this.NodeSuscription.unsubscribe();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     const currentItem: SimpleChange = changes.item;
-    console.log(changes);
-    if(!changes.latencyRequest.previousValue){
-      console.log("########");
-      let cacheData = this.connectivityMonitoringService.returncacheVesselLatencyChart();
-      if(cacheData && cacheData.NodeNumber == this.latencyRequest.NodeNumber){
-        this.dataSet = new ChartDataSet(cacheData.data);
-        this.setupChart();
-      }
-    }
+    // console.log(changes);
+    // if(!changes.latencyRequest.previousValue){
+    //   console.log("########");
+    //   let cacheData = this.connectivityMonitoringService.returncacheVesselLatencyChart();
+    //   if(cacheData && cacheData.NodeNumber == this.latencyRequest.NodeNumber){
+    //     this.dataSet = new ChartDataSet(cacheData.data);
+    //     this.setupChart();
+    //   }
+    //   this.getChartData(this.latencyRequest);
+    // }
   }
   setupChart() {
     d3.select('#' + this.chartId).remove();

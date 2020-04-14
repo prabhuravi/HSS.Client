@@ -7,6 +7,8 @@ import { ThemeService } from '@kognifai/poseidon-ng-theming';
 import { ActivatedRoute } from '@angular/router';
 import { IVesselDetails } from 'src/app/models/IVesselDetails';
 import { LatencyRequest } from 'src/app/models/LatencyRequest';
+import { AISRequest } from 'src/app/models/AISRequest';
+import { concatAll } from 'rxjs/operators';
 @Component({
   selector: 'app-vessel-history',
   templateUrl: './vessel-history.component.html',
@@ -33,9 +35,11 @@ export class VesselHistoryComponent implements OnInit {
     }
   };
   latencyRequest = new LatencyRequest();
+  aisRequest = new AISRequest();
   vesselDetails: IVesselDetails;
   cachedVesselDetails: IVesselLinks;
   selectedVesselNodeNumber: string;
+  showMap: boolean = false;
   presetOptions = [{
     name: 'Last Hour',
     value: 1
@@ -50,6 +54,7 @@ export class VesselHistoryComponent implements OnInit {
     value: 0
   }];
   noData: string = 'No Data Available';
+  noGaugeData = false;
   selectedPreset: any = { name: "Last Day", value: 24 };
   fromDate: Date;
   toDate: Date;
@@ -61,15 +66,20 @@ export class VesselHistoryComponent implements OnInit {
     if (nodeNumber) {
       this.selectedVesselNodeNumber = nodeNumber.toString();
       this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
-      this.connectivityMonitoringService.setNodeChangeSubject(nodeNumber);
       this.connectivityMonitoringService.getVesselSubject().subscribe((data) => {
         if (data) {
           this.cachedVesselDetails = data;
-          console.log(this.cachedVesselDetails);
+          this.resetDate();
           this.connectivityMonitoringService.getSnMPData(nodeNumber).subscribe((vesselDetails: IVesselDetails) => {
             this.vesselDetails = vesselDetails;
-            console.log(vesselDetails);
-            this.chart.data = [['dBm', vesselDetails.SignalStrength]]
+
+
+            this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
+            if (vesselDetails && vesselDetails.SignalStrength) {
+              this.chart.data = [['dBm', vesselDetails.SignalStrength]];
+            } else {
+              this.noGaugeData = true;
+            }
           });
         }
 
@@ -83,12 +93,10 @@ export class VesselHistoryComponent implements OnInit {
       console.log(changes);
     });
     this.route.params.subscribe(params =>
-      setTimeout(() => {
-        this.getVesselDetails(params['nodeNumber']);
-      }, 100)
+      // setTimeout(() => {
+      this.getVesselDetails(params['nodeNumber'])
+      // }, 100)
     );
-    this.resetDate();
-    this.drawChart();
   }
   viewMeOnMap(lat: number, lng: number) {
     console.log(lat, lng);
@@ -100,7 +108,7 @@ export class VesselHistoryComponent implements OnInit {
     this.fromDate = new Date(this.fromDate.setDate(this.toDate.getDate() - 1));
     this.getLatencyTrendData();
   }
-  filterData(){
+  filterData() {
     this.getLatencyTrendData();
     this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
   }
@@ -109,7 +117,9 @@ export class VesselHistoryComponent implements OnInit {
     a.NodeNumber = this.selectedVesselNodeNumber;
     a.FromDate = this.fromDate.toISOString();
     a.ToDate = this.toDate.toISOString();
-   this.latencyRequest = Object.assign({}, a);
+    this.latencyRequest = Object.assign({}, a);
+
+    this.aisRequest = Object.assign({}, a);
   }
   onDropDownSelection() {
     console.log(this.fromDate)
@@ -124,8 +134,5 @@ export class VesselHistoryComponent implements OnInit {
 
     d.setHours(d.getHours() - substractNumber);
     return d;
-  }
-  drawChart() {
-
   }
 }

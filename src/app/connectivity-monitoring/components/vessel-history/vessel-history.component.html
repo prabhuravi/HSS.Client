@@ -132,22 +132,25 @@
         </div>
 </div>
 </div>
-<div class="kx-row" *ngIf="!showMap">
+<div class="kx-row" [hidden]="showMap">
     <div class="kx-col  kx-col--10 inline-flex">
         <div class="charts">
             <app-chart [chartId]="'chart1'" [latencyRequest]="latencyRequest"></app-chart>
           </div>
     </div>
-    <div class="kx-col  kx-col--2"  *ngIf="chart && chart.data">
-    <div class="kx-row chart-margin">
+    <div class="kx-col  kx-col--2">
+    <div class="kx-row chart-margin" *ngIf="chart && chart.data">
         <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data" [options]="chart.options">
         </google-chart>
     </div>    
     <div class="kx-row">
-        <label class="extra-margin">Signal Strength</label>
+        <label  class="extra-margin" *ngIf="noGaugeData">{{noData}}</label>
+        <label *ngIf="!noGaugeData" class="extra-margin">Signal Strength</label>
     </div>
     </div>
+    
+
 </div>
-<div class="row" *ngIf="showMap">
-    <app-map></app-map>
+<div class="row" [hidden]="!showMap">
+    <app-map [showMap]="showMap" [aisRequest]="aisRequest"></app-map>
 </div>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable, Subject } from 'rxjs';
 import { LatencyRequest } from '../models/LatencyRequest';
+import { AISRequest } from '../models/AISRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,24 @@ export class ConnectivityMonitoringService {
 
 
 
+  }
+  getVesselNameByNodeNumber(nodeNumber){
+    if(this.allVesselLinks){
+      const vessel = this.allVesselLinks.filter((vessel: IVesselLinks) => {
+        return vessel.NodeNumber.toFixed(0) == nodeNumber;
+      });
+      return vessel[0].Name;
+    }else{
+      
+    }
+        
+  }
+
+  getAISData(aisRequest?: AISRequest){
+   var a=  {"VesselName":"Talisman","FromDate":"2020-03-30T11:46:23.000Z","ToDate":"2020-04-14T11:46:23.000Z"};
+   aisRequest.VesselName = this.getVesselNameByNodeNumber(aisRequest.NodeNumber);
+    const url = 'AISPositionData'
+    return this.http.post(`${this.domainURL + url}`,aisRequest);
   }
   getVesselSubject(): Observable<any> {
     return this.vesselSubject.asObservable();
