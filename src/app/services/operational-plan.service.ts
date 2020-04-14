@@ -164,376 +164,112 @@ export class OperationalPlanService {
   getTimeZone(): ITimeZone[] {
     return [
       {
-        offset: 'GMT-12:00',
-        name: 'Etc/GMT-12'
+        name: 'GMT',
+        offset: 'GMT'
       },
       {
-        offset: 'GMT-11:00',
-        name: 'Etc/GMT-11'
+        name: 'GMT+1:00',
+        offset: 'GMT+1:00'
       },
       {
-        offset: 'GMT-11:00',
-        name: 'Pacific/Midway'
+        name: 'GMT+2:00',
+        offset: 'GMT+2:00'
       },
       {
-        offset: 'GMT-10:00',
-        name: 'America/Adak'
+        name: 'GMT+3:00',
+        offset: 'GMT+3:00'
       },
       {
-        offset: 'GMT-09:00',
-        name: 'America/Anchorage'
+        name: 'GMT+3:30',
+        offset: 'GMT+3:30'
       },
       {
-        offset: 'GMT-09:00',
-        name: 'Pacific/Gambier'
+        name: 'GMT+4:00',
+        offset: 'GMT+4:00'
       },
       {
-        offset: 'GMT-08:00',
-        name: 'America/Dawson_Creek'
+        name: 'GMT+5:00',
+        offset: 'GMT+5:00'
       },
       {
-        offset: 'GMT-08:00',
-        name: 'America/Ensenada'
+        name: 'GMT+5:30',
+        offset: 'GMT+5:30'
       },
       {
-        offset: 'GMT-08:00',
-        name: 'America/Los_Angeles'
+        name: 'GMT+6:00',
+        offset: 'GMT+6:00'
       },
       {
-        offset: 'GMT-07:00',
-        name: 'America/Chihuahua'
+        name: 'GMT+7:00',
+        offset: 'GMT+7:00'
       },
       {
-        offset: 'GMT-07:00',
-        name: 'America/Denver'
+        name: 'GMT+8:00',
+        offset: 'GMT+8:00'
       },
       {
-        offset: 'GMT-06:00',
-        name: 'America/Belize'
+        name: 'GMT+9:00',
+        offset: 'GMT+9:00'
       },
       {
-        offset: 'GMT-06:00',
-        name: 'America/Cancun'
+        name: 'GMT+9:30',
+        offset: 'GMT+9:30'
       },
       {
-        offset: 'GMT-06:00',
-        name: 'America/Chicago'
+        name: 'GMT+10:00',
+        offset: 'GMT+10:00'
       },
       {
-        offset: 'GMT-06:00',
-        name: 'Chile/EasterIsland'
+        name: 'GMT+11:00',
+        offset: 'GMT+11:00'
       },
       {
-        offset: 'GMT-05:00',
-        name: 'America/Bogota'
+        name: 'GMT+12:00',
+        offset: 'GMT+12:00'
       },
       {
-        offset: 'GMT-05:00',
-        name: 'America/Havana'
+        name: 'GMT-11:00',
+        offset: 'GMT-11:00'
       },
       {
-        offset: 'GMT-05:00',
-        name: 'America/New_York'
+        name: 'GMT-10:00',
+        offset: 'GMT-10:00'
       },
       {
-        offset: 'GMT-04:30',
-        name: 'America/Caracas'
+        name: 'GMT-9:00',
+        offset: 'GMT-9:00'
       },
       {
-        offset: 'GMT-04:00',
-        name: 'America/Campo_Grande'
+        name: 'GMT-8:00',
+        offset: 'GMT-8:00'
       },
       {
-        offset: 'GMT-04:00',
-        name: 'America/Glace_Bay'
+        name: 'GMT-7:00',
+        offset: 'GMT-7:00'
       },
       {
-        offset: 'GMT-04:00',
-        name: 'America/Goose_Bay'
+        name: 'GMT-6:00',
+        offset: 'GMT-6:00'
       },
       {
-        offset: 'GMT-04:00',
-        name: 'America/Santiago'
+        name: 'GMT-5:00',
+        offset: 'GMT-5:00'
       },
       {
-        offset: 'GMT-04:00',
-        name: 'America/La_Paz'
+        name: 'GMT-4:00',
+        offset: 'GMT-4:00'
       },
       {
-        offset: 'GMT-03:00',
-        name: 'America/Argentina/Buenos_Aires'
+        name: 'GMT-3:30',
+        offset: 'GMT-3:30'
       },
       {
-        offset: 'GMT-03:00',
-        name: 'America/Montevideo'
+        name: 'GMT-3:00',
+        offset: 'GMT-3:00'
       },
       {
-        offset: 'GMT-03:00',
-        name: 'America/Araguaina'
-      },
-      {
-        offset: 'GMT-03:00',
-        name: 'America/Godthab'
-      },
-      {
-        offset: 'GMT-03:00',
-        name: 'America/Miquelon'
-      },
-      {
-        offset: 'GMT-03:00',
-        name: 'America/Sao_Paulo'
-      },
-      {
-        offset: 'GMT-03:30',
-        name: 'America/St_Johns'
-      },
-      {
-        offset: 'GMT-02:00',
-        name: 'America/Noronha'
-      },
-      {
-        offset: 'GMT-01:00',
-        name: 'Atlantic/Cape_Verde'
-      },
-      {
-        offset: 'GMT',
-        name: 'Europe/Belfast'
-      },
-      {
-        offset: 'GMT',
-        name: 'Africa/Abidjan'
-      },
-      {
-        offset: 'GMT',
-        name: 'Europe/Dublin'
-      },
-      {
-        offset: 'GMT',
-        name: 'Europe/Lisbon'
-      },
-      {
-        offset: 'GMT',
-        name: 'Europe/London'
-      },
-      {
-        offset: 'UTC',
-        name: 'UTC'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Africa/Algiers'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Africa/Windhoek'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Atlantic/Azores'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Atlantic/Stanley'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Europe/Amsterdam'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Europe/Belgrade'
-      },
-      {
-        offset: 'GMT+01:00',
-        name: 'Europe/Brussels'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Africa/Cairo'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Africa/Blantyre'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Asia/Beirut'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Asia/Damascus'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Asia/Gaza'
-      },
-      {
-        offset: 'GMT+02:00',
-        name: 'Asia/Jerusalem'
-      },
-      {
-        offset: 'GMT+03:00',
-        name: 'Africa/Addis_Ababa'
-      },
-      {
-        offset: 'GMT+03:00',
-        name: 'Asia/Riyadh89'
-      },
-      {
-        offset: 'GMT+03:00',
-        name: 'Europe/Minsk'
-      },
-      {
-        offset: 'GMT+03:30',
-        name: 'Asia/Tehran'
-      },
-      {
-        offset: 'GMT+04:00',
-        name: 'Asia/Dubai'
-      },
-      {
-        offset: 'GMT+04:00',
-        name: 'Asia/Yerevan'
-      },
-      {
-        offset: 'GMT+04:00',
-        name: 'Europe/Moscow'
-      },
-      {
-        offset: 'GMT+04:30',
-        name: 'Asia/Kabul'
-      },
-      {
-        offset: 'GMT+05:00',
-        name: 'Asia/Tashkent'
-      },
-      {
-        offset: 'GMT+05:30',
-        name: 'Asia/Kolkata'
-      },
-      {
-        offset: 'GMT+05:45',
-        name: 'Asia/Katmandu'
-      },
-      {
-        offset: 'GMT+06:00',
-        name: 'Asia/Dhaka'
-      },
-      {
-        offset: 'GMT+06:00',
-        name: 'Asia/Yekaterinburg'
-      },
-      {
-        offset: 'GMT+06:30',
-        name: 'Asia/Rangoon'
-      },
-      {
-        offset: 'GMT+07:00',
-        name: 'Asia/Bangkok'
-      },
-      {
-        offset: 'GMT+07:00',
-        name: 'Asia/Novosibirsk'
-      },
-      {
-        offset: 'GMT+08:00',
-        name: 'Etc/GMT+8'
-      },
-      {
-        offset: 'GMT+08:00',
-        name: 'Asia/Hong_Kong'
-      },
-      {
-        offset: 'GMT+08:00',
-        name: 'Asia/Krasnoyarsk'
-      },
-      {
-        offset: 'GMT+08:00',
-        name: 'Australia/Perth'
-      },
-      {
-        offset: 'GMT+08:45',
-        name: 'Australia/Eucla'
-      },
-      {
-        offset: 'GMT+09:00',
-        name: 'Asia/Irkutsk'
-      },
-      {
-        offset: 'GMT+09:00',
-        name: 'Asia/Seoul'
-      },
-      {
-        offset: 'GMT+09:00',
-        name: 'Asia/Tokyo'
-      },
-      {
-        offset: 'GMT+09:30',
-        name: 'Australia/Adelaide'
-      },
-      {
-        offset: 'GMT+09:30',
-        name: 'Australia/Darwin'
-      },
-      {
-        offset: 'GMT+09:30',
-        name: 'Pacific/Marquesas'
-      },
-      {
-        offset: 'GMT+10:00',
-        name: 'Etc/GMT+10'
-      },
-      {
-        offset: 'GMT+10:00',
-        name: 'Australia/Brisbane'
-      },
-      {
-        offset: 'GMT+10:00',
-        name: 'Australia/Hobart'
-      },
-      {
-        offset: 'GMT+10:00',
-        name: 'Asia/Yakutsk'
-      },
-      {
-        offset: 'GMT+10:30',
-        name: 'Australia/Lord_Howe'
-      },
-      {
-        offset: 'GMT+11:00',
-        name: 'Asia/Vladivostok'
-      },
-      {
-        offset: 'GMT+11:30',
-        name: 'Pacific/Norfolk'
-      },
-      {
-        offset: 'GMT+12:00',
-        name: 'Etc/GMT+12'
-      },
-      {
-        offset: 'GMT+12:00',
-        name: 'Asia/Anadyr'
-      },
-      {
-        offset: 'GMT+12:00',
-        name: 'Asia/Magadan'
-      },
-      {
-        offset: 'GMT+12:00',
-        name: 'Pacific/Auckland'
-      },
-      {
-        offset: 'GMT+12:45',
-        name: 'Pacific/Chatham'
-      },
-      {
-        offset: 'GMT+13:00',
-        name: 'Pacific/Tongatapu'
-      },
-      {
-        offset: 'GMT+14:00',
-        name: 'Pacific/Kiritimati'
+        name: 'GMT-1:00',
+        offset: 'GMT-1:00'
       }
     ];
   }

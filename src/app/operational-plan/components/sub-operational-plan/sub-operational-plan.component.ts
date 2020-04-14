@@ -77,7 +77,7 @@ export class SubOperationalPlanComponent implements OnInit {
         key: 'Status',
         validators: [],
         optionLabel: 'name',
-        disabled: true
+        disabled: false
       },
       {
         type: FormType.text,
@@ -99,6 +99,7 @@ export class SubOperationalPlanComponent implements OnInit {
   }
   editData(data: any): void {
     this.activeId = data.SubPlanId;
+    data.Status = this.planStatusList.find((e) => e.name === data.Status);
     data.SubOperationStartTime = new Date(data.SubOperationStartTime);
     data.SubOperationEndTime = new Date(data.SubOperationEndTime);
     this.formValues = data;

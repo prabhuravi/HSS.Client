@@ -55,7 +55,9 @@ export class AddPlanComponent implements OnInit {
         this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
         this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
         this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
-        this.formValues.OperationLoc = this.formValues.PortName;
+        this.formValues.OperationLoc = {
+          PortName: this.formValues.OperationLoc
+        };
       }
       this.constructForm();
     });
