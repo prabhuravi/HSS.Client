@@ -1,5 +1,5 @@
 <div class="kx-row kx-row--gutters">
-    <div class="kx-col kx-col--6" style="padding: 0;">
+    <div class="kx-col kx-col--7" style="padding: 0;">
         <div style="padding: 2rem 2rem 0 0;float:right;">
             <label class="kx-selector kx-selector__switch">
                 <input type="checkbox" name="ShowLogs" [(ngModel)]="showLogs" (ngModelChange)="loadLogs($event)" />
@@ -10,14 +10,14 @@
             </label>
         </div>
     </div>
-    <div class="kx-col kx-col--6" style="padding: 0;">
+    <div class="kx-col kx-col--5" style="padding: 0;">
         <form [formGroup]="form" (ngSubmit)="searchFormOnSubmit()">
             <div class="kx-row">
                 <div class="kx-col kx-col--4" style="padding: 0;">
                     <label class="kx-label" for="selectbox1">From Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar [formControlName]="'OperationFromDate'"
-                            inputStyleClass="kx-field kx-field--size-large" placeholder="MM/dd/yyyy (UTC)">
+                            inputStyleClass="kx-field kx-field--size-large u--field--size-large" placeholder="MM/dd/yyyy (UTC)">
                         </p-calendar>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                     <label class="kx-label" for="selectbox1">To Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar [formControlName]="'OperationToDate'"
-                            inputStyleClass="kx-field kx-field--size-large" placeholder="MM/dd/yyyy (UTC)">
+                            inputStyleClass="kx-field kx-field--size-large u--field--size-large" placeholder="MM/dd/yyyy (UTC)">
                         </p-calendar>
                     </div>
                 </div>
@@ -49,7 +49,8 @@
 <div class="kx-row kx-mt--small">
     <div class="kx-col">
         <app-load *ngIf="isDataLoading"></app-load>
-        <p-table *ngIf="!isDataLoading" #tt [value]="operationalPlansList" [columns]="cols" [paginator]="true" [rows]="5" dataKey="PlanId">
+        <p-table *ngIf="!isDataLoading" #tt [value]="operationalPlansList" [columns]="cols" [paginator]="true"
+            [rows]="5" dataKey="PlanId">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 1.5em" class="u--cursorPointer kx-p--small"></th>
@@ -64,11 +65,11 @@
                 <tr>
                     <th style="width: 1.5em" class="u--cursorPointer kx-p--small"></th>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field" class="u--cursorPointer kx-p--small">
-                        <input *ngSwitchCase="'VesselName'" pInputText type="text" class="kx-field kx-field--size-small"
-                            placeholder="Filter By Vessel Name"
+                        <input *ngSwitchCase="'VesselName'" pInputText type="text" class="kx-field kx-field--size-small u--field--size-small"
+                            placeholder="Vessel" style="width: 80px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'Status'" pInputText type="text" class="kx-field kx-field--size-small"
-                            placeholder="Filter By Status"
+                        <input *ngSwitchCase="'Status'" pInputText type="text" class="kx-field kx-field--size-small u--field--size-small"
+                            placeholder="Status" style="width: 80px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
                 </tr>
@@ -82,33 +83,71 @@
                     </td>
                     <td *ngFor="let col of columns" class="kx-p--small">
                         <div [ngSwitch]="col.field">
+                            <div *ngSwitchCase="'OperationDate'">
+                                {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
+                            </div>
+                            <div *ngSwitchCase="'ETADate'">
+                                {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
+                            </div>
+                            <div *ngSwitchCase="'LastUpdatedDate'">
+                                {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
+                            </div>
                             <div *ngSwitchCase="'PlanId'">
                                 <div class="kx-btngroup kx-flex kx-flex-wrap" role="group"
                                     aria-label="Aria label example">
-                                    <button (click)="openPlanComponent('Edit', rowData, '/operational-plan/plan')"
-                                        class="kx-btn kx-btn--skin-primary kx-btn--size-small kx-mr--tiny kx-mt--tiny">
+                                    <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                        aria-label="Edit Operational Plan" title="Edit Operational Plan"
+                                        (click)="openPlanComponent('Edit', rowData, '/operational-plan/plan')">
                                         <span class="kx-btn__inner">
-                                            <span class="kx-btn__txt">Edit</span>
+                                            <i class="kx-icon kx-icon--size-moderate">
+                                                <svg focusable="false">
+                                                    <use href="../../assets/img/icons/sprites/icons.svg#pencil">
+                                                    </use>
+                                                </svg>
+                                            </i>
+                                            <span class="kx-btn__txt kx-is-vishidden">Edit Operational Plan</span>
                                         </span>
                                     </button>
-                                    <button (click)="openPlanComponent('Copy', rowData, '/operational-plan/plan')"
-                                        class="kx-btn kx-btn--skin-primary kx-btn--size-small kx-mr--tiny kx-mt--tiny">
+                                    <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                        aria-label="Copy Operational Plan" title="Copy Operational Plan"
+                                        (click)="openPlanComponent('Copy', rowData, '/operational-plan/plan')">
                                         <span class="kx-btn__inner">
-                                            <span class="kx-btn__txt">Copy</span>
+                                            <i class="kx-icon kx-icon--size-moderate">
+                                                <svg focusable="false">
+                                                    <use href="../../assets/img/icons/sprites/icons.svg#copy">
+                                                    </use>
+                                                </svg>
+                                            </i>
+                                            <span class="kx-btn__txt kx-is-vishidden">Copy Operational Plan</span>
                                         </span>
                                     </button>
-                                    <button
-                                        class="kx-btn kx-btn--skin-primary kx-btn--size-small kx-mr--tiny kx-mt--tiny">
+                                    <button [disabled]="rowData.Status !== 'New'"
+                                        class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                        aria-label="Complete Operational Plan" title="Complete Operational Plan"
+                                        (click)="completeOperation(rowData)">
                                         <span class="kx-btn__inner">
-                                            <span class="kx-btn__txt">Complete</span>
+                                            <i class="kx-icon kx-icon--size-moderate">
+                                                <svg focusable="false">
+                                                    <use href="../../assets/img/icons/sprites/icons.svg#check">
+                                                    </use>
+                                                </svg>
+                                            </i>
+                                            <span class="kx-btn__txt kx-is-vishidden">Complete Operational Plan</span>
                                         </span>
                                     </button>
-                                    <i title="add sub operation plan" (click)="openPlanComponent('Sub Operation', rowData, '/operational-plan/sub-operational-plan')"
-                                        class="kx-icon kx-icon--size-base kx-mt--tiny u--cursorPointer addIcon">
-                                        <svg focusable="false">
-                                            <use href="../../assets/img/icons/sprites/icons.svg#plus"></use>
-                                        </svg>
-                                    </i>
+                                    <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                        aria-label="Add Sub Operational Plan" title="Add Sub Operational Plan"
+                                        (click)="openPlanComponent('Sub Operation', rowData, '/operational-plan/sub-operational-plan')">
+                                        <span class="kx-btn__inner">
+                                            <i class="kx-icon kx-icon--size-moderate">
+                                                <svg focusable="false">
+                                                    <use href="../../assets/img/icons/sprites/icons.svg#plus">
+                                                    </use>
+                                                </svg>
+                                            </i>
+                                            <span class="kx-btn__txt kx-is-vishidden">Add Sub Operational Plan</span>
+                                        </span>
+                                    </button>
                                 </div>
                             </div>
                             <div *ngSwitchDefault>{{rowData[col.field]}}</div>
@@ -123,7 +162,8 @@
                             <div class="kx-row">
                                 <div class="kx-col">
                                     <app-load *ngIf="isSubOperationDataLoading"></app-load>
-                                    <p-table *ngIf="!isSubOperationDataLoading" #tt [value]="subOperationsList" [columns]="subOperationCols">
+                                    <p-table *ngIf="!isSubOperationDataLoading" #tt [value]="subOperationsList"
+                                        [columns]="subOperationCols">
                                         <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--small">
@@ -138,10 +178,28 @@
                 <tr class="kx-p--small">
                     <td *ngFor="let col of columns">
                         <div [ngSwitch]="col.field">
+                            <div *ngSwitchCase="'SubOperationStartTime'">
+                                {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
+                            </div>
+                            <div *ngSwitchCase="'SubOperationEndTime'">
+                                {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
+                            </div>
+                            <div *ngSwitchCase="'LastUpdatedDate'">
+                                {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
+                            </div>
                             <div *ngSwitchCase="'SubPlanId'">
-                                <button class="kx-btn kx-btn--skin-primary kx-btn--size-small">
+                                <button [disabled]="rowData.Status !== 'New'"
+                                    class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                    aria-label="Complete Sub Operational Plan" title="Complete Sub Operational Plan"
+                                    (click)="completeSubOperation(rowData)">
                                     <span class="kx-btn__inner">
-                                        <span class="kx-btn__txt">Complete</span>
+                                        <i class="kx-icon kx-icon--size-moderate">
+                                            <svg focusable="false">
+                                                <use href="../../assets/img/icons/sprites/icons.svg#check">
+                                                </use>
+                                            </svg>
+                                        </i>
+                                        <span class="kx-btn__txt kx-is-vishidden">Complete Sub Operational Plan</span>
                                     </span>
                                 </button>
                             </div>

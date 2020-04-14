@@ -107,23 +107,35 @@
 }
 
 // poseidon overridings
-
-.kx-field--size-large {
+.u--field--size-large{
+    height: 2.25rem!important;
+    padding: 0.5rem!important;
+}
+.u--field--size-small{
+    height: 1.55rem!important;
+    padding: 0.5rem!important;
+}
+.u--field--size-large,
+.u--field--size-small {
     &::-webkit-input-placeholder {
         /* Chrome/Opera/Safari */
-        font-size: 15px !important;
+        font-size: 13px !important;
+        font-weight: 400;
     }
     &::-moz-placeholder {
         /* Firefox 19+ */
-        font-size: 15px !important;
+        font-weight: 400;
+        font-size: 13px !important;
     }
     &:-ms-input-placeholder {
         /* IE 10+ */
-        font-size: 15px !important;
+        font-weight: 400;
+        font-size: 13px !important;
     }
     &:-moz-placeholder {
         /* Firefox 18- */
-        font-size: 15px !important;
+        font-weight: 400;
+        font-size: 13px !important;
     }
 }
 [hidden] { display: none !important;}

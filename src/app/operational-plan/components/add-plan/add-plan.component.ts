@@ -186,10 +186,9 @@ export class AddPlanComponent implements OnInit {
     });
   }
   updateData(formData): void {
-    console.log(formData);
     const plandData: any = {
       Status: (history && history.state && history.state.actionType) ? formData.Status.value : 'New',
-      Action: (history && history.state && history.state.actionType) ? 'Edit' : 'Add',
+      Action: (history && history.state && history.state.actionType) ? history.state.actionType : 'Add',
       VesselId: formData.VesselId.Id,
       RobotSystemId: formData.RobotSystemId.RobotSystemId,
       LocalTimeZone: formData.LocalTimeZone.offset,
@@ -206,7 +205,6 @@ export class AddPlanComponent implements OnInit {
     if (history && history.state && history.state.actionType) {
       plandData.PlanId = this.formValues.PlanId;
     }
-    console.log(plandData);
     this.operationalPlanService.updateOperationPlan(plandData).subscribe((data) => {
       this.router.navigateByUrl('/operational-plan');
     });

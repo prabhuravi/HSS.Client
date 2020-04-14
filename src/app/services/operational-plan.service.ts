@@ -1,44 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
-import { AuthenticationService } from '@kognifai/poseidon-authenticationservice';
-import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
-import { Configuration } from '../configuration';
-import { User } from 'oidc-client';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OperationalPlanService {
 
-  username: string = '';
-
   constructor(
-    public httpClient: HttpClient,
-    private http: HttpService,
-    private authenticationService: AuthenticationService,
-    public configurationService: ConfigurationService<Configuration>
+    private http: HttpService
   ) {
-    if (this.authenticationService && this.authenticationService.userManager) {
-      this.authenticationService.userManager.getUser().then((user: User) => {
-        this.getUserInfo(user);
-      });
-    }
-  }
-  getUserInfo(user) {
-    this.getLoggedInUserInfo(user).subscribe((userInfo: any) => {
-      this.username = userInfo.username;
-    });
-  }
-
-  getLoggedInUserInfo(user: User): Observable<any> {
-    const reqHeader = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + user.access_token
-    });
-    const url = this.configurationService.config.userInfoApiUrl + user.profile.sub;
-    return this.httpClient.get(url, { headers: reqHeader });
   }
 
   getOperationPlans(formData: any): Observable<IOperationalPlan[]> {
@@ -48,10 +19,7 @@ export class OperationalPlanService {
     };
     return this.http.postData(requestData);
   }
-
   updateOperationPlan(planData: any): Observable<IOperationalPlan[]> {
-    planData.CreatedBy = this.username;
-    planData.LastUpdatedBy = this.username;
     planData.LastUpdatedDate = new Date();
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/UpdateOperationPlan',
@@ -59,7 +27,6 @@ export class OperationalPlanService {
     };
     return this.http.postData(requestData);
   }
-
   searchOperationPlans(formData: any): Observable<IOperationalPlan[]> {
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/SearchOperationPlan',
@@ -67,7 +34,6 @@ export class OperationalPlanService {
     };
     return this.http.postData(requestData);
   }
-
   getSubOperations(planData): Observable<ISubOperations[]> {
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/GetSubOperations',
@@ -76,9 +42,6 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
   updateSubOperationPlan(planData: any): Observable<IOperationalPlan[]> {
-    planData.CreatedBy = this.username;
-    planData.LastUpdatedBy = this.username;
-    planData.LastUpdatedDate = new Date();
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/UpdateSubOperation',
       data: planData
@@ -93,8 +56,6 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
   addRobotSystemDetail(robotSystemData): Observable<any> {
-    robotSystemData.CreatedBy = this.username;
-    robotSystemData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/AddRobotSystemDetail',
       data: robotSystemData
@@ -102,8 +63,6 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
   deleteRobotSystemDetail(robotSystemData): Observable<any> {
-    robotSystemData.CreatedBy = this.username;
-    robotSystemData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteRobotSystem',
       data: robotSystemData
@@ -118,8 +77,6 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
   addOperationType(operationTypeData): Observable<any> {
-    operationTypeData.CreatedBy = this.username;
-    operationTypeData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/AddOperationType',
       data: operationTypeData
@@ -127,8 +84,6 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
   deleteOperationType(operationTypeData): Observable<any> {
-    operationTypeData.CreatedBy = this.username;
-    operationTypeData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteOperationType',
       data: operationTypeData
@@ -143,8 +98,6 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
   addOperator(operatorData): Observable<any> {
-    operatorData.CreatedBy = this.username;
-    operatorData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/AddOperator',
       data: operatorData
@@ -152,8 +105,6 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
   deleteOperator(operatorData): Observable<any> {
-    operatorData.CreatedBy = this.username;
-    operatorData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteOperator',
       data: operatorData
@@ -322,8 +273,6 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
   addVessel(vesselData): Observable<any> {
-    vesselData.CreatedBy = this.username;
-    vesselData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/AddVesselDetail',
       data: vesselData
@@ -331,8 +280,6 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
   deleteVessel(vesselData): Observable<any> {
-    vesselData.CreatedBy = this.username;
-    vesselData.LastUpdatedBy = this.username;
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteVessel',
       data: vesselData

@@ -77,7 +77,7 @@ export class SubOperationalPlanComponent implements OnInit {
         key: 'Status',
         validators: [],
         optionLabel: 'name',
-        disabled: false
+        disabled: true
       },
       {
         type: FormType.text,
@@ -103,17 +103,24 @@ export class SubOperationalPlanComponent implements OnInit {
     data.SubOperationStartTime = new Date(data.SubOperationStartTime);
     data.SubOperationEndTime = new Date(data.SubOperationEndTime);
     this.formValues = data;
-    console.log(this.formValues);
   }
   updateData(formData: any): void {
-    console.log(formData);
     if (history && history.state && history.state.actionType) {
       formData.PlanId = this.planDetails.PlanId;
     }
     if (this.activeId !== 0) {
       formData.SubPlanId = this.activeId;
+      formData.Status = formData.Status.value;
+    } else {
+      formData.Status = 'New';
     }
     this.operationalPlanService.updateSubOperationPlan(formData).subscribe((data) => {
+      this.loadData();
+    });
+  }
+  completeSubOperation(rowData: any): void {
+    rowData.Status = 'Completed';
+    this.operationalPlanService.updateSubOperationPlan(rowData).subscribe((data) => {
       this.loadData();
     });
   }
