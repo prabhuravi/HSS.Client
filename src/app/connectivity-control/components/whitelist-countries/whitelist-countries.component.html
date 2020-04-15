@@ -136,15 +136,7 @@
                             targetFilterPlaceholder="Search by Country Name" [sourceStyle]="{'height':'300px'}"
                             [targetStyle]="{'height':'300px'}">
                             <ng-template let-country pTemplate="item">
-                                <div class="kx-listgroup">
-                                    <ul class="kx-list kx-list--borders ">
-                                        <li class="kx-list-item">
-                                            <span class="kx-list-item__text">
-                                                <span class="kx-list-item__primary-text">{{country.CountryName}}</span>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <div class="u--picklistItem">{{country.CountryName}}</div>
                             </ng-template>
                         </p-pickList>
                         <button (click)="updateGroupCountries()"

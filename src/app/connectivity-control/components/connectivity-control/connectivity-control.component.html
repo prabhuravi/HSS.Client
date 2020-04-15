@@ -1,21 +1,26 @@
 <app-load *ngIf="isDataLoading"></app-load>
-<p-table *ngIf="!isDataLoading" #tt [value]="vesselConnectivityControlList" [columns]="cols"
-    [paginator]="true" [rows]="5">
+<p-table *ngIf="!isDataLoading" #tt [value]="vesselConnectivityControlList" [columns]="cols" [paginator]="true"
+    [rows]="5">
     <ng-template pTemplate="header" let-columns>
         <tr>
             <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--xlarge">
                 {{col.header}}
-                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                    ariaLabelDesc="Activate to sort in descending order"
+                    ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
             </th>
         </tr>
         <tr>
             <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                <input *ngSwitchCase="'VesselName'" pInputText type="text" class="kx-field kx-field--size-base u--field--size-small"
-                    placeholder="Vessel Name" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                <input *ngSwitchCase="'IMONumber'" pInputText type="text" class="kx-field kx-field--size-base u--field--size-small"
-                    placeholder="IMO Number" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                <input *ngSwitchCase="'EnabledBy'" pInputText type="text" class="kx-field kx-field--size-base u--field--size-small"
-                    placeholder="Enabled By User" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input *ngSwitchCase="'VesselName'" pInputText type="text"
+                    class="kx-field kx-field--size-base u--field--size-small" placeholder="Vessel Name"
+                    (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input *ngSwitchCase="'IMONumber'" pInputText type="text"
+                    class="kx-field kx-field--size-base u--field--size-small" placeholder="IMO Number"
+                    (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input *ngSwitchCase="'EnabledBy'" pInputText type="text"
+                    class="kx-field kx-field--size-base u--field--size-small" placeholder="Enabled By User"
+                    (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
             </th>
         </tr>
     </ng-template>
@@ -25,15 +30,21 @@
                 <div [ngSwitch]="col.field">
                     <div *ngSwitchCase="'IsUploadEnabled'">
                         <label class="kx-selector kx-selector__switch">
-                            <input type="checkbox" name="IsUploadEnabled" [(ngModel)]="rowData[col.field]" (ngModelChange)="updateUploadStatus(rowData)" />
+                            <input type="checkbox" name="IsUploadEnabled" [(ngModel)]="rowData[col.field]"
+                                (ngModelChange)="updateUploadStatus(rowData)" />
                             <div class="kx-selector__indicator"></div>
                             <span *ngIf="!rowData[col.field]" class="label-text">OFF</span>
                             <span *ngIf="rowData[col.field]" class="label-text">ON</span>
                         </label>
                     </div>
                     <div *ngSwitchCase="'DisableTime'">
-                        <span *ngIf="rowData.IsUploadEnabled">Always on enabled</span>
-                        <p-calendar *ngIf="!rowData.IsUploadEnabled" inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
+                        <span *ngIf="rowData.IsUploadEnabled">{{rowData.RemainingTime}}</span>
+                        <div *ngIf="!rowData.IsUploadEnabled">
+                            <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
+                                showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
+                                [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [(ngModel)]="rowData.DisableTime">
+                            </p-calendar>
+                        </div>
                     </div>
                     <div *ngSwitchCase="'EnabledBy'">
                         Always on enabled By {{rowData[col.field]}}
@@ -52,7 +63,21 @@
 </p-table>
 <app-modal [displayMe]="displayActionLogModal">
     <div class="modal-header">
-        Upload Enable/Disable Action Log
+        <div>
+            Upload Enable/Disable Action Log
+            <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon u--modalclosebtn"
+                aria-label="close modal" title="close modal" (click)="toggleActivityLogModal()">
+                <span class="kx-btn__inner">
+                    <i class="kx-icon kx-icon--size-moderate">
+                        <svg focusable="false">
+                            <use href="../../assets/img/icons/sprites/icons.svg#close">
+                            </use>
+                        </svg>
+                    </i>
+                    <span class="kx-btn__txt kx-is-vishidden">close modal</span>
+                </span>
+            </button>
+        </div>
     </div>
     <div class="modal-body">
         <div class="kx-container kx-p--none">
@@ -82,18 +107,6 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <!-- BUTTON-GROUP Component -->
-        <div class="kx-btngroup kx-flex kx-flex-wrap kx-btngroup--spacing  kx-justify-content-right " role="group"
-            aria-label="">
-            <!-- BUTTON Component -->
-            <button (click)="toggleActivityLogModal()" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
-                <span class="kx-btn__inner">
-                    <span class="kx-btn__txt u--cursorPointer">Close</span>
-                </span>
-            </button>
         </div>
     </div>
 </app-modal>

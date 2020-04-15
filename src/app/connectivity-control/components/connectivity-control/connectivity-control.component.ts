@@ -35,6 +35,9 @@ export class ConnectivityControlComponent implements OnInit {
     this.isDataLoading = true;
     this.connectivityControlService.getConnectivityData().pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
+      data.forEach((e) => {
+        e.DisableTime = new Date(e.DisableTime) as any;
+      });
       this.vesselConnectivityControlList = data;
     });
   }
@@ -48,8 +51,11 @@ export class ConnectivityControlComponent implements OnInit {
       this.vesselConnectivityActionLogList = data;
     });
   }
-  updateUploadStatus(data: IConnectivityControl): void {
-    console.log(data);
+  updateUploadStatus(data: IVesselList): void {
+    data.EnabledBy = '';
+    this.connectivityControlService.UpdateVessel(data).pipe(take(1)).subscribe(() => {
+      this.loadData();
+    });
   }
 
 }

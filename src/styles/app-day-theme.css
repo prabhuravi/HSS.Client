@@ -80,3 +80,9 @@
     padding: 0.571em 1em;
   }
 }
+
+.u--picklistItem{
+  color: #333333;
+  background-color: #ffffff;
+  border: 1px solid #c8c8c8;
+}

@@ -116,6 +116,13 @@ export class ConnectivityControlService {
     };
     return this.http.getData(requestData);
   }
+  UpdateVessel(vesselData: IVesselList): Observable<boolean> {
+    const requestData = {
+      endPoint: `/VesselConfig/api/VesselConfiguration/UpdateVessel?vesselId=${vesselData.Id}`,
+      data: vesselData
+    };
+    return this.http.putData(requestData);
+  }
 
   getConnectivityActionLog(connectivityId: number): Observable<IConnectivityActionLog[]> {
     const requestData = {
@@ -192,6 +199,13 @@ export class ConnectivityControlService {
   addCountryGroup(formData: any): Observable<boolean> {
     const requestData = {
       endPoint: '/VesselConfig/api/VesselConfiguration/AddCountryGroup',
+      data: formData
+    };
+    return this.http.postData(requestData);
+  }
+  removeGroupCountry(formData: any): Observable<boolean> {
+    const requestData = {
+      endPoint: '/VesselConfig/api/VesselConfiguration/RemoveGroupCountry',
       data: formData
     };
     return this.http.postData(requestData);
