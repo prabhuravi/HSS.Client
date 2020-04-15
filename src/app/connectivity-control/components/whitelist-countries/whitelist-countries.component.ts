@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConnectivityControlService } from 'src/app/services/connectivity-control.service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { take } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-whitelist-countries',
@@ -27,14 +28,21 @@ export class WhitelistCountriesComponent implements OnInit {
   isDataLoading: boolean;
   disableActivity: boolean;
   displayManageCountryGroup: boolean;
-  groupName: string;
+  form: FormGroup;
   constructor(
     private connectivityControlService: ConnectivityControlService,
-    private operationalPlanService: OperationalPlanService
+    private operationalPlanService: OperationalPlanService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.loadData();
+    this.form = this.buildForm();
+  }
+  buildForm() {
+    const group = this.fb.group({});
+    group.addControl('GroupName', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    return group;
   }
   loadData(): void {
     this.getVesselList();
@@ -115,16 +123,13 @@ export class WhitelistCountriesComponent implements OnInit {
     });
   }
   addCountryGroup(): void {
-    if (this.groupName === '') {
-      return;
+    if (this.form.valid) {
+      this.disableActivity = true;
+      this.connectivityControlService.addCountryGroup(this.form.value).pipe(take(1)).subscribe((data) => {
+        this.disableActivity = false;
+        this.getOperatorCountryList();
+      });
     }
-    const formData = {
-      GroupName: this.groupName
-    };
-    this.connectivityControlService.addCountryGroup(formData).pipe(take(1)).subscribe((data) => {
-      this.groupName = '';
-      this.getOperatorCountryList();
-    });
   }
   updateGroupCountries(): void {
     console.log(this.groupCountryList);

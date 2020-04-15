@@ -11,3 +11,72 @@
 .ui-autocomplete-panel{
   background: #ffffff!important;
 }
+.ui-picklist .ui-picklist-buttons button {
+  font-size: 16px;
+}
+.ui-picklist .ui-picklist-caption {
+  background-color: #f4f4f4;
+  color: #333333;
+  border: 1px solid #c8c8c8;
+  padding: 0.571em 1em;
+  font-weight: 700;
+  border-bottom: 0 none;
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -webkit-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.ui-picklist .ui-picklist-filter-container {
+  padding: 0.429em 0.857em 0.429em 0.857em;
+  border: 1px solid #c8c8c8;
+  color: #333333;
+  background-color: #ffffff;
+  margin: 0;
+  border-bottom: 0 none;
+}
+.ui-picklist .ui-picklist-filter-container input.ui-picklist-filter {
+  width: 100%;
+  padding-right: 2em;
+  text-indent: 0;
+}
+.ui-picklist .ui-picklist-filter-container .ui-picklist-filter-icon {
+  top: 50%;
+  margin-top: -0.5em;
+  left: auto;
+  right: 1.357em;
+  color: #007ad9;
+}
+.ui-picklist .ui-picklist-buttons {
+  padding: 0.571em 1em;
+}
+.ui-picklist .ui-picklist-list {
+  border: 1px solid #c8c8c8;
+  background-color: #ffffff;
+  color: #333333;
+  padding: 0;
+}
+.ui-picklist .ui-picklist-list .ui-picklist-item {
+  padding: 0.429em 0.857em;
+  margin: 0;
+  border: 0 none;
+  color: #333333;
+  background-color: transparent;
+}
+.ui-picklist .ui-picklist-list .ui-picklist-item:not(.ui-state-highlight):hover {
+  background-color: #eaeaea;
+  color: #333333;
+}
+.ui-picklist .ui-picklist-list .ui-picklist-item.ui-state-highlight {
+  background-color: #007ad9;
+  color: #ffffff;
+}
+.ui-picklist .ui-picklist-list .ui-picklist-droppoint-highlight {
+  background-color: #007ad9;
+}
+@media (max-width: 40em) {
+  .ui-picklist.ui-picklist-responsive .ui-picklist-buttons {
+    padding: 0.571em 1em;
+  }
+}
