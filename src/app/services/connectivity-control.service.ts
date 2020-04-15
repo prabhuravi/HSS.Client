@@ -142,4 +142,58 @@ export class ConnectivityControlService {
   getVesselHistoricalStatus(VesselMissionData: IVesselHistoricalData): IVesselUploadStatus {
     return this.vesselUploadStatus;
   }
+
+  getWhiteListedCountries(vesselId: number): Observable<IWhiteListedCountries[]> {
+    const requestData = {
+      endPoint: `/VesselConfig/api/VesselConfiguration/GetWhitelistedCountries/${vesselId}`
+    };
+    return this.http.getData(requestData);
+  }
+  getOperatorCountryList(): Observable<IOperatorCountryList[]> {
+    const requestData = {
+      endPoint: '/VesselConfig/api/VesselConfiguration/GetOperatorCountryList'
+    };
+    return this.http.getData(requestData);
+  }
+  removeWhitelistCountry(formData: IWhiteListedCountries): Observable<boolean> {
+    const requestData = {
+      endPoint: '/VesselConfig/api/VesselConfiguration/RemoveWhitelistCountry',
+      data: formData
+    };
+    return this.http.postData(requestData);
+  }
+  markCountryWhitelist(formData: any): Observable<string> {
+    const requestData = {
+      endPoint: '/VesselConfig/api/VesselConfiguration/MarkCountryWhitelist',
+      data: formData
+    };
+    return this.http.postData(requestData);
+  }
+  addCountryToGroup(formData: IOperatorCountryList[]): Observable<string> {
+    const requestData = {
+      endPoint: '/VesselConfig/api/VesselConfiguration/MarkCountryWhitelist',
+      data: formData
+    };
+    return this.http.postData(requestData);
+  }
+  getGroupCountries(CountryId: number): Observable<IOperatorCountryList[]> {
+    const requestData = {
+      endPoint: `/VesselConfig/api/VesselConfiguration/GetGroupCountries/${CountryId}`
+    };
+    return this.http.getData(requestData);
+  }
+  deleteCountryGroup(formData: any): Observable<boolean> {
+    const requestData = {
+      endPoint: '/VesselConfig/api/VesselConfiguration/DeleteCountryGroup',
+      data: formData
+    };
+    return this.http.postData(requestData);
+  }
+  addCountryGroup(formData: any): Observable<boolean> {
+    const requestData = {
+      endPoint: '/VesselConfig/api/VesselConfiguration/AddCountryGroup',
+      data: formData
+    };
+    return this.http.postData(requestData);
+  }
 }
