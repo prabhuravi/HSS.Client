@@ -64,3 +64,43 @@
 .ui-autocomplete-panel {
     color: #f6f6f6;
 }
+
+.ui-picklist .ui-picklist-caption {
+    background-color: #373c41;
+    color: #f6f6f6;
+    border: 1px solid #71767a;
+}
+.ui-picklist .ui-picklist-filter-container {
+    border: 1px solid #71767a;
+    color: #f6f6f6;
+    background-color: #373c41;
+}
+.ui-picklist .ui-picklist-filter-container .ui-inputtext{
+    color: #f6f6f6;
+    background-color: #373c41;
+    border: 1px solid #71767a;
+}
+.ui-picklist .ui-picklist-list {
+    border: 1px solid #71767a;
+    background-color: #373c41;
+    color: #f6f6f6;
+}
+.ui-picklist .ui-picklist-list .ui-picklist-item {
+    color: #f6f6f6;
+}
+.ui-picklist .ui-picklist-list .ui-picklist-item:not(.ui-state-highlight):hover {
+    background-color: #eaeaea;
+    color: #f6f6f6;
+}
+.ui-picklist .ui-picklist-list .ui-picklist-item.ui-state-highlight {
+    background-color: #007ad9;
+    color: #f6f6f6;
+}
+.ui-picklist .ui-picklist-list .ui-picklist-droppoint-highlight {
+    background-color: #007ad9;
+}
+.u--picklistItem{
+    color: #f6f6f6;
+    background-color: #373c41;
+    border: 1px solid #71767a;
+}

@@ -41,6 +41,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.u--textRight{
+    text-align: right;
+}
+.u--modalclosebtn{
+    position: absolute!important;
+    right: 50px;
+}
 
 .ui-paginator-bottom {
     padding: 2rem;
@@ -128,4 +135,12 @@
 }
 [hidden] {
     display: none !important;
+}
+.kx-modal--size-large {
+    &.u--modal--size-large{
+        max-width: 80rem;
+    }
+}
+.kx-modal__body {
+    max-height: calc(100vh - 200px)!important;
 }

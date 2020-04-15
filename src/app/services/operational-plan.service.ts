@@ -246,26 +246,6 @@ export class OperationalPlanService {
     ];
   }
 
-  getOperatorCountryList(): IOperatorCountryList[] {
-    return [{
-      CountryId: 1,
-      CountryName: 'Abkhazia',
-      Zone: 'Unspecified'
-    }, {
-      CountryId: 2,
-      CountryName: 'Afghanistan',
-      Zone: 'Unspecified'
-    }, {
-      CountryId: 3,
-      CountryName: 'Albania',
-      Zone: 'Unspecified'
-    }, {
-      CountryId: 4,
-      CountryName: 'Algeria',
-      Zone: 'Unspecified'
-    }];
-  }
-
   getVesselList(): Observable<IVesselList[]> {
     const requestData = {
       endPoint: '/OperationPlanAPI/api/OperationalPlan/GetVesselDetails'

@@ -31,10 +31,17 @@ export class HttpService {
   }
 
   postData(requestData: any): Observable<any> {
+    if (requestData.data.EnabledBy) {
+      requestData.data.EnabledBy = this.username;
+    }
     requestData.data.CreatedBy = this.username;
     requestData.data.LastUpdatedBy = this.username;
     requestData.data.LastUpdatedDate = new Date();
     return this.http.post(`${this.domainURL + requestData.endPoint}`, requestData.data);
+  }
+  putData(requestData: any): Observable<any> {
+    requestData.data.EnabledBy = this.username;
+    return this.http.put(`${this.domainURL + requestData.endPoint}`, requestData.data);
   }
 
   getUserInfo(user) {
