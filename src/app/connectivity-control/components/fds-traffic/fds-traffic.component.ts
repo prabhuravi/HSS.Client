@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { ConnectivityControlService } from 'src/app/services/connectivity-control.service';
 import { AppConstants } from 'src/app/app.constants';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-fds-traffic',
@@ -29,6 +30,7 @@ export class FdsTrafficComponent implements OnInit {
     { field: 'UploadCount', header: 'Upload Count', filterMatchMode: 'contains' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  vesselListLoaded: boolean = false;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -36,8 +38,12 @@ export class FdsTrafficComponent implements OnInit {
     private fb: FormBuilder
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.loadVessels();
+  }
+  loadVessels(): void {
     this.operationalPlanService.getVesselList().subscribe((data) => {
+      this.vesselListLoaded = true;
       this.vesselList = data;
       this.form = this.buildForm();
     });
@@ -50,10 +56,13 @@ export class FdsTrafficComponent implements OnInit {
     group.addControl('ToDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
     return group;
   }
-  onSubmit() {
+  onSubmit(): void {
     this.isFormSubmitted = true;
     if (this.form.valid) {
-      this.vesselHistoricalUploadStatus = this.connectivityControlService.getVesselHistoricalStatus(this.form.value);
+      this.form.value.VesselName = this.form.value.VesselName.VesselName;
+      this.connectivityControlService.getVesselHistoricalStatus(this.form.value).pipe(take(1)).subscribe((data) => {
+        this.vesselHistoricalUploadStatus = data;
+      });
     }
   }
 
