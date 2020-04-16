@@ -4,7 +4,6 @@ import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import { Subscription } from 'rxjs';
 import { interval } from 'rxjs';
-import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-connectivity-control',

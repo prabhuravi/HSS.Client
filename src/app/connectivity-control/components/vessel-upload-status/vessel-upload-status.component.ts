@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { ConnectivityControlService } from 'src/app/services/connectivity-control.service';
 import { take } from 'rxjs/operators';
+import { AppConstants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-vessel-upload-status',
@@ -31,6 +32,7 @@ export class VesselUploadStatusComponent implements OnInit {
     { field: 'UploadCount', header: 'Upload Count', filterMatchMode: 'contains' }
   ];
   vesselListLoaded: boolean = false;
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
