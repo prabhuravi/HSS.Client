@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConnectivityControlService } from '../../../services/connectivity-control.service';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
+import { Subscription } from 'rxjs';
+import { interval } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-connectivity-control',
   templateUrl: './connectivity-control.component.html',
   styleUrls: ['./connectivity-control.component.scss']
 })
-export class ConnectivityControlComponent implements OnInit {
+export class ConnectivityControlComponent implements OnInit, OnDestroy {
 
   vesselConnectivityControlList: IConnectivityControl[] = [];
   vesselConnectivityActionLogList: IConnectivityActionLog[] = [];
@@ -21,24 +24,37 @@ export class ConnectivityControlComponent implements OnInit {
   ];
   displayActionLogModal: boolean;
   activeVessel: any = {};
-  isDataLoading: boolean;
+  isDataLoading: boolean = true;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  dateTimeInterval = interval(60000);
+  dateTimeIntervalSubscription: Subscription;
 
   constructor(
     private connectivityControlService: ConnectivityControlService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadData();
+    this.dateTimeIntervalSubscription = this.dateTimeInterval.subscribe(() => {
+      this.loadData();
+    });
+  }
+  ngOnDestroy(): void {
+    if (this.dateTimeIntervalSubscription) {
+      this.dateTimeIntervalSubscription.unsubscribe();
+    }
   }
   loadData(): void {
-    this.isDataLoading = true;
-    this.connectivityControlService.getConnectivityData().pipe(take(1)).subscribe((data) => {
+    this.connectivityControlService.getConnectivityData().pipe(take(1)).subscribe((connectivityData) => {
       this.isDataLoading = false;
-      data.forEach((e) => {
-        e.DisableTime = new Date(e.DisableTime) as any;
+      connectivityData.forEach((vessel) => {
+        if (vessel.IsUploadEnabled && !vessel.AlwaysOn) {
+          vessel.DisableTime = new Date(vessel.DisableTime);
+        } else {
+          vessel.DisableTime = null;
+        }
       });
-      this.vesselConnectivityControlList = data;
+      this.vesselConnectivityControlList = connectivityData;
     });
   }
   toggleActivityLogModal(): void {

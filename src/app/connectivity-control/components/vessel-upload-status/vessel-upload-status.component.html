@@ -1,30 +1,30 @@
-<div class="kx-card kx-card--skin-default">
+<div class="kx-card kx-card--skin-default" *ngIf="vesselListLoaded">
     <div class="kx-p--medium">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="kx-row">
                 <div class="kx-col">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
-                        <p-dropdown placeholder="Select Vessel" [formControlName]="'VesselName'" [options]="vesselList"
-                            optionLabel="VesselName" filter="true"></p-dropdown>
+                        <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselName'" [options]="vesselList"
+                            optionLabel="VesselName" filter="true" (onChange)="getMissionList()"></p-dropdown>
                     </div>
                 </div>
                 <div class="kx-col">
                     <label class="kx-label" for="selectbox1">From Mission</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
-                        <p-dropdown placeholder="Select Mission" [formControlName]="'FromMission'"
-                            [options]="missionList" optionLabel="name" filter="true"></p-dropdown>
+                        <p-dropdown styleClass="kx-p--none" placeholder="Select Mission" [formControlName]="'FromMission'"
+                            [options]="fromMissionList" optionLabel="name" filter="true" (onChange)="filterToMissionList()"></p-dropdown>
                     </div>
                 </div>
                 <div class="kx-col">
                     <label class="kx-label" for="selectbox1">To Mission</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
-                        <p-dropdown placeholder="Select Mission" [formControlName]="'ToMission'" [options]="missionList"
+                        <p-dropdown styleClass="kx-p--none" placeholder="Select Mission" [formControlName]="'ToMission'" [options]="toMissionList"
                             optionLabel="name" filter="true"></p-dropdown>
                     </div>
                 </div>
                 <div class="kx-col">
-                    <button class="kx-btn kx-btn--skin-primary kx-btn--size-large kx-mt--medium">
+                    <button [disabled]="!form.valid" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
                         <span class="kx-btn__inner">
                             <span class="kx-btn__txt">Get Logs</span>
                         </span>
@@ -67,6 +67,9 @@
             <tr>
                 <td *ngFor="let col of columns">
                     <div [ngSwitch]="col.field">
+                        <div *ngSwitchCase="'FileUploadedDate'">
+                            {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
+                        </div> 
                         <div *ngSwitchDefault>
                             <div class="u--withEllipsis">{{rowData[col.field]}}</div>
                         </div>

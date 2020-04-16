@@ -7,8 +7,9 @@ interface IConnectivityControl {
     IsUploadEnabled: boolean;
     RemainingMinutes: number;
     RemainingTime: object;
-    DisableTime: string;
+    DisableTime: any;
     EnabledBy: string;
     NodeNumber: number;
     IMONumber: number;
+    AlwaysOn: boolean;
 }

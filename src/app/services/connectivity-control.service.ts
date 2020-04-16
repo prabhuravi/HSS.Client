@@ -131,23 +131,26 @@ export class ConnectivityControlService {
     return this.http.getData(requestData);
   }
 
-  getMissionList(VesselName: string): IBasicDropdown[] {
-    return [
-      {
-        name: 532,
-        value: 532
-      },
-      {
-        name: 535,
-        value: 535
-      }
-    ];
+  getMissionList(formData: any): Observable<number[]> {
+    const requestData = {
+      endPoint: '/VesselConfig/api/VesselConfiguration/MissionsOnVessel',
+      data: formData
+    };
+    return this.http.postData(requestData);
   }
-  getVesselUploadStatus(VesselMissionData: IVesselMissionData): IVesselUploadStatus {
-    return this.vesselUploadStatus;
+  getVesselUploadStatus(formData: IVesselMissionData): Observable<IVesselUploadStatus> {
+    const requestData = {
+      endPoint: '/VesselConfig/api/VesselConfiguration/FDSUploadStatus',
+      data: formData
+    };
+    return this.http.postData(requestData);
   }
-  getVesselHistoricalStatus(VesselMissionData: IVesselHistoricalData): IVesselUploadStatus {
-    return this.vesselUploadStatus;
+  getVesselHistoricalStatus(formData: IVesselHistoricalData): Observable<IVesselUploadStatus> {
+    const requestData = {
+      endPoint: '/VesselConfig/api/VesselConfiguration/FDSHistoricalUploadStatus',
+      data: formData
+    };
+    return this.http.postData(requestData);
   }
 
   getWhiteListedCountries(vesselId: number): Observable<IWhiteListedCountries[]> {
