@@ -13,7 +13,7 @@ export class ConnectivityMonitoringService {
   cachedVesselLatencyChart:ILatencyCacheData;
   nodeChangeSubject = new Subject();
   constructor(public http: HttpClient) { }
-  domainURL = 'https://hgstest.kognif.ai/VesselLinkQualityAPIService/API/VesselLinkQuality/'
+  domainURL = 'https://hgs.kognif.ai/VesselLinkQualityAPIService/API/VesselLinkQuality/'
   getVesselLinks(): Observable<any> {
 
     const url = 'GetVesselLinks';
@@ -57,8 +57,6 @@ export class ConnectivityMonitoringService {
         return vessel.NodeNumber.toFixed(0) == nodeNumber;
       });
       return vessel[0].Name;
-    }else{
-      
     }
         
   }

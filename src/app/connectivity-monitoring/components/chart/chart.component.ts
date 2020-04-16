@@ -4,6 +4,8 @@ import { IDataPoint } from './data-point';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import * as d3 from 'd3';
 import { LatencyRequest } from 'src/app/models/LatencyRequest';
+import * as moment from 'moment';
+
 import { Subscriber, Subscription } from 'rxjs';
 
 
@@ -66,6 +68,9 @@ export class ChartComponent implements AfterViewInit, OnChanges,OnDestroy {
     this.NodeSuscription = this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
       if (nodeNumber) {
         this.latencyRequest.NodeNumber = nodeNumber;
+        
+        d3.select('#' + this.chartId).remove();
+        this.showChart= false;
         this.getChartData(this.latencyRequest);
       }
     });
@@ -107,7 +112,7 @@ export class ChartComponent implements AfterViewInit, OnChanges,OnDestroy {
     // }
   }
   setupChart() {
-    d3.select('#' + this.chartId).remove();
+  
     this.dataSet.loadData();
     this.host = d3.select(this.chartElement.nativeElement);
     this.hostWidth = parseInt(this.host.style('width'), 10);
@@ -354,7 +359,9 @@ export class ChartComponent implements AfterViewInit, OnChanges,OnDestroy {
       .attr('fill-opacity', d => d.isGap ? '0' : '0.5')
       
       .on("mouseover", function (d) {
-        tooltip.text(`${d.TimeStamp} Latency  ${d.LatencyValue}`);
+        console.log(d.TimeStamp);
+        let date= new Date(d.TimeStamp);
+        tooltip.text(`${date} Latency  ${d.LatencyValue}`);
         return tooltip.style("visibility", "visible");
       })
       .on("mousemove", function () { return tooltip.style("top", ((event as any).pageY - 10) + "px").style("left", ((event as any).pageX + 10) + "px"); })

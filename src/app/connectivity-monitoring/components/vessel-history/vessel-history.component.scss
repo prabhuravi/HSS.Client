@@ -9,7 +9,7 @@
   }
   .inline-flex{
       display: inline-flex;
-  }
+}
   .hand-cursor{
       cursor: pointer;
   }
@@ -18,6 +18,28 @@
     margin-left: 25%;
   }
   .extra-margin{
-      width: 100%;
-      text-align: center;
+    width: 79%;
+    /* text-align: center; */
+    display: inline-block;
+
+  }
+  .card-body{
+    height: 145px;
+  }
+
+  .cus-position{
+    position: absolute;
+    left: 48%;
+    top: -4px;
+    width: fit-content;
+  }
+  .no-data-extra-margin{
+    width: 84%;
+    margin-top: 55px;
+  }
+  .kx-card__header {
+    padding: 0;
+    margin: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ece6e6;
   }

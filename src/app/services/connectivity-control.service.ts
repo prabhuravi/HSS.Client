@@ -6,7 +6,6 @@ import { HttpService } from './http.service';
   providedIn: 'root'
 })
 export class ConnectivityControlService {
-
   vesselUploadStatus: IVesselUploadStatus = {
     FilesOnVessel: 5,
     FilesUploaded: 0,

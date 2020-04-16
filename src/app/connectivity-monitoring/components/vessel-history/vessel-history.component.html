@@ -1,97 +1,145 @@
 <app-load *ngIf="!cachedVesselDetails"></app-load>
-<div class="kx-row">
-    <!-- COLUMN -->
-    <div class="kx-col  kx-col--2">
-        <!-- YOUR CONTENT -->
-
-        <label class="kx-label" >Node Number:</label>
-        <div class="kx-mt--tiny">
-            {{cachedVesselDetails && cachedVesselDetails.NodeNumber  ? cachedVesselDetails.NodeNumber : noData}}
-        </div>
-        
-    </div>
-    <div class="kx-col  kx-col--2">
-        <!-- YOUR CONTENT -->
-        <label class="kx-label" >Vessel:</label>
-        <div class="kx-mt--tiny">
-            {{cachedVesselDetails && cachedVesselDetails.Name  ? cachedVesselDetails.Name : noData}}
-        </div>
-        
-    </div>
-    <div class="kx-col  kx-col--2">
-        <label class="kx-label" >Status:</label>
-        <div class="kx-mt--tiny">
-            {{cachedVesselDetails && cachedVesselDetails.Status  ? cachedVesselDetails.Status : noData}}
-        </div>
-    </div>
-    <div class="kx-col  kx-col--2">
-        <!-- YOUR CONTENT -->
-        <label class="kx-label" >Latency:</label>
-        <div class="kx-mt--tiny">
-            {{cachedVesselDetails && cachedVesselDetails.LastLatency  ? cachedVesselDetails.LastLatency : noData}}
-        </div>
-    </div>
-    <div class="kx-col  kx-col--2">
-        <!-- YOUR CONTENT -->
-        <label class="kx-label" >APN:</label>
-        <div class="kx-mt--tiny">
-            {{ vesselDetails && vesselDetails.ApnName ? vesselDetails.ApnName : noData}}
-        </div>
-    </div>
-    <div class="kx-col  kx-col--2">
-        <!-- YOUR CONTENT -->
-       
-        <label class="kx-label" >Provider Name:</label>
-        <div class="kx-mt--tiny">
-            {{ vesselDetails && vesselDetails.ProviderName ? vesselDetails.ProviderName : noData}}
-        </div>
-    </div>
-</div>
 
 <div class="kx-row">
-    <!-- COLUMN -->
-    <div class="kx-col  kx-col--2">
-        <!-- YOUR CONTENT -->
-        <label class="kx-label" >Network Type:</label>
-        <div class="kx-mt--tiny">
-            {{ vesselDetails && vesselDetails.NetworkType ? vesselDetails.NetworkType : noData}}
+    <div class="kx-col  kx-col--4">
+        <div class="kx-row kx-card kx-card--skin-default">
+            <div class="kx-card__header">
+                <h3 class="kx-card__title">GSN</h3>
+            </div>
+            <div class="kx-card__body card-body">
+                <div class="kx-row">
+                    <div class="kx-col  kx-col--6">
+                        <!-- YOUR CONTENT -->
+
+                        <label class="kx-label">Node Number:</label>
+                        <div class="kx-mt--tiny">
+                            {{cachedVesselDetails && cachedVesselDetails.NodeNumber  ? cachedVesselDetails.NodeNumber : noData}}
+                        </div>
+
+                    </div>
+                    <div class="kx-col  kx-col--6">
+                        <!-- YOUR CONTENT -->
+                        <label class="kx-label">Vessel Name:</label>
+                        <div class="kx-mt--tiny">
+                            {{cachedVesselDetails && cachedVesselDetails.Name  ? cachedVesselDetails.Name : noData}}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="kx-row">
+                    <div class="kx-col  kx-col--6">
+                        <label class="kx-label">Status:</label>
+                        <div class="kx-mt--tiny">
+                            {{cachedVesselDetails && cachedVesselDetails.Status  ? cachedVesselDetails.Status : noData}}
+                        </div>
+                    </div>
+                    <div class="kx-col  kx-col--6">
+                        <!-- YOUR CONTENT -->
+                        <label class="kx-label">Latency:</label>
+                        <div class="kx-mt--tiny">
+                            {{cachedVesselDetails && cachedVesselDetails.LastLatency  ? cachedVesselDetails.LastLatency : noData}}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="kx-col  kx-col--2">
-        <!-- YOUR CONTENT -->
-        <label class="kx-label" >MCC:</label>
-        <div class="kx-mt--tiny">
-            {{ vesselDetails && vesselDetails.MCC ? vesselDetails.MCC : noData}}
+    <div class="kx-col  kx-col--4">
+        <div class="kx-row kx-card kx-card--skin-default" style="margin-left:10px;">
+            <div class="kx-card__header">
+                <h3 class="kx-card__title">SNMP</h3>
+            </div>
+            <div class="kx-card__body card-body">
+                <div class="kx-row">
+                    <div class="kx-col  kx-col--4">
+                        <!-- YOUR CONTENT -->
+                        <label class="kx-label">Network Type:</label>
+                        <div class="kx-mt--tiny">
+                            {{ vesselDetails && vesselDetails.NetworkType ? vesselDetails.NetworkType : noData}}
+                        </div>
+                    </div>
+                    <div class="kx-col  kx-col--4">
+                        <!-- YOUR CONTENT -->
+                        <label class="kx-label">MCC:</label>
+                        <div class="kx-mt--tiny">
+                            {{ vesselDetails && vesselDetails.MCC ? vesselDetails.MCC : noData}}
+                        </div>
+                    </div>
+                    <div class="kx-col  kx-col--4">
+                        <!-- YOUR CONTENT -->
+                        <label class="kx-label">Country:</label>
+                        <div class="kx-mt--tiny">
+                            {{ vesselDetails && vesselDetails.CountryName ? vesselDetails.CountryName : noData}}
+                        </div>
+                    </div>
+                </div>
+                <div class="kx-row">
+                    <div class="kx-col  kx-col--4">
+                        <!-- YOUR CONTENT -->
+                        <label class="kx-label">APN:</label>
+                        <div class="kx-mt--tiny">
+                            {{ vesselDetails && vesselDetails.ApnName ? vesselDetails.ApnName : noData}}
+                        </div>
+                    </div>
+                    <div class="kx-col  kx-col--4">
+                        <!-- YOUR CONTENT -->
+
+                        <label class="kx-label">Provider Name:</label>
+                        <div class="kx-mt--tiny">
+                            {{ vesselDetails && vesselDetails.ProviderName ? vesselDetails.ProviderName : noData}}
+                        </div>
+                    </div>
+                    <div class="kx-col  kx-col--4">
+                        <!-- YOUR CONTENT -->
+                        <label class="kx-label">Router Position:</label>
+                        <div class="kx-mt--tiny">
+                            <span *ngIf="vesselDetails && !vesselDetails.Latitude">{{noData}}</span>
+                            <span *ngIf="vesselDetails && vesselDetails.Latitude">
+                                {{  vesselDetails.Latitude }}
+                                {{ vesselDetails.Longitude }}</span>
+                            <a class="hand-cursor"
+                                (click)="viewMeOnMap(vesselDetails.Latitude,vesselDetails.Longitude)">View on Map</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="kx-col  kx-col--2">
-        <!-- YOUR CONTENT -->
-        <label class="kx-label" >Country:</label>
-        <div class="kx-mt--tiny">
-            {{ vesselDetails && vesselDetails.CountryName ? vesselDetails.CountryName : noData}}
+    <div class="kx-col  kx-col--4">
+        <div class="kx-row kx-card kx-card--skin-default" style="margin-left:10px;">
+            <div class="kx-card__header">
+                <h3 class="kx-card__title">AIS</h3>
+            </div>
+            <div class="kx-card__body card-body">
+
+               <div class="row">
+                <div class="kx-col  kx-col--2">
+                    <!-- YOUR CONTENT -->
+
+                    <label class="kx-label">Vessel Position:</label>
+                    <div class="kx-mt--tiny">
+                        <a class="hand-cursor" (click)="showMap=!showMap">View History</a>
+                    </div>
+                </div>
+                <div class="kx-col  kx-col--10 cus-position">
+                    <div class="kx-row chart-margin" *ngIf="chart && chart.data">
+                        <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data"
+                            [options]="chart.options">
+                        </google-chart>
+                        <label  class="extra-margin">Signal Strength</label>
+                    </div>
+                    <div class="kx-row" *ngIf="noGaugeData">
+                        <label class="no-data-extra-margin" *ngIf="noGaugeData">{{noData}}</label>
+                        <label  class="no-data-extra-margin">Signal Strength</label>
+                    </div>
+                </div>
+               </div>
+            </div>
         </div>
     </div>
-    <div class="kx-col  kx-col--2">
-        <!-- YOUR CONTENT -->
-        <label class="kx-label" >Router Position:</label>
-        <div class="kx-mt--tiny">
-            <span  *ngIf="vesselDetails && !vesselDetails.Latitude">{{noData}}</span>
-            <span *ngIf="vesselDetails && vesselDetails.Latitude">
-                {{  vesselDetails.Latitude }}
-                {{ vesselDetails.Longitude }}</span>
-            <a  class="hand-cursor" (click)="viewMeOnMap(vesselDetails.Latitude,vesselDetails.Longitude)">View on Map</a> 
-        </div>
-    </div>
-    <div class="kx-col  kx-col--2">
-        <!-- YOUR CONTENT -->
-      
-        <label class="kx-label" >Vessel Position:</label>
-        <div class="kx-mt--tiny">
-           <a class="hand-cursor" (click)="showMap=!showMap">View History</a> 
-        </div>
-    </div>
-    
+
 </div>
+
 
 <div class="kx-card kx-card--skin-default  custom-margin">
     <div class="kx-p--medium">
@@ -99,20 +147,26 @@
             <div class="kx-col">
                 <label class="kx-label" for="selectbox1">Presets</label>
                 <div class="kx-mt--tiny">
-                    <p-dropdown [options]="presetOptions" (onChange)="onDropDownSelection();" [(ngModel)]="selectedPreset" optionLabel="name"
-                       ></p-dropdown>
+                    <p-dropdown [options]="presetOptions" (onChange)="onDropDownSelection();"
+                        [(ngModel)]="selectedPreset" optionLabel="name"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col kx-col--2" style="margin-right: 20px;">
                 <label class="kx-label" for="selectbox1">From Date</label>
                 <div class="kx-mt--tiny">
-                    <p-calendar inputStyleClass="kx-field kx-field--size-base" (onSelect)="getLatencyTrendData()"  [(ngModel)]="fromDate" showTime="true" hourFormat="24"  showButtonBar="true" placeholder="dd/mm/yy HH:mm (UTC)" dateFormat="dd/mm/yy HH:ss"></p-calendar>
+                    <p-calendar inputStyleClass="kx-field kx-field--size-base" (onSelect)="getLatencyTrendData()"
+                        [(ngModel)]="fromDate" showTime="true" hourFormat="24" showButtonBar="true"
+                        [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
+                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
                 </div>
             </div>
             <div class="kx-col kx-col--2">
                 <label class="kx-label" for="selectbox1">To Date</label>
                 <div class="kx-mt--tiny">
-                    <p-calendar inputStyleClass="kx-field kx-field--size-base" (onSelect)="getLatencyTrendData()" [(ngModel)]="toDate" showTime="true" hourFormat="24"  showButtonBar="true" placeholder="dd/mm/yy HH:mm (UTC)" dateFormat="dd/mm/yy HH:ss"></p-calendar>
+                    <p-calendar inputStyleClass="kx-field kx-field--size-base" [minDate]="fromDate"
+                        (onSelect)="getLatencyTrendData()" [(ngModel)]="toDate" showTime="true" hourFormat="24"
+                        showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
+                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
                 </div>
             </div>
             <div class="kx-col">
@@ -123,34 +177,26 @@
                 </button>
             </div>
             <div class="kx-col">
-                <button (click)="resetDate()" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium" >
+                <button (click)="resetDate()" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
                     <span class="kx-btn__inner">
                         <span class="kx-btn__txt">Reset</span>
                     </span>
                 </button>
             </div>
         </div>
+    </div>
 </div>
-</div>
-<div class="kx-row" [hidden]="showMap">
-    <div class="kx-col  kx-col--10 inline-flex">
+<div class="kx-row" >
+    <div class="kx-col  kx-col--6">
         <div class="charts">
             <app-chart [chartId]="'chart1'" [latencyRequest]="latencyRequest"></app-chart>
-          </div>
+        </div>
     </div>
-    <div class="kx-col  kx-col--2">
-    <div class="kx-row chart-margin" *ngIf="chart && chart.data">
-        <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data" [options]="chart.options">
-        </google-chart>
-    </div>    
-    <div class="kx-row">
-        <label  class="extra-margin" *ngIf="noGaugeData">{{noData}}</label>
-        <label *ngIf="!noGaugeData" class="extra-margin">Signal Strength</label>
+    <div class="kx-col  kx-col--6" style="margin-left:10px;width: 49.4%;">
+        <div class="row" >
+            <app-map [showMap]="showMap" [aisRequest]="aisRequest"></app-map>
+        </div>
     </div>
-    </div>
-    
 
-</div>
-<div class="row" [hidden]="!showMap">
-    <app-map [showMap]="showMap" [aisRequest]="aisRequest"></app-map>
+
 </div>

@@ -129,3 +129,23 @@
 [hidden] {
     display: none !important;
 }
+
+
+.leaflet-control-fullscreen a {
+    background: #fff url('./assets/fullscreen.png') no-repeat 0 0 !important;
+    background-size: 26px 52px;
+}
+
+.leaflet-touch.leaflet-fullscreen-on .leaflet-control-fullscreen a {
+    background-position: 2px -24px !important;
+}
+.leaflet-touch .leaflet-control-fullscreen a {
+    background-position: 2px 2px !important;
+}
+
+.kx-page__main {
+    width: 100%;
+    flex: 1 1 auto;
+    transition: width .1s ease-in-out;
+   // overflow: visible !important;
+}

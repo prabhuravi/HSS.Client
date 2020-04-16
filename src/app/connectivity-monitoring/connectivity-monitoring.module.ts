@@ -10,12 +10,12 @@ import { ConnectivityMonitoringComponent } from './components/connectivity-monit
 import { Routes, RouterModule } from '@angular/router';
 import { VesselHistoryComponent } from './components/vessel-history/vessel-history.component';
 import { ChartComponent } from './components/chart/chart.component';
-
 import {icon, Marker} from 'leaflet';
 import { MapComponent } from './components/map/map.component';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { DonutChartComponent } from './components/donut/donut-chart.component';
 const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
-const iconUrl = 'assets/leaflet/marker-icon.png';
+const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/leaflet/marker-shadow.png';
 const iconDefault = icon({
   iconRetinaUrl,
@@ -38,7 +38,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, ConnectivityMonitoringComponent, VesselHistoryComponent,ChartComponent, MapComponent],
+  declarations: [DashboardComponent, ConnectivityMonitoringComponent, VesselHistoryComponent,ChartComponent, MapComponent,
+    DonutChartComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import * as d3 from 'd3';
 declare var google: any;
@@ -9,6 +9,8 @@ import { IVesselDetails } from 'src/app/models/IVesselDetails';
 import { LatencyRequest } from 'src/app/models/LatencyRequest';
 import { AISRequest } from 'src/app/models/AISRequest';
 import { concatAll } from 'rxjs/operators';
+import { AppConstants } from 'src/app/app.constants';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-vessel-history',
   templateUrl: './vessel-history.component.html',
@@ -16,13 +18,13 @@ import { concatAll } from 'rxjs/operators';
 })
 
 
-export class VesselHistoryComponent implements OnInit {
+export class VesselHistoryComponent implements OnInit, OnDestroy {
   @ViewChild('googlechart', null)
   googlechart: GoogleChartComponent;
   chart: any = {
     type: 'Gauge',
     options: {
-      width: 200, height: 200,
+      width: 180, height: 180,
       min: -110,
       max: -50,
       redFrom: -110,
@@ -38,6 +40,7 @@ export class VesselHistoryComponent implements OnInit {
   aisRequest = new AISRequest();
   vesselDetails: IVesselDetails;
   cachedVesselDetails: IVesselLinks;
+  VesselDataSubscription: Subscription;
   selectedVesselNodeNumber: string;
   showMap: boolean = false;
   presetOptions = [{
@@ -53,6 +56,7 @@ export class VesselHistoryComponent implements OnInit {
     name: 'Custom',
     value: 0
   }];
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   noData: string = 'No Data Available';
   noGaugeData = false;
   selectedPreset: any = { name: "Last Day", value: 24 };
@@ -62,11 +66,14 @@ export class VesselHistoryComponent implements OnInit {
     private route: ActivatedRoute) {
 
   }
+  ngOnDestroy(): void {
+    this.VesselDataSubscription.unsubscribe();
+  }
   getVesselDetails(nodeNumber: number) {
     if (nodeNumber) {
       this.selectedVesselNodeNumber = nodeNumber.toString();
       this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
-      this.connectivityMonitoringService.getVesselSubject().subscribe((data) => {
+     this.VesselDataSubscription=  this.connectivityMonitoringService.getVesselSubject().subscribe((data) => {
         if (data) {
           this.cachedVesselDetails = data;
           this.resetDate();

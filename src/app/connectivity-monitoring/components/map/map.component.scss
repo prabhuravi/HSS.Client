@@ -15,7 +15,11 @@
 .area {
   fill: lightsteelblue;
 }
-
+.map-tooltip{
+  .leaflet-popup-content-wrapper{
+    border-radius: 0px !important;
+  }
+}
 .x-axis .domain,
 .y-axis .domain,
 .x-axis .tick line,
