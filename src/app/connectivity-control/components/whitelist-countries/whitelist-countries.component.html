@@ -1,11 +1,11 @@
-<div class="kx-card kx-card--skin-default">
+<div class="kx-card kx-card--skin-default" *ngIf="activeVessel">
     <div class="kx-p--medium">
         <div class="kx-row">
             <div class="kx-col">
                 <label class="kx-label" for="selectbox1">Select Vessel</label>
                 <div class="kx-mt--tiny">
-                    <p-dropdown [options]="vesselList" [(ngModel)]="activeVessel" optionLabel="VesselName"
-                        filter="true"></p-dropdown>
+                    <p-dropdown [options]="vesselList" [(ngModel)]="activeVessel" optionLabel="VesselName" filter="true"
+                        (onChange)="loadWhitelistedCountries()"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col">
@@ -16,9 +16,18 @@
                 </div>
             </div>
             <div class="kx-col">
-                <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
+                <button (click)="markCountryWhitelist()" [disabled]="disableActivity"
+                    class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
                     <span class="kx-btn__inner">
-                        <span class="kx-btn__txt">Whitelist for all</span>
+                        <span class="kx-btn__txt">Whitelist for {{activeVessel.VesselName}}</span>
+                    </span>
+                </button>
+            </div>
+            <div class="kx-col u--textRight">
+                <button (click)="toggleManageCountryGroup()"
+                    class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--medium">
+                    <span class="kx-btn__inner">
+                        <span class="kx-btn__txt">Manage Country / Group</span>
                     </span>
                 </button>
             </div>
@@ -27,13 +36,15 @@
 </div>
 
 <div class="kx-pt--small">
-    <p-table #tt [value]="whiteListedCountries" [columns]="cols" [paginator]="true"
-        [rows]="5">
+    <app-load *ngIf="isDataLoading"></app-load>
+    <p-table *ngIf="!isDataLoading" [value]="whiteListedCountries" [columns]="cols" [paginator]="true" [rows]="5">
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--xlarge">
                     {{col.header}}
-                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                        ariaLabelDesc="Activate to sort in descending order"
+                        ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                 </th>
             </tr>
         </ng-template>
@@ -42,7 +53,8 @@
                 <td *ngFor="let col of columns">
                     <div [ngSwitch]="col.field">
                         <div *ngSwitchCase="'VesselId'">
-                            <button class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+                            <button (click)="removeWhitelistCountry(rowData)" [disabled]="disableActivity"
+                                class="kx-btn kx-btn--skin-primary kx-btn--size-base">
                                 <span class="kx-btn__inner">
                                     <span class="kx-btn__txt">Remove</span>
                                 </span>
@@ -55,3 +67,87 @@
         </ng-template>
     </p-table>
 </div>
+<app-modal [displayMe]="displayManageCountryGroup">
+    <div class="modal-header">
+        <div>
+            Manage Country/Group
+            <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon u--modalclosebtn" aria-label="close modal"
+                title="close modal" (click)="toggleManageCountryGroup()">
+                <span class="kx-btn__inner">
+                    <i class="kx-icon kx-icon--size-moderate">
+                        <svg focusable="false">
+                            <use href="../../assets/img/icons/sprites/icons.svg#close">
+                            </use>
+                        </svg>
+                    </i>
+                    <span class="kx-btn__txt kx-is-vishidden">close modal</span>
+                </span>
+            </button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="kx-container kx-p--none">
+            <div class="kx-row">
+                <div class="kx-col kx-col--3 kx-pr--small">
+                    <div class="kx-card kx-card--skin-default kx-p--medium kx-mb--small">
+                        <div>
+                            <label class="kx-label" for="selectbox1">Select Group</label>
+                            <div class="kx-mt--tiny">
+                                <p-dropdown styleClass="u--fullWidth" [options]="groupList" [(ngModel)]="activeGroup"
+                                    optionLabel="CountryName" filter="true" placeholder="Select Group"
+                                    (onChange)="loadGropCountries()">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div>
+                            <button (click)="deleteCountryGroup()" [disabled]="disableActivity"
+                                class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium kx-btn--fluid">
+                                <span class="kx-btn__inner">
+                                    <span class="kx-btn__txt">Remove Group</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="kx-card kx-card--skin-default kx-p--medium">
+                        <form [formGroup]="form" (ngSubmit)="addCountryGroup()">
+                            <div>
+                                <div class="kx-form__element">
+                                    <label class="kx-label" for="selectbox1">Group Name</label>
+                                    <input  [formControlName]="'GroupName'" autofocus id="group-name" class="kx-field kx-field--size-base"
+                                        type="text" placeholder="Enter Group Name" />
+                                </div>
+                            </div>
+                            <div>
+                                <button type="submit" [disabled]="disableActivity"
+                                    class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium kx-btn--fluid">
+                                    <span class="kx-btn__inner">
+                                        <span class="kx-btn__txt">Add Group</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="kx-col kx-col--9 kx-pl--small">
+                    <div class="kx-card kx-card--skin-default kx-p--medium">
+                        <p-pickList [source]="operatorCountryList" [target]="groupCountryList"
+                            sourceHeader="Operating Countries" targetHeader="Group Countries" [responsive]="true"
+                            filterBy="CountryName" dragdrop="true" sourceFilterPlaceholder="Search by Country Name"
+                            targetFilterPlaceholder="Search by Country Name" [sourceStyle]="{'height':'300px'}"
+                            [targetStyle]="{'height':'300px'}">
+                            <ng-template let-country pTemplate="item">
+                                <div class="u--picklistItem">{{country.CountryName}}</div>
+                            </ng-template>
+                        </p-pickList>
+                        <button (click)="updateGroupCountries()"
+                            class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-btn--fluid kx-mt--small">
+                            <span class="kx-btn__inner">
+                                <span class="kx-btn__txt u--cursorPointer">Update Group</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-modal>
