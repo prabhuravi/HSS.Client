@@ -14,6 +14,7 @@ import {icon, Marker} from 'leaflet';
 import { MapComponent } from './components/map/map.component';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { DonutChartComponent } from './components/donut/donut-chart.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/leaflet/marker-shadow.png';
@@ -52,6 +53,6 @@ const routes: Routes = [
   ],
   
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  exports: [RouterModule]
+  exports: [RouterModule,VesselHistoryComponent]
 })
 export class ConnectivityMonitoringModule { }

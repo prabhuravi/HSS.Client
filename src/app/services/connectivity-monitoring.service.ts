@@ -81,8 +81,9 @@ export class ConnectivityMonitoringService {
     return this.http.get(`${this.domainURL + url}`);
   }
   public getChartData(latencyRequest: LatencyRequest): Observable<any> {
+    var a = {"NodeNumber":17876,"FromDate":"2020-04-16T09:16:55.754Z","ToDate":"2020-04-17T09:16:55.754Z"};
     const url = 'LatencyTrendData'
-    return this.http.post(`${this.domainURL + url}`,latencyRequest);
+    return this.http.post(`${this.domainURL + url}`,a);
 
   }
 }

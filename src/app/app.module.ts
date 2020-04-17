@@ -1,4 +1,4 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -39,6 +39,7 @@ export function initConfig(config: ConfigurationService<IConfiguration>) {
 @NgModule({
   imports: [
     BrowserAnimationsModule,
+    NoopAnimationsModule,
     BrowserModule,
     FormsModule,
     HeaderModule,

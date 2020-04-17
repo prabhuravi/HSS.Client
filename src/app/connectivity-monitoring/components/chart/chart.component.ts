@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation, SimpleChanges, SimpleChange, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, ViewEncapsulation, SimpleChanges, SimpleChange, OnChanges, OnDestroy, HostListener } from '@angular/core';
 import { ChartDataSet } from './data-set';
 import { IDataPoint } from './data-point';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
@@ -7,19 +7,21 @@ import { LatencyRequest } from 'src/app/models/LatencyRequest';
 import * as moment from 'moment';
 
 import { Subscriber, Subscription } from 'rxjs';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+ 
 })
-export class ChartComponent implements AfterViewInit, OnChanges,OnDestroy {
+export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() chartId: string;
   @Input() latencyRequest: LatencyRequest;
   @ViewChild('chart', null) chartElement: ElementRef;
-
+  @Input() viewFullChart: Boolean;
   private dataSet: ChartDataSet;
 
   private host: d3.Selection<any, any, any, any>;
@@ -62,15 +64,15 @@ export class ChartComponent implements AfterViewInit, OnChanges,OnDestroy {
   private signalStrengthLine: d3.Line<IDataPoint>;
   private signallineElement: d3.Selection<any, any, any, any>;
   private showChart: boolean = false;
-  private NodeSuscription : Subscription;
+  private NodeSuscription: Subscription;
   ngAfterViewInit() {
 
     this.NodeSuscription = this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
       if (nodeNumber) {
         this.latencyRequest.NodeNumber = nodeNumber;
-        
+
         d3.select('#' + this.chartId).remove();
-        this.showChart= false;
+        this.showChart = false;
         this.getChartData(this.latencyRequest);
       }
     });
@@ -78,30 +80,42 @@ export class ChartComponent implements AfterViewInit, OnChanges,OnDestroy {
   getChartData(latencyRequest: LatencyRequest) {
     this.connectivityMonitoringService.getChartData(latencyRequest)
       .subscribe((data: any) => {
-
-        console.log(data);
-        const cacheData : ILatencyCacheData = {
-          NodeNumber:latencyRequest.NodeNumber,
-          FromDate:latencyRequest.FromDate,
-          ToDate:latencyRequest.ToDate,
-          data:data
-        };
-        this.connectivityMonitoringService.setLatencyChartData(cacheData);
+          for(var i=0;i< data.Result.length;i++){
+            if(i>30 && i<90){
+              data.Result.splice(i,1)
+            }
+          }
         this.dataSet = new ChartDataSet(data);
         this.setupChart();
       });
   }
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    event.target.innerWidth;
+    if(document.getElementById(this.chartId)){
+      document.getElementById(this.chartId).remove();
+      this.setupChart();
+    }
+    
+  }
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService) {
-
+    //window.addEventListener('resize', this.setupChart);
   }
   ngOnDestroy(): void {
     this.NodeSuscription.unsubscribe();
   }
-
+  
   ngOnChanges(changes: SimpleChanges) {
     const currentItem: SimpleChange = changes.item;
     // console.log(changes);
-    // if(!changes.latencyRequest.previousValue){
+    if(changes.viewFullChart){
+      setTimeout(()=>{
+        if(document.getElementById(this.chartId)){
+          document.getElementById(this.chartId).remove();
+          this.setupChart();
+        }
+      },200)
+    }
     //   console.log("########");
     //   let cacheData = this.connectivityMonitoringService.returncacheVesselLatencyChart();
     //   if(cacheData && cacheData.NodeNumber == this.latencyRequest.NodeNumber){
@@ -112,7 +126,7 @@ export class ChartComponent implements AfterViewInit, OnChanges,OnDestroy {
     // }
   }
   setupChart() {
-  
+
     this.dataSet.loadData();
     this.host = d3.select(this.chartElement.nativeElement);
     this.hostWidth = parseInt(this.host.style('width'), 10);
@@ -130,13 +144,13 @@ export class ChartComponent implements AfterViewInit, OnChanges,OnDestroy {
     if (this.dataSet.data.length === 0) {
       this.svg.append("text")
         .text("No Data Available")
-        .attr('x', (this.hostWidth /2.5)+ (this.margin.left+this.margin.right))
+        .attr('x', (this.hostWidth / 2.5) + (this.margin.left + this.margin.right))
         .attr('y', this.height / 2)
         .style("font-size", "40px");
-        this.showChart =true;
+      this.showChart = true;
       return;
-    }else{
-      this.showChart =true;
+    } else {
+      this.showChart = true;
     }
 
     // for grid lines
@@ -350,27 +364,27 @@ export class ChartComponent implements AfterViewInit, OnChanges,OnDestroy {
       .style("background", "#fff")
       .style("color", "#000")
       .style("visibility", "hidden")
-    this.scatterPoints = this.chartBody.selectAll('circle')
-      .data(this.dataSet.data, (d: IDataPoint) => d.TimeStamp.toString());
+    // this.scatterPoints = this.chartBody.selectAll('circle')
+    //   .data(this.dataSet.data, (d: IDataPoint) => d.TimeStamp.toString());
 
-    this.scatterPoints.enter().append('circle')
-      .attr('r', 2.5)
-      .attr('fill', '#6a3d9a')
-      .attr('fill-opacity', d => d.isGap ? '0' : '0.5')
-      
-      .on("mouseover", function (d) {
-        console.log(d.TimeStamp);
-        let date= new Date(d.TimeStamp);
-        tooltip.text(`${date} Latency  ${d.LatencyValue}`);
-        return tooltip.style("visibility", "visible");
-      })
-      .on("mousemove", function () { return tooltip.style("top", ((event as any).pageY - 10) + "px").style("left", ((event as any).pageX + 10) + "px"); })
-      .on("mouseout", function () { return tooltip.style("visibility", "hidden"); })
-      .merge(this.scatterPoints)
-      .transition().duration(transitionSpeed)
-      .attr('cx', d => this.xScale(d3.isoParse(d.TimeStamp)))
-      .attr('cy', d => this.yScale(d.LatencyValue))
-    ;
+    // this.scatterPoints.enter().append('circle')
+    //   .attr('r', 2.5)
+    //   .attr('fill', '#6a3d9a')
+    //   .attr('fill-opacity', d => d.isGap ? '0' : '0.5')
+
+    //   .on("mouseover", function (d) {
+    //     console.log(d.TimeStamp);
+    //     let date = new Date(d.TimeStamp);
+    //     tooltip.text(`${date} Latency  ${d.LatencyValue}`);
+    //     return tooltip.style("visibility", "visible");
+    //   })
+    //   .on("mousemove", function () { return tooltip.style("top", ((event as any).pageY - 10) + "px").style("left", ((event as any).pageX + 10) + "px"); })
+    //   .on("mouseout", function () { return tooltip.style("visibility", "hidden"); })
+    //   .merge(this.scatterPoints)
+    //   .transition().duration(transitionSpeed)
+    //   .attr('cx', d => this.xScale(d3.isoParse(d.TimeStamp)))
+    //   .attr('cy', d => this.yScale(d.LatencyValue))
+    //   ;
 
 
     // Line

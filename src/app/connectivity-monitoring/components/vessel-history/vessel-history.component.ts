@@ -42,6 +42,8 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   cachedVesselDetails: IVesselLinks;
   VesselDataSubscription: Subscription;
   selectedVesselNodeNumber: string;
+
+  currentState = 'initial';
   showMap: boolean = false;
   presetOptions = [{
     name: 'Last Hour',
@@ -73,7 +75,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     if (nodeNumber) {
       this.selectedVesselNodeNumber = nodeNumber.toString();
       this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
-     this.VesselDataSubscription=  this.connectivityMonitoringService.getVesselSubject().subscribe((data) => {
+      this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().subscribe((data) => {
         if (data) {
           this.cachedVesselDetails = data;
           this.resetDate();

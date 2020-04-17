@@ -86,3 +86,13 @@
   background-color: #ffffff;
   border: 1px solid #c8c8c8;
 }
+
+.collapse-icon{
+  position: absolute;
+  display: flex;
+  z-index: 9;
+  padding: 0px;
+  margin: 1px;
+  cursor: pointer;
+  background: #007a8c;
+}

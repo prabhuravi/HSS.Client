@@ -26,7 +26,12 @@
   .card-body{
     height: 145px;
   }
-
+  .kx-col--6{
+    transition: width .1s ease-in-out;
+  }
+  .kx-col--12{
+    transition: width .1s ease-in-out;
+  }
   .cus-position{
     position: absolute;
     left: 48%;
@@ -43,3 +48,4 @@
     padding-bottom: 5px;
     border-bottom: 1px solid #ece6e6;
   }
+  

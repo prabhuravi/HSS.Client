@@ -186,15 +186,28 @@
         </div>
     </div>
 </div>
+<!-- <div class="kx-row">
+   
+    <div class="kx-col">
+        <button (click)="viewFullMap = !viewFullMap;viewFullChart=false" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
+            <span class="kx-btn__inner">
+                <span class="kx-btn__txt">View Full Map</span>
+            </span>
+        </button>
+    </div>
+</div> -->
 <div class="kx-row" >
-    <div class="kx-col  kx-col--6">
+    <div class="kx-col  kx-col--6" [ngClass]="{'kx-col--12' : viewFullChart &&!viewFullMap }">
+        <span (click)="viewFullChart=!viewFullChart;viewFullMap=false;" class="kx-navigation-icon collapse-icon"><i  class="kx-icon kx-icon--size-moderate kx-m--mini toggle-navigation open-navigation collapsed" id="open-navigation"><svg _ngcontent-ghn-c3="" aria-hidden="true" focusable="false"><use _ngcontent-ghn-c3="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="./assets/img/icons/sprites/icons.svg#chevron-right"></use></svg></i></span>
+
+   
         <div class="charts">
-            <app-chart [chartId]="'chart1'" [latencyRequest]="latencyRequest"></app-chart>
+            <app-chart [viewFullChart]="viewFullChart" [chartId]="'chart1'" [latencyRequest]="latencyRequest"></app-chart>
         </div>
     </div>
-    <div class="kx-col  kx-col--6" style="margin-left:10px;width: 49.4%;">
-        <div class="row" >
-            <app-map [showMap]="showMap" [aisRequest]="aisRequest"></app-map>
+    <div class="kx-col  kx-col--6"  [ngClass]="{'kx-col--12' : !viewFullChart && viewFullMap }">
+        <div class="row"  style="margin-left:10px">
+            <app-map  [showMap]="showMap" [aisRequest]="aisRequest"></app-map>
         </div>
     </div>
 

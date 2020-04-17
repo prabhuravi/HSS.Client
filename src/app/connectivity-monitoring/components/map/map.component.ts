@@ -9,6 +9,7 @@ import { Control, DomUtil } from 'leaflet';
 import { MapUtility } from './map.utility';
 import 'leaflet-rotatedmarker';
 import 'leaflet-fullscreen';
+import 'leaflet.markercluster';
 import { ThemeService, Theme } from '@kognifai/poseidon-ng-theming';
 import { ISetting } from '@kognifai/poseidon-settingsservice';
 import { Subscription } from 'rxjs';
@@ -24,13 +25,16 @@ export class MapComponent implements OnInit, OnChanges,OnDestroy {
   @Input() showMap: boolean
   cusCtrl: Control;
   nodeSubject:Subscription;
+  markers: any= [];
   nodeNumber:number;
+  markerClusterer:any;
   map: any;
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService, private themeservice: ThemeService) {
    this.nodeSubject =  this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
       if (nodeNumber) {
         this.nodeNumber = nodeNumber;
         this.getAisData(this.aisRequest);
+        this.removeExistingMarkers();
       }
     })
   }
@@ -82,6 +86,9 @@ export class MapComponent implements OnInit, OnChanges,OnDestroy {
   }
   plotPathonMap(latlngs) {
     let path = [];
+    console.log(new Date())
+    
+    this.markerClusterer = L.markerClusterGroup();
     for (var i = 0; i < latlngs.length; i++) {
       if (latlngs[i + 1]) {
         let pointA = new L.LatLng(latlngs[i].Latitude, latlngs[i].Longitude)
@@ -98,19 +105,41 @@ export class MapComponent implements OnInit, OnChanges,OnDestroy {
         let marker = L.marker(pointA, {
           icon: this.getIcon(iconURL),
           rotationAngle: rotation
-        }).addTo(this.map);
+        });
         this.bindMarkerEvents(marker, latlngs[i]);
-
+        //adding marker to marker Array 
+        this.markers.push(marker);
+        this.markers.push(polyline);
         polyline.setStyle({
           color: latlngs[i].OnlineStatus === 0 ? 'red' : 'green'
         });
+        this.markerClusterer.addLayer(marker);
       }
-      let bounds = new L.LatLngBounds(path);
+     let bounds = new L.LatLngBounds(path);
       console.log("inside get Data");
       this.map.fitBounds(bounds);
+      this.map.addLayer(this.markerClusterer);
+      //adding to the clusters
+
+    
     }
+    console.log(new Date())
 
 
+  }
+  createPolyLine(){
+
+  }
+  removeExistingMarkers(){
+    for(var i = 0; i < this.markers.length; i++){
+      this.map.removeLayer(this.markers[i]);
+      console.log(i);
+  }
+  if(this.markerClusterer){
+
+    this.markerClusterer.clearLayers();
+    this.markerClusterer =null;
+  }
   }
   public bindMarkerEvents(markerValue: any, data: any): void {
     //   markerValue.setRotationAngle(data.CompassOverGroundHeading.toFixed(0));
