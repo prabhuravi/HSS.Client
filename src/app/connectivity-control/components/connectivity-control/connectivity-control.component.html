@@ -2,12 +2,15 @@
 <div *ngIf="!isDataLoading" class="kx-mt--small">
     <div *ngIf="vesselConnectivityControlList.length > 0" class=" kx-mt--small">
         <p-table *ngIf="!isDataLoading" #tt [value]="vesselConnectivityControlList" [columns]="cols" [paginator]="true"
-            [rows]="5">
+            [rows]="5" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--xlarge">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--cursorPointer kx-p--xlarge"
+                        title="Click to sort">
                         {{col.header}}
-                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                        <p-sortIcon
+                            *ngIf="col.sortfield !== ''"
+                            [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
                             ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                     </th>
@@ -15,13 +18,13 @@
                 <tr>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field">
                         <input *ngSwitchCase="'VesselName'" pInputText type="text"
-                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Vessel Name"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Vessel"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'IMONumber'" pInputText type="text"
-                            class="kx-field kx-field--size-base u--field--size-small" placeholder="IMO Number"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter IMO"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'EnabledBy'" pInputText type="text"
-                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Enabled By User"
+                        <input *ngSwitchCase="'LastAction'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Action Log"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
                 </tr>
@@ -42,7 +45,7 @@
                             <div *ngSwitchCase="'DisableTime'">
                                 <span *ngIf="rowData.IsUploadEnabled">{{rowData.RemainingTime}}</span>
                                 <div *ngIf="!rowData.IsUploadEnabled">
-                                    <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true"
+                                    <p-calendar showTime="true" [appendTo]="pcalendarRef"
                                         hourFormat="24" showButtonBar="true"
                                         placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                                         [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
@@ -50,8 +53,8 @@
                                     </p-calendar>
                                 </div>
                             </div>
-                            <div *ngSwitchCase="'EnabledBy'">
-                                Always on enabled By {{rowData[col.field]}}
+                            <div *ngSwitchCase="'LastAction'">
+                                {{rowData['LastAction']}} at {{rowData['EnabledTime'] | date:'MM/dd/yyyy HH:mm'}}
                                 <i (click)="toggleActivityLogModal(); loadVesselActivityLog(rowData)"
                                     class="kx-icon kx-icon--size-base u--floatRight u--cursorPointer">
                                     <svg focusable="false">
@@ -65,6 +68,7 @@
                 </tr>
             </ng-template>
         </p-table>
+        <div #pcalendarRef></div>
     </div>
     <div *ngIf="vesselConnectivityControlList.length === 0"
         class="kx-notification kx-notification--neutral kx-notification--block kx-flex kx-align-items-start kx-justify-content-start">
@@ -105,17 +109,18 @@
                     </div>
                 </div>
                 <div class="kx-row kx-mt--medium">
-                    <table class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
+                    <app-load *ngIf="isActionLogDataLoading"></app-load>
+                    <table *ngIf="!isActionLogDataLoading" class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
                         <thead>
                             <tr>
                                 <th>Action</th>
-                                <th>Date Time (GMT) </th>
+                                <th>Date Time (MM/dd/yyyy HH:mm, GMT) </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let logItem of vesselConnectivityActionLogList; let i = index;">
                                 <td>{{logItem.Action}} by {{logItem.User}}</td>
-                                <td>{{logItem.ActionTime}}</td>
+                                <td>{{logItem.ActionTime | date:'MM/dd/yyyy HH:mm'}}</td>
                             </tr>
                         </tbody>
                     </table>

@@ -4,14 +4,14 @@
             <div class="kx-col">
                 <label class="kx-label" for="selectbox1">Select Vessel</label>
                 <div class="kx-mt--tiny">
-                    <p-dropdown [options]="vesselList" [(ngModel)]="activeVessel" optionLabel="VesselName" filter="true"
+                    <p-dropdown styleClass="kx-p--tiny" [options]="vesselList" [(ngModel)]="activeVessel" optionLabel="VesselName" filter="true"
                         (onChange)="loadWhitelistedCountries()"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col">
                 <label class="kx-label" for="selectbox1">Select Country</label>
                 <div class="kx-mt--tiny">
-                    <p-dropdown [options]="operatorCountryList" [(ngModel)]="activeOperatorCountry"
+                    <p-dropdown styleClass="kx-p--tiny" [options]="operatorCountryList" [(ngModel)]="activeOperatorCountry"
                         optionLabel="CountryName" filter="true"></p-dropdown>
                 </div>
             </div>

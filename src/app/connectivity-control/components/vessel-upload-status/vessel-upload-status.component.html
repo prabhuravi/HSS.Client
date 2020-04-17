@@ -5,7 +5,7 @@
                 <div class="kx-col">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
-                        <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselName'"
+                        <p-dropdown styleClass="kx-p--tiny" placeholder="Select Vessel" [formControlName]="'VesselName'"
                             [options]="vesselList" optionLabel="VesselName" filter="true" (onChange)="getMissionList()">
                         </p-dropdown>
                     </div>
@@ -13,7 +13,7 @@
                 <div class="kx-col">
                     <label class="kx-label" for="selectbox1">From Mission</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
-                        <p-dropdown styleClass="kx-p--none" placeholder="Select Mission"
+                        <p-dropdown styleClass="kx-p--tiny" placeholder="Select Mission"
                             [formControlName]="'FromMission'" [options]="fromMissionList" optionLabel="name"
                             filter="true" (onChange)="filterToMissionList()"></p-dropdown>
                     </div>
@@ -21,7 +21,7 @@
                 <div class="kx-col">
                     <label class="kx-label" for="selectbox1">To Mission</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
-                        <p-dropdown styleClass="kx-p--none" placeholder="Select Mission" [formControlName]="'ToMission'"
+                        <p-dropdown styleClass="kx-p--tiny" placeholder="Select Mission" [formControlName]="'ToMission'"
                             [options]="toMissionList" optionLabel="name" filter="true"></p-dropdown>
                     </div>
                 </div>
