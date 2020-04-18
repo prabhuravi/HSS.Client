@@ -103,7 +103,9 @@
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles.scss",
               "node_modules/leaflet/dist/leaflet.css",
-              "node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css"
+              "node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css",
+              "node_modules/leaflet.markercluster/dist/MarkerCluster.css",
+              "node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css"
             ],
             "extractCss": true,
             "scripts": [
