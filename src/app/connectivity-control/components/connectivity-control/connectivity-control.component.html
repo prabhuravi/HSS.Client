@@ -1,16 +1,15 @@
 <app-load *ngIf="isDataLoading"></app-load>
 <div *ngIf="!isDataLoading" class="kx-mt--small">
     <div *ngIf="vesselConnectivityControlList.length > 0" class=" kx-mt--small">
-        <p-table *ngIf="!isDataLoading" #tt [value]="vesselConnectivityControlList" [columns]="cols" [paginator]="true"
-            [rows]="5" autoLayout="true">
+        <p-table tableStyleClass="kx-table kx-table--outer-border" *ngIf="!isDataLoading" #tt
+            [value]="vesselConnectivityControlList" [columns]="cols" [paginator]="true"
+            [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--cursorPointer kx-p--xlarge"
-                        title="Click to sort">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
+                        class="u--cursorPointer kx-p--xlarge" title="Click to sort">
                         {{col.header}}
-                        <p-sortIcon
-                            *ngIf="col.sortfield !== ''"
-                            [field]="col.field" ariaLabel="Activate to sort"
+                        <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
                             ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                     </th>
@@ -18,13 +17,15 @@
                 <tr>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field">
                         <input *ngSwitchCase="'VesselName'" pInputText type="text"
-                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Vessel"
+                            class="kx-field kx-field--size-base u--field--size-small"
+                            placeholder="Type to filter Vessel"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'IMONumber'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter IMO"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'LastAction'" pInputText type="text"
-                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Action Log"
+                            class="kx-field kx-field--size-base u--field--size-small"
+                            placeholder="Type to filter Action Log"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
                 </tr>
@@ -46,7 +47,8 @@
                                 <span *ngIf="rowData.IsUploadEnabled">{{rowData.RemainingTime}}</span>
                                 <div *ngIf="!rowData.IsUploadEnabled">
                                     <p-calendar showTime="true" [appendTo]="pcalendarRef"
-                                        hourFormat="24" showButtonBar="true"
+                                        inputStyleClass="kx-field kx-field--size-base" hourFormat="24"
+                                        showButtonBar="true" hideOnDateTimeSelect="true"
                                         placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                                         [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
                                         [(ngModel)]="rowData.DisableTime">
@@ -110,7 +112,8 @@
                 </div>
                 <div class="kx-row kx-mt--medium">
                     <app-load *ngIf="isActionLogDataLoading"></app-load>
-                    <table *ngIf="!isActionLogDataLoading" class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
+                    <table *ngIf="!isActionLogDataLoading"
+                        class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
                         <thead>
                             <tr>
                                 <th>Action</th>

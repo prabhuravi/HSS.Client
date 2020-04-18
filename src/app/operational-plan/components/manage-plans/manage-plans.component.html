@@ -50,7 +50,7 @@
     <div class="kx-col">
         <app-load *ngIf="isDataLoading"></app-load>
         <p-table *ngIf="!isDataLoading" #tt [value]="operationalPlansList" [columns]="cols" [paginator]="true"
-            [rows]="5" dataKey="PlanId">
+            [rows]="PRIMENG_CONSTANTS.rowCount" dataKey="PlanId" tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 1.5em" class="u--cursorPointer kx-p--small"></th>
@@ -163,7 +163,7 @@
                                 <div class="kx-col">
                                     <app-load *ngIf="isSubOperationDataLoading"></app-load>
                                     <p-table *ngIf="!isSubOperationDataLoading" #tt [value]="subOperationsList"
-                                        [columns]="subOperationCols">
+                                        [columns]="subOperationCols" tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
                                         <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--small">

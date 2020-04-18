@@ -4,15 +4,15 @@
             <div class="kx-col">
                 <label class="kx-label" for="selectbox1">Select Vessel</label>
                 <div class="kx-mt--tiny">
-                    <p-dropdown styleClass="kx-p--tiny" [options]="vesselList" [(ngModel)]="activeVessel" optionLabel="VesselName" filter="true"
-                        (onChange)="loadWhitelistedCountries()"></p-dropdown>
+                    <p-dropdown styleClass="kx-p--tiny" [options]="vesselList" [(ngModel)]="activeVessel"
+                        optionLabel="VesselName" filter="true" (onChange)="loadWhitelistedCountries()"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col">
                 <label class="kx-label" for="selectbox1">Select Country</label>
                 <div class="kx-mt--tiny">
-                    <p-dropdown styleClass="kx-p--tiny" [options]="operatorCountryList" [(ngModel)]="activeOperatorCountry"
-                        optionLabel="CountryName" filter="true"></p-dropdown>
+                    <p-dropdown styleClass="kx-p--tiny" [options]="operatorCountryList"
+                        [(ngModel)]="activeOperatorCountry" optionLabel="CountryName" filter="true"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col">
@@ -37,7 +37,8 @@
 
 <div class="kx-pt--small">
     <app-load *ngIf="isDataLoading"></app-load>
-    <p-table *ngIf="!isDataLoading" [value]="whiteListedCountries" [columns]="cols" [paginator]="true" [rows]="5">
+    <p-table tableStyleClass="kx-table kx-table--outer-border" *ngIf="!isDataLoading" [value]="whiteListedCountries"
+        [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--xlarge">
@@ -71,8 +72,8 @@
     <div class="modal-header">
         <div>
             Manage Country/Group
-            <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon u--modalclosebtn" aria-label="close modal"
-                title="close modal" (click)="toggleManageCountryGroup()">
+            <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon u--modalclosebtn"
+                aria-label="close modal" title="close modal" (click)="toggleManageCountryGroup()">
                 <span class="kx-btn__inner">
                     <i class="kx-icon kx-icon--size-moderate">
                         <svg focusable="false">
@@ -113,8 +114,9 @@
                             <div>
                                 <div class="kx-form__element">
                                     <label class="kx-label" for="selectbox1">Group Name</label>
-                                    <input  [formControlName]="'GroupName'" autofocus id="group-name" class="kx-field kx-field--size-base"
-                                        type="text" placeholder="Enter Group Name" />
+                                    <input [formControlName]="'GroupName'" autofocus id="group-name"
+                                        class="kx-field kx-field--size-base" type="text"
+                                        placeholder="Enter Group Name" />
                                 </div>
                             </div>
                             <div>

@@ -3,6 +3,7 @@ import { ConnectivityControlService } from 'src/app/services/connectivity-contro
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { take } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AppConstants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-whitelist-countries',
@@ -29,6 +30,7 @@ export class WhitelistCountriesComponent implements OnInit {
   disableActivity: boolean;
   displayManageCountryGroup: boolean;
   form: FormGroup;
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   constructor(
     private connectivityControlService: ConnectivityControlService,
     private operationalPlanService: OperationalPlanService,

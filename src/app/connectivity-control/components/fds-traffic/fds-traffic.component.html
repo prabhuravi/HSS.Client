@@ -43,8 +43,9 @@
 </div>
 <div *ngIf="vesselHistoricalUploadStatus" class="kx-mt--small">
     <div *ngIf="vesselHistoricalUploadStatus.filesUploadStatus.length > 0" class=" kx-mt--small">
-        <p-table #tt [value]="vesselHistoricalUploadStatus.filesUploadStatus" [columns]="cols" [paginator]="true"
-            [rows]="5">
+        <p-table tableStyleClass="kx-table kx-table--outer-border" #tt
+            [value]="vesselHistoricalUploadStatus.filesUploadStatus" [columns]="cols" [paginator]="true"
+            [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--xlarge">
