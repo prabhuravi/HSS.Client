@@ -4,7 +4,7 @@ import { ConnectivityMonitoringService } from 'src/app/services/connectivity-mon
 import * as d3 from 'd3';
 import { LatencyRequest } from 'src/app/models/LatencyRequest';
 import * as moment from 'moment';
-
+import * as _ from 'lodash';
 import { Subscriber, Subscription } from 'rxjs';
 
 
@@ -16,7 +16,7 @@ import { Subscriber, Subscription } from 'rxjs';
 })
 export class DonutChartComponent implements AfterViewInit, OnChanges,OnDestroy {
   @Input() chartId: string;
-  @Input() latencyRequest: LatencyRequest;
+  @Input() totalVessels: any;
   @ViewChild('chart', null) chartElement: ElementRef;
 
 
@@ -59,40 +59,22 @@ export class DonutChartComponent implements AfterViewInit, OnChanges,OnDestroy {
   private showChart: boolean = false;
   private NodeSuscription : Subscription;
   ngAfterViewInit() {
-    this.setupChart();
-    this.NodeSuscription = this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
-      if (nodeNumber) {
-        this.latencyRequest.NodeNumber = nodeNumber;
-        
-        d3.select('#' + this.chartId).remove();
-        this.showChart= false;
-        this.getChartData(this.latencyRequest);
-      }
-    });
+   
+    
   }
-  getChartData(latencyRequest: LatencyRequest) {
-    this.connectivityMonitoringService.getChartData(latencyRequest)
-      .subscribe((data: any) => {
-
-        console.log(data);
-        const cacheData : ILatencyCacheData = {
-          NodeNumber:latencyRequest.NodeNumber,
-          FromDate:latencyRequest.FromDate,
-          ToDate:latencyRequest.ToDate,
-          data:data
-        };
-        this.connectivityMonitoringService.setLatencyChartData(cacheData);
-        this.setupChart();
-      });
-  }
+  
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService) {
 
   }
   ngOnDestroy(): void {
-    this.NodeSuscription.unsubscribe();
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if(changes.totalVessels.currentValue.length>0){
+      const grouped = _.groupBy(this.totalVessels, vessel => vessel.Status);
+      this.setupChart();
+    }
     const currentItem: SimpleChange = changes.item;
     
   }
@@ -108,9 +90,10 @@ export class DonutChartComponent implements AfterViewInit, OnChanges,OnDestroy {
 
    
 // define data
+let data =   _.groupBy(this.totalVessels, vessel => vessel.Status);
 var dataset:any = [
-  {label: "Up", count: 1},
-  {label: "Down", count: 4}
+  {label:'Down', count: data['Up'].length},
+  {label: 'Up', count: data['Down'].length}
 ];
 
 
@@ -156,19 +139,6 @@ tooltip.append('div') // add divs to the tooltip defined above
 tooltip.append('div') // add divs to the tooltip defined above  
 .attr('class', 'percent'); // add class 'percent' on the selection
 
-// Confused? see below:
-
-// <div id="chart">
-//   <div class="tooltip">
-//     <div class="label">
-//     </div>
-//     <div class="count">
-//     </div>
-//     <div class="percent">
-//     </div>
-//   </div>
-// </div>
-
 dataset.forEach(function(d:any) {
 d.count = +d.count; // calculate count as we iterate through the data
 d.enabled = true; // add enabled property to track which entries are checked
@@ -183,9 +153,6 @@ var path:any = this.svg.selectAll('path') // select all path elements inside the
 .attr('fill', function(d:any) { return color(d.data.label); }) // use color scale to define fill of each label in dataset
 .each(function(d:any) { (this as any)._current - d; }); // creates a smooth animation for each track
 
-path.transition()
-.duration(750)
-.attrTween("d", arc);
 
 // mouse event handlers are attached to path so they need to come after its definition
 path.on('mouseover', function(d) {  // when mouse enters div      
@@ -194,8 +161,7 @@ return (d.enabled) ? d.count : 0; // checking to see if the entry is enabled. if
 }));                                                      
 var percent = Math.round(1000 * d.data.count / total) / 10; // calculate percent
 tooltip.select('.label').html(d.data.label); // set current label           
-tooltip.select('.count').html('$' + d.data.count); // set current count            
-tooltip.select('.percent').html(percent + '%'); // set percent calculated above          
+tooltip.select('.count').html( d.data.count);         
 tooltip.style('display', 'block'); // set display                     
 });                                                           
 
@@ -214,10 +180,10 @@ var legend = this.svg.selectAll('.legend') // selecting elements with class 'leg
 .enter() // creates placeholder
 .append('g') // replace placeholders with g elements
 .attr('class', 'legend') // each g is given a legend class
-.attr('transform', (d, i)=> {                   
+.attr('transform', (d:any, i:any)=> {   
+                
   var height = legendRectSize + legendSpacing; // height of element is the height of the colored square plus the spacing      
   var offset =  height * color.domain().length / 2; // vertical offset of the entire legend = height of a single element & half the total number of elements  
-  var horz = 1 * legendRectSize+2; // the legend is shifted to the left to make room for the text
   var vert = i * height - offset+5;
   console.log(vert)
    // the top of the element is hifted up or down from the center using the offset defiend earlier and the index of the current element 'i'               

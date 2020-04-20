@@ -28,9 +28,7 @@ export class ConnectivityMonitoringComponent implements OnInit {
       if(data && data.length>0){
         this.showLoader=false;
         this.vesselLinksList =data;
-        //setting the all vessels to the service object to avoid making dublicate requests
-
-      this.connectivityMonitoringService.setAllVesselLinks(data);
+        this.connectivityMonitoringService.setAllVesselLinks(data);
       }
     
     });

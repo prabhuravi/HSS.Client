@@ -20,12 +20,7 @@
     border-radius: 0px !important;
   }
 }
-.x-axis .domain,
-.y-axis .domain,
-.x-axis .tick line,
-.y-axis .tick line {
-  visibility: hidden;
-}
+
 
 .x-axis:hover {
   cursor: ew-resize;

@@ -64,6 +64,8 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   selectedPreset: any = { name: "Last Day", value: 24 };
   fromDate: Date;
   toDate: Date;
+  allVessels:any;
+  selectedVessel:any;
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService, private themeservice: ThemeService,
     private route: ActivatedRoute) {
 
@@ -71,21 +73,39 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.VesselDataSubscription.unsubscribe();
   }
-  getVesselDetails(nodeNumber: number) {
+  getVesselDetails(nodeNumber: number,fromDrpDownChange?:Boolean) {
     if (nodeNumber) {
       this.selectedVesselNodeNumber = nodeNumber.toString();
+      
       this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
+      
       this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().subscribe((data) => {
+        console.log('inside');
         if (data) {
           this.cachedVesselDetails = data;
+          if( !this.selectedVessel){
+            this.allVessels = this.connectivityMonitoringService.getAllCachedResult();
+            this.allVessels.filter((data)=>{
+               if(data.NodeNumber == nodeNumber){
+                this.selectedVessel =data;
+              }
+            });
+            console.log(this.selectedVessel)
+          }
+         
           this.resetDate();
-          this.connectivityMonitoringService.getSnMPData(nodeNumber).subscribe((vesselDetails: IVesselDetails) => {
+         
+          this.connectivityMonitoringService.getSnMPData(parseInt(this.selectedVesselNodeNumber)).subscribe((vesselDetails: IVesselDetails) => {
             this.vesselDetails = vesselDetails;
-
-
+            
+          
+            
             this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
+         
+
             if (vesselDetails && vesselDetails.SignalStrength) {
               this.chart.data = [['dBm', vesselDetails.SignalStrength]];
+              this.noGaugeData =false;
             } else {
               this.noGaugeData = true;
             }
@@ -96,6 +116,13 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
 
     }
 
+  }
+  changeVesselDetails(){
+    console.log(this.selectedVessel);
+   // this.VesselDataSubscription.unsubscribe();
+   // this.getVesselDetails(this.selectedVessel.NodeNumber,true);
+   this.selectedVesselNodeNumber = this.selectedVessel.NodeNumber.toString();
+    this.connectivityMonitoringService.getVesselLinksByNodeNumber(this.selectedVessel.NodeNumber);
   }
   ngOnInit() {
     this.themeservice.themeChanged.subscribe((changes: any) => {

@@ -13,7 +13,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.css'],
+  styleUrls: ['./chart.component.scss'],
   encapsulation: ViewEncapsulation.None,
  
 })
@@ -65,6 +65,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   private signallineElement: d3.Selection<any, any, any, any>;
   private showChart: boolean = false;
   private NodeSuscription: Subscription;
+  tooltipBody:any;
   ngAfterViewInit() {
 
     this.NodeSuscription = this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
@@ -103,6 +104,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
   ngOnDestroy(): void {
     this.NodeSuscription.unsubscribe();
+    d3.select('#' + this.chartId).remove();
   }
   
   ngOnChanges(changes: SimpleChanges) {
@@ -251,9 +253,9 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.chartBody.on('dblclick', () => {
       this.zoomXTo(this.dataSet.xMin, this.dataSet.xMax, true);
     });
-
+    this.tooltipBody = this.createTolltipBody();
     // Draw initial data
-    this.update(0);
+    this.update(0,this.tooltipBody);
   }
   make_x_gridlines(x) {
     return d3.axisBottom(x)
@@ -328,7 +330,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.xAxis.scale(this.xScale);
     this.xAxisElement.call(this.xAxis);
 
-    this.update(0);
+    this.update(0,this.tooltipBody);
   }
 
   onZoomY(): void {
@@ -340,7 +342,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.yAxis.scale(this.yScale);
     this.yAxisElement.call(this.yAxis);
 
-    this.update(0);
+    this.update(0,this.tooltipBody);
   }
 
   zoomXTo(x0: Date, x1: Date, animate: boolean): void {
@@ -352,39 +354,43 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
         .translate(-this.xScaleUnzoomed(x0), 0)
     );
   }
-
-  update(transitionSpeed: number): void {
+  createTolltipBody(){
+    return  d3.select("body")
+    .append("div")
+    .attr('id','tooltip-custom')
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("height", "auto")
+    .style("width", "180px")
+    .style("background", "#fff")
+    .style("color", "#000")
+    .style("visibility", "hidden")
+  }
+  update(transitionSpeed: number,tooltip): void {
     // Scatter
-    var tooltip = d3.select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("z-index", "10")
-      .style("height", "50px")
-      .style("width", "180px")
-      .style("background", "#fff")
-      .style("color", "#000")
-      .style("visibility", "hidden")
-    // this.scatterPoints = this.chartBody.selectAll('circle')
-    //   .data(this.dataSet.data, (d: IDataPoint) => d.TimeStamp.toString());
+   // d3.select('#tooltip-custom').remove();
+    
+    this.scatterPoints = this.chartBody.selectAll('circle')
+      .data(this.dataSet.data, (d: IDataPoint) => d.TimeStamp.toString());
 
-    // this.scatterPoints.enter().append('circle')
-    //   .attr('r', 2.5)
-    //   .attr('fill', '#6a3d9a')
-    //   .attr('fill-opacity', d => d.isGap ? '0' : '0.5')
+    this.scatterPoints.enter().append('circle')
+      .attr('r', 1.5)
+      .attr('fill', '#6a3d9a')
+      .attr('fill-opacity', d => d.isGap ? '0' : '0.7')
 
-    //   .on("mouseover", function (d) {
-    //     console.log(d.TimeStamp);
-    //     let date = new Date(d.TimeStamp);
-    //     tooltip.text(`${date} Latency  ${d.LatencyValue}`);
-    //     return tooltip.style("visibility", "visible");
-    //   })
-    //   .on("mousemove", function () { return tooltip.style("top", ((event as any).pageY - 10) + "px").style("left", ((event as any).pageX + 10) + "px"); })
-    //   .on("mouseout", function () { return tooltip.style("visibility", "hidden"); })
-    //   .merge(this.scatterPoints)
-    //   .transition().duration(transitionSpeed)
-    //   .attr('cx', d => this.xScale(d3.isoParse(d.TimeStamp)))
-    //   .attr('cy', d => this.yScale(d.LatencyValue))
-    //   ;
+      .on("mouseover", function (d) {
+        console.log(d.TimeStamp);
+        let date = new Date(d.TimeStamp);
+        tooltip.text(`${date} Latency  ${d.LatencyValue}`);
+        return tooltip.style("visibility", "visible");
+      })
+      .on("mousemove", function () { return tooltip.style("top", ((event as any).pageY - 10) + "px").style("left", ((event as any).pageX + 10) + "px"); })
+      .on("mouseout", function () { return tooltip.style("visibility", "hidden"); })
+      .merge(this.scatterPoints)
+      .transition().duration(transitionSpeed)
+      .attr('cx', d => this.xScale(d3.isoParse(d.TimeStamp)))
+      .attr('cy', d => this.yScale(d.LatencyValue))
+      ;
 
 
     // Line

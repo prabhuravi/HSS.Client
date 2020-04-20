@@ -31,6 +31,9 @@ export class ConnectivityMonitoringService {
   setAllVesselLinks(IVesselLinks: IVesselLinks[]) {
     this.allVesselLinks = IVesselLinks;
   }
+  getAllCachedResult(){
+    return this.allVesselLinks;
+  }
   getVesselLinksByNodeNumber(nodeNumber: number) {
    // if (!this.allVesselLinks) {
       this.getVesselLinks().subscribe((data) => {

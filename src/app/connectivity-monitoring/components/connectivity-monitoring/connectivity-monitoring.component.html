@@ -37,7 +37,7 @@
         </p-table>
     </div>
     <div class="kx-col kx-col--2">
-        <app-donut-chart [chartId]="'chart'" [latencyRequest]="latencyRequest"></app-donut-chart>
+        <app-donut-chart [chartId]="'chart'" [totalVessels]="vesselLinksList"></app-donut-chart>
     </div>
 </div>
 <app-load *ngIf="showLoader"></app-load>

@@ -1,0 +1,45 @@
+.chart {
+  margin: 0;
+  padding: 0;
+  svg{
+    margin-left: -5px;
+  }
+}
+
+.chart svg text {
+  pointer-events: none;
+}
+.dot {
+  fill: IndianRed;
+}
+.area {
+  fill: none;
+}
+text.shadow {
+  stroke: white;
+  stroke-width: 4px;
+  opacity: 1
+}
+.rect-latency{
+  width: 60px;
+    height: 5px;
+    background: IndianRed;
+    display: inline-block;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+.rect-signal{
+  width: 60px;
+  height: 5px;
+  background: rgb(65, 105, 225);
+  margin-right: 5px;
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 15px;
+}
+.margin-0{
+  margin: 0px auto;
+}
+.inline-flex{
+  display: inline-flex;
+}

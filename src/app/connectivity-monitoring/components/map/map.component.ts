@@ -78,7 +78,6 @@ export class MapComponent implements OnInit, OnChanges,OnDestroy {
   getAisData(aisRequest: AISRequest) {
     if (this.aisRequest && this.aisRequest.NodeNumber)
       this.connectivityMonitoringService.getAISData(this.aisRequest).subscribe((data: any) => {
-        console.log(data);
         if (data.Result.length > 0) {
           this.plotPathonMap(data.Result);
         }
@@ -86,8 +85,6 @@ export class MapComponent implements OnInit, OnChanges,OnDestroy {
   }
   plotPathonMap(latlngs) {
     let path = [];
-    console.log(new Date())
-    
     this.markerClusterer = L.markerClusterGroup();
     for (var i = 0; i < latlngs.length; i++) {
       if (latlngs[i + 1]) {
@@ -116,14 +113,9 @@ export class MapComponent implements OnInit, OnChanges,OnDestroy {
         this.markerClusterer.addLayer(marker);
       }
      let bounds = new L.LatLngBounds(path);
-      console.log("inside get Data");
       this.map.fitBounds(bounds);
       this.map.addLayer(this.markerClusterer);
-      //adding to the clusters
-
-    
     }
-    console.log(new Date())
 
 
   }
@@ -133,7 +125,6 @@ export class MapComponent implements OnInit, OnChanges,OnDestroy {
   removeExistingMarkers(){
     for(var i = 0; i < this.markers.length; i++){
       this.map.removeLayer(this.markers[i]);
-      console.log(i);
   }
   if(this.markerClusterer){
 
@@ -146,17 +137,18 @@ export class MapComponent implements OnInit, OnChanges,OnDestroy {
     markerValue.on('click', (e) => { this.markerClick(data, markerValue); });
   }
   public markerClick(vessel: any, markerValue: any): void {
-    console.log(vessel);
     let vesselDetails = this.connectivityMonitoringService.getVesselNameByNodeNumber(this.nodeNumber);
-    markerValue.bindPopup(this.generateVoyagePopup('Origin', vessel), { closeButton: true, className: 'map-tooltip' });
+    markerValue.bindPopup(this.generateVoyagePopup('Origin', vessel,vesselDetails), { closeButton: true, className: 'map-tooltip' });
   }
-  public generateVoyagePopup(title: string, value: any) {
+  public generateVoyagePopup(title: string, value: any,name:string) {
     const containerDiv = document.createElement('div');
-    containerDiv.innerHTML = `<div><b>${title}:</b> ${value.CompassOverGroundHeading}</div>`;
+    containerDiv.innerHTML = `<div><b>Vessel Name : ${name}</b> 
+    </br>
+    <b>Speed : ${value.SpeedOverGround.toFixed(2)} Knots</b></br>
+    <b>Heading : ${value.CompassOverGroundHeading.toFixed(2)} deg</b></br>
+    <b>Date : ${new Date(value.TimeStamp)} </b></br>
+    </div>`;
     return containerDiv;
-  }
-  openMarker(data) {
-    console.log(data);
   }
   getIcon(url) {
     // L.divIcon({

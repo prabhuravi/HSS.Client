@@ -1,4 +1,17 @@
-<div  #chart class="chart">
-   
+<div #chart class="chart">
+    <div id='tooltip' style='position:absolute;background-color:lightgray;padding:5px'></div>
+</div>
+<div *ngIf="showChart" class="kx-row">
+    <div class="margin-0">
+        <div class="inline-flex">
+            <div class="rect-latency"></div>
+            <label>Latency</label>
+        </div>
+        <div class="inline-flex">
+            <div class="rect-signal"></div>
+            <label>Signal Strength</label>
+        </div>
+    </div>
+  
 </div>
 <app-load *ngIf="!showChart"></app-load>

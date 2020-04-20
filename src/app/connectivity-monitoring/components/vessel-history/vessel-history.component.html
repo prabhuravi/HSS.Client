@@ -19,9 +19,12 @@
                     </div>
                     <div class="kx-col  kx-col--6">
                         <!-- YOUR CONTENT -->
-                        <label class="kx-label">Vessel Name:</label>
                         <div class="kx-mt--tiny">
-                            {{cachedVesselDetails && cachedVesselDetails.Name  ? cachedVesselDetails.Name : noData}}
+                                <label class="kx-label" for="selectbox1">Vessel Name :</label>
+                                <div class="kx-mt--tiny">
+                                    <p-dropdown styleClass="kx-p--none"  [(ngModel)]="selectedVessel" placeholder="Select Vessel" 
+                                        [options]="allVessels" (onChange)="changeVesselDetails()" optionLabel="Name" filter="true"></p-dropdown>
+                                </div>
                         </div>
 
                     </div>
@@ -108,30 +111,22 @@
     <div class="kx-col  kx-col--4">
         <div class="kx-row kx-card kx-card--skin-default" style="margin-left:10px;">
             <div class="kx-card__header">
-                <h3 class="kx-card__title">AIS</h3>
+                <h3 class="kx-card__title">Signal Strength</h3>
             </div>
             <div class="kx-card__body card-body">
 
                <div class="row">
-                <div class="kx-col  kx-col--2">
-                    <!-- YOUR CONTENT -->
-
-                    <label class="kx-label">Vessel Position:</label>
-                    <div class="kx-mt--tiny">
-                        <a class="hand-cursor" (click)="showMap=!showMap">View History</a>
-                    </div>
-                </div>
-                <div class="kx-col  kx-col--10 cus-position">
+              
+                <div class="kx-col  kx-col--12 cus-position">
                     <div class="kx-row chart-margin" *ngIf="chart && chart.data">
                         <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data"
                             [options]="chart.options">
                         </google-chart>
-                        <label  class="extra-margin">Signal Strength</label>
                     </div>
-                    <div class="kx-row" *ngIf="noGaugeData">
-                        <label class="no-data-extra-margin" *ngIf="noGaugeData">{{noData}}</label>
-                        <label  class="no-data-extra-margin">Signal Strength</label>
-                    </div>
+                   
+                </div>
+                <div class="kx-row" *ngIf="noGaugeData">
+                    <label class="no-data-extra-margin" *ngIf="noGaugeData">{{noData}}</label>
                 </div>
                </div>
             </div>
