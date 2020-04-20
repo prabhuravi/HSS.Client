@@ -34,7 +34,7 @@
                 <tr>
                     <td *ngFor="let col of columns">
                         <div [ngSwitch]="col.field">
-                            <div *ngSwitchCase="'IsUploadEnabled'">
+                            <div *ngSwitchCase="'IsUploadEnabled'" class="kx-py--tiny">
                                 <label class="kx-selector kx-selector__switch">
                                     <input type="checkbox" name="IsUploadEnabled" [(ngModel)]="rowData[col.field]"
                                         (ngModelChange)="updateUploadStatus(rowData)" />
@@ -44,10 +44,10 @@
                                 </label>
                             </div>
                             <div *ngSwitchCase="'DisableTime'">
-                                <span *ngIf="rowData.IsUploadEnabled">{{rowData.RemainingTime}}</span>
+                                <div *ngIf="rowData.IsUploadEnabled" class="kx-py--tiny">{{rowData.RemainingTime}}</div>
                                 <div *ngIf="!rowData.IsUploadEnabled">
                                     <p-calendar showTime="true" [appendTo]="pcalendarRef"
-                                        inputStyleClass="kx-field kx-field--size-base" hourFormat="24"
+                                        inputStyleClass="kx-field kx-field--size-small" hourFormat="24"
                                         showButtonBar="true" hideOnDateTimeSelect="true"
                                         placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                                         [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
@@ -55,7 +55,7 @@
                                     </p-calendar>
                                 </div>
                             </div>
-                            <div *ngSwitchCase="'LastAction'">
+                            <div *ngSwitchCase="'LastAction'" class="kx-py--tiny">
                                 {{rowData['LastAction']}} at {{rowData['EnabledTime'] | date:'MM/dd/yyyy HH:mm'}}
                                 <i (click)="toggleActivityLogModal(); loadVesselActivityLog(rowData)"
                                     class="kx-icon kx-icon--size-base u--floatRight u--cursorPointer">
@@ -64,7 +64,7 @@
                                     </svg>
                                 </i>
                             </div>
-                            <div *ngSwitchDefault>{{rowData[col.field]}}</div>
+                            <div class="kx-py--tiny" *ngSwitchDefault>{{rowData[col.field]}}</div>
                         </div>
                     </td>
                 </tr>

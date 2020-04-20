@@ -8,6 +8,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
@@ -45,7 +46,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    TooltipModule
   ],
   providers: [
     ConfirmationService,
