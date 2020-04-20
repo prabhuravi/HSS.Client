@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
+import { AppConstants } from 'src/app/app.constants';
 @Component({
   selector: 'app-connectivity-monitoring',
   templateUrl: './connectivity-monitoring.component.html',
@@ -18,6 +19,7 @@ export class ConnectivityMonitoringComponent implements OnInit {
     { field: 'LastLatency', header: 'Last Latency' },
     { field: 'Cacti', header: 'Cacti' }
   ];
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   showLoader=true;
   constructor(
     private connectivityMonitoringService: ConnectivityMonitoringService
