@@ -109,7 +109,7 @@
     position: absolute;
     display: flex;
     z-index: 9;
-    padding: 0px;
+    width: 31px;
     margin: 1px;
     cursor: pointer;
     background: #434b52;
