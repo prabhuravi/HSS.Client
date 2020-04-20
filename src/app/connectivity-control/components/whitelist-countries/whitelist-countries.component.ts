@@ -3,6 +3,8 @@ import { ConnectivityControlService } from 'src/app/services/connectivity-contro
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { take } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AppConstants } from 'src/app/app.constants';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-whitelist-countries',
@@ -29,10 +31,13 @@ export class WhitelistCountriesComponent implements OnInit {
   disableActivity: boolean;
   displayManageCountryGroup: boolean;
   form: FormGroup;
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   constructor(
     private connectivityControlService: ConnectivityControlService,
     private operationalPlanService: OperationalPlanService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -94,7 +99,17 @@ export class WhitelistCountriesComponent implements OnInit {
     };
     this.connectivityControlService.markCountryWhitelist(formData).pipe(take(1)).subscribe((data) => {
       this.disableActivity = false;
+      this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
       this.loadWhitelistedCountries();
+    });
+  }
+  removeWhitelistCountryConfirm(data: IWhiteListedCountries): void {
+    console.log(data);
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      accept: () => {
+        this.removeWhitelistCountry(data);
+      }
     });
   }
   removeWhitelistCountry(rowData: IWhiteListedCountries): void {
@@ -102,6 +117,7 @@ export class WhitelistCountriesComponent implements OnInit {
     this.disableActivity = true;
     this.connectivityControlService.removeWhitelistCountry(rowData).pipe(take(1)).subscribe((data) => {
       this.disableActivity = false;
+      this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
       this.loadWhitelistedCountries();
     });
   }
@@ -119,6 +135,7 @@ export class WhitelistCountriesComponent implements OnInit {
       User: 'admin'
     };
     this.connectivityControlService.deleteCountryGroup(formData).pipe(take(1)).subscribe((data) => {
+      this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
       this.getOperatorCountryList();
     });
   }
@@ -127,12 +144,21 @@ export class WhitelistCountriesComponent implements OnInit {
       this.disableActivity = true;
       this.connectivityControlService.addCountryGroup(this.form.value).pipe(take(1)).subscribe((data) => {
         this.disableActivity = false;
+        this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
         this.getOperatorCountryList();
       });
     }
   }
   updateGroupCountries(): void {
     console.log(this.groupCountryList);
+  }
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
   }
 
 }

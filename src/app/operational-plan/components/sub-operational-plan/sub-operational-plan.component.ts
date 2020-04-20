@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
-import { FormType } from '../../../app.constants';
+import { FormType, AppConstants } from '../../../app.constants';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
@@ -29,6 +29,7 @@ export class SubOperationalPlanComponent implements OnInit {
   formValues: any = null;
   planDetails: any;
   activeId = 0;
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   constructor(
     private operationalPlanService: OperationalPlanService,

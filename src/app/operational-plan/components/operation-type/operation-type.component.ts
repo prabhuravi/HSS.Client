@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
-import { FormType } from 'src/app/app.constants';
+import { FormType, AppConstants } from 'src/app/app.constants';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 
@@ -24,6 +24,7 @@ export class OperationTypeComponent implements OnInit {
   activeId = 0;
   isDataLoading: boolean;
   disableDeleteButton: boolean;
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
