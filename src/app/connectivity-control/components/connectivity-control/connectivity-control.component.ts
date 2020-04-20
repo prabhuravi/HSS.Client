@@ -15,15 +15,16 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   vesselConnectivityControlList: IConnectivityControl[] = [];
   vesselConnectivityActionLogList: IConnectivityActionLog[] = [];
   cols = [
-    { field: 'VesselName', header: 'Vessel Name', filterMatchMode: 'contains' },
-    { field: 'IMONumber', header: 'IMO Number', filterMatchMode: 'contains' },
-    { field: 'DisableTime', header: 'Disable Time (Optional)', filterMatchMode: 'contains' },
-    { field: 'IsUploadEnabled', header: 'File Upload Status', filterMatchMode: 'contains' },
-    { field: 'EnabledBy', header: 'Action Log', filterMatchMode: 'contains' }
+    { field: 'VesselName', sortfield: 'VesselName', header: 'Vessel Name', filterMatchMode: 'contains' },
+    { field: 'IMONumber', sortfield: 'IMONumber', header: 'IMO Number', filterMatchMode: 'contains' },
+    { field: 'DisableTime', sortfield: '', header: 'Disable Time (Optional, GMT)', filterMatchMode: 'contains' },
+    { field: 'IsUploadEnabled', sortfield: '', header: 'File Upload Status', filterMatchMode: 'contains' },
+    { field: 'LastAction', sortfield: 'EnabledBy', header: 'Action Log(MM/dd/yyyy HH:mm, GMT)', filterMatchMode: 'contains' }
   ];
   displayActionLogModal: boolean;
   activeVessel: any = {};
   isDataLoading: boolean = true;
+  isActionLogDataLoading: boolean = true;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   dateTimeInterval = interval(60000);
   dateTimeIntervalSubscription: Subscription;
@@ -54,6 +55,8 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
         }
       });
       this.vesselConnectivityControlList = connectivityData;
+      this.vesselConnectivityControlList.sort((a, b) => (a.VesselName > b.VesselName) ? 1 : -1);
+      this.vesselConnectivityControlList.sort((a, b) => (a.IsUploadEnabled > b.IsUploadEnabled) ? -1 : 1);
     });
   }
   toggleActivityLogModal(): void {
@@ -61,8 +64,9 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   }
   loadVesselActivityLog(vesselDetail): void {
     this.activeVessel = vesselDetail;
+    this.isActionLogDataLoading = true;
     this.connectivityControlService.getConnectivityActionLog(this.activeVessel.Id).pipe(take(1)).subscribe((data) => {
-      this.isDataLoading = false;
+      this.isActionLogDataLoading = false;
       this.vesselConnectivityActionLogList = data;
     });
   }

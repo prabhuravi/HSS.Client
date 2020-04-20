@@ -17,7 +17,9 @@
                     <label class="kx-label" for="selectbox1">From Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar [formControlName]="'OperationFromDate'"
-                            inputStyleClass="kx-field kx-field--size-large u--field--size-large" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat">
+                            inputStyleClass="kx-field kx-field--size-large u--field--size-large"
+                            [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
+                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat">
                         </p-calendar>
                     </div>
                 </div>
@@ -25,7 +27,9 @@
                     <label class="kx-label" for="selectbox1">To Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar [formControlName]="'OperationToDate'"
-                            inputStyleClass="kx-field kx-field--size-large u--field--size-large" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat">
+                            inputStyleClass="kx-field kx-field--size-large u--field--size-large"
+                            [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
+                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat">
                         </p-calendar>
                     </div>
                 </div>
@@ -50,7 +54,8 @@
     <div class="kx-col">
         <app-load *ngIf="isDataLoading"></app-load>
         <p-table *ngIf="!isDataLoading" #tt [value]="operationalPlansList" [columns]="cols" [paginator]="true"
-            [rows]="5" dataKey="PlanId">
+            [rows]="PRIMENG_CONSTANTS.rowCount" dataKey="PlanId" rowExpandMode="single"
+            tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 1.5em" class="u--cursorPointer kx-p--small"></th>
@@ -65,11 +70,13 @@
                 <tr>
                     <th style="width: 1.5em" class="u--cursorPointer kx-p--small"></th>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field" class="u--cursorPointer kx-p--small">
-                        <input *ngSwitchCase="'VesselName'" pInputText type="text" class="kx-field kx-field--size-small u--field--size-small"
-                            placeholder="Vessel" style="width: 80px;"
+                        <input *ngSwitchCase="'VesselName'" pInputText type="text"
+                            class="kx-field kx-field--size-small u--field--size-small" placeholder="Vessel"
+                            style="width: 80px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'Status'" pInputText type="text" class="kx-field kx-field--size-small u--field--size-small"
-                            placeholder="Status" style="width: 80px;"
+                        <input *ngSwitchCase="'Status'" pInputText type="text"
+                            class="kx-field kx-field--size-small u--field--size-small" placeholder="Status"
+                            style="width: 80px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
                 </tr>
@@ -83,16 +90,16 @@
                     </td>
                     <td *ngFor="let col of columns" class="kx-p--small">
                         <div [ngSwitch]="col.field">
-                            <div *ngSwitchCase="'OperationDate'">
+                            <div *ngSwitchCase="'OperationDate'" class="u--withEllipsis" style="width: 80px;" [pTooltip]="rowData[col.field]">
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
-                            <div *ngSwitchCase="'ETADate'">
+                            <div *ngSwitchCase="'ETADate'" class="u--withEllipsis" style="width: 80px;" [pTooltip]="rowData[col.field]">
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
-                            <div *ngSwitchCase="'LastUpdatedDate'">
+                            <div *ngSwitchCase="'LastUpdatedDate'" class="u--withEllipsis" style="width: 80px;" [pTooltip]="rowData[col.field]">
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
-                            <div *ngSwitchCase="'PlanId'">
+                            <div *ngSwitchCase="'PlanId'" class="u--withEllipsis" style="width: 100px;" [pTooltip]="rowData[col.field]">
                                 <div class="kx-btngroup kx-flex kx-flex-wrap" role="group"
                                     aria-label="Aria label example">
                                     <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
@@ -150,7 +157,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div *ngSwitchDefault>{{rowData[col.field]}}</div>
+                            <div *ngSwitchDefault  class="u--withEllipsis" style="width: 80px;" [pTooltip]="rowData[col.field]">{{rowData[col.field]}}</div>
                         </div>
                     </td>
                 </tr>
@@ -163,7 +170,8 @@
                                 <div class="kx-col">
                                     <app-load *ngIf="isSubOperationDataLoading"></app-load>
                                     <p-table *ngIf="!isSubOperationDataLoading" #tt [value]="subOperationsList"
-                                        [columns]="subOperationCols">
+                                        [columns]="subOperationCols" tableStyleClass="kx-table kx-table--outer-border"
+                                        autoLayout="true">
                                         <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--small">

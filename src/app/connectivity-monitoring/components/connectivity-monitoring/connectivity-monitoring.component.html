@@ -1,6 +1,7 @@
 <div class="kx-row">
     <div class="kx-col kx-col--10">
-        <p-table #tt [value]="vesselLinksList" [columns]="cols" [paginator]="true" [rows]="5">
+        <p-table #tt [value]="vesselLinksList" [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount"
+            autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--xlarge">
@@ -13,10 +14,12 @@
                     <td *ngFor="let col of columns">
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'Status'">
-                                <div *ngIf="rowData[col.field] === 'Down'" class="u--bgDanger u--textCenter u--withBorderRadius">
+                                <div *ngIf="rowData[col.field] === 'Down'"
+                                    class="u--bgDanger u--textCenter u--withBorderRadius">
                                     {{rowData[col.field]}}
                                 </div>
-                                <div *ngIf="rowData[col.field] === 'Up'" class="u--bgSuccess u--textCenter u--withBorderRadius">
+                                <div *ngIf="rowData[col.field] === 'Up'"
+                                    class="u--bgSuccess u--textCenter u--withBorderRadius">
                                     {{rowData[col.field]}}
                                 </div>
                             </div>

@@ -8,8 +8,8 @@
 }
 .ui-dialog,
 .ui-toast,
-.ui-autocomplete-panel{
-  background: #ffffff!important;
+.ui-autocomplete-panel {
+  background: #ffffff !important;
 }
 .ui-picklist .ui-picklist-buttons button {
   font-size: 16px;
@@ -81,13 +81,13 @@
   }
 }
 
-.u--picklistItem{
+.u--picklistItem {
   color: #333333;
   background-color: #ffffff;
   border: 1px solid #c8c8c8;
 }
 
-.collapse-icon{
+.collapse-icon {
   position: absolute;
   display: flex;
   z-index: 9;
@@ -96,4 +96,16 @@
   width: 31px;
   cursor: pointer;
   background: #007a8c;
+}
+.ui-paginator .ui-state-default {
+  color: #02689e;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+}
+.ui-paginator .ui-state-active {
+  color: #262a2f;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
 }

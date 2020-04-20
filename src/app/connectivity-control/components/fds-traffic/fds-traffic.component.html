@@ -1,15 +1,16 @@
-<div class="kx-card kx-card--skin-default" *ngIf="vesselListLoaded">
+<app-load *ngIf="!vesselListLoaded"></app-load>
+<div *ngIf="vesselListLoaded" class="kx-card kx-card--skin-default">
     <div class="kx-p--medium">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="kx-row">
-                <div class="kx-col">
+                <div class="kx-col kx-col--3">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
                         <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselName'"
                             [options]="vesselList" optionLabel="VesselName" filter="true"></p-dropdown>
                     </div>
                 </div>
-                <div class="kx-col">
+                <div class="kx-col kx-col--3">
                     <label class="kx-label" for="selectbox1">From Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
@@ -19,7 +20,7 @@
                         </p-calendar>
                     </div>
                 </div>
-                <div class="kx-col">
+                <div class="kx-col kx-col--3">
                     <label class="kx-label" for="selectbox1">To Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
@@ -29,7 +30,7 @@
                         </p-calendar>
                     </div>
                 </div>
-                <div class="kx-col">
+                <div class="kx-col kx-col--3">
                     <button [disabled]="!form.valid" type="submit"
                         class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
                         <span class="kx-btn__inner">
@@ -41,43 +42,72 @@
         </form>
     </div>
 </div>
-<div *ngIf="vesselHistoricalUploadStatus" class="kx-mt--small">
+<app-load *ngIf="isFormSubmitted && !vesselHistoricalUploadStatus"></app-load>
+<div *ngIf="!isFormSubmitted && vesselHistoricalUploadStatus">
     <div *ngIf="vesselHistoricalUploadStatus.filesUploadStatus.length > 0" class=" kx-mt--small">
-        <p-table #tt [value]="vesselHistoricalUploadStatus.filesUploadStatus" [columns]="cols" [paginator]="true"
-            [rows]="5">
+        <p-table tableStyleClass="kx-table kx-table--outer-border" #tt
+            [value]="vesselHistoricalUploadStatus.filesUploadStatus" [columns]="cols" [paginator]="true"
+            [rows]="PRIMENG_CONSTANTS.rowCount">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--xlarge">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall">
                         {{col.header}}
-                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                        <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
                             ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                     </th>
                 </tr>
                 <tr>
-                    <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                        <input *ngSwitchCase="'Mission'" pInputText type="text" class="kx-field kx-field--size-base"
-                            placeholder="Mission Name" style="width: 120px;"
+                    <th *ngFor="let col of columns" [ngSwitch]="col.field" class="kx-p--small">
+                        <input *ngSwitchCase="'Mission'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Mission Name"
+                            style="width: 120px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'FileName'" pInputText type="text" class="kx-field kx-field--size-base"
-                            placeholder="File Name" style="width: 120px;"
+                        <input *ngSwitchCase="'FileName'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="File Name"
+                            style="width: 120px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'FileType'" pInputText type="text" class="kx-field kx-field--size-base"
-                            placeholder="File Type" style="width: 120px;"
+                        <input *ngSwitchCase="'FileType'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="File Type"
+                            style="width: 120px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'UploadStatus'" pInputText type="text"
-                            class="kx-field kx-field--size-base" placeholder="Status" style="width: 120px;"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Status"
+                            style="width: 120px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr>
-                    <td *ngFor="let col of columns">
+                    <td *ngFor="let col of columns" class="kx-p--small">
                         <div [ngSwitch]="col.field">
-                            <div *ngSwitchDefault>
+                            <div *ngSwitchCase="'FileUploadedDate'">
+                                <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
+                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
+                            </div>
+                            <div *ngSwitchCase="'FileCreatedDate'">
+                                <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
+                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
+                            </div>
+                            <div *ngSwitchCase="'FileModifiedDate'">
+                                <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
+                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
+                            </div>
+                            <div *ngSwitchCase="'Mission'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">{{rowData[col.field]}}
                                 </div>
+                            </div>
+                            <div *ngSwitchCase="'FileName'">
+                                <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">{{rowData[col.field]}}
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="'FilePath'">
+                                <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">{{rowData[col.field]}}
+                                </div>
+                            </div>
+                            <div *ngSwitchDefault>
+                                {{rowData[col.field]}}
                             </div>
                         </div>
                     </td>
