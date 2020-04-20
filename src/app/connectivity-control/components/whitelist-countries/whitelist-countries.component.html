@@ -1,21 +1,21 @@
 <div class="kx-card kx-card--skin-default" *ngIf="activeVessel">
     <div class="kx-p--medium">
         <div class="kx-row">
-            <div class="kx-col">
+            <div class="kx-col kx-col--3">
                 <label class="kx-label" for="selectbox1">Select Vessel</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="vesselList" [(ngModel)]="activeVessel"
                         optionLabel="VesselName" filter="true" (onChange)="loadWhitelistedCountries()"></p-dropdown>
                 </div>
             </div>
-            <div class="kx-col">
+            <div class="kx-col kx-col--3">
                 <label class="kx-label" for="selectbox1">Select Country</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="operatorCountryList"
                         [(ngModel)]="activeOperatorCountry" optionLabel="CountryName" filter="true"></p-dropdown>
                 </div>
             </div>
-            <div class="kx-col">
+            <div class="kx-col kx-col--3">
                 <button (click)="markCountryWhitelist()" [disabled]="disableActivity"
                     class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
                     <span class="kx-btn__inner">
@@ -23,7 +23,7 @@
                     </span>
                 </button>
             </div>
-            <div class="kx-col u--textRight">
+            <div class="kx-col kx-col--3 u--textRight">
                 <button (click)="toggleManageCountryGroup()"
                     class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--medium">
                     <span class="kx-btn__inner">
@@ -54,7 +54,7 @@
                 <td *ngFor="let col of columns">
                     <div [ngSwitch]="col.field">
                         <div *ngSwitchCase="'VesselId'">
-                            <button (click)="removeWhitelistCountry(rowData)" [disabled]="disableActivity"
+                            <button (click)="removeWhitelistCountryConfirm(rowData)" [disabled]="disableActivity"
                                 class="kx-btn kx-btn--skin-primary kx-btn--size-base">
                                 <span class="kx-btn__inner">
                                     <span class="kx-btn__txt">Remove</span>

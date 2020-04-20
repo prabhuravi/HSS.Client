@@ -17,17 +17,17 @@ export class FdsTrafficComponent implements OnInit {
   vesselList: IVesselList[] = [];
   vesselHistoricalUploadStatus: IVesselUploadStatus;
   cols = [
-    { field: 'FileUploadedDate', header: 'Uploaded Date', filterMatchMode: 'contains' },
-    { field: 'Mission', header: 'Mission Name', filterMatchMode: 'contains' },
-    { field: 'FileName', header: 'File Name', filterMatchMode: 'contains' },
-    { field: 'FilePath', header: 'File Path', filterMatchMode: 'contains' },
-    { field: 'FileCreatedDate', header: 'Created Date', filterMatchMode: 'contains' },
-    { field: 'FileModifiedDate', header: 'Modified Date', filterMatchMode: 'contains' },
-    { field: 'FileType', header: 'File Type', filterMatchMode: 'contains' },
-    { field: 'UploadStatus', header: 'Status', filterMatchMode: 'contains' },
-    { field: 'FileSize', header: 'Actual File Size (KB)', filterMatchMode: 'contains' },
-    { field: 'UploadedSize', header: 'Uploaded Size (KB)', filterMatchMode: 'contains' },
-    { field: 'UploadCount', header: 'Upload Count', filterMatchMode: 'contains' }
+    { field: 'FileUploadedDate', sortfield: 'VesselName', header: 'Uploaded Date', filterMatchMode: 'contains' },
+    { field: 'Mission', sortfield: '', header: 'Mission Name', filterMatchMode: 'contains' },
+    { field: 'FileName', sortfield: '', header: 'File Name', filterMatchMode: 'contains' },
+    { field: 'FilePath', sortfield: '', header: 'File Path', filterMatchMode: 'contains' },
+    { field: 'FileCreatedDate', sortfield: '', header: 'Created Date', filterMatchMode: 'contains' },
+    { field: 'FileModifiedDate', sortfield: '', header: 'Modified Date', filterMatchMode: 'contains' },
+    { field: 'FileType', sortfield: '', header: 'File Type', filterMatchMode: 'contains' },
+    { field: 'UploadStatus', sortfield: '', header: 'Status', filterMatchMode: 'contains' },
+    { field: 'FileSize', sortfield: '', header: 'Actual File Size (KB)', filterMatchMode: 'contains' },
+    { field: 'UploadedSize', sortfield: '', header: 'Uploaded Size (KB)', filterMatchMode: 'contains' },
+    { field: 'UploadCount', sortfield: '', header: 'Count', filterMatchMode: 'contains' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   vesselListLoaded: boolean = false;
@@ -61,6 +61,7 @@ export class FdsTrafficComponent implements OnInit {
     if (this.form.valid) {
       this.form.value.VesselName = this.form.value.VesselName.VesselName;
       this.connectivityControlService.getVesselHistoricalStatus(this.form.value).pipe(take(1)).subscribe((data) => {
+        this.isFormSubmitted = false;
         this.vesselHistoricalUploadStatus = data;
       });
     }
