@@ -4,9 +4,6 @@ import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ToastModule } from 'primeng/toast';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -45,13 +42,8 @@ const routes: Routes = [
     DropdownModule,
     FormsModule,
     ReactiveFormsModule,
-    ConfirmDialogModule,
-    ToastModule,
     TooltipModule
   ],
-  providers: [
-    ConfirmationService,
-    MessageService
-  ]
+  providers: []
 })
 export class OperationalPlanModule { }

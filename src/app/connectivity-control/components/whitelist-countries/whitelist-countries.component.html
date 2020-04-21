@@ -37,36 +37,47 @@
 
 <div class="kx-pt--small">
     <app-load *ngIf="isDataLoading"></app-load>
-    <p-table tableStyleClass="kx-table kx-table--outer-border" *ngIf="!isDataLoading" [value]="whiteListedCountries"
-        [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
-        <ng-template pTemplate="header" let-columns>
-            <tr>
-                <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--xlarge">
-                    {{col.header}}
-                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                        ariaLabelDesc="Activate to sort in descending order"
-                        ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr>
-                <td *ngFor="let col of columns">
-                    <div [ngSwitch]="col.field">
-                        <div *ngSwitchCase="'VesselId'">
-                            <button (click)="removeWhitelistCountryConfirm(rowData)" [disabled]="disableActivity"
-                                class="kx-btn kx-btn--skin-primary kx-btn--size-base">
-                                <span class="kx-btn__inner">
-                                    <span class="kx-btn__txt">Remove</span>
-                                </span>
-                            </button>
+    <div *ngIf="!isDataLoading">
+        <p-table tableStyleClass="kx-table kx-table--outer-border" [value]="whiteListedCountries"
+            [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--cursorPointer kx-p--xlarge"
+                        title="Click to sort">
+                        {{col.header}}
+                        <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
+                            ariaLabelDesc="Activate to sort in descending order"
+                            ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div [ngSwitch]="col.field">
+                            <div *ngSwitchCase="'VesselId'">
+                                <button (click)="removeWhitelistCountryConfirm(rowData)" [disabled]="disableActivity"
+                                    class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+                                    <span class="kx-btn__inner">
+                                        <span class="kx-btn__txt">Remove</span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div *ngSwitchDefault>{{rowData[col.field]}}</div>
                         </div>
-                        <div *ngSwitchDefault>{{rowData[col.field]}}</div>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <div *ngIf="whiteListedCountries.length === 0"
+            class="kx-notification kx-notification--neutral kx-notification--block kx-flex kx-align-items-start kx-justify-content-start kx-mt--small">
+            <div class="kx-notification__content kx-flex kx-flex-wrap kx-align-items-start">
+                <header class="kx-notification__header">
+                    <h3 class="kx-notification__title">No Data Available</h3>
+                </header>
+            </div>
+        </div>
+    </div>
 </div>
 <app-modal [displayMe]="displayManageCountryGroup">
     <div class="modal-header">
@@ -141,7 +152,7 @@
                                 <div class="u--picklistItem">{{country.CountryName}}</div>
                             </ng-template>
                         </p-pickList>
-                        <button (click)="updateGroupCountries()"
+                        <button (click)="updateGroupCountries()" [disabled]="disableActivity"
                             class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-btn--fluid kx-mt--small">
                             <span class="kx-btn__inner">
                                 <span class="kx-btn__txt u--cursorPointer">Update Group</span>

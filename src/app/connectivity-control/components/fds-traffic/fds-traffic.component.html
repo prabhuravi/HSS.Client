@@ -6,8 +6,7 @@
                 <div class="kx-col kx-col--3">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
-                        <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselName'"
-                            [options]="vesselList" optionLabel="VesselName" filter="true"></p-dropdown>
+                        <p-multiSelect [options]="vesselList" [formControlName]="'VesselIds'"  optionLabel="VesselName"></p-multiSelect>
                     </div>
                 </div>
                 <div class="kx-col kx-col--3">
@@ -42,15 +41,15 @@
         </form>
     </div>
 </div>
-<app-load *ngIf="isFormSubmitted && !vesselHistoricalUploadStatus"></app-load>
-<div *ngIf="!isFormSubmitted && vesselHistoricalUploadStatus">
+<app-load *ngIf="isFormSubmitted && !vesselHistoricalUploadStatusLoaded"></app-load>
+<div *ngIf="!isFormSubmitted && vesselHistoricalUploadStatusLoaded">
     <div *ngIf="vesselHistoricalUploadStatus.filesUploadStatus.length > 0" class=" kx-mt--small">
         <p-table tableStyleClass="kx-table kx-table--outer-border" #tt
             [value]="vesselHistoricalUploadStatus.filesUploadStatus" [columns]="cols" [paginator]="true"
             [rows]="PRIMENG_CONSTANTS.rowCount">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall u--fontBold">
                         {{col.header}}
                         <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
@@ -80,7 +79,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr>
-                    <td *ngFor="let col of columns" class="kx-p--small">
+                    <td *ngFor="let col of columns" class="kx-p--base u--fontXSmall">
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'FileUploadedDate'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
@@ -116,7 +115,7 @@
         </p-table>
     </div>
     <div *ngIf="vesselHistoricalUploadStatus.filesUploadStatus.length === 0"
-        class="kx-notification kx-notification--neutral kx-notification--block kx-flex kx-align-items-start kx-justify-content-start">
+        class="kx-notification kx-notification--neutral kx-notification--block kx-flex kx-align-items-start kx-justify-content-start kx-mt--small">
         <div class="kx-notification__content kx-flex kx-flex-wrap kx-align-items-start">
             <header class="kx-notification__header">
                 <h3 class="kx-notification__title">No Data Available</h3>

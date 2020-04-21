@@ -6,11 +6,9 @@ import { TableModule } from 'primeng/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { PickListModule } from 'primeng/picklist';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FdsTrafficComponent } from './components/fds-traffic/fds-traffic.component';
@@ -42,13 +40,9 @@ const routes: Routes = [
     DropdownModule,
     TooltipModule,
     PickListModule,
-    ConfirmDialogModule,
-    ToastModule
+    MultiSelectModule
   ],
   exports: [RouterModule],
-  providers: [
-    ConfirmationService,
-    MessageService
-  ]
+  providers: []
 })
 export class ConnectivityControlModule { }

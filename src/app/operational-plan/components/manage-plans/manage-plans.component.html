@@ -59,10 +59,10 @@
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 1.5em" class="u--cursorPointer kx-p--small"></th>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--small"
-                        [ngSwitch]="col.field">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
+                        class="u--cursorPointer kx-p--xlarge" title="Click to sort">
                         {{col.header}}
-                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                        <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
                             ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                     </th>
@@ -90,16 +90,20 @@
                     </td>
                     <td *ngFor="let col of columns" class="kx-p--small">
                         <div [ngSwitch]="col.field">
-                            <div *ngSwitchCase="'OperationDate'" class="u--withEllipsis" style="width: 80px;" [pTooltip]="rowData[col.field]">
+                            <div *ngSwitchCase="'OperationDate'" class="u--withEllipsis" style="width: 80px;"
+                                [pTooltip]="rowData[col.field]">
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
-                            <div *ngSwitchCase="'ETADate'" class="u--withEllipsis" style="width: 80px;" [pTooltip]="rowData[col.field]">
+                            <div *ngSwitchCase="'ETADate'" class="u--withEllipsis" style="width: 80px;"
+                                [pTooltip]="rowData[col.field]">
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
-                            <div *ngSwitchCase="'LastUpdatedDate'" class="u--withEllipsis" style="width: 80px;" [pTooltip]="rowData[col.field]">
+                            <div *ngSwitchCase="'LastUpdatedDate'" class="u--withEllipsis" style="width: 80px;"
+                                [pTooltip]="rowData[col.field]">
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
-                            <div *ngSwitchCase="'PlanId'" class="u--withEllipsis" style="width: 100px;" [pTooltip]="rowData[col.field]">
+                            <div *ngSwitchCase="'PlanId'" class="u--withEllipsis" style="width: 100px;"
+                                [pTooltip]="rowData[col.field]">
                                 <div class="kx-btngroup kx-flex kx-flex-wrap" role="group"
                                     aria-label="Aria label example">
                                     <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
@@ -157,7 +161,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <div *ngSwitchDefault  class="u--withEllipsis" style="width: 80px;" [pTooltip]="rowData[col.field]">{{rowData[col.field]}}</div>
+                            <div *ngSwitchDefault class="u--withEllipsis" style="width: 80px;"
+                                [pTooltip]="rowData[col.field]">{{rowData[col.field]}}</div>
                         </div>
                     </td>
                 </tr>
@@ -174,9 +179,10 @@
                                         autoLayout="true">
                                         <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" class="u--cursorPointer kx-p--small">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
+                        class="u--cursorPointer kx-p--xlarge" title="Click to sort">
                         {{col.header}}
-                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                        <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
                             ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                     </th>

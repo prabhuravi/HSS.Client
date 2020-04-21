@@ -15,10 +15,10 @@ export class WhitelistCountriesComponent implements OnInit {
 
   whiteListedCountries: IWhiteListedCountries[] = [];
   cols = [
-    { field: 'CountryName', header: 'Country Name' },
-    { field: 'MCCs', header: 'FCC' },
-    { field: 'Vessel', header: 'Whitelisted For' },
-    { field: 'VesselId', header: 'Action' }
+    { field: 'CountryName', sortfield: 'VesselName', header: 'Country Name' },
+    { field: 'MCCs', sortfield: 'MCCs', header: 'FCC' },
+    { field: 'Vessel', sortfield: 'Vessel', header: 'Whitelisted For' },
+    { field: 'VesselId', sortfield: '', header: 'Action' }
   ];
   vesselList: IVesselList[] = [];
   activeVessel: IVesselList;
@@ -134,7 +134,9 @@ export class WhitelistCountriesComponent implements OnInit {
       GroupId: this.activeGroup.CountryId,
       User: 'admin'
     };
+    this.disableActivity = true;
     this.connectivityControlService.deleteCountryGroup(formData).pipe(take(1)).subscribe((data) => {
+      this.disableActivity = false;
       this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
       this.getOperatorCountryList();
     });
@@ -144,13 +146,25 @@ export class WhitelistCountriesComponent implements OnInit {
       this.disableActivity = true;
       this.connectivityControlService.addCountryGroup(this.form.value).pipe(take(1)).subscribe((data) => {
         this.disableActivity = false;
+        if (this.form && this.form.value && this.form.value.GroupName) {
+          this.form.value.GroupName = '';
+        }
         this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
         this.getOperatorCountryList();
       });
     }
   }
   updateGroupCountries(): void {
-    console.log(this.groupCountryList);
+    const formData = {
+      GroupId: this.activeGroup.CountryId,
+      CountryIds: this.groupCountryList.map((e) => e.CountryId)
+    };
+    this.disableActivity = true;
+    this.connectivityControlService.addCountriesToGroup(formData).pipe(take(1)).subscribe((data) => {
+      this.disableActivity = false;
+      this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
+      this.getOperatorCountryList();
+    });
   }
   triggerToast(severity: string, summary: string, detail: string): void {
     this.messageService.add(
