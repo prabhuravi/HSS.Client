@@ -36,6 +36,10 @@ export function initConfig(config: ConfigurationService<IConfiguration>) {
   return () => config.load();
 }
 
+import { ConfirmationService, MessageService as PrimengMessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -52,7 +56,9 @@ export function initConfig(config: ConfigurationService<IConfiguration>) {
     LoadingComponentModule,
     PageNotFoundModule,
     AppRoutingModule,
-    GoogleChartsModule.forRoot()
+    GoogleChartsModule.forRoot(),
+    ConfirmDialogModule,
+    ToastModule
   ],
   declarations: [
     AppComponent,
@@ -85,7 +91,9 @@ export function initConfig(config: ConfigurationService<IConfiguration>) {
     NavigationService,
     SettingsService,
     SidebarsVisibilityService,
-    NavigationSubitemsService
+    NavigationSubitemsService,
+    ConfirmationService,
+    PrimengMessageService
   ],
   bootstrap: [AppComponent]
 })
