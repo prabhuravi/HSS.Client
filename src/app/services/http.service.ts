@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, config } from 'rxjs';
 import { AuthenticationService } from '@kognifai/poseidon-authenticationservice';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
@@ -11,7 +11,7 @@ import { User } from 'oidc-client';
 })
 export class HttpService {
 
-  domainURL = 'https://hgstest.kognif.ai';
+  domainURL = '';
   username: string = '';
 
   constructor(
@@ -19,6 +19,7 @@ export class HttpService {
     private authenticationService: AuthenticationService,
     public configurationService: ConfigurationService<Configuration>
   ) {
+    this.domainURL = configurationService.config.apiCollection.domainURL;
     if (this.authenticationService && this.authenticationService.userManager) {
       this.authenticationService.userManager.getUser().then((user: User) => {
         this.getUserInfo(user);

@@ -152,7 +152,7 @@
                                 <div class="u--picklistItem">{{country.CountryName}}</div>
                             </ng-template>
                         </p-pickList>
-                        <button (click)="updateGroupCountries()"
+                        <button (click)="updateGroupCountries()" [disabled]="disableActivity"
                             class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-btn--fluid kx-mt--small">
                             <span class="kx-btn__inner">
                                 <span class="kx-btn__txt u--cursorPointer">Update Group</span>
