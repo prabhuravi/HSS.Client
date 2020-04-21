@@ -13,7 +13,7 @@ import { take } from 'rxjs/operators';
 export class FdsTrafficComponent implements OnInit {
 
   form: FormGroup;
-  isFormSubmitted = false;
+  isFormSubmitted: boolean;
   vesselList: IVesselList[] = [];
   vesselHistoricalUploadStatus: IVesselUploadStatus;
   cols = [
@@ -30,7 +30,8 @@ export class FdsTrafficComponent implements OnInit {
     { field: 'UploadCount', sortfield: '', header: 'Count', filterMatchMode: 'contains' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
-  vesselListLoaded: boolean = false;
+  vesselListLoaded: boolean;
+  vesselHistoricalUploadStatusLoaded: boolean;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -46,31 +47,25 @@ export class FdsTrafficComponent implements OnInit {
       this.vesselListLoaded = true;
       this.vesselList = data;
       this.form = this.buildForm();
-      this.loadLast30DaysData();
-    });
-  }
-
-  loadLast30DaysData(): void {
-    this.isFormSubmitted = true;
-    this.connectivityControlService.getVesselHistoricalStatus(this.form.value).pipe(take(1)).subscribe((data) => {
-      this.isFormSubmitted = false;
-      this.vesselHistoricalUploadStatus = data;
+      this.onSubmit();
     });
   }
 
   buildForm() {
     const group = this.fb.group({});
-    group.addControl('VesselName', this.fb.control({ value: '', disabled: false }, [Validators.required]));
-    group.addControl('FromDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
-    group.addControl('ToDate', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    group.addControl('VesselIds', this.fb.control({ value: [], disabled: false }, []));
+    group.addControl('FromDate', this.fb.control({ value: '', disabled: false }, []));
+    group.addControl('ToDate', this.fb.control({ value: '', disabled: false }, []));
     return group;
   }
   onSubmit(): void {
     this.isFormSubmitted = true;
+    this.vesselHistoricalUploadStatusLoaded = false;
     if (this.form.valid) {
-      this.form.value.VesselName = this.form.value.VesselName.VesselName;
+      this.form.value.VesselIds = this.form.value.VesselIds.map((e) => e.Id);
       this.connectivityControlService.getVesselHistoricalStatus(this.form.value).pipe(take(1)).subscribe((data) => {
         this.isFormSubmitted = false;
+        this.vesselHistoricalUploadStatusLoaded = true;
         this.vesselHistoricalUploadStatus = data;
       });
     }

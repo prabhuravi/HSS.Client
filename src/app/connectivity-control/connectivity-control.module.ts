@@ -11,6 +11,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { PickListModule } from 'primeng/picklist';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FdsTrafficComponent } from './components/fds-traffic/fds-traffic.component';
@@ -43,7 +44,8 @@ const routes: Routes = [
     TooltipModule,
     PickListModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    MultiSelectModule
   ],
   exports: [RouterModule],
   providers: [

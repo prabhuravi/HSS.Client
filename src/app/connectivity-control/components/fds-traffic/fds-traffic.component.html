@@ -6,8 +6,7 @@
                 <div class="kx-col kx-col--3">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
-                        <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselName'"
-                            [options]="vesselList" optionLabel="VesselName" filter="true"></p-dropdown>
+                        <p-multiSelect [options]="vesselList" [formControlName]="'VesselIds'"  optionLabel="VesselName"></p-multiSelect>
                     </div>
                 </div>
                 <div class="kx-col kx-col--3">
@@ -42,8 +41,8 @@
         </form>
     </div>
 </div>
-<app-load *ngIf="isFormSubmitted && !vesselHistoricalUploadStatus"></app-load>
-<div *ngIf="!isFormSubmitted && vesselHistoricalUploadStatus">
+<app-load *ngIf="isFormSubmitted && !vesselHistoricalUploadStatusLoaded"></app-load>
+<div *ngIf="!isFormSubmitted && vesselHistoricalUploadStatusLoaded">
     <div *ngIf="vesselHistoricalUploadStatus.filesUploadStatus.length > 0" class=" kx-mt--small">
         <p-table tableStyleClass="kx-table kx-table--outer-border" #tt
             [value]="vesselHistoricalUploadStatus.filesUploadStatus" [columns]="cols" [paginator]="true"

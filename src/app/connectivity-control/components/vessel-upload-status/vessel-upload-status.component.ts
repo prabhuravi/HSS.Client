@@ -52,7 +52,7 @@ export class VesselUploadStatusComponent implements OnInit {
   }
   getMissionList(): void {
     const formData = {
-      VesselName: this.form.get('VesselName').value.VesselName
+      VesselId: this.form.get('VesselId').value.Id
     };
     this.connectivityControlService.getMissionList(formData).pipe(take(1)).subscribe((data) => {
       this.fromMissionList = [];
@@ -76,15 +76,15 @@ export class VesselUploadStatusComponent implements OnInit {
   }
   buildForm() {
     const group = this.fb.group({});
-    group.addControl('VesselName', this.fb.control({ value: '', disabled: false }, [Validators.required]));
-    group.addControl('FromMission', this.fb.control({ value: '', disabled: false }, [Validators.required]));
-    group.addControl('ToMission', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    group.addControl('VesselId', this.fb.control({ value: '', disabled: false }, [Validators.required]));
+    group.addControl('FromMission', this.fb.control({ value: '', disabled: false }, []));
+    group.addControl('ToMission', this.fb.control({ value: '', disabled: false }, []));
     return group;
   }
   onSubmit() {
     this.isFormSubmitted = true;
     if (this.form.valid) {
-      this.form.value.VesselName = this.form.value.VesselName.VesselName;
+      this.form.value.VesselId = this.form.value.VesselId.Id;
       this.form.value.FromMission = this.form.value.FromMission.value;
       this.form.value.ToMission = this.form.value.ToMission.value;
       this.connectivityControlService.getVesselUploadStatus(this.form.value).pipe(take(1)).subscribe((data) => {

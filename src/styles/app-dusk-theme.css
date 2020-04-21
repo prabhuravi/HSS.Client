@@ -115,21 +115,21 @@
     background: #434b52;
 }
 .ui-paginator .ui-state-default {
-  color: #2bdeee;
-  width: 2rem;
-  height: 2rem;
-  font-size: 1rem;
+    color: #2bdeee;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
 }
 .ui-paginator .ui-state-active {
-  color: #f6f6f6;
-  width: 2rem;
-  height: 2rem;
-  font-size: 1rem;
+    color: #f6f6f6;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
 }
 
 .ui-tooltip .ui-tooltip-text {
-   background-color: #ffffff;
-   color: rgb(76, 76, 76);
+    background-color: #ffffff;
+    color: rgb(76, 76, 76);
 }
 .ui-tooltip-right .ui-tooltip-arrow {
     border-right-color: #ffffff;
@@ -145,8 +145,22 @@
 .ui-tooltip-bottom .ui-tooltip-arrow {
     border-bottom-color: #ffffff;
 }
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
     background: #373c41;
     color: #fff;
-    box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
 }
+/* multiselect starts */
+.ui-multiselect {
+    border: 1px solid #71767a;
+    width: 80%;
+    padding: 0.1rem 1rem;
+}
+.ui-multiselect-panel {
+    background: #373c41;
+}
+.ui-chkbox .ui-chkbox-box {
+    border: #71767a 1px solid;
+}
+/* multiselect ends*/

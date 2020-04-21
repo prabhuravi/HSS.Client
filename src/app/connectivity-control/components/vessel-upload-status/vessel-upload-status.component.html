@@ -6,7 +6,7 @@
                 <div class="kx-col kx-col--3">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
-                        <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselName'"
+                        <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselId'"
                             [options]="vesselList" optionLabel="VesselName" filter="true" (onChange)="getMissionList()">
                         </p-dropdown>
                     </div>
