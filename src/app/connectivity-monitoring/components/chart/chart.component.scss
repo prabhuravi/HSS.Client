@@ -43,3 +43,19 @@ text.shadow {
 .inline-flex{
   display: inline-flex;
 }
+.tooltip-container{
+ position:absolute;
+  z-index:10;
+  height:auto;
+ width:180px;
+ padding: 5px;
+ border: 1px solid #e5e5e5;
+ font-size:12px;
+background:#fff;
+ color:#000;
+ opacity:0;
+  
+ label{
+  display: block;
+ }
+}

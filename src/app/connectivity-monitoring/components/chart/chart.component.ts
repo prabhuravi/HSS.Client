@@ -15,7 +15,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
   encapsulation: ViewEncapsulation.None,
- 
+
 })
 export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() chartId: string;
@@ -65,7 +65,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   private signallineElement: d3.Selection<any, any, any, any>;
   private showChart: boolean = false;
   private NodeSuscription: Subscription;
-  tooltipBody:any;
+  tooltipBody: any;
   ngAfterViewInit() {
 
     this.NodeSuscription = this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
@@ -81,11 +81,11 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   getChartData(latencyRequest: LatencyRequest) {
     this.connectivityMonitoringService.getChartData(latencyRequest)
       .subscribe((data: any) => {
-          for(var i=0;i< data.Result.length;i++){
-            if(i>30 && i<90){
-              data.Result.splice(i,1)
-            }
+        for (var i = 0; i < data.Result.length; i++) {
+          if (i > 30 && i < 90) {
+            data.Result.splice(i, 1)
           }
+        }
         this.dataSet = new ChartDataSet(data);
         this.setupChart();
       });
@@ -93,11 +93,11 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     event.target.innerWidth;
-    if(document.getElementById(this.chartId)){
+    if (document.getElementById(this.chartId)) {
       document.getElementById(this.chartId).remove();
       this.setupChart();
     }
-    
+
   }
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService) {
     //window.addEventListener('resize', this.setupChart);
@@ -106,17 +106,17 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.NodeSuscription.unsubscribe();
     d3.select('#' + this.chartId).remove();
   }
-  
+
   ngOnChanges(changes: SimpleChanges) {
     const currentItem: SimpleChange = changes.item;
     // console.log(changes);
-    if(changes.viewFullChart){
-      setTimeout(()=>{
-        if(document.getElementById(this.chartId)){
+    if (changes.viewFullChart) {
+      setTimeout(() => {
+        if (document.getElementById(this.chartId)) {
           document.getElementById(this.chartId).remove();
           this.setupChart();
         }
-      },200)
+      }, 200)
     }
     //   console.log("########");
     //   let cacheData = this.connectivityMonitoringService.returncacheVesselLatencyChart();
@@ -255,7 +255,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     });
     this.tooltipBody = this.createTolltipBody();
     // Draw initial data
-    this.update(0,this.tooltipBody);
+    this.update(0, this.tooltipBody);
   }
   make_x_gridlines(x) {
     return d3.axisBottom(x)
@@ -330,7 +330,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.xAxis.scale(this.xScale);
     this.xAxisElement.call(this.xAxis);
 
-    this.update(0,this.tooltipBody);
+    this.update(0, this.tooltipBody);
   }
 
   onZoomY(): void {
@@ -342,7 +342,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.yAxis.scale(this.yScale);
     this.yAxisElement.call(this.yAxis);
 
-    this.update(0,this.tooltipBody);
+    this.update(0, this.tooltipBody);
   }
 
   zoomXTo(x0: Date, x1: Date, animate: boolean): void {
@@ -354,38 +354,39 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
         .translate(-this.xScaleUnzoomed(x0), 0)
     );
   }
-  createTolltipBody(){
-    return  d3.select("body")
-    .append("div")
-    .attr('id','tooltip-custom')
-    .style("position", "absolute")
-    .style("z-index", "10")
-    .style("height", "auto")
-    .style("width", "180px")
-    .style("background", "#fff")
-    .style("color", "#000")
-    .style("visibility", "hidden")
+  createTolltipBody() {
+    d3.select('#tooltip-custom').remove();
+    return d3.select("body")
+      .append("div")
+      .attr('id', 'tooltip-custom')
+      .attr('class','tooltip-container');
   }
-  update(transitionSpeed: number,tooltip): void {
+  update(transitionSpeed: number, tooltip): void {
     // Scatter
-   // d3.select('#tooltip-custom').remove();
-    
+    // d3.select('#tooltip-custom').remove();
+
     this.scatterPoints = this.chartBody.selectAll('circle')
       .data(this.dataSet.data, (d: IDataPoint) => d.TimeStamp.toString());
 
     this.scatterPoints.enter().append('circle')
       .attr('r', 1.5)
       .attr('fill', '#6a3d9a')
+
+      .style("stroke", "transparent")
+      .style("stroke-width", "10px")
       .attr('fill-opacity', d => d.isGap ? '0' : '0.7')
 
       .on("mouseover", function (d) {
-        console.log(d.TimeStamp);
-        let date = new Date(d.TimeStamp);
-        tooltip.text(`${date} Latency  ${d.LatencyValue}`);
-        return tooltip.style("visibility", "visible");
+        console.log(d);
+        let date = new Date(d.TimeStamp).toISOString();
+        tooltip.html(`<label>${date}</label>
+        <label>Latency  ${d.LatencyValue} </label>
+        <label>Signal Strength ${d.SignalStrength} </label>`) ;
+        
+        return tooltip.transition().duration(200).style("opacity", 1);
       })
       .on("mousemove", function () { return tooltip.style("top", ((event as any).pageY - 10) + "px").style("left", ((event as any).pageX + 10) + "px"); })
-      .on("mouseout", function () { return tooltip.style("visibility", "hidden"); })
+      .on("mouseout", function () { return tooltip.transition().duration(500).style("opacity", 0); })
       .merge(this.scatterPoints)
       .transition().duration(transitionSpeed)
       .attr('cx', d => this.xScale(d3.isoParse(d.TimeStamp)))
