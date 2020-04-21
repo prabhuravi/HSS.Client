@@ -150,3 +150,9 @@
     color: #fff;
     box-shadow: 0 3px 14px rgba(0,0,0,0.4);
 }
+
+.tooltip-container{
+    background: #373c41 !important;
+    color: #fff !important;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.4) !important;
+}
