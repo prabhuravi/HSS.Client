@@ -16,31 +16,31 @@ export class ManagePlansComponent implements OnInit {
   isFormSubmitted = false;
   operationalPlansList: IOperationalPlan[] = [];
   cols = [
-    { field: 'VesselName', header: 'Vessel', filterMatchMode: 'contains' },
-    { field: 'ImoNumber', header: 'IMO', filterMatchMode: 'contains' },
-    { field: 'OperationDate', header: 'Date', filterMatchMode: 'contains' },
-    { field: 'ETADate', header: 'ETA Date', filterMatchMode: 'contains' },
-    { field: 'OperationLoc', header: 'Location', filterMatchMode: 'contains' },
-    { field: 'OperationType', header: 'Type', filterMatchMode: 'contains' },
-    { field: 'OperationDes', header: 'Description', filterMatchMode: 'contains' },
-    { field: 'Status', header: 'Status', filterMatchMode: 'contains' },
-    { field: 'OperatorName', header: 'Operator', filterMatchMode: 'contains' },
-    { field: 'Planner', header: 'Planner', filterMatchMode: 'contains' },
-    { field: 'CreatedBy', header: 'Created By', filterMatchMode: 'contains' },
-    { field: 'LastUpdatedBy', header: 'Updated By', filterMatchMode: 'contains' },
-    { field: 'LastUpdatedDate', header: 'Updated Date', filterMatchMode: 'contains' },
-    { field: 'PlanId', header: 'Action', filterMatchMode: 'contains' }
+    { field: 'VesselName', sortfield: 'VesselName', header: 'Vessel', filterMatchMode: 'contains' },
+    { field: 'ImoNumber', sortfield: '', header: 'IMO', filterMatchMode: 'contains' },
+    { field: 'OperationDate', sortfield: '', header: 'Date', filterMatchMode: 'contains' },
+    { field: 'ETADate', sortfield: '', header: 'ETA Date', filterMatchMode: 'contains' },
+    { field: 'OperationLoc', sortfield: '', header: 'Location', filterMatchMode: 'contains' },
+    { field: 'OperationType', sortfield: '', header: 'Type', filterMatchMode: 'contains' },
+    { field: 'OperationDes', sortfield: '', header: 'Description', filterMatchMode: 'contains' },
+    { field: 'Status', sortfield: '', header: 'Status', filterMatchMode: 'contains' },
+    { field: 'OperatorName', sortfield: '', header: 'Operator', filterMatchMode: 'contains' },
+    { field: 'Planner', sortfield: '', header: 'Planner', filterMatchMode: 'contains' },
+    { field: 'CreatedBy', sortfield: '', header: 'Created By', filterMatchMode: 'contains' },
+    { field: 'LastUpdatedBy', sortfield: '', header: 'Updated By', filterMatchMode: 'contains' },
+    { field: 'LastUpdatedDate', sortfield: '', header: 'Updated Date', filterMatchMode: 'contains' },
+    { field: 'PlanId', sortfield: '', header: 'Action', filterMatchMode: 'contains' }
   ];
   subOperationsList: ISubOperations[] = [];
   subOperationCols = [
-    { field: 'SubOperationStartTime', header: 'Sub Operation Start Time' },
-    { field: 'SubOperationEndTime', header: 'Sub Operation End Time' },
-    { field: 'SubOperationDes', header: 'Description' },
-    { field: 'Status', header: 'Status' },
-    { field: 'CreatedBy', header: 'Created By' },
-    { field: 'LastUpdatedBy', header: 'Updated By' },
-    { field: 'LastUpdatedDate', header: 'Updated Date' },
-    { field: 'SubPlanId', header: 'Action' }
+    { field: 'SubOperationStartTime', sortfield: 'SubOperationStartTime', header: 'Sub Operation Start Time' },
+    { field: 'SubOperationEndTime', sortfield: '', header: 'Sub Operation End Time' },
+    { field: 'SubOperationDes', sortfield: '', header: 'Description' },
+    { field: 'Status', sortfield: '', header: 'Status' },
+    { field: 'CreatedBy', sortfield: '', header: 'Created By' },
+    { field: 'LastUpdatedBy', sortfield: '', header: 'Updated By' },
+    { field: 'LastUpdatedDate', sortfield: '', header: 'Updated Date' },
+    { field: 'SubPlanId', sortfield: '', header: 'Action' }
   ];
   showLogs = true;
   isDataLoading: boolean;

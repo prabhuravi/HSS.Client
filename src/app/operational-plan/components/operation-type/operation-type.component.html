@@ -11,12 +11,8 @@
                     tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th *ngFor="let col of columns" [pSortableColumn]="col.field"
-                                class="u--cursorPointer kx-p--xlarge">
+                            <th *ngFor="let col of columns" class="kx-p--xlarge">
                                 {{col.header}}
-                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                                    ariaLabelDesc="Activate to sort in descending order"
-                                    ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                             </th>
                         </tr>
                     </ng-template>

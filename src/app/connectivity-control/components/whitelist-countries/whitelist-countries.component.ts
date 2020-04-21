@@ -15,10 +15,10 @@ export class WhitelistCountriesComponent implements OnInit {
 
   whiteListedCountries: IWhiteListedCountries[] = [];
   cols = [
-    { field: 'CountryName', header: 'Country Name' },
-    { field: 'MCCs', header: 'FCC' },
-    { field: 'Vessel', header: 'Whitelisted For' },
-    { field: 'VesselId', header: 'Action' }
+    { field: 'CountryName', sortfield: 'VesselName', header: 'Country Name' },
+    { field: 'MCCs', sortfield: 'MCCs', header: 'FCC' },
+    { field: 'Vessel', sortfield: 'Vessel', header: 'Whitelisted For' },
+    { field: 'VesselId', sortfield: '', header: 'Action' }
   ];
   vesselList: IVesselList[] = [];
   activeVessel: IVesselList;
