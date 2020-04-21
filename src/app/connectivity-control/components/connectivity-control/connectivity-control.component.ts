@@ -28,6 +28,7 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   dateTimeInterval = interval(60000);
   dateTimeIntervalSubscription: Subscription;
+  now: Date = new Date();
 
   constructor(
     private connectivityControlService: ConnectivityControlService

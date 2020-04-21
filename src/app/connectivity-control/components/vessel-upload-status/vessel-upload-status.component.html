@@ -67,7 +67,7 @@
             [rows]="PRIMENG_CONSTANTS.rowCount">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall u--fontBold">
                         {{col.header}}
                         <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
@@ -97,7 +97,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr>
-                    <td *ngFor="let col of columns" class="kx-p--small">
+                    <td *ngFor="let col of columns" class="kx-p--small u--fontXSmall">
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'FileUploadedDate'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
