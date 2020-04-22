@@ -6,7 +6,8 @@
 .grid path {
   stroke-width: 0;
 }
-.ui-widget, .ui-widget * {
+.ui-widget,
+.ui-widget * {
   box-sizing: border-box;
 }
 .ui-dialog,
@@ -98,3 +99,7 @@
   border: #c8c8c8 1px solid;
 }
 /* multiselect ends*/
+.u--dataTableWrapper {
+  border: 1px solid #c8c8c8;
+  border-radius: 2px;
+}

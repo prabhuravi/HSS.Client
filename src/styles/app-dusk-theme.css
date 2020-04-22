@@ -149,13 +149,13 @@
 .leaflet-popup-tip {
     background: #373c41;
     color: #fff;
-    box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
 }
 
-.tooltip-container{
+.tooltip-container {
     background: #373c41 !important;
     color: #fff !important;
-    box-shadow: 0 3px 14px rgba(0,0,0,0.4) !important;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4) !important;
 }
 /* multiselect starts */
 .ui-multiselect {
@@ -170,3 +170,7 @@
     border: #71767a 1px solid;
 }
 /* multiselect ends*/
+.u--dataTableWrapper {
+    border: 1px solid #71767a;
+    border-radius: 2px;
+}

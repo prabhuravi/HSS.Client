@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConnectivityControlService } from '../../../services/connectivity-control.service';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
-import { Subscription } from 'rxjs';
 import { interval } from 'rxjs';
 
 @Component({
@@ -10,7 +9,7 @@ import { interval } from 'rxjs';
   templateUrl: './connectivity-control.component.html',
   styleUrls: ['./connectivity-control.component.scss']
 })
-export class ConnectivityControlComponent implements OnInit, OnDestroy {
+export class ConnectivityControlComponent implements OnInit {
 
   vesselConnectivityControlList: IConnectivityControl[] = [];
   vesselConnectivityActionLogList: IConnectivityActionLog[] = [];
@@ -26,9 +25,8 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   isDataLoading: boolean = true;
   isActionLogDataLoading: boolean = true;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
-  dateTimeInterval = interval(60000);
-  dateTimeIntervalSubscription: Subscription;
   now: Date = new Date();
+  dateTimeInterval = interval(60000);
 
   constructor(
     private connectivityControlService: ConnectivityControlService
@@ -36,14 +34,6 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadData();
-    this.dateTimeIntervalSubscription = this.dateTimeInterval.subscribe(() => {
-      this.loadData();
-    });
-  }
-  ngOnDestroy(): void {
-    if (this.dateTimeIntervalSubscription) {
-      this.dateTimeIntervalSubscription.unsubscribe();
-    }
   }
   loadData(): void {
     this.connectivityControlService.getConnectivityData().pipe(take(1)).subscribe((connectivityData) => {
@@ -77,5 +67,13 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
       this.loadData();
     });
   }
-
+  updateRemainingTime(data) {
+    if (data.RemainingTime === null) {
+      this.dateTimeInterval.pipe(take(1)).subscribe(() => {
+        this.loadData();
+      });
+    } else {
+      this.vesselConnectivityControlList[data.index].RemainingTime = data.RemainingTime;
+    }
+  }
 }

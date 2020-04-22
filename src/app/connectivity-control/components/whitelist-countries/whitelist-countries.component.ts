@@ -90,21 +90,25 @@ export class WhitelistCountriesComponent implements OnInit {
     });
   }
   markCountryWhitelist(): void {
-    this.disableActivity = true;
-    const formData: any = {
-      CountryId: this.activeOperatorCountry.CountryId,
-      VesselId: this.activeVessel.Id,
-      IsCountryGroup: this.activeOperatorCountry.IsCountryGroup,
-      GroupCountryIDs: this.activeOperatorCountry.GroupCountryIDs
-    };
-    this.connectivityControlService.markCountryWhitelist(formData).pipe(take(1)).subscribe((data) => {
-      this.disableActivity = false;
-      this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
-      this.loadWhitelistedCountries();
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      accept: () => {
+        this.disableActivity = true;
+        const formData: any = {
+          CountryId: this.activeOperatorCountry.CountryId,
+          VesselId: this.activeVessel.Id,
+          IsCountryGroup: this.activeOperatorCountry.IsCountryGroup,
+          GroupCountryIDs: this.activeOperatorCountry.GroupCountryIDs
+        };
+        this.connectivityControlService.markCountryWhitelist(formData).pipe(take(1)).subscribe((data) => {
+          this.disableActivity = false;
+          this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
+          this.loadWhitelistedCountries();
+        });
+      }
     });
   }
   removeWhitelistCountryConfirm(data: IWhiteListedCountries): void {
-    console.log(data);
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
       accept: () => {
@@ -130,40 +134,58 @@ export class WhitelistCountriesComponent implements OnInit {
     });
   }
   deleteCountryGroup(): void {
-    const formData = {
-      GroupId: this.activeGroup.CountryId,
-      User: 'admin'
-    };
-    this.disableActivity = true;
-    this.connectivityControlService.deleteCountryGroup(formData).pipe(take(1)).subscribe((data) => {
-      this.disableActivity = false;
-      this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
-      this.getOperatorCountryList();
+    if (!this.activeGroup) {
+      return;
+    }
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      accept: () => {
+        const formData = {
+          GroupId: this.activeGroup.CountryId,
+          User: 'admin'
+        };
+        this.disableActivity = true;
+        this.connectivityControlService.deleteCountryGroup(formData).pipe(take(1)).subscribe((data) => {
+          this.disableActivity = false;
+          this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
+          this.getOperatorCountryList();
+        });
+      }
     });
   }
   addCountryGroup(): void {
     if (this.form.valid) {
-      this.disableActivity = true;
-      this.connectivityControlService.addCountryGroup(this.form.value).pipe(take(1)).subscribe((data) => {
-        this.disableActivity = false;
-        if (this.form && this.form.value && this.form.value.GroupName) {
-          this.form.value.GroupName = '';
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to perform this action?',
+        accept: () => {
+          this.disableActivity = true;
+          this.connectivityControlService.addCountryGroup(this.form.value).pipe(take(1)).subscribe((data) => {
+            this.disableActivity = false;
+            if (this.form && this.form.value && this.form.value.GroupName) {
+              this.form.value.GroupName = '';
+            }
+            this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
+            this.getOperatorCountryList();
+          });
         }
-        this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
-        this.getOperatorCountryList();
       });
     }
   }
   updateGroupCountries(): void {
-    const formData = {
-      GroupId: this.activeGroup.CountryId,
-      CountryIds: this.groupCountryList.map((e) => e.CountryId)
-    };
-    this.disableActivity = true;
-    this.connectivityControlService.addCountriesToGroup(formData).pipe(take(1)).subscribe((data) => {
-      this.disableActivity = false;
-      this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
-      this.getOperatorCountryList();
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      accept: () => {
+        const formData = {
+          GroupId: this.activeGroup.CountryId,
+          CountryIds: this.groupCountryList.map((e) => e.CountryId)
+        };
+        this.disableActivity = true;
+        this.connectivityControlService.addCountriesToGroup(formData).pipe(take(1)).subscribe((data) => {
+          this.disableActivity = false;
+          this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
+          this.getOperatorCountryList();
+        });
+      }
     });
   }
   triggerToast(severity: string, summary: string, detail: string): void {

@@ -50,7 +50,7 @@ export class HttpService {
     }
     this.confirmationService.confirm({
       header: 'Network Error',
-      message: errorMessage,
+      message: `<span class="u--bgDanger">${errorMessage}</span>`,
       rejectVisible: false,
       acceptLabel: 'Ok'
     });

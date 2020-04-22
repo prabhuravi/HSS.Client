@@ -1,9 +1,8 @@
 <app-load *ngIf="isDataLoading"></app-load>
-<div *ngIf="!isDataLoading" class="kx-mt--small">
-    <div *ngIf="vesselConnectivityControlList.length > 0" class=" kx-mt--small">
-        <p-table tableStyleClass="kx-table kx-table--outer-border" *ngIf="!isDataLoading" #tt
-            [value]="vesselConnectivityControlList" [columns]="cols" [paginator]="true"
-            [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
+<div *ngIf="!isDataLoading">
+    <div *ngIf="vesselConnectivityControlList.length > 0">
+        <p-table tableStyleClass="kx-table" *ngIf="!isDataLoading" #tt [value]="vesselConnectivityControlList"
+            [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
@@ -30,7 +29,7 @@
                     </th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <ng-template pTemplate="body" let-rowData let-i="rowIndex" let-columns="columns">
                 <tr>
                     <td *ngFor="let col of columns">
                         <div [ngSwitch]="col.field">
@@ -44,14 +43,19 @@
                                 </label>
                             </div>
                             <div *ngSwitchCase="'DisableTime'">
-                                <div *ngIf="rowData.IsUploadEnabled" class="kx-py--tiny">{{rowData.RemainingTime}}</div>
+                                <div *ngIf="rowData.IsUploadEnabled && rowData.AlwaysOn" class="kx-py--tiny">
+                                    {{rowData.RemainingTime}}
+                                </div>
+                                <div *ngIf="rowData.IsUploadEnabled && !rowData.AlwaysOn" class="kx-py--tiny" appRemainingTime
+                                    [data]="rowData.DisableTime" [index]="i" (updateRemainingTime)="updateRemainingTime($event)">
+                                    {{rowData.RemainingTime}}
+                                </div>
                                 <div *ngIf="!rowData.IsUploadEnabled">
                                     <p-calendar showTime="true" [appendTo]="pcalendarRef"
                                         inputStyleClass="kx-field kx-field--size-small" hourFormat="24"
                                         showButtonBar="true" hideOnDateTimeSelect="true"
                                         placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
-                                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
-                                        [minDate]="now"
+                                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [minDate]="now"
                                         [(ngModel)]="rowData.DisableTime">
                                     </p-calendar>
                                 </div>
@@ -61,7 +65,7 @@
                                 <i (click)="toggleActivityLogModal(); loadVesselActivityLog(rowData)"
                                     class="kx-icon kx-icon--size-base u--floatRight u--cursorPointer">
                                     <svg focusable="false">
-                                        <use href="../../assets/img/icons/sprites/icons.svg#view-list"></use>
+                                        <use href="./assets/img/icons/sprites/icons.svg#view-list"></use>
                                     </svg>
                                 </i>
                             </div>
@@ -91,7 +95,7 @@
                 <span class="kx-btn__inner">
                     <i class="kx-icon kx-icon--size-moderate">
                         <svg focusable="false">
-                            <use href="../../assets/img/icons/sprites/icons.svg#close">
+                            <use href="./assets/img/icons/sprites/icons.svg#close">
                             </use>
                         </svg>
                     </i>
