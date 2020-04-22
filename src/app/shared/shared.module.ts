@@ -10,9 +10,10 @@ import { NavigationTabComponent } from './components/navigation-tab/navigation-t
 import { ModalComponent } from './components/modal/modal.component';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { RemainingTimeDirective } from './directives/remaining-time.directive';
 
 @NgModule({
-  declarations: [NavigationTabComponent, ModalComponent, DynamicFormComponent, LoaderComponent],
+  declarations: [NavigationTabComponent, ModalComponent, DynamicFormComponent, LoaderComponent, RemainingTimeDirective],
   imports: [
     CommonModule,
     RouterModule,
@@ -26,7 +27,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     NavigationTabComponent,
     ModalComponent,
     DynamicFormComponent,
-    LoaderComponent
+    LoaderComponent,
+    RemainingTimeDirective
   ]
 })
 export class SharedModule { }
