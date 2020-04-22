@@ -1,20 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { Observable, forkJoin } from 'rxjs';
+import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
+import { Configuration } from '../configuration';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OperationalPlanService {
 
+  operationalPlanConfig: any;
+
   constructor(
-    private http: HttpService
+    private http: HttpService,
+    public configurationService: ConfigurationService<Configuration>
   ) {
+    this.operationalPlanConfig = this.configurationService.config.apiCollection.OperationalPlan;
   }
 
   getOperationPlans(formData: any): Observable<IOperationalPlan[]> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetOperationPlans',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.GetOperationPlans}`,
       data: formData
     };
     return this.http.postData(requestData);
@@ -22,28 +28,28 @@ export class OperationalPlanService {
   updateOperationPlan(planData: any): Observable<IOperationalPlan[]> {
     planData.LastUpdatedDate = new Date();
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/UpdateOperationPlan',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.UpdateOperationPlan}`,
       data: planData
     };
     return this.http.postData(requestData);
   }
   searchOperationPlans(formData: any): Observable<IOperationalPlan[]> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/SearchOperationPlan',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.SearchOperationPlan}`,
       data: formData
     };
     return this.http.postData(requestData);
   }
   getSubOperations(planData): Observable<ISubOperations[]> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetSubOperations',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.GetSubOperations}`,
       data: planData
     };
     return this.http.postData(requestData);
   }
   updateSubOperationPlan(planData: any): Observable<IOperationalPlan[]> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/UpdateSubOperation',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.UpdateSubOperation}`,
       data: planData
     };
     return this.http.postData(requestData);
@@ -51,20 +57,20 @@ export class OperationalPlanService {
 
   getRobotSystemDetails(): Observable<IRobotSystemDetails[]> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetRobotSystemDetails'
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.GetRobotSystemDetails}`
     };
     return this.http.getData(requestData);
   }
   addRobotSystemDetail(robotSystemData): Observable<any> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/AddRobotSystemDetail',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.AddRobotSystemDetail}`,
       data: robotSystemData
     };
     return this.http.postData(requestData);
   }
   deleteRobotSystemDetail(robotSystemData): Observable<any> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteRobotSystem',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.DeleteRobotSystem}`,
       data: robotSystemData
     };
     return this.http.postData(requestData);
@@ -72,20 +78,20 @@ export class OperationalPlanService {
 
   getOperationTypes(): Observable<IOperationTypes[]> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetOperationTypes'
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.GetOperationTypes}`
     };
     return this.http.getData(requestData);
   }
   addOperationType(operationTypeData): Observable<any> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/AddOperationType',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.AddOperationType}`,
       data: operationTypeData
     };
     return this.http.postData(requestData);
   }
   deleteOperationType(operationTypeData): Observable<any> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteOperationType',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.DeleteOperationType}`,
       data: operationTypeData
     };
     return this.http.postData(requestData);
@@ -93,203 +99,61 @@ export class OperationalPlanService {
 
   getOperators(): Observable<IOperators[]> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetOperators'
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.GetOperators}`
     };
     return this.http.getData(requestData);
   }
   addOperator(operatorData): Observable<any> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/AddOperator',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.AddOperator}`,
       data: operatorData
     };
     return this.http.postData(requestData);
   }
   deleteOperator(operatorData): Observable<any> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteOperator',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.DeleteOperator}`,
       data: operatorData
     };
     return this.http.postData(requestData);
   }
 
   getTimeZone(): ITimeZone[] {
-    return [
-      {
-        name: 'GMT',
-        offset: 'GMT'
-      },
-      {
-        name: 'GMT+1:00',
-        offset: 'GMT+1:00'
-      },
-      {
-        name: 'GMT+2:00',
-        offset: 'GMT+2:00'
-      },
-      {
-        name: 'GMT+3:00',
-        offset: 'GMT+3:00'
-      },
-      {
-        name: 'GMT+3:30',
-        offset: 'GMT+3:30'
-      },
-      {
-        name: 'GMT+4:00',
-        offset: 'GMT+4:00'
-      },
-      {
-        name: 'GMT+5:00',
-        offset: 'GMT+5:00'
-      },
-      {
-        name: 'GMT+5:30',
-        offset: 'GMT+5:30'
-      },
-      {
-        name: 'GMT+6:00',
-        offset: 'GMT+6:00'
-      },
-      {
-        name: 'GMT+7:00',
-        offset: 'GMT+7:00'
-      },
-      {
-        name: 'GMT+8:00',
-        offset: 'GMT+8:00'
-      },
-      {
-        name: 'GMT+9:00',
-        offset: 'GMT+9:00'
-      },
-      {
-        name: 'GMT+9:30',
-        offset: 'GMT+9:30'
-      },
-      {
-        name: 'GMT+10:00',
-        offset: 'GMT+10:00'
-      },
-      {
-        name: 'GMT+11:00',
-        offset: 'GMT+11:00'
-      },
-      {
-        name: 'GMT+12:00',
-        offset: 'GMT+12:00'
-      },
-      {
-        name: 'GMT-11:00',
-        offset: 'GMT-11:00'
-      },
-      {
-        name: 'GMT-10:00',
-        offset: 'GMT-10:00'
-      },
-      {
-        name: 'GMT-9:00',
-        offset: 'GMT-9:00'
-      },
-      {
-        name: 'GMT-8:00',
-        offset: 'GMT-8:00'
-      },
-      {
-        name: 'GMT-7:00',
-        offset: 'GMT-7:00'
-      },
-      {
-        name: 'GMT-6:00',
-        offset: 'GMT-6:00'
-      },
-      {
-        name: 'GMT-5:00',
-        offset: 'GMT-5:00'
-      },
-      {
-        name: 'GMT-4:00',
-        offset: 'GMT-4:00'
-      },
-      {
-        name: 'GMT-3:30',
-        offset: 'GMT-3:30'
-      },
-      {
-        name: 'GMT-3:00',
-        offset: 'GMT-3:00'
-      },
-      {
-        name: 'GMT-1:00',
-        offset: 'GMT-1:00'
-      }
-    ];
+    return this.operationalPlanConfig.endpoints.GetTimeZone;
   }
 
   getPlanStatus(): IPlanStatus[] {
-    return [
-      {
-        name: 'New',
-        value: 'New'
-      },
-      {
-        name: 'Completed',
-        value: 'Completed'
-      },
-      {
-        name: 'Cancelled',
-        value: 'Cancelled'
-      },
-      {
-        name: 'Deleted',
-        value: 'Deleted'
-      }
-    ];
+    return this.operationalPlanConfig.endpoints.GetPlanStatus;
   }
 
   getVesselList(): Observable<IVesselList[]> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetVesselDetails'
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.GetVesselDetails}`
     };
     return this.http.getData(requestData);
   }
   addVessel(vesselData): Observable<any> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/AddVesselDetail',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.AddVesselDetail}`,
       data: vesselData
     };
     return this.http.postData(requestData);
   }
   deleteVessel(vesselData): Observable<any> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/DeleteVessel',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.DeleteVessel}`,
       data: vesselData
     };
     return this.http.postData(requestData);
   }
 
   getOperationalData(): Observable<any[]> {
-    const vesselRequestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetVesselDetails'
-    };
-    const vesselData = this.http.getData(vesselRequestData);
-    const operatorRequestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetOperators'
-    };
-    const operatorData = this.http.getData(operatorRequestData);
-    const operationTypeRequestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetOperationTypes'
-    };
-    const operationTypeData = this.http.getData(operationTypeRequestData);
-    const robotSystemRequestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/GetRobotSystemDetails'
-    };
-    const robotSystemData = this.http.getData(robotSystemRequestData);
-    return forkJoin([vesselData, robotSystemData, operationTypeData, operatorData]);
+    return forkJoin([this.getVesselList(), this.getRobotSystemDetails(), this.getOperationTypes(), this.getOperators()]);
   }
 
   filterPortLocations(portData: any): Observable<any[]> {
     const requestData = {
-      endPoint: '/OperationPlanAPI/api/OperationalPlan/FilterPortLocations',
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.FilterPortLocations}`,
       data: portData
     };
     return this.http.postData(requestData);
