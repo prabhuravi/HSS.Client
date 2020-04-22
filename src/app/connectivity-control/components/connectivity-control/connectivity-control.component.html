@@ -1,7 +1,7 @@
 <app-load *ngIf="isDataLoading"></app-load>
-<div *ngIf="!isDataLoading" class="kx-mt--small">
-    <div *ngIf="vesselConnectivityControlList.length > 0" class=" kx-mt--small">
-        <p-table tableStyleClass="kx-table kx-table--outer-border" *ngIf="!isDataLoading" #tt
+<div *ngIf="!isDataLoading">
+    <div *ngIf="vesselConnectivityControlList.length > 0">
+        <p-table tableStyleClass="kx-table" *ngIf="!isDataLoading" #tt
             [value]="vesselConnectivityControlList" [columns]="cols" [paginator]="true"
             [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
@@ -50,8 +50,7 @@
                                         inputStyleClass="kx-field kx-field--size-small" hourFormat="24"
                                         showButtonBar="true" hideOnDateTimeSelect="true"
                                         placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
-                                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
-                                        [minDate]="now"
+                                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [minDate]="now"
                                         [(ngModel)]="rowData.DisableTime">
                                     </p-calendar>
                                 </div>
@@ -61,7 +60,7 @@
                                 <i (click)="toggleActivityLogModal(); loadVesselActivityLog(rowData)"
                                     class="kx-icon kx-icon--size-base u--floatRight u--cursorPointer">
                                     <svg focusable="false">
-                                        <use href="../../assets/img/icons/sprites/icons.svg#view-list"></use>
+                                        <use href="./assets/img/icons/sprites/icons.svg#view-list"></use>
                                     </svg>
                                 </i>
                             </div>
@@ -91,7 +90,7 @@
                 <span class="kx-btn__inner">
                     <i class="kx-icon kx-icon--size-moderate">
                         <svg focusable="false">
-                            <use href="../../assets/img/icons/sprites/icons.svg#close">
+                            <use href="./assets/img/icons/sprites/icons.svg#close">
                             </use>
                         </svg>
                     </i>

@@ -174,3 +174,6 @@
 .kx-modal__body {
     max-height: calc(100vh - 200px)!important;
 }
+.ui-confirmdialog-message {
+    word-break: break-all;
+}
