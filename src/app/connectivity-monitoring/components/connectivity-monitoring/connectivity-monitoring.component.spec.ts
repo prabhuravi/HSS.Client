@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConnectivityMonitoringComponent } from './connectivity-monitoring.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
+import { MockConnectivityMonitoringService } from '../../../services/mock.connectivity-monitoring.service';
 
 describe('ConnectivityMonitoringComponent', () => {
   let component: ConnectivityMonitoringComponent;
@@ -8,7 +11,11 @@ describe('ConnectivityMonitoringComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConnectivityMonitoringComponent ]
+      declarations: [ ConnectivityMonitoringComponent ],
+      providers: [
+        { provide: ConnectivityMonitoringService, useClass: MockConnectivityMonitoringService }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

@@ -7,6 +7,10 @@ import { ToolsMenuService } from '@kognifai/poseidon-ng-toolsmenuservice';
 import { SidebarsVisibilityService } from '@kognifai/poseidon-sidebar-visibilityservice';
 import { MessageModule } from '@kognifai/poseidon-ng-message-component';
 import { MessageService } from '@kognifai/poseidon-message-service';
+import { ConfirmationService, MessageService as PrimengMessageService } from 'primeng/api';
+
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 import { MainComponent } from './main.component';
 
@@ -36,15 +40,19 @@ describe('BodyComponent', () => {
   };
 
   const sidebarsVisibilityServiceStub: SidebarsVisibilityService = new SidebarsVisibilityService();
+  const confirmationServiceStub: ConfirmationService = new ConfirmationService();
+  const primengMessageServiceStub: PrimengMessageService = new PrimengMessageService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MessageModule],
+      imports: [RouterTestingModule, MessageModule, ConfirmDialogModule, ToastModule],
       declarations: [MainComponent],
       providers: [
         { provide: NavigationService, useValue: navigationServiceStub },
         { provide: ToolsMenuService, useValue: toolsMenuServiceStub },
         { provide: SidebarsVisibilityService, useValue: sidebarsVisibilityServiceStub },
+        { provide: ConfirmationService, useValue: confirmationServiceStub },
+        { provide: PrimengMessageService, useValue: primengMessageServiceStub },
         MessageService
       ]
     })

@@ -42,6 +42,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     }
   }
   buildForm() {
+    if (!this.config || !this.config.formList || this.config.formList.length === 0) {
+      return;
+    }
     const group = this.fb.group({});
     this.config.formList.forEach((control) => {
       const validatorList = [];

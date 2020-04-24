@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import { GoogleChartComponent } from 'angular-google-charts';
-import { ThemeService } from '@kognifai/poseidon-ng-theming';
 import { ActivatedRoute } from '@angular/router';
 import { IVesselDetails } from 'src/app/models/IVesselDetails';
 import { LatencyRequest } from 'src/app/models/LatencyRequest';
@@ -63,9 +62,9 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   allVessels: any;
   selectedVessel: any;
   constructor(
-    private connectivityMonitoringService: ConnectivityMonitoringService, private themeservice: ThemeService,
-    private route: ActivatedRoute) {
-
+    private connectivityMonitoringService: ConnectivityMonitoringService,
+    private route: ActivatedRoute
+  ) {
   }
   ngOnDestroy(): void {
     this.VesselDataSubscription.unsubscribe();
@@ -113,21 +112,15 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
 
   }
   changeVesselDetails() {
-    console.log(this.selectedVessel);
-    // this.VesselDataSubscription.unsubscribe();
-    // this.getVesselDetails(this.selectedVessel.NodeNumber,true);
     this.selectedVesselNodeNumber = this.selectedVessel.NodeNumber.toString();
     this.connectivityMonitoringService.getVesselLinksByNodeNumber(this.selectedVessel.NodeNumber);
   }
   ngOnInit() {
-    this.themeservice.themeChanged.subscribe((changes: any) => {
-      console.log(changes);
-    });
-    this.route.params.subscribe((params) =>
-      // setTimeout(() => {
-      this.getVesselDetails(params.nodeNumber)
-      // }, 100)
-    );
+    if (this.route && this.route.params) {
+      this.route.params.subscribe((params) =>
+        this.getVesselDetails(params.nodeNumber)
+      );
+    }
   }
   viewMeOnMap(lat: number, lng: number) {
     console.log(lat, lng);

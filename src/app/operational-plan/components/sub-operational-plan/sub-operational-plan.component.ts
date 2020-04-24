@@ -53,6 +53,9 @@ export class SubOperationalPlanComponent implements OnInit {
     });
   }
   constructForm(): void {
+    if (!this.planDetails) {
+      return;
+    }
     this.config.formList = [
       {
         type: FormType.datepicker,
