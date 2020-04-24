@@ -20,19 +20,19 @@ export class ConnectivityMonitoringComponent implements OnInit {
     { field: 'Cacti', header: 'Cacti' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
-  showLoader=true;
+  showLoader = true;
   constructor(
     private connectivityMonitoringService: ConnectivityMonitoringService
   ) { }
 
   ngOnInit() {
-    this.connectivityMonitoringService.getVesselLinks().subscribe((data: IVesselLinks[])=>{
-      if(data && data.length>0){
-        this.showLoader=false;
-        this.vesselLinksList =data;
+    this.connectivityMonitoringService.getVesselLinks().subscribe((data: IVesselLinks[]) => {
+      if (data && data.length > 0) {
+        this.showLoader = false;
+        this.vesselLinksList = data;
         this.connectivityMonitoringService.setAllVesselLinks(data);
       }
-    
+
     });
   }
 

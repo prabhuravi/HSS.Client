@@ -10,7 +10,7 @@ import { ConnectivityMonitoringComponent } from './components/connectivity-monit
 import { Routes, RouterModule } from '@angular/router';
 import { VesselHistoryComponent } from './components/vessel-history/vessel-history.component';
 import { ChartComponent } from './components/chart/chart.component';
-import {icon, Marker} from 'leaflet';
+import { icon, Marker } from 'leaflet';
 import { MapComponent } from './components/map/map.component';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { DonutChartComponent } from './components/donut/donut-chart.component';
@@ -39,7 +39,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, ConnectivityMonitoringComponent, VesselHistoryComponent,ChartComponent, MapComponent,
+  declarations: [DashboardComponent, ConnectivityMonitoringComponent, VesselHistoryComponent, ChartComponent, MapComponent,
     DonutChartComponent],
   imports: [
     RouterModule.forChild(routes),
@@ -51,8 +51,8 @@ const routes: Routes = [
     DropdownModule,
     GoogleChartsModule.forRoot()
   ],
-  
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  exports: [RouterModule,VesselHistoryComponent]
+
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  exports: [RouterModule, VesselHistoryComponent]
 })
 export class ConnectivityMonitoringModule { }

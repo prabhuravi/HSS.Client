@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { LatencyRequest } from '../models/LatencyRequest';
 import { AISRequest } from '../models/AISRequest';
@@ -10,83 +10,74 @@ import { AISRequest } from '../models/AISRequest';
 export class ConnectivityMonitoringService {
   allVesselLinks: IVesselLinks[];
   vesselSubject = new Subject<IVesselLinks>();
-  cachedVesselLatencyChart:ILatencyCacheData;
+  cachedVesselLatencyChart: ILatencyCacheData;
   nodeChangeSubject = new Subject();
   constructor(public http: HttpClient) { }
-  domainURL = 'https://hgs.kognif.ai/VesselLinkQualityAPIService/API/VesselLinkQuality/'
+  domainURL = 'https://hgs.kognif.ai/VesselLinkQualityAPIService/API/VesselLinkQuality/';
   getVesselLinks(): Observable<any> {
-
     const url = 'GetVesselLinks';
-
     return this.http.get(`${this.domainURL + url}`);
-
   }
-  
-  setNodeChangeSubject(nodeNumber: number){
+
+  setNodeChangeSubject(nodeNumber: number) {
     this.nodeChangeSubject.next(nodeNumber);
   }
-  getNodeNumberSubject(){
-   return this.nodeChangeSubject.asObservable();
+  getNodeNumberSubject() {
+    return this.nodeChangeSubject.asObservable();
   }
   setAllVesselLinks(IVesselLinks: IVesselLinks[]) {
     this.allVesselLinks = IVesselLinks;
   }
-  getAllCachedResult(){
+  getAllCachedResult() {
     return this.allVesselLinks;
   }
   getVesselLinksByNodeNumber(nodeNumber: number) {
-   // if (!this.allVesselLinks) {
-      this.getVesselLinks().subscribe((data) => {
-        this.allVesselLinks = data;
-        const vessel = this.allVesselLinks.filter((vessel: IVesselLinks) => {
-          return vessel.NodeNumber.toFixed(0) == nodeNumber;
-        });
-        this.vesselSubject.next(vessel[0]);
-      })
-
+    // if (!this.allVesselLinks) {
+    this.getVesselLinks().subscribe((data) => {
+      this.allVesselLinks = data;
+      const vessel = this.allVesselLinks.filter((vessel1: IVesselLinks) => {
+        return vessel1.NodeNumber.toFixed(0) === nodeNumber;
+      });
+      this.vesselSubject.next(vessel[0]);
+    });
     // } else {
     //   const vessel = this.allVesselLinks.filter((vessel: IVesselLinks) => {
     //     return vessel.NodeNumber.toFixed(0) == nodeNumber;
     //   });
     //   this.vesselSubject.next(vessel[0]);
     // }
-
-
-
   }
-  getVesselNameByNodeNumber(nodeNumber){
-    if(this.allVesselLinks){
-      const vessel = this.allVesselLinks.filter((vessel: IVesselLinks) => {
-        return vessel.NodeNumber.toFixed(0) == nodeNumber;
+  getVesselNameByNodeNumber(nodeNumber) {
+    if (this.allVesselLinks) {
+      const vessel = this.allVesselLinks.filter((vessel1: IVesselLinks) => {
+        return vessel1.NodeNumber.toFixed(0) === nodeNumber;
       });
       return vessel[0].Name;
     }
-        
   }
-
-  getAISData(aisRequest?: AISRequest){
-   var a=  {"VesselName":"Talisman","FromDate":"2020-03-30T11:46:23.000Z","ToDate":"2020-04-14T11:46:23.000Z"};
-   aisRequest.VesselName = this.getVesselNameByNodeNumber(aisRequest.NodeNumber);
-    const url = 'AISPositionData'
-    return this.http.post(`${this.domainURL + url}`,aisRequest);
+  getAISData(aisRequest?: AISRequest) {
+    const a = { VesselName: 'Talisman', FromDate: '2020-03-30T11:46:23.000Z', ToDate: '2020-04-14T11:46:23.000Z' };
+    aisRequest.VesselName = this.getVesselNameByNodeNumber(aisRequest.NodeNumber);
+    const url = 'AISPositionData';
+    return this.http.post(`${this.domainURL + url}`, aisRequest);
   }
   getVesselSubject(): Observable<any> {
     return this.vesselSubject.asObservable();
   }
-  returncacheVesselLatencyChart(){
+  returncacheVesselLatencyChart() {
     return this.cachedVesselLatencyChart;
   }
-  setLatencyChartData(data:ILatencyCacheData){
-    this.cachedVesselLatencyChart =data;
+  setLatencyChartData(data: ILatencyCacheData) {
+    this.cachedVesselLatencyChart = data;
   }
   getSnMPData(nodeNumber: number) {
-    const url = 'GetSNMPData/' + nodeNumber
+    const url = 'GetSNMPData/' + nodeNumber;
     return this.http.get(`${this.domainURL + url}`);
   }
   public getChartData(latencyRequest: LatencyRequest): Observable<any> {
-    var a = {"NodeNumber":17876,"FromDate":"2020-04-16T09:16:55.754Z","ToDate":"2020-04-17T09:16:55.754Z"};
-    const url = 'LatencyTrendData'
-    return this.http.post(`${this.domainURL + url}`,a);
+    const a = { NodeNumber: 17876, FromDate: '2020-04-16T09:16:55.754Z', ToDate: '2020-04-17T09:16:55.754Z' };
+    const url = 'LatencyTrendData';
+    return this.http.post(`${this.domainURL + url}`, a);
 
   }
 }

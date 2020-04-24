@@ -1,14 +1,11 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
-import * as d3 from 'd3';
-declare var google: any;
 import { GoogleChartComponent } from 'angular-google-charts';
 import { ThemeService } from '@kognifai/poseidon-ng-theming';
 import { ActivatedRoute } from '@angular/router';
 import { IVesselDetails } from 'src/app/models/IVesselDetails';
 import { LatencyRequest } from 'src/app/models/LatencyRequest';
 import { AISRequest } from 'src/app/models/AISRequest';
-import { concatAll } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import { Subscription } from 'rxjs';
 @Component({
@@ -16,7 +13,6 @@ import { Subscription } from 'rxjs';
   templateUrl: './vessel-history.component.html',
   styleUrls: ['./vessel-history.component.scss']
 })
-
 
 export class VesselHistoryComponent implements OnInit, OnDestroy {
   @ViewChild('googlechart', null)
@@ -33,7 +29,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
       yellowTo: -75,
       greenFrom: -75,
       greenTo: -50,
-      minorTicks: 15,
+      minorTicks: 15
     }
   };
   latencyRequest = new LatencyRequest();
@@ -61,51 +57,50 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   noData: string = 'No Data Available';
   noGaugeData = false;
-  selectedPreset: any = { name: "Last Day", value: 24 };
+  selectedPreset: any = { name: 'Last Day', value: 24 };
   fromDate: Date;
   toDate: Date;
-  allVessels:any;
-  selectedVessel:any;
-  constructor(private connectivityMonitoringService: ConnectivityMonitoringService, private themeservice: ThemeService,
+  allVessels: any;
+  selectedVessel: any;
+  constructor(
+    private connectivityMonitoringService: ConnectivityMonitoringService, private themeservice: ThemeService,
     private route: ActivatedRoute) {
 
   }
   ngOnDestroy(): void {
     this.VesselDataSubscription.unsubscribe();
   }
-  getVesselDetails(nodeNumber: number,fromDrpDownChange?:Boolean) {
+  getVesselDetails(nodeNumber: number, fromDrpDownChange?: boolean) {
     if (nodeNumber) {
       this.selectedVesselNodeNumber = nodeNumber.toString();
-      
+
       this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
-      
+
       this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().subscribe((data) => {
         console.log('inside');
         if (data) {
           this.cachedVesselDetails = data;
-          if( !this.selectedVessel){
+          if (!this.selectedVessel) {
             this.allVessels = this.connectivityMonitoringService.getAllCachedResult();
-            this.allVessels.filter((data)=>{
-               if(data.NodeNumber == nodeNumber){
-                this.selectedVessel =data;
+            this.allVessels.filter((data1) => {
+              // tslint:disable-next-line:triple-equals
+              if (data1.NodeNumber == nodeNumber) {
+                this.selectedVessel = data1;
               }
             });
-            console.log(this.selectedVessel)
+            console.log(this.selectedVessel);
           }
-         
+
           this.resetDate();
-         
+
+          // tslint:disable-next-line:radix
           this.connectivityMonitoringService.getSnMPData(parseInt(this.selectedVesselNodeNumber)).subscribe((vesselDetails: IVesselDetails) => {
             this.vesselDetails = vesselDetails;
-            
-          
-            
+            // tslint:disable-next-line:radix
             this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
-         
-
             if (vesselDetails && vesselDetails.SignalStrength) {
               this.chart.data = [['dBm', vesselDetails.SignalStrength]];
-              this.noGaugeData =false;
+              this.noGaugeData = false;
             } else {
               this.noGaugeData = true;
             }
@@ -117,20 +112,20 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     }
 
   }
-  changeVesselDetails(){
+  changeVesselDetails() {
     console.log(this.selectedVessel);
-   // this.VesselDataSubscription.unsubscribe();
-   // this.getVesselDetails(this.selectedVessel.NodeNumber,true);
-   this.selectedVesselNodeNumber = this.selectedVessel.NodeNumber.toString();
+    // this.VesselDataSubscription.unsubscribe();
+    // this.getVesselDetails(this.selectedVessel.NodeNumber,true);
+    this.selectedVesselNodeNumber = this.selectedVessel.NodeNumber.toString();
     this.connectivityMonitoringService.getVesselLinksByNodeNumber(this.selectedVessel.NodeNumber);
   }
   ngOnInit() {
     this.themeservice.themeChanged.subscribe((changes: any) => {
       console.log(changes);
     });
-    this.route.params.subscribe(params =>
+    this.route.params.subscribe((params) =>
       // setTimeout(() => {
-      this.getVesselDetails(params['nodeNumber'])
+      this.getVesselDetails(params.nodeNumber)
       // }, 100)
     );
   }
@@ -138,7 +133,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     console.log(lat, lng);
   }
   resetDate() {
-    this.selectedPreset = { name: "Last Day", value: 24 };
+    this.selectedPreset = { name: 'Last Day', value: 24 };
     this.toDate = new Date();
     this.fromDate = new Date();
     this.fromDate = new Date(this.fromDate.setDate(this.toDate.getDate() - 1));
@@ -146,10 +141,11 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   }
   filterData() {
     this.getLatencyTrendData();
+    // tslint:disable-next-line:radix
     this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
   }
   getLatencyTrendData() {
-    var a: any = {};
+    const a: any = {};
     a.NodeNumber = this.selectedVesselNodeNumber;
     a.FromDate = this.fromDate.toISOString();
     a.ToDate = this.toDate.toISOString();
@@ -158,7 +154,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     this.aisRequest = Object.assign({}, a);
   }
   onDropDownSelection() {
-    console.log(this.fromDate)
+    console.log(this.fromDate);
     console.log(this.selectedPreset);
     this.toDate = new Date();
     this.fromDate = this.getDateFromDropDown(this.selectedPreset.value);
@@ -166,7 +162,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   }
 
   getDateFromDropDown(substractNumber: number): Date {
-    var d = new Date();
+    const d = new Date();
 
     d.setHours(d.getHours() - substractNumber);
     return d;

@@ -21,6 +21,7 @@ import { ToolsMenuService } from '@kognifai/poseidon-ng-toolsmenuservice';
 import { SettingsMenuService } from '@kognifai/poseidon-ng-settings-menu';
 
 import { AppComponent } from './app.component';
+import { EntitlementsQueryService } from '@kognifai/poseidon-entitlements-query-service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -39,6 +40,7 @@ describe('AppComponent', () => {
   let sidebarsVisibilityServiceStub: SidebarsVisibilityService;
   let settingsMenuServiceStub: SettingsMenuService;
   let navigationSubitemsServiceStub: NavigationSubitemsService;
+  let entitlementsQueryServiceStub: EntitlementsQueryService;
 
   beforeEach(async(() => {
     navigationServiceStub = new NavigationService(null, null);
@@ -51,9 +53,10 @@ describe('AppComponent', () => {
     (<any>configurationServiceStub).configuration = {};
     configurationServiceStub.load = () => Promise.resolve();
     appLocationsServiceStub = <AppLocationsService> { get: null };
+    entitlementsQueryServiceStub = new EntitlementsQueryService(null, '');
     spyOn(appLocationsServiceStub, 'get').and.callFake(() => Promise.resolve());
     initializeServiceStub = new InitializeService(
-      authenticationServiceStub, configurationServiceStub, navigationServiceStub, null, appLocationsServiceStub);
+      authenticationServiceStub, configurationServiceStub, navigationServiceStub, null, appLocationsServiceStub, settingsMenuServiceStub);
     initializeServiceStub.initialize = () => new Observable<void>((observer) => observer.complete());
     toolsMenuServiceStub = {
       items: [],
@@ -61,7 +64,7 @@ describe('AppComponent', () => {
       clear: () => { }
     };
     sidebarsVisibilityServiceStub = new SidebarsVisibilityService();
-    settingsMenuServiceStub = new SettingsMenuService();
+    settingsMenuServiceStub = new SettingsMenuService(entitlementsQueryServiceStub as any);
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientModule, FormsModule],

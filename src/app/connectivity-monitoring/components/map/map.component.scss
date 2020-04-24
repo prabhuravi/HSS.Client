@@ -8,19 +8,18 @@
 }
 
 .tick text {
-  font-family: 'Lato';
+  font-family: "Lato";
   font-size: 9px;
   fill: rgb(155, 41, 41);
 }
 .area {
   fill: lightsteelblue;
 }
-.map-tooltip{
-  .leaflet-popup-content-wrapper{
+.map-tooltip {
+  .leaflet-popup-content-wrapper {
     border-radius: 0px !important;
   }
 }
-
 
 .x-axis:hover {
   cursor: ew-resize;

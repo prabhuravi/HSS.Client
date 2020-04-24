@@ -20,11 +20,12 @@
                     <div class="kx-col  kx-col--6">
                         <!-- YOUR CONTENT -->
                         <div class="kx-mt--tiny">
-                                <label class="kx-label" for="selectbox1">Vessel Name :</label>
-                                <div class="kx-mt--tiny">
-                                    <p-dropdown styleClass="kx-p--none"  [(ngModel)]="selectedVessel" placeholder="Select Vessel" 
-                                        [options]="allVessels" (onChange)="changeVesselDetails()" optionLabel="Name" filter="true"></p-dropdown>
-                                </div>
+                            <label class="kx-label" for="selectbox1">Vessel Name :</label>
+                            <div class="kx-mt--tiny">
+                                <p-dropdown styleClass="kx-p--none" [(ngModel)]="selectedVessel"
+                                    placeholder="Select Vessel" [options]="allVessels"
+                                    (onChange)="changeVesselDetails()" optionLabel="Name" filter="true"></p-dropdown>
+                            </div>
                         </div>
 
                     </div>
@@ -115,20 +116,20 @@
             </div>
             <div class="kx-card__body card-body">
 
-               <div class="row">
-              
-                <div class="kx-col  kx-col--12 cus-position">
-                    <div class="kx-row chart-margin" *ngIf="chart && chart.data">
-                        <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data"
-                            [options]="chart.options">
-                        </google-chart>
+                <div class="row">
+
+                    <div class="kx-col  kx-col--12 cus-position">
+                        <div class="kx-row chart-margin" *ngIf="chart && chart.data">
+                            <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data"
+                                [options]="chart.options">
+                            </google-chart>
+                        </div>
+
                     </div>
-                   
+                    <div class="kx-row" *ngIf="noGaugeData">
+                        <label class="no-data-extra-margin" *ngIf="noGaugeData">{{noData}}</label>
+                    </div>
                 </div>
-                <div class="kx-row" *ngIf="noGaugeData">
-                    <label class="no-data-extra-margin" *ngIf="noGaugeData">{{noData}}</label>
-                </div>
-               </div>
             </div>
         </div>
     </div>
@@ -191,18 +192,24 @@
         </button>
     </div>
 </div> -->
-<div class="kx-row" >
+<div class="kx-row">
     <div class="kx-col  kx-col--6" [ngClass]="{'kx-col--12' : viewFullChart &&!viewFullMap }">
-        <span (click)="viewFullChart=!viewFullChart;viewFullMap=false;" class="kx-navigation-icon collapse-icon"><i  class="kx-icon kx-icon--size-moderate kx-m--mini toggle-navigation open-navigation collapsed" id="open-navigation"><svg _ngcontent-ghn-c3="" aria-hidden="true" focusable="false"><use _ngcontent-ghn-c3="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="./assets/img/icons/sprites/icons.svg#chevron-right"></use></svg></i></span>
+        <span (click)="viewFullChart=!viewFullChart;viewFullMap=false;" class="kx-navigation-icon collapse-icon"><i
+                class="kx-icon kx-icon--size-moderate kx-m--mini toggle-navigation open-navigation collapsed"
+                id="open-navigation"><svg _ngcontent-ghn-c3="" aria-hidden="true" focusable="false">
+                    <use _ngcontent-ghn-c3="" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xlink:href="./assets/img/icons/sprites/icons.svg#chevron-right"></use>
+                </svg></i></span>
 
-   
+
         <div class="charts">
-            <app-chart [viewFullChart]="viewFullChart" [chartId]="'chart1'" [latencyRequest]="latencyRequest"></app-chart>
+            <app-chart [viewFullChart]="viewFullChart" [chartId]="'chart1'" [latencyRequest]="latencyRequest">
+            </app-chart>
         </div>
     </div>
-    <div class="kx-col  kx-col--6"  [ngClass]="{'kx-col--12' : !viewFullChart && viewFullMap }">
-        <div class="row"  style="margin-left:10px">
-            <app-map  [showMap]="showMap" [aisRequest]="aisRequest"></app-map>
+    <div class="kx-col  kx-col--6" [ngClass]="{'kx-col--12' : !viewFullChart && viewFullMap }">
+        <div class="row" style="margin-left:10px">
+            <app-map [showMap]="showMap" [aisRequest]="aisRequest"></app-map>
         </div>
     </div>
 
