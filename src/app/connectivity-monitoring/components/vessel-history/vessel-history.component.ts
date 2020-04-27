@@ -67,7 +67,9 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   ) {
   }
   ngOnDestroy(): void {
-    this.VesselDataSubscription.unsubscribe();
+    if (this.VesselDataSubscription) {
+      this.VesselDataSubscription.unsubscribe();
+    }
   }
   getVesselDetails(nodeNumber: number, fromDrpDownChange?: boolean) {
     if (nodeNumber) {
