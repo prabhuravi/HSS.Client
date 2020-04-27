@@ -77,14 +77,7 @@
         </p-table>
         <div #pcalendarRef></div>
     </div>
-    <div *ngIf="vesselConnectivityControlList.length === 0"
-        class="kx-notification kx-notification--neutral kx-notification--block kx-flex kx-align-items-start kx-justify-content-start kx-mt--small">
-        <div class="kx-notification__content kx-flex kx-flex-wrap kx-align-items-start">
-            <header class="kx-notification__header">
-                <h3 class="kx-notification__title">No Data Available</h3>
-            </header>
-        </div>
-    </div>
+    <app-no-data [displayme]="vesselConnectivityControlList.length === 0"></app-no-data>
 </div>
 <app-modal [displayMe]="displayActionLogModal">
     <div class="modal-header">
@@ -132,6 +125,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <app-no-data [displayme]="isActionLogDataLoading && vesselConnectivityActionLogList.length>0"></app-no-data>
                 </div>
             </div>
         </div>

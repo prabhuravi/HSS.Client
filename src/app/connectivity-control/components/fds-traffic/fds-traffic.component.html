@@ -58,6 +58,10 @@
                 </tr>
                 <tr>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field" class="kx-p--small">
+                        <input *ngSwitchCase="'VesselName'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Vessel Name"
+                            style="width: 120px;"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'Mission'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Mission Name"
                             style="width: 120px;"
@@ -114,12 +118,5 @@
             </ng-template>
         </p-table>
     </div>
-    <div *ngIf="vesselHistoricalUploadStatus.filesUploadStatus.length === 0"
-        class="kx-notification kx-notification--neutral kx-notification--block kx-flex kx-align-items-start kx-justify-content-start kx-mt--small">
-        <div class="kx-notification__content kx-flex kx-flex-wrap kx-align-items-start">
-            <header class="kx-notification__header">
-                <h3 class="kx-notification__title">No Data Available</h3>
-            </header>
-        </div>
-    </div>
+    <app-no-data [displayme]="vesselHistoricalUploadStatus.filesUploadStatus.length === 0"></app-no-data>
 </div>

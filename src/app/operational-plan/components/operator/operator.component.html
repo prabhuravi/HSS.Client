@@ -8,7 +8,6 @@
             <div class="kx-p--medium">
                 <app-load *ngIf="isDataLoading"></app-load>
                 <div *ngIf="!isDataLoading">
-
                     <p-table #tt [value]="operatorList" [columns]="cols"
                         tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
                         <ng-template pTemplate="header" let-columns>
@@ -43,14 +42,7 @@
                             </tr>
                         </ng-template>
                     </p-table>
-                    <div *ngIf="operatorList.length === 0"
-                        class="kx-notification kx-notification--neutral kx-notification--block kx-flex kx-align-items-start kx-justify-content-start kx-mt--small">
-                        <div class="kx-notification__content kx-flex kx-flex-wrap kx-align-items-start">
-                            <header class="kx-notification__header">
-                                <h3 class="kx-notification__title">No Data Available</h3>
-                            </header>
-                        </div>
-                    </div>
+                    <app-no-data [displayme]="!isDataLoading && operatorList.length === 0"></app-no-data>
                 </div>
             </div>
         </div>

@@ -15,9 +15,9 @@ export class WhitelistCountriesComponent implements OnInit {
 
   whiteListedCountries: IWhiteListedCountries[] = [];
   cols = [
-    { field: 'CountryName', sortfield: 'VesselName', header: 'Country Name' },
-    { field: 'MCCs', sortfield: 'MCCs', header: 'FCC' },
-    { field: 'Vessel', sortfield: 'Vessel', header: 'Whitelisted For' },
+    { field: 'CountryName', sortfield: 'CountryName', header: 'Country Name' },
+    { field: 'MCCs', sortfield: '', header: 'MCC' },
+    { field: 'Status', sortfield: 'Status', header: 'Status' },
     { field: 'VesselId', sortfield: '', header: 'Action' }
   ];
   vesselList: IVesselList[] = [];
@@ -25,7 +25,7 @@ export class WhitelistCountriesComponent implements OnInit {
   operatorCountryList: IOperatorCountryList[] = [];
   groupCountryList: IOperatorCountryList[] = [];
   groupList: IOperatorCountryList[] = [];
-  activeOperatorCountry: IOperatorCountryList;
+  activeOperatorCountry: IOperatorCountryList = null;
   activeGroup: IOperatorCountryList;
   isDataLoading: boolean;
   disableActivity: boolean;
@@ -79,7 +79,7 @@ export class WhitelistCountriesComponent implements OnInit {
     this.connectivityControlService.getOperatorCountryList().pipe(take(1)).subscribe((data) => {
       this.operatorCountryList = data;
       this.groupList = this.operatorCountryList.filter((e) => e.IsCountryGroup);
-      this.activeOperatorCountry = this.operatorCountryList[0];
+      console.log(this.activeGroup);
     });
   }
   loadWhitelistedCountries(): void {
@@ -161,9 +161,11 @@ export class WhitelistCountriesComponent implements OnInit {
           this.disableActivity = true;
           this.connectivityControlService.addCountryGroup(this.form.value).pipe(take(1)).subscribe((data) => {
             this.disableActivity = false;
-            if (this.form && this.form.value && this.form.value.GroupName) {
-              this.form.value.GroupName = '';
-            }
+            this.form.patchValue(
+              {
+                GroupName: ''
+              }
+            );
             this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
             this.getOperatorCountryList();
           });

@@ -12,38 +12,39 @@
                 <label class="kx-label" for="selectbox1">Select Country</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="operatorCountryList"
-                        [(ngModel)]="activeOperatorCountry" optionLabel="CountryName" filter="true"></p-dropdown>
+                        placeholder="Select a Country/Group to Whitelist" [(ngModel)]="activeOperatorCountry"
+                        optionLabel="CountryName" filter="true"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col kx-col--3">
-                <button (click)="markCountryWhitelist()" [disabled]="disableActivity"
+                <button (click)="markCountryWhitelist()" [disabled]="disableActivity || activeOperatorCountry === null"
                     class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
                     <span class="kx-btn__inner">
                         <span class="kx-btn__txt">Whitelist for {{activeVessel.VesselName}}</span>
                     </span>
                 </button>
             </div>
-            <div class="kx-col kx-col--3 u--textRight">
+            <div class="kx-col kx-col--3">
                 <button (click)="toggleManageCountryGroup()" style="position: initial;"
                     class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--medium">
                     <span class="kx-btn__inner">
-                        <span class="kx-btn__txt">Manage Country / Group</span>
+                        <span class="kx-btn__txt">Add/Edit Country Group</span>
                     </span>
                 </button>
             </div>
         </div>
     </div>
 </div>
-
 <div class="kx-pt--small">
     <app-load *ngIf="isDataLoading"></app-load>
     <div *ngIf="!isDataLoading">
-        <p-table tableStyleClass="kx-table kx-table--outer-border" [value]="whiteListedCountries"
-            [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
+        <small>Below countries/groups are already white listed for {{activeVessel.VesselName}} to upload data:</small>
+        <p-table tableStyleClass="kx-table kx-table--outer-border" [value]="whiteListedCountries" [columns]="cols"
+            [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--cursorPointer kx-p--xlarge"
-                        title="Click to sort">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
+                        class="u--cursorPointer kx-p--xlarge" title="Click to sort">
                         {{col.header}}
                         <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
@@ -69,14 +70,7 @@
                 </tr>
             </ng-template>
         </p-table>
-        <div *ngIf="whiteListedCountries.length === 0"
-            class="kx-notification kx-notification--neutral kx-notification--block kx-flex kx-align-items-start kx-justify-content-start kx-mt--small">
-            <div class="kx-notification__content kx-flex kx-flex-wrap kx-align-items-start">
-                <header class="kx-notification__header">
-                    <h3 class="kx-notification__title">No Data Available</h3>
-                </header>
-            </div>
-        </div>
+        <app-no-data [displayme]="whiteListedCountries.length === 0"></app-no-data>
     </div>
 </div>
 <app-modal [displayMe]="displayManageCountryGroup">

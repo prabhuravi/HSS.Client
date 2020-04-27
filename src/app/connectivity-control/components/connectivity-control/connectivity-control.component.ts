@@ -29,7 +29,7 @@ export class ConnectivityControlComponent implements OnInit {
   dateTimeInterval = interval(60000);
 
   constructor(
-    private connectivityControlService: ConnectivityControlService
+    public connectivityControlService: ConnectivityControlService
   ) { }
 
   ngOnInit(): void {
