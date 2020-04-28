@@ -25,6 +25,7 @@ export class OperatorComponent implements OnInit {
   isDataLoading: boolean;
   disableDeleteButton: boolean;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  formReset: boolean;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -58,6 +59,7 @@ export class OperatorComponent implements OnInit {
   editData(data: IOperators): void {
     this.activeId = data.Id;
     this.config.formTitle = 'Edit Operator';
+    this.formReset = false;
     this.formValues = data;
   }
   formSubmitted(data): void {
@@ -75,6 +77,7 @@ export class OperatorComponent implements OnInit {
     this.operationalPlanService.addOperator(data).subscribe((success) => {
       this.triggerToast('success', 'Success Message', `Data ${(this.activeId !== 0) ? 'Updated' : 'Added'} Successfully`);
       this.loadData();
+      this.formReset = true;
     });
   }
   deleteData(data): void {

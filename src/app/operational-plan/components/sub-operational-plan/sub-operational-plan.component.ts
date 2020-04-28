@@ -35,6 +35,7 @@ export class SubOperationalPlanComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   allSubscription: Subscription[] = [];
   planId = 0;
+  formReset: boolean;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -117,6 +118,7 @@ export class SubOperationalPlanComponent implements OnInit {
     data.Status = this.planStatusList.find((e) => e.name === data.Status).value;
     data.SubOperationStartTime = new Date(data.SubOperationStartTime);
     data.SubOperationEndTime = new Date(data.SubOperationEndTime);
+    this.formReset = false;
     this.formValues = data;
   }
   updateData(formData: any): void {
@@ -128,6 +130,7 @@ export class SubOperationalPlanComponent implements OnInit {
       formData.Status = 'New';
     }
     this.operationalPlanService.updateSubOperationPlan(formData).subscribe((data) => {
+      this.formReset = true;
       this.loadData();
     });
   }

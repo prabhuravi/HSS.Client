@@ -1,6 +1,6 @@
 <div class="kx-row" *ngIf="planDetails">
     <div class="kx-col kx-col--4  kx-p--small">
-        <app-dynamic-form [formValues]="formValues" [config]="config" (formSubmitted)="formSubmitted($event)">
+        <app-dynamic-form [formValues]="formValues" [config]="config" [formReset]="formReset" (formSubmitted)="formSubmitted($event)">
         </app-dynamic-form>
     </div>
     <div class="kx-col kx-col--8 kx-p--small">
@@ -26,7 +26,7 @@
         <div class="kx-card kx-card--skin-default  kx-mt--small">
             <div class="kx-p--medium">
                 <app-load *ngIf="isDataLoading"></app-load>
-                <p-table *ngIf="!isDataLoading" #tt [value]="planDetails.SubOperationPlans" [columns]="subOperationCols"
+                <p-table *ngIf="!isDataLoading && planDetails.SubOperationPlans.length > 0" #tt [value]="planDetails.SubOperationPlans" [columns]="subOperationCols"
                     tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
                     <ng-template pTemplate="header" let-columns>
                         <tr>

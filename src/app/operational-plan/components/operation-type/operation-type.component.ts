@@ -25,6 +25,7 @@ export class OperationTypeComponent implements OnInit {
   isDataLoading: boolean;
   disableDeleteButton: boolean;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  formReset: boolean;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -58,6 +59,7 @@ export class OperationTypeComponent implements OnInit {
   editData(data: IOperationTypes): void {
     this.activeId = data.Id;
     this.config.formTitle = 'Edit Operation Type';
+    this.formReset = false;
     this.formValues = data;
   }
   formSubmitted(data): void {
@@ -74,6 +76,7 @@ export class OperationTypeComponent implements OnInit {
     }
     this.operationalPlanService.addOperationType(data).subscribe((success) => {
       this.triggerToast('success', 'Success Message', `Data ${(this.activeId !== 0) ? 'Updated' : 'Added'} Successfully`);
+      this.formReset = true;
       this.loadData();
     });
   }

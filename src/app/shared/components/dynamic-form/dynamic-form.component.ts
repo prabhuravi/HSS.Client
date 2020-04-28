@@ -13,6 +13,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   @Input() config: any;
   @Input() formValues: any;
+  @Input() formReset: boolean;
   @Output() formSubmitted: EventEmitter<any> = new EventEmitter<any>();
   inputTypes: any;
   form: FormGroup;
@@ -34,11 +35,16 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.formValues !== null && this.formValues !== undefined) {
       setTimeout(() => {
-        if (this.form && this.form.controls[`Status`]) {
-          this.form.controls[`Status`].reset({ value: '', disabled: false });
+        if (!this.formReset) {
+          if (this.form && this.form.controls[`Status`]) {
+            this.form.controls[`Status`].reset({ value: null, disabled: false });
+          }
+          this.form.patchValue(this.formValues);
         }
-        this.form.patchValue(this.formValues);
       });
+    }
+    if (this.formReset && this.form) {
+      this.form.reset();
     }
   }
   buildForm() {

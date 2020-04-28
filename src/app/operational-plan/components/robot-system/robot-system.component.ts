@@ -28,6 +28,7 @@ export class RobotSystemComponent implements OnInit {
   isDataLoading: boolean;
   disableDeleteButton: boolean;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  formReset: boolean;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -94,8 +95,8 @@ export class RobotSystemComponent implements OnInit {
   editData(data: IRobotSystemDetails): void {
     this.activeId = data.RobotSystemId;
     this.config.formTitle = 'Edit Robot System';
+    this.formReset = false;
     this.formValues = data;
-    console.log(this.formValues);
   }
   formSubmitted(data): void {
     this.confirmationService.confirm({
@@ -111,6 +112,7 @@ export class RobotSystemComponent implements OnInit {
     }
     this.operationalPlanService.addRobotSystemDetail(data).subscribe((success) => {
       this.triggerToast('success', 'Success Message', `Data ${(this.activeId !== 0) ? 'Updated' : 'Added'} Successfully`);
+      this.formReset = true;
       this.loadData();
     });
   }

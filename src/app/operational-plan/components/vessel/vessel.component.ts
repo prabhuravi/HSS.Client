@@ -27,6 +27,7 @@ export class VesselComponent implements OnInit {
   isDataLoading: boolean;
   disableDeleteButton: boolean;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  formReset: boolean;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -68,6 +69,7 @@ export class VesselComponent implements OnInit {
   editData(data: IVesselList): void {
     this.activeId = data.Id;
     this.config.formTitle = 'Edit Vessel';
+    this.formReset = false;
     this.formValues = data;
   }
   formSubmitted(data): void {
@@ -84,6 +86,7 @@ export class VesselComponent implements OnInit {
     }
     this.operationalPlanService.addVessel(data).subscribe((success) => {
       this.triggerToast('success', 'Success Message', `Data ${(this.activeId !== 0) ? 'Updated' : 'Added'} Successfully`);
+      this.formReset = true;
       this.loadData();
     });
   }
