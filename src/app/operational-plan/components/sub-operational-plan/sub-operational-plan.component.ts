@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { FormType, AppConstants } from '../../../app.constants';
 import { ConfirmationService } from 'primeng/api';
+import { take } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sub-operational-plan',
@@ -30,26 +33,31 @@ export class SubOperationalPlanComponent implements OnInit {
   planDetails: any;
   activeId = 0;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  allSubscription: Subscription[] = [];
+  planId = 0;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.planStatusList = this.operationalPlanService.getPlanStatus();
-    if (history && history.state && history.state.actionType) {
-      this.config.formTitle = `${history.state.actionType}`;
-      this.planDetails = history.state;
-      this.loadData();
-    }
-    this.constructForm();
+    this.allSubscription.push(
+      this.route.params.subscribe((params) => {
+        // tslint:disable-next-line:radix
+        this.planId = parseInt(params.planid);
+        this.loadData();
+      })
+    );
   }
   loadData(): void {
     this.isDataLoading = true;
-    this.operationalPlanService.getSubOperations(this.planDetails).subscribe((data) => {
+    this.operationalPlanService.getOperationPlanById(this.planId).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
-      this.subOperationsList = data;
+      this.planDetails = data;
+      this.constructForm();
     });
   }
   constructForm(): void {
@@ -104,6 +112,7 @@ export class SubOperationalPlanComponent implements OnInit {
     });
   }
   editData(data: any): void {
+    console.log(data);
     this.activeId = data.SubPlanId;
     data.Status = this.planStatusList.find((e) => e.name === data.Status).value;
     data.SubOperationStartTime = new Date(data.SubOperationStartTime);
@@ -111,9 +120,7 @@ export class SubOperationalPlanComponent implements OnInit {
     this.formValues = data;
   }
   updateData(formData: any): void {
-    if (history && history.state && history.state.actionType) {
-      formData.PlanId = this.planDetails.PlanId;
-    }
+    formData.PlanId = this.planDetails.PlanId;
     if (this.activeId !== 0) {
       formData.SubPlanId = this.activeId;
       formData.Status = formData.Status.value;

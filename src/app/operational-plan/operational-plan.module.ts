@@ -21,8 +21,8 @@ const routes: Routes = [
   {
     path: '', component: DashboardComponent, children: [
       { path: '', component: ManagePlansComponent, pathMatch: 'full' },
-      { path: 'sub-operational-plan', component: SubOperationalPlanComponent },
-      { path: 'plan', component: AddPlanComponent },
+      { path: 'sub-operational-plan/:planid', component: SubOperationalPlanComponent },
+      { path: 'plan/:type/:id', component: AddPlanComponent },
       { path: 'operator', component: OperatorComponent },
       { path: 'operation-type', component: OperationTypeComponent },
       { path: 'vessel', component: VesselComponent },

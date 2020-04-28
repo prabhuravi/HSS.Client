@@ -8,7 +8,7 @@
 .u--with-tbody-scroll {
     tbody {
         display: block;
-        max-height: 200px;
+        max-height: 300px;
         overflow-y: auto;
     }
     thead,
@@ -57,7 +57,9 @@
 .u--positionRelative{
     position: relative;
 }
-
+.u--capitalize{
+    text-transform:capitalize;
+}
 .ui-paginator-bottom {
     padding: 2rem;
 }

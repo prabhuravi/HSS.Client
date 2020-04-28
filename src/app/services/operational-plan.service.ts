@@ -158,4 +158,10 @@ export class OperationalPlanService {
     };
     return this.http.postData(requestData);
   }
+  getOperationPlanById(planId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationalPlanConfig.path}${this.operationalPlanConfig.endpoints.GetOperationPlanById}${planId}`
+    };
+    return this.http.getData(requestData);
+  }
 }

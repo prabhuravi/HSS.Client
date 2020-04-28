@@ -51,6 +51,21 @@
                             ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                     </th>
                 </tr>
+                <tr>
+                    <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                        <input *ngSwitchCase="'CountryName'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small"
+                            placeholder="Type to filter Country / Group"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'MCCs'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter MCC"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'Status'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small"
+                            placeholder="Type to filter Status"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    </th>
+                </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr>
@@ -101,7 +116,7 @@
                             <div class="kx-mt--tiny">
                                 <p-dropdown styleClass="u--fullWidth" [options]="groupList" [(ngModel)]="activeGroup"
                                     optionLabel="CountryName" filter="true" placeholder="Select Group"
-                                    (onChange)="loadGropCountries()">
+                                    (onChange)="loadGroupCountries()">
                                 </p-dropdown>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 <app-load *ngIf="isDataLoading"></app-load>
 <div *ngIf="!isDataLoading">
     <div *ngIf="vesselConnectivityControlList.length > 0">
-        <p-table tableStyleClass="kx-table" *ngIf="!isDataLoading" #tt [value]="vesselConnectivityControlList"
+        <p-table tableStyleClass="kx-table kx-table--outer-border" *ngIf="!isDataLoading" #tt [value]="vesselConnectivityControlList"
             [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>

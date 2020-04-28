@@ -15,9 +15,9 @@ export class WhitelistCountriesComponent implements OnInit {
 
   whiteListedCountries: IWhiteListedCountries[] = [];
   cols = [
-    { field: 'CountryName', sortfield: 'CountryName', header: 'Country Name' },
-    { field: 'MCCs', sortfield: '', header: 'MCC' },
-    { field: 'Status', sortfield: 'Status', header: 'Status' },
+    { field: 'CountryName', sortfield: 'CountryName', header: 'Country Name', filterMatchMode: 'contains' },
+    { field: 'MCCs', sortfield: '', header: 'MCC', filterMatchMode: 'contains' },
+    { field: 'Status', sortfield: 'Status', header: 'Status', filterMatchMode: 'contains' },
     { field: 'VesselId', sortfield: '', header: 'Action' }
   ];
   vesselList: IVesselList[] = [];
@@ -79,7 +79,6 @@ export class WhitelistCountriesComponent implements OnInit {
     this.connectivityControlService.getOperatorCountryList().pipe(take(1)).subscribe((data) => {
       this.operatorCountryList = data;
       this.groupList = this.operatorCountryList.filter((e) => e.IsCountryGroup);
-      console.log(this.activeGroup);
     });
   }
   loadWhitelistedCountries(): void {
@@ -128,7 +127,7 @@ export class WhitelistCountriesComponent implements OnInit {
   toggleManageCountryGroup(): void {
     this.displayManageCountryGroup = !this.displayManageCountryGroup;
   }
-  loadGropCountries(): void {
+  loadGroupCountries(): void {
     this.connectivityControlService.getGroupCountries(this.activeGroup.CountryId).pipe(take(1)).subscribe((data) => {
       this.groupCountryList = data;
     });
@@ -148,6 +147,7 @@ export class WhitelistCountriesComponent implements OnInit {
         this.connectivityControlService.deleteCountryGroup(formData).pipe(take(1)).subscribe((data) => {
           this.disableActivity = false;
           this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
+          this.groupCountryList = [];
           this.getOperatorCountryList();
         });
       }
@@ -185,7 +185,7 @@ export class WhitelistCountriesComponent implements OnInit {
         this.connectivityControlService.addCountriesToGroup(formData).pipe(take(1)).subscribe((data) => {
           this.disableActivity = false;
           this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
-          this.getOperatorCountryList();
+          this.loadGroupCountries();
         });
       }
     });

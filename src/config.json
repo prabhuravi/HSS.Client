@@ -84,6 +84,7 @@
         "AddVesselDetail": "/AddVesselDetail",
         "DeleteVessel": "/DeleteVessel",
         "FilterPortLocations": "/FilterPortLocations",
+        "GetOperationPlanById":"/GetOperationPlanById?planId=",
         "GetTimeZone": [
           {
             "name": "GMT",

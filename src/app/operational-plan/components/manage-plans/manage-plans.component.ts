@@ -92,15 +92,6 @@ export class ManagePlansComponent implements OnInit {
       });
     }
   }
-
-  openPlanComponent(actionType: string, data: any, route: string): void {
-    this.router.navigateByUrl(route, {
-      state: {
-        ...data,
-        actionType
-      }
-    });
-  }
   completeOperation(rowData: any) {
     rowData.Status = 'Completed';
     rowData.Action = 'Edit';

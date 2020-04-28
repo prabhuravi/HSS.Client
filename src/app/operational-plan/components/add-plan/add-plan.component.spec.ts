@@ -6,8 +6,8 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
 import { MockOperationalPlanService } from '../../../services/mock.operational-plan.service';
 import { MockConfirmationService } from '../../../services/mock.confirmation.service';
 import { ConfirmationService } from 'primeng/api';
-import { Router } from '@angular/router';
-import { MockRouter } from '../../../services/mock.router.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MockRouter, MockActivatedRoute } from '../../../services/mock.router.service';
 
 describe('AddPlanComponent', () => {
   let component: AddPlanComponent;
@@ -19,7 +19,8 @@ describe('AddPlanComponent', () => {
       providers: [
         { provide: OperationalPlanService, useClass: MockOperationalPlanService },
         { provide: ConfirmationService, useClass: MockConfirmationService },
-        { provide: Router, useClass: MockRouter }
+        { provide: Router, useClass: MockRouter },
+        { provide: ActivatedRoute, useClass: MockActivatedRoute }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
