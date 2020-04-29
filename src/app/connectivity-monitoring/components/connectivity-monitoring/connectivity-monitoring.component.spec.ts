@@ -4,6 +4,7 @@ import { ConnectivityMonitoringComponent } from './connectivity-monitoring.compo
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import { MockConnectivityMonitoringService } from '../../../services/mock.connectivity-monitoring.service';
+import { of } from 'rxjs';
 
 describe('ConnectivityMonitoringComponent', () => {
   let component: ConnectivityMonitoringComponent;
@@ -11,13 +12,13 @@ describe('ConnectivityMonitoringComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConnectivityMonitoringComponent ],
+      declarations: [ConnectivityMonitoringComponent],
       providers: [
         { provide: ConnectivityMonitoringService, useClass: MockConnectivityMonitoringService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -29,4 +30,17 @@ describe('ConnectivityMonitoringComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('ngOnInit()', () => {
+
+    it('should ', () => {
+      spyOn(component.connectivityMonitoringService, 'getVesselLinks').and.returnValue(of([]));
+      spyOn(component.connectivityMonitoringService, 'setAllVesselLinks');
+      component.ngOnInit();
+      expect(component.connectivityMonitoringService.getVesselLinks).toHaveBeenCalled();
+      expect(component.connectivityMonitoringService.setAllVesselLinks).not.toHaveBeenCalledWith([]);
+    });
+
+  });
+
 });

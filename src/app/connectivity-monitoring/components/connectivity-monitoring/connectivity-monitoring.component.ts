@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import { AppConstants } from 'src/app/app.constants';
+import { take } from 'rxjs/operators';
 @Component({
   selector: 'app-connectivity-monitoring',
   templateUrl: './connectivity-monitoring.component.html',
@@ -22,17 +23,16 @@ export class ConnectivityMonitoringComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   showLoader = true;
   constructor(
-    private connectivityMonitoringService: ConnectivityMonitoringService
+    public connectivityMonitoringService: ConnectivityMonitoringService
   ) { }
 
   ngOnInit() {
-    this.connectivityMonitoringService.getVesselLinks().subscribe((data: IVesselLinks[]) => {
+    this.connectivityMonitoringService.getVesselLinks().pipe(take(1)).subscribe((data: IVesselLinks[]) => {
       if (data && data.length > 0) {
         this.showLoader = false;
         this.vesselLinksList = data;
         this.connectivityMonitoringService.setAllVesselLinks(data);
       }
-
     });
   }
 
