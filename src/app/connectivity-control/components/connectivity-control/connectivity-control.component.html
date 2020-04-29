@@ -1,8 +1,9 @@
 <app-load *ngIf="isDataLoading"></app-load>
 <div *ngIf="!isDataLoading">
     <div *ngIf="vesselConnectivityControlList.length > 0">
-        <p-table tableStyleClass="kx-table kx-table--outer-border" *ngIf="!isDataLoading" #tt [value]="vesselConnectivityControlList"
-            [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
+        <p-table tableStyleClass="kx-table kx-table--outer-border" *ngIf="!isDataLoading" #tt
+            [value]="vesselConnectivityControlList" [columns]="cols" [paginator]="true"
+            [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
@@ -46,8 +47,9 @@
                                 <div *ngIf="rowData.IsUploadEnabled && rowData.AlwaysOn" class="kx-py--tiny">
                                     {{rowData.RemainingTime}}
                                 </div>
-                                <div *ngIf="rowData.IsUploadEnabled && !rowData.AlwaysOn" class="kx-py--tiny" appRemainingTime
-                                    [data]="rowData.DisableTime" [index]="i" (updateRemainingTime)="updateRemainingTime($event)">
+                                <div *ngIf="rowData.IsUploadEnabled && !rowData.AlwaysOn" class="kx-py--tiny"
+                                    appRemainingTime [data]="rowData.DisableTime" [index]="i"
+                                    (updateRemainingTime)="updateRemainingTime($event)">
                                     {{rowData.RemainingTime}}
                                 </div>
                                 <div *ngIf="!rowData.IsUploadEnabled">
@@ -61,7 +63,9 @@
                                 </div>
                             </div>
                             <div *ngSwitchCase="'LastAction'" class="kx-py--tiny">
-                                {{rowData['LastAction']}} at {{rowData['EnabledTime'] | date:'MM/dd/yyyy HH:mm'}}
+                                {{rowData['LastAction']}} at 
+                                <span *ngIf="rowData['IsUploadEnabled']">{{rowData['EnabledTime'] | date:'MM/dd/yyyy HH:mm'}}</span>
+                                <span *ngIf="!rowData['IsUploadEnabled']">{{rowData['DisableRetainTime'] | date:'MM/dd/yyyy HH:mm'}}</span>
                                 <i (click)="toggleActivityLogModal(); loadVesselActivityLog(rowData)"
                                     class="kx-icon kx-icon--size-base u--floatRight u--cursorPointer">
                                     <svg focusable="false">
@@ -125,7 +129,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <app-no-data [displayme]="isActionLogDataLoading && vesselConnectivityActionLogList.length>0"></app-no-data>
+                    <app-no-data [displayme]="isActionLogDataLoading && vesselConnectivityActionLogList.length>0">
+                    </app-no-data>
                 </div>
             </div>
         </div>

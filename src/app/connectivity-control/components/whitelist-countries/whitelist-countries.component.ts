@@ -26,7 +26,7 @@ export class WhitelistCountriesComponent implements OnInit {
   groupCountryList: IOperatorCountryList[] = [];
   groupList: IOperatorCountryList[] = [];
   activeOperatorCountry: IOperatorCountryList = null;
-  activeGroup: IOperatorCountryList;
+  activeGroup: IOperatorCountryList = null;
   isDataLoading: boolean;
   disableActivity: boolean;
   displayManageCountryGroup: boolean;
@@ -79,6 +79,7 @@ export class WhitelistCountriesComponent implements OnInit {
     this.connectivityControlService.getOperatorCountryList().pipe(take(1)).subscribe((data) => {
       this.operatorCountryList = data;
       this.groupList = this.operatorCountryList.filter((e) => e.IsCountryGroup);
+      this.sortCountries();
     });
   }
   loadWhitelistedCountries(): void {
@@ -130,6 +131,7 @@ export class WhitelistCountriesComponent implements OnInit {
   loadGroupCountries(): void {
     this.connectivityControlService.getGroupCountries(this.activeGroup.CountryId).pipe(take(1)).subscribe((data) => {
       this.groupCountryList = data;
+      this.sortCountries();
     });
   }
   deleteCountryGroup(): void {
@@ -146,6 +148,7 @@ export class WhitelistCountriesComponent implements OnInit {
         this.disableActivity = true;
         this.connectivityControlService.deleteCountryGroup(formData).pipe(take(1)).subscribe((data) => {
           this.disableActivity = false;
+          this.activeGroup = null;
           this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
           this.groupCountryList = [];
           this.getOperatorCountryList();
@@ -197,6 +200,10 @@ export class WhitelistCountriesComponent implements OnInit {
         summary,
         detail
       });
+  }
+  sortCountries(): void {
+    this.operatorCountryList = this.operatorCountryList.sort((a, b) => (a.CountryName > b.CountryName) ? 1 : -1);
+    this.groupCountryList = this.groupCountryList.sort((a, b) => (a.CountryName > b.CountryName) ? 1 : -1);
   }
 
 }

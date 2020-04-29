@@ -3,7 +3,7 @@
     <div class="kx-p--medium">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="kx-row">
-                <div class="kx-col kx-col--3">
+                <div class="kx-col kx-col--2">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
                         <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselId'"
@@ -11,22 +11,43 @@
                         </p-dropdown>
                     </div>
                 </div>
-                <div class="kx-col kx-col--3">
+                <div class="kx-col kx-col--2">
                     <label class="kx-label" for="selectbox1">From Mission</label>
-                    <div class="kx-mt--tiny kx-pr--xlarge">
+                    <div class="kx-mt--tiny">
                         <p-dropdown styleClass="kx-p--none" placeholder="Select Mission"
                             [formControlName]="'FromMission'" [options]="fromMissionList" optionLabel="name"
                             filter="true" (onChange)="filterToMissionList()"></p-dropdown>
                     </div>
                 </div>
-                <div class="kx-col kx-col--3">
+                <div class="kx-col kx-col--2">
                     <label class="kx-label" for="selectbox1">To Mission</label>
-                    <div class="kx-mt--tiny kx-pr--xlarge">
+                    <div class="kx-mt--tiny">
                         <p-dropdown styleClass="kx-p--none" placeholder="Select Mission" [formControlName]="'ToMission'"
-                            [options]="toMissionList" optionLabel="name" filter="true"></p-dropdown>
+                            [options]="toMissionList" optionLabel="name" filter="true"
+                            (onChange)="filterFromMissionList()"></p-dropdown>
                     </div>
                 </div>
-                <div class="kx-col kx-col--3">
+                <div class="kx-col kx-col--2">
+                    <label class="kx-label" for="selectbox1">From Date</label>
+                    <div class="kx-mt--tiny kx-pr--xlarge">
+                        <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
+                            hideOnDateTimeSelect="true" showButtonBar="true"
+                            placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
+                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'FromDate'">
+                        </p-calendar>
+                    </div>
+                </div>
+                <div class="kx-col kx-col--2">
+                    <label class="kx-label" for="selectbox1">To Date</label>
+                    <div class="kx-mt--tiny kx-pr--xlarge">
+                        <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
+                            hideOnDateTimeSelect="true" showButtonBar="true"
+                            placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
+                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'ToDate'">
+                        </p-calendar>
+                    </div>
+                </div>
+                <div class="kx-col kx-col--1">
                     <button [disabled]="!form.valid"
                         class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
                         <span class="kx-btn__inner">
@@ -78,23 +99,23 @@
                     <th *ngFor="let col of columns" [ngSwitch]="col.field" class="kx-p--small">
                         <input *ngSwitchCase="'VesselName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Vessel Name"
-                            style="width: 120px;"
+                            style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'Mission'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Mission Name"
-                            style="width: 120px;"
+                            style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'FileName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="File Name"
-                            style="width: 120px;"
+                            style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'FileType'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="File Type"
-                            style="width: 120px;"
+                            style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'UploadStatus'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Status"
-                            style="width: 120px;"
+                            style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
                 </tr>

@@ -15,6 +15,7 @@ export class VesselUploadStatusComponent implements OnInit {
   form: FormGroup;
   isFormSubmitted: boolean;
   vesselList: IVesselList[] = [];
+  missionList: IBasicDropdown[] = [];
   fromMissionList: IBasicDropdown[] = [];
   toMissionList: IBasicDropdown[] = [];
   vesselHistoricalUploadStatus: IVesselUploadStatus;
@@ -56,22 +57,33 @@ export class VesselUploadStatusComponent implements OnInit {
       VesselId: this.form.get('VesselId').value.Id
     };
     this.connectivityControlService.getMissionList(formData).pipe(take(1)).subscribe((data) => {
-      this.fromMissionList = [];
+      this.missionList = [];
       data.forEach((e) => {
         const mission = {
           name: e,
           value: e
         };
-        this.fromMissionList.push(mission);
+        this.missionList.push(mission);
       });
+      this.fromMissionList = this.missionList;
+      this.toMissionList = this.missionList;
     });
   }
   filterToMissionList(): void {
     const activeFromMission = this.form.get('FromMission').value.value;
     this.toMissionList = [];
-    this.fromMissionList.forEach((e) => {
-      if (e.value > activeFromMission) {
+    this.missionList.forEach((e) => {
+      if (e.value >= activeFromMission) {
         this.toMissionList.push(e);
+      }
+    });
+  }
+  filterFromMissionList(): void {
+    const activeToMission = this.form.get('ToMission').value.value;
+    this.fromMissionList = [];
+    this.missionList.forEach((e) => {
+      if (e.value <= activeToMission) {
+        this.fromMissionList.push(e);
       }
     });
   }
@@ -80,6 +92,8 @@ export class VesselUploadStatusComponent implements OnInit {
     group.addControl('VesselId', this.fb.control({ value: '', disabled: false }, [Validators.required]));
     group.addControl('FromMission', this.fb.control({ value: '', disabled: false }, []));
     group.addControl('ToMission', this.fb.control({ value: '', disabled: false }, []));
+    group.addControl('FromDate', this.fb.control({ value: '', disabled: false }, []));
+    group.addControl('ToDate', this.fb.control({ value: '', disabled: false }, []));
     return group;
   }
   onSubmit() {

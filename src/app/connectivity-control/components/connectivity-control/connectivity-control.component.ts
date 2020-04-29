@@ -14,7 +14,7 @@ export class ConnectivityControlComponent implements OnInit {
   vesselConnectivityControlList: IConnectivityControl[] = [];
   vesselConnectivityActionLogList: IConnectivityActionLog[] = [];
   cols = [
-    { field: 'VesselName', sortfield: 'VesselName', header: 'Vessel Name', filterMatchMode: 'contains' },
+    { field: 'VesselName', sortfield: 'VesselName', header: `Vessel Name`, filterMatchMode: 'contains' },
     { field: 'IMONumber', sortfield: 'IMONumber', header: 'IMO Number', filterMatchMode: 'contains' },
     { field: 'DisableTime', sortfield: '', header: 'Disable Time (Optional, GMT)', filterMatchMode: 'contains' },
     { field: 'IsUploadEnabled', sortfield: '', header: 'File Upload Status', filterMatchMode: 'contains' },
@@ -42,6 +42,7 @@ export class ConnectivityControlComponent implements OnInit {
         if (vessel.IsUploadEnabled && !vessel.AlwaysOn) {
           vessel.DisableTime = new Date(vessel.DisableTime);
         } else {
+          vessel.DisableRetainTime = new Date(vessel.DisableTime);
           vessel.DisableTime = null;
         }
       });

@@ -12,4 +12,5 @@ interface IConnectivityControl {
     NodeNumber: number;
     IMONumber: number;
     AlwaysOn: boolean;
+    DisableRetainTime: any;
 }

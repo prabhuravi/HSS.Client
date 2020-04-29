@@ -38,9 +38,11 @@
 <div class="kx-pt--small">
     <app-load *ngIf="isDataLoading"></app-load>
     <div *ngIf="!isDataLoading">
-        <small>Below countries/groups are already white listed for {{activeVessel.VesselName}} to upload data:</small>
-        <p-table tableStyleClass="kx-table kx-table--outer-border" [value]="whiteListedCountries" [columns]="cols"
-            [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
+        <small *ngIf="whiteListedCountries.length > 0">Below countries/groups are already white listed for
+            {{activeVessel.VesselName}} to upload data:</small>
+        <p-table *ngIf="whiteListedCountries.length > 0" tableStyleClass="kx-table kx-table--outer-border"
+            [value]="whiteListedCountries" [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount"
+            autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
@@ -121,7 +123,7 @@
                             </div>
                         </div>
                         <div>
-                            <button (click)="deleteCountryGroup()" [disabled]="disableActivity"
+                            <button (click)="deleteCountryGroup()" [disabled]="disableActivity || activeGroup === null"
                                 class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium kx-btn--fluid">
                                 <span class="kx-btn__inner">
                                     <span class="kx-btn__txt">Remove Group</span>
@@ -140,7 +142,7 @@
                                 </div>
                             </div>
                             <div>
-                                <button type="submit" [disabled]="disableActivity"
+                                <button type="submit" [disabled]="disableActivity || form.value.GroupName === ''"
                                     class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium kx-btn--fluid">
                                     <span class="kx-btn__inner">
                                         <span class="kx-btn__txt">Add Group</span>
@@ -156,12 +158,13 @@
                             sourceHeader="Operating Countries" targetHeader="Group Countries" [responsive]="true"
                             filterBy="CountryName" dragdrop="true" sourceFilterPlaceholder="Search by Country Name"
                             targetFilterPlaceholder="Search by Country Name" [sourceStyle]="{'height':'300px'}"
-                            [targetStyle]="{'height':'300px'}">
+                            [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortCountries()"
+                            (onMoveToSource)="sortCountries()">
                             <ng-template let-country pTemplate="item">
                                 <div class="u--picklistItem">{{country.CountryName}}</div>
                             </ng-template>
                         </p-pickList>
-                        <button (click)="updateGroupCountries()" [disabled]="disableActivity"
+                        <button (click)="updateGroupCountries()" [disabled]="disableActivity || activeGroup === null"
                             class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-btn--fluid kx-mt--small">
                             <span class="kx-btn__inner">
                                 <span class="kx-btn__txt u--cursorPointer">Update Group</span>

@@ -60,23 +60,23 @@
                     <th *ngFor="let col of columns" [ngSwitch]="col.field" class="kx-p--small">
                         <input *ngSwitchCase="'VesselName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Vessel Name"
-                            style="width: 120px;"
+                            style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'Mission'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Mission Name"
-                            style="width: 120px;"
+                            style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'FileName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="File Name"
-                            style="width: 120px;"
+                            style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'FileType'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="File Type"
-                            style="width: 120px;"
+                            style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'UploadStatus'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Status"
-                            style="width: 120px;"
+                            style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
                 </tr>
