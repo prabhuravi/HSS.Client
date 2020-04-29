@@ -47,11 +47,16 @@
                         </p-calendar>
                     </div>
                 </div>
-                <div class="kx-col kx-col--1">
+                <div class="kx-col kx-col--2">
                     <button [disabled]="!form.valid"
-                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
+                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium kx-mr--medium">
                         <span class="kx-btn__inner">
                             <span class="kx-btn__txt">Get Logs</span>
+                        </span>
+                    </button>
+                    <button type="button" (click)="form.reset()" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
+                        <span class="kx-btn__inner">
+                            <span class="kx-btn__txt">Reset</span>
                         </span>
                     </button>
                 </div>

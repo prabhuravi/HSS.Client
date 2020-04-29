@@ -18,10 +18,10 @@ export class ManagePlansComponent implements OnInit {
   cols = [
     { field: 'VesselName', sortfield: 'VesselName', header: 'Vessel', filterMatchMode: 'contains' },
     { field: 'ImoNumber', sortfield: '', header: 'IMO', filterMatchMode: 'contains' },
-    { field: 'OperationDate', sortfield: '', header: 'Date', filterMatchMode: 'contains' },
-    { field: 'ETADate', sortfield: '', header: 'ETA Date', filterMatchMode: 'contains' },
+    { field: 'OperationDate', sortfield: '', header: 'Operation Date', filterMatchMode: 'contains' },
+    { field: 'ETADate', sortfield: '', header: 'Vessel ETA Date', filterMatchMode: 'contains' },
     { field: 'OperationLoc', sortfield: '', header: 'Location', filterMatchMode: 'contains' },
-    { field: 'OperationType', sortfield: '', header: 'Type', filterMatchMode: 'contains' },
+    { field: 'OperationType', sortfield: '', header: 'Operation Type', filterMatchMode: 'contains' },
     { field: 'OperationDes', sortfield: '', header: 'Description', filterMatchMode: 'contains' },
     { field: 'Status', sortfield: '', header: 'Status', filterMatchMode: 'contains' },
     { field: 'OperatorName', sortfield: '', header: 'Operator', filterMatchMode: 'contains' },
@@ -42,7 +42,7 @@ export class ManagePlansComponent implements OnInit {
     { field: 'LastUpdatedDate', sortfield: '', header: 'Updated Date' },
     { field: 'SubPlanId', sortfield: '', header: 'Action' }
   ];
-  showLogs = true;
+  showLogs = false;
   isDataLoading: boolean;
   isSubOperationDataLoading: boolean;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
