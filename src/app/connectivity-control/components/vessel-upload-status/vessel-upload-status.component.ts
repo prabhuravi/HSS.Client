@@ -37,9 +37,9 @@ export class VesselUploadStatusComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   constructor(
-    private operationalPlanService: OperationalPlanService,
-    private connectivityControlService: ConnectivityControlService,
-    private fb: FormBuilder
+    public operationalPlanService: OperationalPlanService,
+    public connectivityControlService: ConnectivityControlService,
+    public fb: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -53,9 +53,12 @@ export class VesselUploadStatusComponent implements OnInit {
     });
   }
   getMissionList(): void {
-    const formData = {
-      VesselId: this.form.get('VesselId').value.Id
-    };
+    let formData = {};
+    if (this.form && this.form.get) {
+      formData = {
+        VesselId: this.form.get('VesselId').value.Id
+      };
+    }
     this.connectivityControlService.getMissionList(formData).pipe(take(1)).subscribe((data) => {
       this.missionList = [];
       data.forEach((e) => {
@@ -70,7 +73,10 @@ export class VesselUploadStatusComponent implements OnInit {
     });
   }
   filterToMissionList(): void {
-    const activeFromMission = this.form.get('FromMission').value.value;
+    let activeFromMission = '';
+    if (this.form && this.form.get) {
+      activeFromMission = this.form.get('FromMission').value.value;
+    }
     this.toMissionList = [];
     this.missionList.forEach((e) => {
       if (e.value >= activeFromMission) {
@@ -79,7 +85,10 @@ export class VesselUploadStatusComponent implements OnInit {
     });
   }
   filterFromMissionList(): void {
-    const activeToMission = this.form.get('ToMission').value.value;
+    let activeToMission = '';
+    if (this.form && this.form.get) {
+      activeToMission = this.form.get('ToMission').value.value;
+    }
     this.fromMissionList = [];
     this.missionList.forEach((e) => {
       if (e.value <= activeToMission) {

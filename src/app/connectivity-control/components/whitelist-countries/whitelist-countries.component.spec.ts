@@ -11,6 +11,7 @@ import { MockFormBuilder } from '../../../services/mock.form.builder';
 import { MockPrimengMessageService } from '../../../services/mock.primengmessage.service';
 import { MockConfirmationService } from '../../../services/mock.confirmation.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { of } from 'rxjs';
 
 describe('WhitelistCountriesComponent', () => {
   let component: WhitelistCountriesComponent;
@@ -18,7 +19,7 @@ describe('WhitelistCountriesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WhitelistCountriesComponent ],
+      declarations: [WhitelistCountriesComponent],
       providers: [
         { provide: ConnectivityControlService, useClass: MockConnectivityControlService },
         { provide: OperationalPlanService, useClass: MockOperationalPlanService },
@@ -28,7 +29,7 @@ describe('WhitelistCountriesComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -40,4 +41,88 @@ describe('WhitelistCountriesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('ngOnInit()', () => {
+
+    it('should call loadData and buildform methods', () => {
+      spyOn(component, 'loadData');
+      spyOn(component, 'buildForm');
+      component.ngOnInit();
+      expect(component.buildForm).toHaveBeenCalled();
+      expect(component.loadData).toHaveBeenCalled();
+    });
+
+  });
+
+  describe('loadData()', () => {
+
+    it('should call getVesselList & getOperatorCountryListmethods', () => {
+      spyOn(component, 'getVesselList');
+      spyOn(component, 'getOperatorCountryList');
+      component.loadData();
+      expect(component.getVesselList).toHaveBeenCalled();
+      expect(component.getOperatorCountryList).toHaveBeenCalled();
+    });
+
+  });
+
+  describe('getVesselList()', () => {
+
+    it('should call getVesselList from operationalPlanService', () => {
+      spyOn(component.operationalPlanService, 'getVesselList').and.returnValue(of([]));
+      spyOn(component, 'loadWhitelistedCountries');
+      component.getVesselList();
+      expect(component.operationalPlanService.getVesselList).toHaveBeenCalled();
+      expect(component.loadWhitelistedCountries).toHaveBeenCalled();
+    });
+
+  });
+
+  describe('getOperatorCountryList()', () => {
+
+    it('should call getOperatorCountryList from operationalPlanService', () => {
+      spyOn(component.connectivityControlService, 'getOperatorCountryList').and.returnValue(of([]));
+      component.getOperatorCountryList();
+      expect(component.connectivityControlService.getOperatorCountryList).toHaveBeenCalled();
+    });
+
+  });
+
+  describe('loadWhitelistedCountries()', () => {
+
+    it('should ', () => {
+      component.activeVessel = {
+        Id: 1
+      } as any;
+      spyOn(component.connectivityControlService, 'getWhiteListedCountries').and.returnValue(of([]));
+      component.loadWhitelistedCountries();
+      expect(component.connectivityControlService.getWhiteListedCountries).toHaveBeenCalledWith(component.activeVessel.Id);
+    });
+
+  });
+
+  describe('processMarkCountryWhitelist()', () => {
+
+    it('should ', () => {
+      component.activeOperatorCountry = {
+        CountryId: 1,
+        IsCountryGroup: true,
+        GroupCountryIDs: []
+      } as any;
+      component.activeVessel = {
+        Id: 1
+      } as any;
+      const formData: any = {
+        CountryId: component.activeOperatorCountry.CountryId,
+        VesselId: component.activeVessel.Id,
+        IsCountryGroup: component.activeOperatorCountry.IsCountryGroup,
+        GroupCountryIDs: component.activeOperatorCountry.GroupCountryIDs
+      };
+      spyOn(component.connectivityControlService, 'markCountryWhitelist').and.returnValue(of([]));
+      component.processMarkCountryWhitelist();
+      expect(component.connectivityControlService.markCountryWhitelist).toHaveBeenCalledWith(formData);
+    });
+
+  });
+
 });

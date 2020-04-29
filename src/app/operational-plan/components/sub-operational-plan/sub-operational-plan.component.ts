@@ -45,13 +45,15 @@ export class SubOperationalPlanComponent implements OnInit {
 
   ngOnInit() {
     this.planStatusList = this.operationalPlanService.getPlanStatus();
-    this.allSubscription.push(
-      this.route.params.subscribe((params) => {
-        // tslint:disable-next-line:radix
-        this.planId = parseInt(params.planid);
-        this.loadData();
-      })
-    );
+    if (this.route && this.route.params) {
+      this.allSubscription.push(
+        this.route.params.subscribe((params) => {
+          // tslint:disable-next-line:radix
+          this.planId = parseInt(params.planid);
+          this.loadData();
+        })
+      );
+    }
   }
   loadData(): void {
     this.isDataLoading = true;

@@ -35,16 +35,16 @@ export class FdsTrafficComponent implements OnInit {
   vesselHistoricalUploadStatusLoaded: boolean;
 
   constructor(
-    private operationalPlanService: OperationalPlanService,
-    private connectivityControlService: ConnectivityControlService,
-    private fb: FormBuilder
+    public operationalPlanService: OperationalPlanService,
+    public connectivityControlService: ConnectivityControlService,
+    public fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.loadVessels();
   }
   loadVessels(): void {
-    this.operationalPlanService.getVesselList().subscribe((data) => {
+    this.operationalPlanService.getVesselList().pipe(take(1)).subscribe((data) => {
       this.vesselListLoaded = true;
       this.vesselList = data;
       this.form = this.buildForm();

@@ -6,7 +6,7 @@ import { ConnectivityControlService } from '../../../services/connectivity-contr
 import { MockConnectivityControlService } from '../../../services/mock.connectivity-control.service';
 import { of } from 'rxjs';
 
-fdescribe('ConnectivityControlComponent', () => {
+describe('ConnectivityControlComponent', () => {
   let component: ConnectivityControlComponent;
   let fixture: ComponentFixture<ConnectivityControlComponent>;
 
@@ -83,19 +83,6 @@ fdescribe('ConnectivityControlComponent', () => {
     it('should toggle display modal boolean value', () => {
       component.displayActionLogModal = !component.displayActionLogModal;
       component.toggleActivityLogModal();
-    });
-
-  });
-
-  describe('updateRemainingTime()', () => {
-
-    it('should call once loadData method if RemainingTime is null with datetimeintervalsubscription', () => {
-      const vesselData = {
-        Id: 1,
-        RemainingTime: null
-      };
-      component.updateRemainingTime(vesselData as any);
-      spyOn(component, 'dateTimeInterval').and.returnValue(of());
     });
 
   });

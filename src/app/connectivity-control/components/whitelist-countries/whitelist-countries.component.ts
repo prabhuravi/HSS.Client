@@ -33,11 +33,11 @@ export class WhitelistCountriesComponent implements OnInit {
   form: FormGroup;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   constructor(
-    private connectivityControlService: ConnectivityControlService,
-    private operationalPlanService: OperationalPlanService,
-    private fb: FormBuilder,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    public connectivityControlService: ConnectivityControlService,
+    public operationalPlanService: OperationalPlanService,
+    public fb: FormBuilder,
+    public confirmationService: ConfirmationService,
+    public messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -93,19 +93,22 @@ export class WhitelistCountriesComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
       accept: () => {
-        this.disableActivity = true;
-        const formData: any = {
-          CountryId: this.activeOperatorCountry.CountryId,
-          VesselId: this.activeVessel.Id,
-          IsCountryGroup: this.activeOperatorCountry.IsCountryGroup,
-          GroupCountryIDs: this.activeOperatorCountry.GroupCountryIDs
-        };
-        this.connectivityControlService.markCountryWhitelist(formData).pipe(take(1)).subscribe((data) => {
-          this.disableActivity = false;
-          this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
-          this.loadWhitelistedCountries();
-        });
+        this.processMarkCountryWhitelist();
       }
+    });
+  }
+  processMarkCountryWhitelist(): void {
+    this.disableActivity = true;
+    const formData: any = {
+      CountryId: this.activeOperatorCountry.CountryId,
+      VesselId: this.activeVessel.Id,
+      IsCountryGroup: this.activeOperatorCountry.IsCountryGroup,
+      GroupCountryIDs: this.activeOperatorCountry.GroupCountryIDs
+    };
+    this.connectivityControlService.markCountryWhitelist(formData).pipe(take(1)).subscribe((data) => {
+      this.disableActivity = false;
+      this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
+      this.loadWhitelistedCountries();
     });
   }
   removeWhitelistCountryConfirm(data: IWhiteListedCountries): void {

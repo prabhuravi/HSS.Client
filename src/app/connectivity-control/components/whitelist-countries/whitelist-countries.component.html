@@ -142,7 +142,7 @@
                                 </div>
                             </div>
                             <div>
-                                <button type="submit" [disabled]="disableActivity || form.value.GroupName === ''"
+                                <button type="submit" [disabled]="disableActivity || (form && form.value && form.value.GroupName === '')"
                                     class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium kx-btn--fluid">
                                     <span class="kx-btn__inner">
                                         <span class="kx-btn__txt">Add Group</span>

@@ -8,6 +8,7 @@ import { MockConnectivityControlService } from '../../../services/mock.connectiv
 import { MockOperationalPlanService } from '../../../services/mock.operational-plan.service';
 import { FormBuilder } from '@angular/forms';
 import { MockFormBuilder } from '../../../services/mock.form.builder';
+import { of } from 'rxjs';
 
 describe('FdsTrafficComponent', () => {
   let component: FdsTrafficComponent;
@@ -35,4 +36,54 @@ describe('FdsTrafficComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('ngOnInit()', () => {
+
+    it('should call loadVessels method', () => {
+      spyOn(component, 'loadVessels');
+      component.ngOnInit();
+      expect(component.loadVessels).toHaveBeenCalled();
+    });
+
+  });
+
+  describe('loadVessels()', () => {
+
+    it('should call getVesselList from operationalPlanService', () => {
+      spyOn(component.operationalPlanService, 'getVesselList').and.returnValue(of([]));
+      spyOn(component, 'onSubmit');
+      spyOn(component, 'buildForm');
+      component.loadVessels();
+      expect(component.operationalPlanService.getVesselList).toHaveBeenCalled();
+      expect(component.onSubmit).toHaveBeenCalled();
+      expect(component.buildForm).toHaveBeenCalled();
+    });
+
+  });
+
+  describe('onSubmit()', () => {
+
+    it('should not call getVesselHistoricalStatus from connectivityControlService if form is not valid', () => {
+      component.form = {
+        valid: false
+      } as any;
+      spyOn(component.connectivityControlService, 'getVesselHistoricalStatus').and.returnValue({});
+      component.onSubmit();
+      expect(component.connectivityControlService.getVesselHistoricalStatus).not.toHaveBeenCalled();
+    });
+
+    it('should call getVesselHistoricalStatus from connectivityControlService if form is valid', () => {
+      component.form = {
+        valid: true,
+        value: {
+          VesselIds: []
+        }
+      } as any;
+      spyOn(component.connectivityControlService, 'getVesselHistoricalStatus').and.returnValue(of({}));
+      component.onSubmit();
+      expect(component.connectivityControlService.getVesselHistoricalStatus).toHaveBeenCalledWith(component.form.value);
+    });
+
+  });
+
 });
