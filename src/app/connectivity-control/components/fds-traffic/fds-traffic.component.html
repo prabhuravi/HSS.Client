@@ -6,7 +6,8 @@
                 <div class="kx-col kx-col--3">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
-                        <p-multiSelect [options]="vesselList" [formControlName]="'VesselIds'"  optionLabel="VesselName"></p-multiSelect>
+                        <p-multiSelect [options]="vesselList" [formControlName]="'VesselIds'" optionLabel="VesselName">
+                        </p-multiSelect>
                     </div>
                 </div>
                 <div class="kx-col kx-col--3">
@@ -36,7 +37,8 @@
                             <span class="kx-btn__txt">Get Logs</span>
                         </span>
                     </button>
-                    <button type="button" (click)="form.reset()" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
+                    <button type="button" (click)="form.reset()"
+                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
                         <span class="kx-btn__inner">
                             <span class="kx-btn__txt">Reset</span>
                         </span>
