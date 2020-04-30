@@ -62,9 +62,16 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   allVessels: any;
   selectedVessel: any;
   constructor(
-    private connectivityMonitoringService: ConnectivityMonitoringService,
-    private route: ActivatedRoute
+    public connectivityMonitoringService: ConnectivityMonitoringService,
+    public route: ActivatedRoute
   ) {
+  }
+  ngOnInit(): void {
+    if (this.route && this.route.params) {
+      this.route.params.subscribe((params) =>
+        this.getVesselDetails(params.nodeNumber)
+      );
+    }
   }
   ngOnDestroy(): void {
     if (this.VesselDataSubscription) {
@@ -117,13 +124,6 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     this.selectedVesselNodeNumber = this.selectedVessel.NodeNumber.toString();
     this.connectivityMonitoringService.getVesselLinksByNodeNumber(this.selectedVessel.NodeNumber);
   }
-  ngOnInit() {
-    if (this.route && this.route.params) {
-      this.route.params.subscribe((params) =>
-        this.getVesselDetails(params.nodeNumber)
-      );
-    }
-  }
   viewMeOnMap(lat: number, lng: number) {
     console.log(lat, lng);
   }
@@ -145,12 +145,9 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     a.FromDate = this.fromDate.toISOString();
     a.ToDate = this.toDate.toISOString();
     this.latencyRequest = Object.assign({}, a);
-
     this.aisRequest = Object.assign({}, a);
   }
   onDropDownSelection() {
-    console.log(this.fromDate);
-    console.log(this.selectedPreset);
     this.toDate = new Date();
     this.fromDate = this.getDateFromDropDown(this.selectedPreset.value);
     this.getLatencyTrendData();
@@ -158,7 +155,6 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
 
   getDateFromDropDown(substractNumber: number): Date {
     const d = new Date();
-
     d.setHours(d.getHours() - substractNumber);
     return d;
   }

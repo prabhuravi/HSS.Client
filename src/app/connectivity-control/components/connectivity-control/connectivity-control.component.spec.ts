@@ -83,6 +83,7 @@ describe('ConnectivityControlComponent', () => {
     it('should toggle display modal boolean value', () => {
       component.displayActionLogModal = !component.displayActionLogModal;
       component.toggleActivityLogModal();
+      expect(component.displayActionLogModal).toBeFalsy();
     });
 
   });

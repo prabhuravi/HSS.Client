@@ -1,61 +1,68 @@
-<div class="kx-row kx-row--gutters">
-    <div class="kx-col kx-col--7" style="padding: 0;">
-        <div style="padding: 2rem 2rem 0 0;float:right;">
-            <label class="kx-selector kx-selector__switch">
-                <input type="checkbox" name="ShowLogs" [(ngModel)]="showLogs" (ngModelChange)="getPlanList()" />
-                <div class="kx-selector__indicator"></div>
-                {{form.ShowLogs | json}}
-                <span *ngIf="!showLogs" class="label-text">Hide Logs</span>
-                <span *ngIf="showLogs" class="label-text">Show Logs</span>
-            </label>
-        </div>
-    </div>
-    <div class="kx-col kx-col--5" style="padding: 0;">
-        <form [formGroup]="form" (ngSubmit)="searchFormOnSubmit()">
-            <div class="kx-row">
-                <div class="kx-col kx-col--4" style="padding: 0;">
-                    <label class="kx-label" for="selectbox1">From Date</label>
-                    <div class="kx-mt--tiny kx-pr--small">
-                        <p-calendar [formControlName]="'OperationFromDate'"
-                            inputStyleClass="kx-field kx-field--size-large u--field--size-large"
-                            [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
-                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat">
-                        </p-calendar>
-                    </div>
-                </div>
-                <div class=" kx-col kx-col--4" style="padding: 0;">
-                    <label class="kx-label" for="selectbox1">To Date</label>
-                    <div class="kx-mt--tiny kx-pr--small">
-                        <p-calendar [formControlName]="'OperationToDate'"
-                            inputStyleClass="kx-field kx-field--size-large u--field--size-large"
-                            [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
-                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat">
-                        </p-calendar>
-                    </div>
-                </div>
-                <div class="kx-col kx-col--4" style="padding: 5px 0 0 0;">
-                    <button [disabled]="!form.valid"
-                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base">
-                        <span class="kx-btn__inner">
-                            <span class="kx-btn__txt">Search</span>
-                        </span>
-                    </button>
-                    <button (click)="form.reset()" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base">
-                        <span class="kx-btn__inner">
-                            <span class="kx-btn__txt">Reset</span>
-                        </span>
-                    </button>
+<div class="kx-card kx-card--skin-default">
+    <div class="kx-card__body">
+        <div class="kx-row kx-row--gutters">
+            <div class="kx-col kx-col--6" style="padding: 0;">
+                <div style="padding: 2rem 2rem 0 0;float:right;">
+                    <label class="kx-selector kx-selector__switch">
+                        <input type="checkbox" name="ShowLogs" [(ngModel)]="showLogs" (ngModelChange)="getPlanList()" />
+                        <div class="kx-selector__indicator"></div>
+                        {{form.ShowLogs | json}}
+                        <span *ngIf="!showLogs" class="label-text">Hide Logs</span>
+                        <span *ngIf="showLogs" class="label-text">Show Logs</span>
+                    </label>
                 </div>
             </div>
-        </form>
+            <div class="kx-col kx-col--6" style="padding: 0;">
+                <form [formGroup]="form" (ngSubmit)="searchFormOnSubmit()">
+                    <div class="kx-row">
+                        <div class="kx-col kx-col--4" style="padding: 0;">
+                            <label class="kx-label" for="selectbox1">From Date</label>
+                            <div class="kx-mt--nano kx-pr--small">
+                                <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true"
+                                    hourFormat="24" hideOnDateTimeSelect="true" showButtonBar="true"
+                                    placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
+                                    [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
+                                    [formControlName]="'OperationFromDate'">
+                                </p-calendar>
+                            </div>
+                        </div>
+                        <div class=" kx-col kx-col--4" style="padding: 0;">
+                            <label class="kx-label" for="selectbox1">To Date</label>
+                            <div class="kx-mt--nano kx-pr--small">
+                                <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true"
+                                    hourFormat="24" hideOnDateTimeSelect="true" showButtonBar="true"
+                                    placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
+                                    [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
+                                    [formControlName]="'OperationToDate'">
+                                </p-calendar>
+                            </div>
+                        </div>
+                        <div class="kx-col kx-col--4" style="padding: 8px 0 0 0;">
+                            <button [disabled]="!form.valid"
+                                class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base">
+                                <span class="kx-btn__inner">
+                                    <span class="kx-btn__txt">Search</span>
+                                </span>
+                            </button>
+                            <button (click)="form.reset()"
+                                class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base">
+                                <span class="kx-btn__inner">
+                                    <span class="kx-btn__txt">Reset</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 <div class="kx-row kx-mt--small">
     <div class="kx-col">
         <app-load *ngIf="isDataLoading"></app-load>
-        <p-table *ngIf="!isDataLoading && operationalPlansList.length > 0" #tt [value]="operationalPlansList" [columns]="cols" [paginator]="true"
-            [rows]="PRIMENG_CONSTANTS.rowCount" dataKey="PlanId" rowExpandMode="single"
-            tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
+        <p-table *ngIf="!isDataLoading && operationalPlansList.length > 0" #tt [value]="operationalPlansList"
+            [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" dataKey="PlanId"
+            rowExpandMode="single" tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 1.5em" class="u--cursorPointer kx-p--small"></th>
@@ -100,7 +107,7 @@
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
                             <div *ngSwitchCase="'PlanId'" class="u--withEllipsis" style="width: 100px;">
-                                <div class="kx-btngroup kx-flex kx-flex-wrap" role="group"
+                                <div class="kx-btngroup kx-flex kx-flex-wrap kx-btngroup--spacing" role="group"
                                     aria-label="Aria label example">
                                     <a class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                         aria-label="Edit Operational Plan" title="Edit Operational Plan"

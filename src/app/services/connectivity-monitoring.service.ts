@@ -32,7 +32,6 @@ export class ConnectivityMonitoringService {
     return this.allVesselLinks;
   }
   getVesselLinksByNodeNumber(nodeNumber: number) {
-    // if (!this.allVesselLinks) {
     this.getVesselLinks().subscribe((data) => {
       this.allVesselLinks = data;
       const vessel = this.allVesselLinks.filter((vessel1: IVesselLinks) => {
@@ -40,12 +39,6 @@ export class ConnectivityMonitoringService {
       });
       this.vesselSubject.next(vessel[0]);
     });
-    // } else {
-    //   const vessel = this.allVesselLinks.filter((vessel: IVesselLinks) => {
-    //     return vessel.NodeNumber.toFixed(0) == nodeNumber;
-    //   });
-    //   this.vesselSubject.next(vessel[0]);
-    // }
   }
   getVesselNameByNodeNumber(nodeNumber) {
     if (this.allVesselLinks) {
