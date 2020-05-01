@@ -26,8 +26,9 @@
                                         {{rowData[col.field]}}
                                     </div>
                                 </div>
-                                <div *ngSwitchCase="'Cacti'">
+                                <div *ngSwitchCase="'NodeNumber'">
                                     <a [routerLink]="['/connectivity-monitoring/cacti',rowData[cols[0].field]]">
+                                        <span class="kx-pt--tiny">{{rowData[col.field]}}</span>
                                         <i class="kx-icon kx-icon--size-base">
                                             <svg focusable="false">
                                                 <use href="./assets/img/icons/sprites/icons.svg#charts"></use>

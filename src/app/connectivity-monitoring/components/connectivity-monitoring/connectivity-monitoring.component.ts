@@ -12,13 +12,11 @@ export class ConnectivityMonitoringComponent implements OnInit {
   vesselLinksList: IVesselLinks[] = [];
   cols = [
     { field: 'NodeNumber', header: 'Node Number' },
-    { field: 'Name', header: 'Name' },
+    { field: 'Name', header: 'Vessel Name' },
     { field: 'IPAddress', header: 'IP Address' },
-    { field: 'CreatedBy', header: 'Created By' },
-    { field: 'LastSeenUTC', header: 'Last Updated(UTC)' },
     { field: 'Status', header: 'Status' },
     { field: 'LastLatency', header: 'Last Latency' },
-    { field: 'Cacti', header: 'Cacti' }
+    { field: 'LastSeenUTC', header: 'Last Updated(GMT)' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   showLoader = true;
