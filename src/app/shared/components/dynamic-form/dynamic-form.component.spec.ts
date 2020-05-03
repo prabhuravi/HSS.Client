@@ -6,6 +6,7 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
 import { MockOperationalPlanService } from '../../../services/mock.operational-plan.service';
 import { FormBuilder } from '@angular/forms';
 import { MockFormBuilder } from '../../../services/mock.form.builder';
+import { of } from 'rxjs';
 
 describe('DynamicFormComponent', () => {
   let component: DynamicFormComponent;
@@ -13,14 +14,14 @@ describe('DynamicFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DynamicFormComponent ],
+      declarations: [DynamicFormComponent],
       providers: [
         { provide: OperationalPlanService, useClass: MockOperationalPlanService },
         { provide: FormBuilder, useClass: MockFormBuilder }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -32,4 +33,18 @@ describe('DynamicFormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  describe('filterPortLocations()', () => {
+
+    it('should ', () => {
+      spyOn(component.operationalPlanService, 'filterPortLocations').and.returnValue(of([]));
+      component.filterPortLocations({
+        query: ''
+      });
+      expect(component.operationalPlanService.filterPortLocations).toHaveBeenCalledWith({
+        PortName: ''
+      });
+    });
+
+  });
+
 });

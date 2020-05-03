@@ -30,9 +30,9 @@ export class VesselComponent implements OnInit {
   formReset: boolean;
 
   constructor(
-    private operationalPlanService: OperationalPlanService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    public operationalPlanService: OperationalPlanService,
+    public confirmationService: ConfirmationService,
+    public messageService: MessageService
   ) { }
 
   ngOnInit() {

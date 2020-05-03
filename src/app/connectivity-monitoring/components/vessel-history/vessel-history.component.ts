@@ -85,7 +85,6 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
       this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
 
       this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().subscribe((data) => {
-        console.log('inside');
         if (data) {
           this.cachedVesselDetails = data;
           if (!this.selectedVessel) {

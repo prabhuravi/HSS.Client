@@ -23,8 +23,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   constructor(
-    private fb: FormBuilder,
-    private operationalPlanService: OperationalPlanService
+    public fb: FormBuilder,
+    public operationalPlanService: OperationalPlanService
   ) {
   }
 

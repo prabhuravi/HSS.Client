@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MockActivatedRoute } from '../../../services/mock.router.service';
 import { ThemeService } from '@kognifai/poseidon-ng-theming';
 import { MockThemeService } from '../../../services/mock.theme.service';
+import { of } from 'rxjs';
 
 describe('VesselHistoryComponent', () => {
   let component: VesselHistoryComponent;
@@ -15,7 +16,7 @@ describe('VesselHistoryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VesselHistoryComponent ],
+      declarations: [VesselHistoryComponent],
       providers: [
         { provide: ConnectivityMonitoringService, useClass: MockConnectivityMonitoringService },
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
@@ -23,7 +24,7 @@ describe('VesselHistoryComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -35,4 +36,69 @@ describe('VesselHistoryComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('getVesselDetails()', () => {
+
+    it('should call getVesselSubject from connectivityMonitoringService', () => {
+      spyOn(component, 'resetDate');
+      spyOn(component.connectivityMonitoringService, 'getVesselLinksByNodeNumber');
+      spyOn(component.connectivityMonitoringService, 'getVesselSubject').and.returnValue(of([]));
+      spyOn(component.connectivityMonitoringService, 'getSnMPData').and.returnValue(of([]));
+      spyOn(component.connectivityMonitoringService, 'setNodeChangeSubject');
+      component.getVesselDetails(1);
+      expect(component.connectivityMonitoringService.getVesselLinksByNodeNumber).toHaveBeenCalledWith(1);
+      expect(component.connectivityMonitoringService.getVesselSubject).toHaveBeenCalled();
+      expect(component.connectivityMonitoringService.getSnMPData).toHaveBeenCalledWith(1);
+      expect(component.connectivityMonitoringService.setNodeChangeSubject).toHaveBeenCalledWith(1);
+      expect(component.resetDate).toHaveBeenCalled();
+    });
+
+  });
+
+  describe('changeVesselDetails()', () => {
+
+    it('should ', () => {
+      component.selectedVessel = {
+        NodeNumber: 1
+      };
+      spyOn(component.connectivityMonitoringService, 'getVesselLinksByNodeNumber');
+      component.changeVesselDetails();
+      expect(component.connectivityMonitoringService.getVesselLinksByNodeNumber).toHaveBeenCalledWith(component.selectedVessel.NodeNumber);
+    });
+
+  });
+
+  describe('resetDate()', () => {
+
+    it('should ', () => {
+      spyOn(component, 'getLatencyTrendData');
+      component.resetDate();
+      expect(component.getLatencyTrendData).toHaveBeenCalled();
+    });
+
+  });
+
+  describe('filterData()', () => {
+
+    it('should ', () => {
+      component.selectedVesselNodeNumber = '1';
+      spyOn(component, 'getLatencyTrendData');
+      spyOn(component.connectivityMonitoringService, 'setNodeChangeSubject');
+      component.filterData();
+      expect(component.getLatencyTrendData).toHaveBeenCalled();
+      expect(component.connectivityMonitoringService.setNodeChangeSubject).toHaveBeenCalledWith(1);
+    });
+
+  });
+
+  describe('onDropDownSelection()', () => {
+
+    it('should ', () => {
+      spyOn(component, 'getLatencyTrendData');
+      component.onDropDownSelection();
+      expect(component.getLatencyTrendData).toHaveBeenCalled();
+    });
+
+  });
+
 });
