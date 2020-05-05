@@ -71,7 +71,6 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.route && this.route.params) {
       this.route.params.subscribe((params) => {
-        console.log(params);
         this.getVesselDetails(params.nodeNumber);
       }
       );

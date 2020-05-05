@@ -9,9 +9,12 @@
                 <div class="kx-col kx-col--12">
                     <label class="kx-label" [for]="formItem.key">
                         {{formItem.label}}
-                        <span *ngIf="(form.value[formItem.key]==='' || form.value[formItem.key]===null) && isFormSubmitted"
+                        <span
+                            *ngIf="(form.value[formItem.key]==='' || form.value[formItem.key]===null) && isFormSubmitted"
                             class="u--textDanger">Required</span>
-                        <span *ngIf="form.value[formItem.key]==='' || form.value[formItem.key]===null" class="u--textDanger">*</span>
+                        <span *ngIf="form.value[formItem.key]==='' || form.value[formItem.key]===null"
+                            class="u--textDanger">*</span>
+                        <span *ngIf="formItem.ipaddress" class="u--textDanger"> (IP Address) </span>
                     </label>
                 </div>
                 <div *ngSwitchCase="inputTypes.dropdown" class="kx-col kx-col--12">

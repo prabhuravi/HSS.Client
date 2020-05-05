@@ -370,7 +370,6 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
       .attr('fill-opacity', (d) => d.isGap ? '0' : '0.7')
 
       .on('mouseover', (d) => {
-        console.log(d);
         const date = new Date(d.TimeStamp).toISOString();
         tooltip.html(`<label>${date}</label>
         <label>Latency  ${d.LatencyValue} </label>

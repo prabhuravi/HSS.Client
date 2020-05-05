@@ -71,8 +71,9 @@ export class RobotSystemComponent implements OnInit {
         label: 'Operational Gateway Address',
         value: '',
         key: 'IPAddress',
-        validators: ['required'],
-        disabled: false
+        validators: ['required', 'ipaddress'],
+        disabled: false,
+        ipaddress: true
       },
       {
         type: FormType.checkbox,

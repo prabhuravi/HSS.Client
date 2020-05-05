@@ -179,7 +179,6 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
         const height = legendRectSize + legendSpacing; // height of element is the height of the colored square plus the spacing
         const offset = height * color.domain().length / 2; // vertical offset of the entire legend = height of a single element & half the total number of elements
         const vert = i * height - offset + 5;
-        console.log(vert);
         // the top of the element is hifted up or down from the center using the offset defiend earlier and the index of the current element 'i'
         return 'translate(' + -17 + ',' + vert + ')'; // return translation
       });

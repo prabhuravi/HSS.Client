@@ -115,7 +115,6 @@ export class SubOperationalPlanComponent implements OnInit {
     });
   }
   editData(data: any): void {
-    console.log(data);
     this.activeId = data.SubPlanId;
     data.Status = this.planStatusList.find((e) => e.name === data.Status).value;
     data.SubOperationStartTime = new Date(data.SubOperationStartTime);

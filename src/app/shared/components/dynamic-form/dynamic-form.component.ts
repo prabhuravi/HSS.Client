@@ -33,7 +33,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     this.form = this.buildForm();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (this.formValues !== null && this.formValues !== undefined) {
       setTimeout(() => {
         if (!this.formReset) {
