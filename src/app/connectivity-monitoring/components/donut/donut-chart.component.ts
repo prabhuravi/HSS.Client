@@ -83,8 +83,8 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
     // define data
     const data = _.groupBy(this.totalVessels, (vessel) => vessel.Status);
     const dataset: any = [
-      { label: 'Down', count: data.Up.length },
-      { label: 'Up', count: data.Down.length }
+      { label: `Up ${data.Up.length}`, count: data.Up.length },
+      { label: `Down ${data.Down.length}`, count: data.Down.length }
     ];
 
     // a circle chart needs a radius
@@ -95,7 +95,7 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
     const legendSpacing = 4; // defines spacing between squares
 
     // define color scale
-    const color = d3.scaleOrdinal(['#d1232c', '#1cb077']);
+    const color = d3.scaleOrdinal(['#1cb077', '#d1232c']);
     // more color scales: https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9
 
     this.svg = d3.select('#chart') // select element in the DOM with id 'chart'
@@ -123,9 +123,6 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
 
     tooltip.append('div') // add divs to the tooltip defined above
       .attr('class', 'label'); // add class 'label' on the selection
-
-    tooltip.append('div') // add divs to the tooltip defined above
-      .attr('class', 'count'); // add class 'count' on the selection
 
     tooltip.append('div') // add divs to the tooltip defined above
       .attr('class', 'percent'); // add class 'percent' on the selection
