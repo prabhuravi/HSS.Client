@@ -41,24 +41,24 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.u--textRight{
+.u--textRight {
     text-align: right;
 }
-.u--modalclosebtn{
-    position: absolute!important;
+.u--modalclosebtn {
+    position: absolute !important;
     right: 50px;
 }
-.u--fontXSmall{
+.u--fontXSmall {
     font-size: 11px;
 }
-.u--fontBold{
+.u--fontBold {
     font-weight: 800;
 }
-.u--positionRelative{
+.u--positionRelative {
     position: relative;
 }
-.u--capitalize{
-    text-transform:capitalize;
+.u--capitalize {
+    text-transform: capitalize;
 }
 .ui-paginator-bottom {
     padding: 2rem;
@@ -148,10 +148,8 @@
     display: none !important;
 }
 
-
-
 .leaflet-control-fullscreen a {
-    background: #fff url('./assets/fullscreen.png') no-repeat 0 0 !important;
+    background: #fff url("./assets/fullscreen.png") no-repeat 0 0 !important;
     background-size: 26px 52px;
 }
 
@@ -165,17 +163,26 @@
 .kx-page__main {
     width: 100%;
     flex: 1 1 auto;
-    transition: width .1s ease-in-out;
-   // overflow: visible !important;
+    transition: width 0.1s ease-in-out;
+    // overflow: visible !important;
 }
 .kx-modal--size-large {
-    &.u--modal--size-large{
+    &.u--modal--size-large {
         max-width: 80rem;
     }
 }
 .kx-modal__body {
-    max-height: calc(100vh - 200px)!important;
+    max-height: calc(100vh - 200px) !important;
 }
 .ui-confirmdialog-message {
     word-break: break-all;
+}
+
+.ui-dropdown {
+    &.ui-state-disabled {
+        background: #E2E6E8;
+        .ui-dropdown-label{
+            cursor: not-allowed;
+        }
+    }
 }

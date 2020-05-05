@@ -25,7 +25,7 @@ export class OperatorComponent implements OnInit {
   isDataLoading: boolean;
   disableDeleteButton: boolean;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
-  formReset: boolean;
+  formReset: any;
 
   constructor(
     public operationalPlanService: OperationalPlanService,
@@ -76,8 +76,12 @@ export class OperatorComponent implements OnInit {
     }
     this.operationalPlanService.addOperator(data).subscribe((success) => {
       this.triggerToast('success', 'Success Message', `Data ${(this.activeId !== 0) ? 'Updated' : 'Added'} Successfully`);
+      // tslint:disable-next-line:no-construct
+      this.formReset = new Boolean(true);
+      this.activeId = null;
+      this.config.formTitle = 'Add Operator';
+      this.formValues = null;
       this.loadData();
-      this.formReset = true;
     });
   }
   deleteData(data): void {

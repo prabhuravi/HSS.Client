@@ -35,7 +35,7 @@ export class SubOperationalPlanComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   allSubscription: Subscription[] = [];
   planId = 0;
-  formReset: boolean;
+  formReset: any;
 
   constructor(
     private operationalPlanService: OperationalPlanService,
@@ -132,7 +132,11 @@ export class SubOperationalPlanComponent implements OnInit {
       formData.Status = 'New';
     }
     this.operationalPlanService.updateSubOperationPlan(formData).subscribe((data) => {
-      this.formReset = true;
+      // tslint:disable-next-line:no-construct
+      this.formReset = new Boolean(true);
+      this.activeId = null;
+      this.config.formTitle = 'Add Operator';
+      this.formValues = null;
       this.loadData();
     });
   }

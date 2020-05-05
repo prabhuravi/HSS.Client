@@ -28,7 +28,7 @@ export class RobotSystemComponent implements OnInit {
   isDataLoading: boolean;
   disableDeleteButton: boolean;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
-  formReset: boolean;
+  formReset: any;
 
   constructor(
     public operationalPlanService: OperationalPlanService,
@@ -112,7 +112,11 @@ export class RobotSystemComponent implements OnInit {
     }
     this.operationalPlanService.addRobotSystemDetail(data).subscribe((success) => {
       this.triggerToast('success', 'Success Message', `Data ${(this.activeId !== 0) ? 'Updated' : 'Added'} Successfully`);
-      this.formReset = true;
+      // tslint:disable-next-line:no-construct
+      this.formReset = new Boolean(true);
+      this.activeId = null;
+      this.config.formTitle = 'Add Operator';
+      this.formValues = null;
       this.loadData();
     });
   }

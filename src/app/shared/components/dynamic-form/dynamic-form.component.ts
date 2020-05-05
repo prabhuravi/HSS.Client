@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { getInputTypes } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
@@ -13,7 +13,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   @Input() config: any;
   @Input() formValues: any;
-  @Input() formReset: boolean;
+  @Input() formReset: any;
   @Output() formSubmitted: EventEmitter<any> = new EventEmitter<any>();
   inputTypes: any;
   form: FormGroup;
@@ -32,7 +32,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     this.inputTypes = getInputTypes();
     this.form = this.buildForm();
   }
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
     if (this.formValues !== null && this.formValues !== undefined) {
       setTimeout(() => {
         if (!this.formReset) {
@@ -45,6 +46,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     }
     if (this.formReset && this.form) {
       this.form.reset();
+      this.isFormSubmitted = false;
     }
   }
   buildForm() {
