@@ -3,12 +3,36 @@
         <app-load *ngIf="showLoader"></app-load>
         <div *ngIf="!showLoader">
             <p-table *ngIf="vesselLinksList.length > 0" [value]="vesselLinksList" #tt [columns]="cols"
-                [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
+                [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true"
+                tableStyleClass="kx-table kx-table--outer-border">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
-                        <th *ngFor="let col of columns" [pSortableColumn]="col.field"
-                            class="u--cursorPointer kx-p--xlarge">
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
+                            class="u--cursorPointer kx-p--xlarge" title="Click to sort">
                             {{col.header}}
+                            <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
+                                ariaLabelDesc="Activate to sort in descending order"
+                                ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                            <input *ngSwitchCase="'NodeNumber'" pInputText type="text"
+                                class="kx-field kx-field--size-base u--field--size-small"
+                                placeholder="Type to filter Node"
+                                (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'Name'" pInputText type="text"
+                                class="kx-field kx-field--size-base u--field--size-small"
+                                placeholder="Type to filter Vessel"
+                                (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'IPAddress'" pInputText type="text"
+                                class="kx-field kx-field--size-base u--field--size-small"
+                                placeholder="Type to filter IP"
+                                (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            <input *ngSwitchCase="'Status'" pInputText type="text"
+                                class="kx-field kx-field--size-base u--field--size-small"
+                                placeholder="Type to filter Status"
+                                (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         </th>
                     </tr>
                 </ng-template>
@@ -29,12 +53,15 @@
                                 <div *ngSwitchCase="'NodeNumber'">
                                     <a [routerLink]="['/connectivity-monitoring/cacti',rowData[cols[0].field]]">
                                         <span class="kx-pt--tiny">{{rowData[col.field]}}</span>
-                                        <i class="kx-icon kx-icon--size-base">
+                                        <i class="kx-icon kx-icon--size-base" style="top: -2px;left: 2px;">
                                             <svg focusable="false">
                                                 <use href="./assets/img/icons/sprites/icons.svg#charts"></use>
                                             </svg>
                                         </i>
                                     </a>
+                                </div>
+                                <div *ngSwitchCase="'LastSeen'">
+                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                                 </div>
                                 <div *ngSwitchDefault>{{rowData[col.field]}}</div>
                             </div>

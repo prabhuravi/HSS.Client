@@ -123,9 +123,6 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   changeVesselDetails() {
     this.router.navigateByUrl(`/connectivity-monitoring/cacti/${this.selectedVessel.NodeNumber}`);
   }
-  viewMeOnMap(lat: number, lng: number) {
-    console.log(lat, lng);
-  }
   resetDate() {
     this.selectedPreset = { name: 'Last Day', value: 24 };
     this.toDate = new Date();

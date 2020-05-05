@@ -11,12 +11,12 @@ export class ConnectivityMonitoringComponent implements OnInit {
 
   vesselLinksList: IVesselLinks[] = [];
   cols = [
-    { field: 'NodeNumber', header: 'Node Number' },
-    { field: 'Name', header: 'Vessel Name' },
-    { field: 'IPAddress', header: 'IP Address' },
-    { field: 'Status', header: 'Status' },
-    { field: 'LastLatency', header: 'Last Latency' },
-    { field: 'LastSeenUTC', header: 'Last Updated(GMT)' }
+    { field: 'NodeNumber', header: 'Node Number', sortfield: 'NodeNumber', filterMatchMode: 'contains' },
+    { field: 'Name', header: 'Vessel Name', sortfield: 'Name', filterMatchMode: 'contains' },
+    { field: 'IPAddress', header: 'IP Address', sortfield: 'IPAddress', filterMatchMode: 'contains' },
+    { field: 'Status', header: 'Status', sortfield: 'Status', filterMatchMode: 'contains' },
+    { field: 'LastLatency', header: 'Last Latency', sortfield: '' },
+    { field: 'LastSeen', header: 'Last Updated(GMT) (dd/MM/yyyy HH:mm)', sortfield: '' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   showLoader = true;
@@ -28,6 +28,7 @@ export class ConnectivityMonitoringComponent implements OnInit {
     this.connectivityMonitoringService.getVesselLinks().pipe(take(1)).subscribe((data: IVesselLinks[]) => {
       if (data && data.length > 0) {
         this.showLoader = false;
+        data = data.sort((a, b) => (a.Status === 'Up') ? -1 : 1);
         this.vesselLinksList = data;
         this.connectivityMonitoringService.setAllVesselLinks(data);
       }
