@@ -1,5 +1,4 @@
 <app-load *ngIf="!cachedVesselDetails"></app-load>
-
 <div class="kx-row">
     <div class="kx-col kx-col--4">
         <div class="kx-row kx-card kx-card--skin-default">
@@ -98,26 +97,27 @@
         </div>
     </div>
     <div class="kx-col kx-col--2 kx-pl--small">
-        <div class="kx-card kx-card--skin-default">
+        <div class="kx-card kx-card--skin-default" style="height: 198px;">
             <div class="kx-card__body kx-p--mini">
                 <div class="row centerme">
                     <div class="kx-col kx-col--12">
-                        <div *ngIf="chart && chart.data" class="kx-pl--small">
+                        <div *ngIf="!noGaugeData && chart && chart.data" class="kx-pl--small">
                             <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data"
                                 [options]="chart.options">
                             </google-chart>
                         </div>
-                    </div>
-                    <div *ngIf="noGaugeData">
-                        <label class="no-data-extra-margin" *ngIf="noGaugeData">{{noData}}</label>
+                        <div *ngIf="noGaugeData">
+                            {{noData}}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div #pcalendarRef></div>
 <div class="kx-card kx-card--skin-default kx-mt--small">
-    <div class="kx-p--medium">
+    <div class="kx-p--mini">
         <div class="kx-row">
             <div class="kx-col kx-col--2">
                 <label class="kx-label" for="selectbox1">Presets</label>
@@ -126,19 +126,19 @@
                         [(ngModel)]="selectedPreset" optionLabel="name"></p-dropdown>
                 </div>
             </div>
-            <div class="kx-col kx-col--3 kx-pr--large">
+            <div class="kx-col kx-col--2 kx-pr--large">
                 <label class="kx-label" for="selectbox1">From Date</label>
                 <div class="kx-mt--tiny">
-                    <p-calendar inputStyleClass="kx-field kx-field--size-small" (onSelect)="getLatencyTrendData()"
+                    <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small" (onSelect)="getLatencyTrendData()"
                         [(ngModel)]="fromDate" showTime="true" hourFormat="24" showButtonBar="true"
                         [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
                         [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
                 </div>
             </div>
-            <div class="kx-col kx-col--3 kx-pr--large">
+            <div class="kx-col kx-col--2 kx-pr--large">
                 <label class="kx-label" for="selectbox1">To Date</label>
                 <div class="kx-mt--tiny">
-                    <p-calendar inputStyleClass="kx-field kx-field--size-small" [minDate]="fromDate"
+                    <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small" [minDate]="fromDate"
                         (onSelect)="getLatencyTrendData()" [(ngModel)]="toDate" showTime="true" hourFormat="24"
                         showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
                         [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>

@@ -10,6 +10,7 @@ import 'leaflet.markercluster';
 import { ThemeService, Theme } from '@kognifai/poseidon-ng-theming';
 import { ISetting } from '@kognifai/poseidon-settingsservice';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-map',
@@ -74,7 +75,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
 
   getAisData(aisRequest: AISRequest) {
     if (this.aisRequest && this.aisRequest.NodeNumber) {
-      this.connectivityMonitoringService.getAISData(this.aisRequest).subscribe((data: any) => {
+      this.connectivityMonitoringService.getAISData(this.aisRequest).pipe(take(1)).subscribe((data: any) => {
         if (data.Result.length > 0) {
           this.plotPathonMap(data.Result);
         }

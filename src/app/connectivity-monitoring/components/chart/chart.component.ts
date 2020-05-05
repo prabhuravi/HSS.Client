@@ -98,19 +98,20 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.NodeSuscription.unsubscribe();
     d3.select('#' + this.chartId).remove();
+    this.dataSet = null;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const currentItem: SimpleChange = changes.item;
+    // const currentItem: SimpleChange = changes.item;
     // console.log(changes);
-    if (changes.viewFullChart) {
-      setTimeout(() => {
-        if (document.getElementById(this.chartId)) {
-          document.getElementById(this.chartId).remove();
-          this.setupChart();
-        }
-      }, 200);
-    }
+    // if (changes.viewFullChart) {
+    //   setTimeout(() => {
+    //     if (document.getElementById(this.chartId)) {
+    //       document.getElementById(this.chartId).remove();
+    //       this.setupChart();
+    //     }
+    //   }, 200);
+    // }
     //   console.log('########');
     //   let cacheData = this.connectivityMonitoringService.returncacheVesselLatencyChart();
     //   if(cacheData && cacheData.NodeNumber == this.latencyRequest.NodeNumber){
@@ -122,6 +123,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
   setupChart() {
 
+    d3.select('#' + this.chartId).remove();
     this.dataSet.loadData();
     this.host = d3.select(this.chartElement.nativeElement);
     this.hostWidth = parseInt(this.host.style('width'), 10);
@@ -138,7 +140,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (this.dataSet.data.length === 0) {
       this.svg.append('text')
         .text('No Data Available')
-        .attr('x', (this.hostWidth / 2.5) + (this.margin.left + this.margin.right))
+        .attr('x', this.margin.left)
         .attr('y', this.height / 2)
         .style('font-size', '40px');
       this.showChart = true;

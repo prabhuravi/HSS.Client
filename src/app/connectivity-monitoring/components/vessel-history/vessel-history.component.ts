@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import { GoogleChartComponent } from 'angular-google-charts';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IVesselDetails } from 'src/app/models/IVesselDetails';
 import { LatencyRequest } from 'src/app/models/LatencyRequest';
 import { AISRequest } from 'src/app/models/AISRequest';
 import { AppConstants } from 'src/app/app.constants';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 @Component({
   selector: 'app-vessel-history',
   templateUrl: './vessel-history.component.html',
@@ -63,13 +64,16 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   selectedVessel: any;
   constructor(
     public connectivityMonitoringService: ConnectivityMonitoringService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public router: Router
   ) {
   }
   ngOnInit(): void {
     if (this.route && this.route.params) {
-      this.route.params.subscribe((params) =>
-        this.getVesselDetails(params.nodeNumber)
+      this.route.params.subscribe((params) => {
+        console.log(params);
+        this.getVesselDetails(params.nodeNumber);
+      }
       );
     }
   }
@@ -84,19 +88,16 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
 
       this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
 
-      this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().subscribe((data) => {
+      this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().pipe(take(1)).subscribe((data) => {
         if (data) {
           this.cachedVesselDetails = data;
-          if (!this.selectedVessel) {
-            this.allVessels = this.connectivityMonitoringService.getAllCachedResult();
-            this.allVessels.filter((data1) => {
-              // tslint:disable-next-line:triple-equals
-              if (data1.NodeNumber == nodeNumber) {
-                this.selectedVessel = data1;
-              }
-            });
-            console.log(this.selectedVessel);
-          }
+          this.allVessels = this.connectivityMonitoringService.getAllCachedResult();
+          this.allVessels.filter((data1) => {
+            // tslint:disable-next-line:triple-equals
+            if (data1.NodeNumber == nodeNumber) {
+              this.selectedVessel = data1;
+            }
+          });
 
           this.resetDate();
 
@@ -120,8 +121,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
 
   }
   changeVesselDetails() {
-    this.selectedVesselNodeNumber = this.selectedVessel.NodeNumber.toString();
-    this.connectivityMonitoringService.getVesselLinksByNodeNumber(this.selectedVessel.NodeNumber);
+    this.router.navigateByUrl(`/connectivity-monitoring/cacti/${this.selectedVessel.NodeNumber}`);
   }
   viewMeOnMap(lat: number, lng: number) {
     console.log(lat, lng);
