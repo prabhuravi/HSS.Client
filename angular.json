@@ -90,12 +90,12 @@
                 "bundleName":"kx-dusk-theme"
               },
               {
-                "input": "src/styles/app-day-theme.css",
+                "input": "src/styles/app-day-theme.scss",
                 "lazy": true,
                 "bundleName":"app-day-theme"
               },
               {
-                "input": "src/styles/app-dusk-theme.css",
+                "input": "src/styles/app-dusk-theme.scss",
                 "lazy": true, 
                 "bundleName":"app-dusk-theme"
               },

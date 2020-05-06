@@ -70,7 +70,8 @@ export class SubOperationalPlanComponent implements OnInit {
     this.config.formList = [
       {
         type: FormType.datepicker,
-        label: 'Start Time ( Start and End Time should be greater than Operation End Time)',
+        label: 'Start Time',
+        labelSmall: '(Start and End Time should be greater than Operation End Time)',
         value: '',
         key: 'SubOperationStartTime',
         validators: ['required'],
@@ -79,7 +80,8 @@ export class SubOperationalPlanComponent implements OnInit {
       },
       {
         type: FormType.datepicker,
-        label: 'End Time ( Start and End Time should be greater than Operation End Time)',
+        label: 'End Time',
+        labelSmall: '(Start and End Time should be greater than Operation End Time)',
         value: '',
         key: 'SubOperationEndTime',
         validators: ['required'],

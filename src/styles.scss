@@ -60,6 +60,12 @@
 .u--capitalize {
     text-transform: capitalize;
 }
+.u--spinnerIcon{
+    position: absolute;
+    top: 3px;
+    right: 13px;
+    width: 0;
+}
 .ui-paginator-bottom {
     padding: 2rem;
 }
@@ -185,4 +191,7 @@
             cursor: not-allowed;
         }
     }
+}
+body{
+    overflow: hidden;
 }

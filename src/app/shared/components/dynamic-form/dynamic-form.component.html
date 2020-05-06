@@ -9,12 +9,12 @@
                 <div class="kx-col kx-col--12">
                     <label class="kx-label" [for]="formItem.key">
                         {{formItem.label}}
+                        <small *ngIf="formItem.labelSmall" class="u--textDanger">{{formItem.labelSmall}}</small>
                         <span
                             *ngIf="(form.value[formItem.key]==='' || form.value[formItem.key]===null) && isFormSubmitted"
                             class="u--textDanger">Required</span>
                         <span *ngIf="form.value[formItem.key]==='' || form.value[formItem.key]===null"
                             class="u--textDanger">*</span>
-                        <span *ngIf="formItem.ipaddress" class="u--textDanger"> (IP Address) </span>
                     </label>
                 </div>
                 <div *ngSwitchCase="inputTypes.dropdown" class="kx-col kx-col--12">
@@ -51,9 +51,17 @@
                     </div>
                 </div>
                 <div *ngSwitchCase="inputTypes.number" class="kx-col kx-col--12">
-                    <div class="kx-form__element">
+                    <div class="kx-form__element u--positionRelative">
                         <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
                             type="number" placeholder="Select {{formItem.label}}" />
+                        <span class="u--spinnerIcon">
+                            <i class="kx-icon kx-icon--size-moderate">
+                                <svg focusable="false">
+                                    <use href="./assets/img/icons/sprites/icons.svg#angle-swap-vertical">
+                                    </use>
+                                </svg>
+                            </i>
+                        </span>
                     </div>
                 </div>
                 <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col kx-col--12">

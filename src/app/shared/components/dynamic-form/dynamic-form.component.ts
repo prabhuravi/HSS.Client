@@ -18,7 +18,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   inputTypes: any;
   form: FormGroup;
   isFormSubmitted = false;
-  ipAddressPattern = '/^([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,3})$/';
+  ipAddressPattern = '(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)';
   portLocations: any[] = [];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
@@ -72,6 +72,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     return group;
   }
   onSubmit(): void {
+    console.log(this.form.valid);
     this.isFormSubmitted = true;
     if (this.form.valid) {
       this.formSubmitted.emit(this.form.value);

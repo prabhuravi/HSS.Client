@@ -69,6 +69,7 @@ export class RobotSystemComponent implements OnInit {
       {
         type: FormType.text,
         label: 'Operational Gateway Address',
+        labelSmall: '(Only Valid IP Address)',
         value: '',
         key: 'IPAddress',
         validators: ['required', 'ipaddress'],

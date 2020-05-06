@@ -1,9 +1,9 @@
 <div class="kx-row">
-    <div class="kx-col kx-col--4  kx-p--small">
+    <div class="kx-col kx-col--4 kx-pr--small">
         <app-dynamic-form [formValues]="formValues" [config]="config" [formReset]="formReset" (formSubmitted)="formSubmitted($event)">
         </app-dynamic-form>
     </div>
-    <div class="kx-col kx-col--8 kx-p--small">
+    <div class="kx-col kx-col--8">
         <div class="kx-card kx-card--skin-default">
             <div class="kx-p--medium">
                 <app-load *ngIf="isDataLoading"></app-load>

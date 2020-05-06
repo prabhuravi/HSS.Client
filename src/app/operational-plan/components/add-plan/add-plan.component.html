@@ -1,5 +1,5 @@
 <div class="kx-row">
-    <div class="kx-col kx-col--6 kx-p--small">
+    <div class="kx-col kx-col--6">
         <app-load *ngIf="isDataLoading"></app-load>
         <app-dynamic-form *ngIf="!isDataLoading" [formValues]="formValues" [config]="config"
             (formSubmitted)="formSubmitted($event)">

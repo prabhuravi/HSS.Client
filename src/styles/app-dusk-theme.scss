@@ -173,3 +173,18 @@
     border: 1px solid #71767a;
     border-radius: 2px;
 }
+.ui-dropdown {
+    &.ui-state-disabled {
+        background: #8f999e;
+        .ui-inputtext {
+            background: #8f999e;
+            color: #000;
+        }
+        .ui-dropdown-label {
+            cursor: not-allowed;
+        }
+    }
+}
+hr{
+    background-color: #71767a!important;
+}
