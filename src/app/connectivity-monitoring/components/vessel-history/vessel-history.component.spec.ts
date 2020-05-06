@@ -4,8 +4,8 @@ import { VesselHistoryComponent } from './vessel-history.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import { MockConnectivityMonitoringService } from '../../../services/mock.connectivity-monitoring.service';
-import { ActivatedRoute } from '@angular/router';
-import { MockActivatedRoute } from '../../../services/mock.router.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MockActivatedRoute, MockRouter } from '../../../services/mock.router.service';
 import { ThemeService } from '@kognifai/poseidon-ng-theming';
 import { MockThemeService } from '../../../services/mock.theme.service';
 import { of } from 'rxjs';
@@ -20,6 +20,7 @@ describe('VesselHistoryComponent', () => {
       providers: [
         { provide: ConnectivityMonitoringService, useClass: MockConnectivityMonitoringService },
         { provide: ActivatedRoute, useClass: MockActivatedRoute },
+        { provide: Router, useClass: MockRouter },
         { provide: ThemeService, useClass: MockThemeService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -51,19 +52,6 @@ describe('VesselHistoryComponent', () => {
       expect(component.connectivityMonitoringService.getSnMPData).toHaveBeenCalledWith(1);
       expect(component.connectivityMonitoringService.setNodeChangeSubject).toHaveBeenCalledWith(1);
       expect(component.resetDate).toHaveBeenCalled();
-    });
-
-  });
-
-  describe('changeVesselDetails()', () => {
-
-    it('should ', () => {
-      component.selectedVessel = {
-        NodeNumber: 1
-      };
-      spyOn(component.connectivityMonitoringService, 'getVesselLinksByNodeNumber');
-      component.changeVesselDetails();
-      expect(component.connectivityMonitoringService.getVesselLinksByNodeNumber).toHaveBeenCalledWith(component.selectedVessel.NodeNumber);
     });
 
   });
