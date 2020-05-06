@@ -188,3 +188,7 @@
 hr{
     background-color: #71767a!important;
 }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    background: url("../assets/angle-swap-vertical-dusk.svg") no-repeat center center;
+}

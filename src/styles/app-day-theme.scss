@@ -102,3 +102,7 @@
   border: 1px solid #c8c8c8;
   border-radius: 2px;
 }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    background: url("../assets/angle-swap-vertical.svg") no-repeat center center;
+}
