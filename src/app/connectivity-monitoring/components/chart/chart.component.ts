@@ -102,16 +102,14 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // const currentItem: SimpleChange = changes.item;
-    // console.log(changes);
-    // if (changes.viewFullChart) {
-    //   setTimeout(() => {
-    //     if (document.getElementById(this.chartId)) {
-    //       document.getElementById(this.chartId).remove();
-    //       this.setupChart();
-    //     }
-    //   }, 200);
-    // }
+    if (changes.viewFullChart) {
+      setTimeout(() => {
+        if (document.getElementById(this.chartId)) {
+          document.getElementById(this.chartId).remove();
+          this.setupChart();
+        }
+      }, 200);
+    }
     //   console.log('########');
     //   let cacheData = this.connectivityMonitoringService.returncacheVesselLatencyChart();
     //   if(cacheData && cacheData.NodeNumber == this.latencyRequest.NodeNumber){

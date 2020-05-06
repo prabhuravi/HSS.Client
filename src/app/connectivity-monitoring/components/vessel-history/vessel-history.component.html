@@ -127,18 +127,18 @@
             <div class="kx-col kx-col--2 kx-pr--large">
                 <label class="kx-label" for="selectbox1">From Date</label>
                 <div class="kx-mt--tiny">
-                    <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small" (onSelect)="getLatencyTrendData()"
-                        [(ngModel)]="fromDate" showTime="true" hourFormat="24" showButtonBar="true"
-                        [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
+                    <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
+                        (onSelect)="getLatencyTrendData()" [(ngModel)]="fromDate" showTime="true" hourFormat="24"
+                        showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
                         [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
                 </div>
             </div>
             <div class="kx-col kx-col--2 kx-pr--large">
                 <label class="kx-label" for="selectbox1">To Date</label>
                 <div class="kx-mt--tiny">
-                    <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small" [minDate]="fromDate"
-                        (onSelect)="getLatencyTrendData()" [(ngModel)]="toDate" showTime="true" hourFormat="24"
-                        showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
+                    <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
+                        [minDate]="fromDate" (onSelect)="getLatencyTrendData()" [(ngModel)]="toDate" showTime="true"
+                        hourFormat="24" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
                         [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
                 </div>
             </div>
@@ -159,12 +159,15 @@
     </div>
 </div>
 <div class="kx-row kx-mt--small">
-    <div class="kx-col kx-col--6" [ngClass]="{'kx-col--12' : viewFullChart &&!viewFullMap }">
-        <span (click)="viewFullChart=!viewFullChart;viewFullMap=false;" class="kx-navigation-icon collapse-icon"><i
+    <div class="kx-col kx-col--6" [ngClass]="{'kx-col--12' : viewFullChart }">
+        <span title="toggle full screen" (click)="viewFullChart=!viewFullChart;viewFullMap=false;" [ngClass]="{'pull-right' : viewFullChart }"
+            class="kx-navigation-icon collapse-icon"><i
                 class="kx-icon kx-icon--size-moderate kx-m--mini toggle-navigation open-navigation collapsed"
                 id="open-navigation"><svg _ngcontent-ghn-c3="" aria-hidden="true" focusable="false">
-                    <use _ngcontent-ghn-c3="" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    <use *ngIf="!viewFullChart" _ngcontent-ghn-c3="" xmlns:xlink="http://www.w3.org/1999/xlink"
                         xlink:href="./assets/img/icons/sprites/icons.svg#chevron-right"></use>
+                    <use *ngIf="viewFullChart" _ngcontent-ghn-c3="" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xlink:href="./assets/img/icons/sprites/icons.svg#chevron-left"></use>
                 </svg></i></span>
         <div class="charts">
             <app-chart [viewFullChart]="viewFullChart" [chartId]="'chart1'" [latencyRequest]="latencyRequest">
