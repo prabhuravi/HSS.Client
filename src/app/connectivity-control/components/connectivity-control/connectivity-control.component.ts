@@ -18,7 +18,7 @@ export class ConnectivityControlComponent implements OnInit {
     { field: 'IMONumber', sortfield: 'IMONumber', header: 'IMO Number', filterMatchMode: 'contains' },
     { field: 'DisableTime', sortfield: '', header: 'Disable Time (Optional, GMT)', filterMatchMode: 'contains' },
     { field: 'IsUploadEnabled', sortfield: '', header: 'File Upload Status', filterMatchMode: 'contains' },
-    { field: 'LastAction', sortfield: 'EnabledBy', header: 'Action Log(MM/dd/yyyy HH:mm, GMT)', filterMatchMode: 'contains' }
+    { field: 'LastAction', sortfield: '', header: 'Action Log(MM/dd/yyyy HH:mm, GMT)', filterMatchMode: 'contains' }
   ];
   displayActionLogModal: boolean;
   activeVessel: any = {};
@@ -63,6 +63,7 @@ export class ConnectivityControlComponent implements OnInit {
     });
   }
   updateUploadStatus(data: IVesselList): void {
+    this.isDataLoading = true;
     data.EnabledBy = '';
     this.connectivityControlService.UpdateVessel(data).pipe(take(1)).subscribe(() => {
       this.loadData();
@@ -76,5 +77,11 @@ export class ConnectivityControlComponent implements OnInit {
     } else {
       this.vesselConnectivityControlList[data.index].RemainingTime = data.RemainingTime;
     }
+  }
+  disableTimeSelected() {
+    const dt = new Date();
+    dt.setMinutes(dt.getMinutes() + 5);
+    console.log(dt);
+    this.now = dt;
   }
 }

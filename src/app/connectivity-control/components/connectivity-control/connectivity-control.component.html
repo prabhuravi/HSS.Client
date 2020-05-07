@@ -23,10 +23,6 @@
                         <input *ngSwitchCase="'IMONumber'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter IMO"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'LastAction'" pInputText type="text"
-                            class="kx-field kx-field--size-base u--field--size-small"
-                            placeholder="Type to filter Action Log"
-                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
                 </tr>
             </ng-template>
@@ -58,7 +54,7 @@
                                         showButtonBar="true" hideOnDateTimeSelect="true"
                                         placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                                         [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [minDate]="now"
-                                        [(ngModel)]="rowData.DisableTime">
+                                        [(ngModel)]="rowData.DisableTime" (onSelect)="disableTimeSelected()">
                                     </p-calendar>
                                 </div>
                             </div>

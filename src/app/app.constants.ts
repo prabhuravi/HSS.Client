@@ -1,6 +1,6 @@
 export class AppConstants {
     public static PRIMENG_CONSTANTS = {
-        datepickerFormat: 'dd/mm/yy',
+        datepickerFormat: 'mm/dd/yy',
         rowCount: 10
     };
 }
