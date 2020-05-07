@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, config, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { AuthenticationService } from '@kognifai/poseidon-authenticationservice';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
@@ -13,7 +13,6 @@ import { ConfirmationService } from 'primeng/api';
 })
 export class HttpService {
 
-  domainURL = '';
   username: string = '';
 
   constructor(
@@ -22,7 +21,6 @@ export class HttpService {
     public configurationService: ConfigurationService<Configuration>,
     private confirmationService: ConfirmationService
   ) {
-    this.domainURL = configurationService.config.apiCollection.domainURL;
     if (this.authenticationService && this.authenticationService.userManager) {
       this.authenticationService.userManager.getUser().then((user: User) => {
         this.getUserInfo(user);
@@ -31,7 +29,7 @@ export class HttpService {
   }
 
   getData(requestData: any): Observable<any> {
-    return this.http.get(`${this.domainURL + requestData.endPoint}`).pipe(
+    return this.http.get(requestData.endPoint).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
     );
@@ -63,14 +61,14 @@ export class HttpService {
     requestData.data.CreatedBy = this.username;
     requestData.data.LastUpdatedBy = this.username;
     requestData.data.LastUpdatedDate = new Date();
-    return this.http.post(`${this.domainURL + requestData.endPoint}`, requestData.data).pipe(
+    return this.http.post(requestData.endPoint, requestData.data).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
     );
   }
   putData(requestData: any): Observable<any> {
     requestData.data.EnabledBy = this.username;
-    return this.http.put(`${this.domainURL + requestData.endPoint}`, requestData.data).pipe(
+    return this.http.put(requestData.endPoint, requestData.data).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
     );

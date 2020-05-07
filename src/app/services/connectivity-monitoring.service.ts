@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpService } from './http.service';
 import { Observable, Subject } from 'rxjs';
 import { LatencyRequest } from '../models/LatencyRequest';
 import { AISRequest } from '../models/AISRequest';
+import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
+import { Configuration } from '../configuration';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +14,21 @@ export class ConnectivityMonitoringService {
   vesselSubject = new Subject<IVesselLinks>();
   cachedVesselLatencyChart: ILatencyCacheData;
   nodeChangeSubject = new Subject();
-  constructor(public http: HttpClient) { }
-  domainURL = 'https://hgs.kognif.ai/VesselLinkQualityAPIService/API/VesselLinkQuality/';
+  vesselLinkQualityConfig: any;
+  vesselLinkQualityConfigPath: string;
+
+  constructor(
+    public http: HttpService,
+    public configurationService: ConfigurationService<Configuration>
+  ) {
+    this.vesselLinkQualityConfig = this.configurationService.config.apiCollection.VesselLinkQuality;
+    this.vesselLinkQualityConfigPath = `${this.vesselLinkQualityConfig.domainURL}${this.vesselLinkQualityConfig.path}`;
+  }
   getVesselLinks(): Observable<any> {
-    const url = 'GetVesselLinks';
-    return this.http.get(`${this.domainURL + url}`);
+    const requestData = {
+      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.GetVesselLinks}`
+    };
+    return this.http.getData(requestData);
   }
 
   setNodeChangeSubject(nodeNumber: number) {
@@ -51,8 +63,11 @@ export class ConnectivityMonitoringService {
   getAISData(aisRequest?: AISRequest) {
     const a = { VesselName: 'Talisman', FromDate: '2020-03-30T11:46:23.000Z', ToDate: '2020-04-14T11:46:23.000Z' };
     aisRequest.VesselName = this.getVesselNameByNodeNumber(aisRequest.NodeNumber);
-    const url = 'AISPositionData';
-    return this.http.post(`${this.domainURL + url}`, aisRequest);
+    const requestData = {
+      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.AISPositionData}`,
+      data: aisRequest
+    };
+    return this.http.postData(requestData);
   }
   getVesselSubject(): Observable<any> {
     return this.vesselSubject.asObservable();
@@ -64,13 +79,17 @@ export class ConnectivityMonitoringService {
     this.cachedVesselLatencyChart = data;
   }
   getSnMPData(nodeNumber: number) {
-    const url = 'GetSNMPData/' + nodeNumber;
-    return this.http.get(`${this.domainURL + url}`);
+    const requestData = {
+      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.GetSNMPData}/${nodeNumber}`
+    };
+    return this.http.getData(requestData);
   }
   public getChartData(latencyRequest: LatencyRequest): Observable<any> {
-    const a = { NodeNumber: 17876, FromDate: '2020-04-16T09:16:55.754Z', ToDate: '2020-04-17T09:16:55.754Z' };
-    const url = 'LatencyTrendData';
-    return this.http.post(`${this.domainURL + url}`, latencyRequest);
-
+    // const a = { NodeNumber: 17876, FromDate: '2020-04-16T09:16:55.754Z', ToDate: '2020-04-17T09:16:55.754Z' };
+    const requestData = {
+      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.LatencyTrendData}`,
+      data: latencyRequest
+    };
+    return this.http.postData(requestData);
   }
 }

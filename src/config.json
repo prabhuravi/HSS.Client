@@ -42,8 +42,8 @@
   "logoTooltip": "Poseidon Next",
   "supportMenuItemHyperlink": "",
   "apiCollection": {
-    "domainURL": "https://hgstest.kognif.ai",
     "VesselConfiguration": {
+      "domainURL": "https://hgstest.kognif.ai",
       "path": "/VesselConfig/api/VesselConfiguration",
       "endpoints": {
         "GetVessels": "/GetVessels",
@@ -63,7 +63,18 @@
         "AddCountriesToGroup": "/AddCountriesToGroup"
       }
     },
+    "VesselLinkQuality": {
+      "domainURL": "https://hgs.kognif.ai",
+      "path": "/VesselLinkQualityAPIService/API/VesselLinkQuality",
+      "endpoints": {
+        "GetVesselLinks": "/GetVesselLinks",
+        "AISPositionData": "/AISPositionData",
+        "GetSNMPData": "/GetSNMPData",
+        "LatencyTrendData": "/LatencyTrendData"
+      }
+    },
     "OperationalPlan": {
+      "domainURL": "https://hgstest.kognif.ai",
       "path": "/OperationPlanAPI/api/OperationalPlan",
       "endpoints": {
         "GetOperationPlans": "/GetOperationPlans",
