@@ -4,7 +4,7 @@
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="kx-row">
                 <div class="kx-col kx-col--2">
-                    <label class="kx-label" for="selectbox1">Select Vessel</label>
+                    <label class="kx-label" for="selectbox1">Select Vessel</label><small class="u--textDanger"> Required *</small>
                     <div class="kx-mt--tiny">
                         <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselId'"
                             [options]="vesselList" optionLabel="VesselName" filter="true" (onChange)="getMissionList()">
@@ -31,7 +31,7 @@
                     <label class="kx-label" for="selectbox1">From Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
-                            hideOnDateTimeSelect="true" showButtonBar="true"
+                            hideOnDateTimeSelect="true" showButtonBar="true" [appendTo]="pcalendarRef"
                             placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                             [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'FromDate'">
                         </p-calendar>
@@ -41,8 +41,8 @@
                     <label class="kx-label" for="selectbox1">To Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
-                            hideOnDateTimeSelect="true" showButtonBar="true"
-                            placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
+                            hideOnDateTimeSelect="true" showButtonBar="true" [appendTo]="pcalendarRef"
+                            placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm" [minDate]="form.value.FromDate"
                             [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'ToDate'">
                         </p-calendar>
                     </div>
@@ -64,6 +64,7 @@
         </form>
     </div>
 </div>
+<div #pcalendarRef></div>
 <app-load *ngIf="isFormSubmitted && !vesselHistoricalUploadStatus"></app-load>
 <div *ngIf="!isFormSubmitted && vesselHistoricalUploadStatus">
     <div class="kx-card kx-card--skin-default kx-mt--small">

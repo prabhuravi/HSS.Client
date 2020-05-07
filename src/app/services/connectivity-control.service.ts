@@ -46,14 +46,14 @@ export class ConnectivityControlService {
     };
     return this.http.postData(requestData);
   }
-  getVesselUploadStatus(formData: IVesselMissionData): Observable<IVesselUploadStatus> {
+  getVesselUploadStatus(formData: any): Observable<IVesselUploadStatus> {
     const requestData = {
       endPoint: `${this.vesselConfigurationConfig.path}${this.vesselConfigurationConfig.endpoints.FDSUploadStatus}`,
       data: formData
     };
     return this.http.postData(requestData);
   }
-  getVesselHistoricalStatus(formData: IVesselHistoricalData): Observable<IVesselUploadStatus> {
+  getVesselHistoricalStatus(formData: any): Observable<IVesselUploadStatus> {
     const requestData = {
       endPoint: `${this.vesselConfigurationConfig.path}${this.vesselConfigurationConfig.endpoints.FDSHistoricalUploadStatus}`,
       data: formData

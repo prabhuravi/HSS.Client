@@ -1,13 +1,13 @@
 <app-load *ngIf="isDataLoading"></app-load>
 <div *ngIf="!isDataLoading">
     <div *ngIf="vesselConnectivityControlList.length > 0">
-        <p-table tableStyleClass="kx-table kx-table--outer-border" *ngIf="!isDataLoading" #tt
+        <p-table tableStyleClass="kx-table kx-table--outer-border kx-table--slim-rows" *ngIf="!isDataLoading" #tt
             [value]="vesselConnectivityControlList" [columns]="cols" [paginator]="true"
             [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
-                        class="u--cursorPointer kx-p--xlarge" title="Click to sort">
+                        class="u--cursorPointer" title="Click to sort">
                         {{col.header}}
                         <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
@@ -109,24 +109,26 @@
                     </div>
                 </div>
                 <div class="kx-row kx-mt--medium">
-                    <app-load *ngIf="isActionLogDataLoading"></app-load>
-                    <table *ngIf="!isActionLogDataLoading"
-                        class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
-                        <thead>
-                            <tr>
-                                <th>Action</th>
-                                <th>Date Time (MM/dd/yyyy HH:mm, GMT) </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let logItem of vesselConnectivityActionLogList; let i = index;">
-                                <td>{{logItem.Action}} by {{logItem.User}}</td>
-                                <td>{{logItem.ActionTime | date:'MM/dd/yyyy HH:mm'}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <app-no-data [displayme]="isActionLogDataLoading && vesselConnectivityActionLogList.length>0">
-                    </app-no-data>
+                    <div class="kx-col kx-col--12">
+                        <app-load *ngIf="isActionLogDataLoading"></app-load>
+                        <table *ngIf="!isActionLogDataLoading && vesselConnectivityActionLogList.length > 0"
+                            class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Date Time (MM/dd/yyyy HH:mm, GMT) </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let logItem of vesselConnectivityActionLogList; let i = index;">
+                                    <td>{{logItem.Action}} by {{logItem.User}}</td>
+                                    <td>{{logItem.ActionTime | date:'MM/dd/yyyy HH:mm'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <app-no-data [displayme]="!isActionLogDataLoading && vesselConnectivityActionLogList.length === 0">
+                        </app-no-data>
+                    </div>
                 </div>
             </div>
         </div>

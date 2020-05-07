@@ -106,12 +106,17 @@ export class VesselUploadStatusComponent implements OnInit {
     return group;
   }
   onSubmit() {
+    this.vesselHistoricalUploadStatus = null;
     this.isFormSubmitted = true;
     if (this.form.valid) {
-      this.form.value.VesselId = this.form.value.VesselId.Id;
-      this.form.value.FromMission = this.form.value.FromMission.value;
-      this.form.value.ToMission = this.form.value.ToMission.value;
-      this.connectivityControlService.getVesselUploadStatus(this.form.value).pipe(take(1)).subscribe((data) => {
+      const formData = {
+        VesselId: this.form.value.VesselId.Id,
+        FromMission: this.form.value.FromMission.value,
+        ToMission: this.form.value.ToMission.value,
+        FromDate: this.form.value.FromDate,
+        ToDate: this.form.value.ToDate
+      };
+      this.connectivityControlService.getVesselUploadStatus(formData).pipe(take(1)).subscribe((data) => {
         this.isFormSubmitted = false;
         this.vesselHistoricalUploadStatus = data;
       });

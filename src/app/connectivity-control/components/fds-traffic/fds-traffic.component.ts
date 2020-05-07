@@ -63,8 +63,12 @@ export class FdsTrafficComponent implements OnInit {
     this.isFormSubmitted = true;
     this.vesselHistoricalUploadStatusLoaded = false;
     if (this.form.valid) {
-      this.form.value.VesselIds = this.form.value.VesselIds.map((e) => e.Id);
-      this.connectivityControlService.getVesselHistoricalStatus(this.form.value).pipe(take(1)).subscribe((data) => {
+      const formData = {
+        VesselIds: this.form.value.VesselIds.map((e) => e.Id),
+        FromDate: this.form.value.FromDate,
+        ToDate: this.form.value.ToDate
+      };
+      this.connectivityControlService.getVesselHistoricalStatus(formData).pipe(take(1)).subscribe((data) => {
         this.isFormSubmitted = false;
         this.vesselHistoricalUploadStatusLoaded = true;
         this.vesselHistoricalUploadStatus = data;
