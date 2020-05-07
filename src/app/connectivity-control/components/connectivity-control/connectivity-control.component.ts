@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConnectivityControlService } from '../../../services/connectivity-control.service';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
-import { interval } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-connectivity-control',
   templateUrl: './connectivity-control.component.html',
   styleUrls: ['./connectivity-control.component.scss']
 })
-export class ConnectivityControlComponent implements OnInit {
+export class ConnectivityControlComponent implements OnInit, OnDestroy {
 
   vesselConnectivityControlList: IConnectivityControl[] = [];
   vesselConnectivityActionLogList: IConnectivityActionLog[] = [];
@@ -27,13 +27,22 @@ export class ConnectivityControlComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   now: Date = new Date();
   dateTimeInterval = interval(60000);
+  dateTimeIntervalSubscription: Subscription;
 
   constructor(
     public connectivityControlService: ConnectivityControlService
   ) { }
 
   ngOnInit(): void {
+    this.dateTimeIntervalSubscription = this.dateTimeInterval.subscribe(() => {
+      this.now = new Date();
+    });
     this.loadData();
+  }
+  ngOnDestroy(): void {
+    if (this.dateTimeIntervalSubscription) {
+      this.dateTimeIntervalSubscription.unsubscribe();
+    }
   }
   loadData(): void {
     this.connectivityControlService.getConnectivityData().pipe(take(1)).subscribe((connectivityData) => {
@@ -69,7 +78,7 @@ export class ConnectivityControlComponent implements OnInit {
       this.loadData();
     });
   }
-  updateRemainingTime(data) {
+  updateRemainingTime(data): void {
     if (data.RemainingTime === null) {
       this.dateTimeInterval.pipe(take(1)).subscribe(() => {
         this.loadData();
@@ -77,11 +86,5 @@ export class ConnectivityControlComponent implements OnInit {
     } else {
       this.vesselConnectivityControlList[data.index].RemainingTime = data.RemainingTime;
     }
-  }
-  disableTimeSelected() {
-    const dt = new Date();
-    dt.setMinutes(dt.getMinutes() + 5);
-    console.log(dt);
-    this.now = dt;
   }
 }
