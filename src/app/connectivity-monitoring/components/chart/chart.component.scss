@@ -1,3 +1,8 @@
+.chart1 {
+  width: 100%; 
+  min-height: 406px;
+}
+
 .chart {
   margin: 0;
   padding: 0;
@@ -52,6 +57,7 @@ text.shadow {
   border: 1px solid #e5e5e5;
   font-size: 12px;
   background: #fff;
+  z-index: 9999;
   color: #000;
   opacity: 0;
 

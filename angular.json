@@ -111,7 +111,7 @@
             "scripts": [
               "node_modules/@kognifai/design-system/styles/scripts/kx/navbar.js",
               "node_modules/leaflet/dist/leaflet-src.js",
-              
+              "node_modules/google-charts/dist/googleCharts.min.js",
               "node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js",
               "node_modules/leaflet-rotatedmarker/leaflet.rotatedMarker.js"
 

@@ -23,8 +23,10 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   @Input() showMap: boolean;
   cusCtrl: Control;
   nodeSubject: Subscription;
+  chartHandleSubscription: Subscription;
   markers: any = [];
   nodeNumber: number;
+  cachedResultFromAPI: any;
   markerClusterer: any;
   map: any;
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService, private themeservice: ThemeService) {
@@ -35,9 +37,34 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
         this.removeExistingMarkers();
       }
     });
+    this.chartHandleSubscription = this.connectivityMonitoringService.getZoomChangeSubject().subscribe((chartChanges: any) => {
+      console.log(chartChanges);
+      if(this.cachedResultFromAPI && this.cachedResultFromAPI.length>0){
+
+        let finalData = this.getFilteredBetweenMinMax(this.cachedResultFromAPI,chartChanges.x.min,chartChanges.x.max);
+        console.log(finalData.length);
+         if(finalData.length>0){
+          this.removeExistingMarkers();
+          this.plotPathonMap(finalData);
+        }
+      }
+    });
+  }
+  getFilteredBetweenMinMax(dateList, min, max) {
+    min= this.dateToUnixtime(min);
+    max = this.dateToUnixtime(max);
+    var dateListFiltered = dateList.filter( (date)=> {
+      var unixtime = this.dateToUnixtime(date.TimeStamp);
+      return unixtime >= min && unixtime <= max;
+    });
+    return dateListFiltered;
+  }
+  dateToUnixtime(date_string) {
+    return new Date(date_string).getTime();
   }
   ngOnDestroy(): void {
     this.nodeSubject.unsubscribe();
+    this.chartHandleSubscription.unsubscribe();
   }
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
 
@@ -76,7 +103,9 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   getAisData(aisRequest: AISRequest) {
     if (this.aisRequest && this.aisRequest.NodeNumber) {
       this.connectivityMonitoringService.getAISData(this.aisRequest).pipe(take(1)).subscribe((data: any) => {
+        this.cachedResultFromAPI = data.Result;
         if (data.Result.length > 0) {
+          this.cachedResultFromAPI = data.Result;
           this.plotPathonMap(data.Result);
         }
       });
@@ -86,8 +115,9 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     const path = [];
     this.markerClusterer = L.markerClusterGroup();
     for (let i = 0; i < latlngs.length; i++) {
+      const pointA = new L.LatLng(latlngs[i].Latitude, latlngs[i].Longitude);
       if (latlngs[i + 1]) {
-        const pointA = new L.LatLng(latlngs[i].Latitude, latlngs[i].Longitude);
+        
         const pointB = new L.LatLng(latlngs[i + 1].Latitude, latlngs[i + 1].Longitude);
         //  [latlngs[i].Latitude,latlngs[i].Longitude];
         path.push(pointA);
@@ -96,26 +126,32 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
           latlngs[i].OnlineStatus = 1;
         }
         const polyline = L.polyline([pointA, pointB]).addTo(this.map);
-        const iconURL = latlngs[i].OnlineStatus === 0 ? './assets/navigation-arrow-offline.png' : './assets/navigation-arrow-online.png';
-        // tslint:disable-next-line:radix
-        const rotation = parseInt(latlngs[i].CompassOverGroundHeading.toFixed(0));
-        const marker = L.marker(pointA, {
-          icon: this.getIcon(iconURL),
-          rotationAngle: rotation
-        });
-        this.bindMarkerEvents(marker, latlngs[i]);
-        // adding marker to marker Array
-        this.markers.push(marker);
-        this.markers.push(polyline);
+       ;
         polyline.setStyle({
           color: latlngs[i].OnlineStatus === 0 ? 'red' : 'green'
         });
-        this.markerClusterer.addLayer(marker);
+        
+      this.markers.push(polyline)
       }
-      const bounds = new L.LatLngBounds(path);
-      this.map.fitBounds(bounds);
+      const iconURL = latlngs[i].OnlineStatus === 0 ? './assets/navigation-arrow-offline.png' : './assets/navigation-arrow-online.png';
+      // tslint:disable-next-line:radix
+      const rotation = parseInt(latlngs[i].CompassOverGroundHeading.toFixed(0));
+      const marker = L.marker(pointA, {
+        icon: this.getIcon(iconURL),
+        rotationAngle: rotation
+      });
+      this.bindMarkerEvents(marker, latlngs[i]);
+      // adding marker to marker Array
+      this.markers.push(marker);
+      this.markerClusterer.addLayer(marker);
+      if(path){
+
+        const bounds = new L.LatLngBounds(path);
+        this.map.fitBounds(bounds);
+      }
       this.map.addLayer(this.markerClusterer);
     }
+
 
   }
   createPolyLine() {

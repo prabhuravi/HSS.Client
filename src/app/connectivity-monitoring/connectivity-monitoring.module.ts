@@ -12,6 +12,7 @@ import { VesselHistoryComponent } from './components/vessel-history/vessel-histo
 import { ChartComponent } from './components/chart/chart.component';
 import { icon, Marker } from 'leaflet';
 import { MapComponent } from './components/map/map.component';
+import { AngularResizedEventModule } from 'angular-resize-event';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { DonutChartComponent } from './components/donut/donut-chart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -49,6 +50,7 @@ const routes: Routes = [
     FormsModule,
     CalendarModule,
     DropdownModule,
+    AngularResizedEventModule,
     GoogleChartsModule.forRoot()
   ],
 

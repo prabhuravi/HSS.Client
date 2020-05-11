@@ -12,6 +12,7 @@ import { Configuration } from '../configuration';
 export class ConnectivityMonitoringService {
   allVesselLinks: IVesselLinks[];
   vesselSubject = new Subject<IVesselLinks>();
+  zoomChartSubject = new Subject();
   cachedVesselLatencyChart: ILatencyCacheData;
   nodeChangeSubject = new Subject();
   vesselLinkQualityConfig: any;
@@ -30,7 +31,12 @@ export class ConnectivityMonitoringService {
     };
     return this.http.getData(requestData);
   }
-
+  setZoomChangeSubject(nodeNumber: any) {
+    this.zoomChartSubject.next(nodeNumber);
+  }
+  getZoomChangeSubject() {
+    return this.zoomChartSubject.asObservable();
+  }
   setNodeChangeSubject(nodeNumber: number) {
     this.nodeChangeSubject.next(nodeNumber);
   }
@@ -47,7 +53,7 @@ export class ConnectivityMonitoringService {
     this.getVesselLinks().subscribe((data) => {
       this.allVesselLinks = data;
       const vessel = this.allVesselLinks.filter((vessel1: IVesselLinks) => {
-        return vessel1.NodeNumber.toFixed(0) === nodeNumber;
+        return vessel1.NodeNumber.toFixed(0) == nodeNumber;
       });
       this.vesselSubject.next(vessel[0]);
     });
@@ -55,7 +61,7 @@ export class ConnectivityMonitoringService {
   getVesselNameByNodeNumber(nodeNumber) {
     if (this.allVesselLinks) {
       const vessel = this.allVesselLinks.filter((vessel1: IVesselLinks) => {
-        return vessel1.NodeNumber.toFixed(0) === nodeNumber;
+        return vessel1.NodeNumber.toFixed(0) == nodeNumber;
       });
       return vessel[0].Name;
     }
