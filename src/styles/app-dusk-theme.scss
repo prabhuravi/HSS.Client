@@ -185,10 +185,19 @@
         }
     }
 }
-hr{
-    background-color: #71767a!important;
+hr {
+    background-color: #71767a !important;
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     background: url("../assets/angle-swap-vertical-dusk.svg") no-repeat center center;
+}
+.ui-datepicker {
+    .ui-state-default {
+        &:hover,
+        &.ui-state-highlight {
+            background: #686d72;
+            color: #2bdeee;
+        }
+    }
 }
