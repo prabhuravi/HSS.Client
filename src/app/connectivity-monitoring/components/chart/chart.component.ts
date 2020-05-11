@@ -26,6 +26,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   latencyChart: any;
   latencyData: any;
   currentTheme: string;
+  eventListner:any;
 
   tooltipBody: any;
   ngAfterViewInit() {
@@ -38,6 +39,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
         this.showChart = false;
         if (this.latencyChart) {
           this.latencyChart.clearChart();
+          google.visualization.events.removeListener(this.eventListner);
         }
         this.getChartData(this.latencyRequest);
         this.themeservice.getSelectedTheme().then((data: ISetting<Theme>) => {
@@ -79,6 +81,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
   ngOnDestroy(): void {
     this.NodeSuscription.unsubscribe();
+    google.visualization.events.removeListener(this.eventListner);
   }
 
   bindDataToLatencyChart() {
@@ -145,14 +148,14 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     };
     let container: any = document.getElementById('latency_chart');
     this.latencyChart = new google.visualization.LineChart(container);
-    google.visualization.events.addListener(this.latencyChart, 'ready', () => {
+  this.eventListner =   google.visualization.events.addListener(this.latencyChart, 'ready', () => {
       var zoomLast = this.getCoords();
       var observer = new MutationObserver(() => {
         var zoomCurrent = this.getCoords();
         if (JSON.stringify(zoomLast) !== JSON.stringify(zoomCurrent)) {
           zoomLast = this.getCoords();
           this.connectivityMonitoringService.setZoomChangeSubject(zoomLast);
-          console.log('zoom event');
+         
         }
       });
       observer.observe(container, {
@@ -192,6 +195,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.viewFullChart) {
       if (this.latencyChart) {
+        google.visualization.events.removeListener(this.eventListner);
         this.latencyChart.clearChart();
       }
       setTimeout(() => {

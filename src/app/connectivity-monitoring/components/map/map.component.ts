@@ -40,9 +40,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     this.chartHandleSubscription = this.connectivityMonitoringService.getZoomChangeSubject().subscribe((chartChanges: any) => {
       console.log(chartChanges);
       if(this.cachedResultFromAPI && this.cachedResultFromAPI.length>0){
-
         let finalData = this.getFilteredBetweenMinMax(this.cachedResultFromAPI,chartChanges.x.min,chartChanges.x.max);
-        console.log(finalData.length);
          if(finalData.length>0){
           this.removeExistingMarkers();
           this.plotPathonMap(finalData);
