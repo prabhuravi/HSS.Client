@@ -3,14 +3,14 @@
     <div class="kx-p--medium">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="kx-row">
-                <div class="kx-col kx-col--3">
+                <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
                         <p-multiSelect [options]="vesselList" [formControlName]="'VesselIds'" optionLabel="VesselName">
                         </p-multiSelect>
                     </div>
                 </div>
-                <div class="kx-col kx-col--3">
+                <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                     <label class="kx-label" for="selectbox1">From Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
@@ -20,7 +20,7 @@
                         </p-calendar>
                     </div>
                 </div>
-                <div class="kx-col kx-col--3">
+                <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                     <label class="kx-label" for="selectbox1">To Date</label>
                     <div class="kx-mt--tiny kx-pr--xlarge">
                         <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
@@ -30,7 +30,7 @@
                         </p-calendar>
                     </div>
                 </div>
-                <div class="kx-col kx-col--3">
+                <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                     <button [disabled]="!form.valid" type="submit"
                         class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium kx-mr--medium">
                         <span class="kx-btn__inner">

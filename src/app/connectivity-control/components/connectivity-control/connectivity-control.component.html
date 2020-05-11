@@ -1,5 +1,4 @@
 <app-load *ngIf="isDataLoading"></app-load>
-<div #pcalendarRef></div>
 <div *ngIf="!isDataLoading">
     <div *ngIf="vesselConnectivityControlList.length > 0">
         <p-table tableStyleClass="kx-table kx-table--outer-border kx-table--slim-rows" *ngIf="!isDataLoading" #tt
@@ -134,3 +133,4 @@
         </div>
     </div>
 </app-modal>
+<div #pcalendarRef style="position: absolute;top: 2px;"></div>

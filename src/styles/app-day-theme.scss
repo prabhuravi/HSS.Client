@@ -107,3 +107,12 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     background: url("../assets/angle-swap-vertical.svg") no-repeat center center;
 }
+.ui-datepicker{
+  .ui-state-default{
+    &:hover,
+    &.ui-state-highlight{
+      background: #f6f6f6;
+      color: #007a8c;
+    }
+  }
+}
