@@ -112,6 +112,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   }
   plotPathonMap(latlngs) {
     const path = [];
+    this.markers=[];
     this.markerClusterer = L.markerClusterGroup();
     for (let i = 0; i < latlngs.length; i++) {
       const pointA = new L.LatLng(latlngs[i].Latitude, latlngs[i].Longitude);
@@ -141,10 +142,12 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       // adding marker to marker Array
       this.markers.push(marker);
       this.markerClusterer.addLayer(marker);
-      if(path){
+      if(path.length>0){
 
         const bounds = new L.LatLngBounds(path);
         this.map.fitBounds(bounds);
+      }else{
+       this.removeExistingMarkers();
       }
       this.map.addLayer(this.markerClusterer);
     }
