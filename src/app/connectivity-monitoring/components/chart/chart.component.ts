@@ -88,90 +88,95 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (this.latencyChart) {
       this.latencyChart.clearChart();
     }
-    if(!google){
-      return;
-    }
-    var data = new google.visualization.DataTable();
-    data.addColumn('datetime', 'Time');
-    data.addColumn('number', 'Latency');
-    data.addColumn('number', 'Signal Strength');
-
-    this.latencyData.forEach(record => {
-      data.addRow([new Date(record.TimeStamp.toString()), record.LatencyValue, record.SignalStrength]); // Converitng to local time zone of user
-      // data.addRow([new Date(record.TimeStamp.toString().replace('T',' ').replace('Z','')), record.LatencyValue]); // UTC time
-    });
-
-    var options = {
-
-      hAxis: {
-        title: 'Time', titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
-        slantedText: true, slantedTextAngle: 80,
-        textStyle: {
-          color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
+    try{
+      if(google){
+        var data = new google.visualization.DataTable();
+        data.addColumn('datetime', 'Time');
+        data.addColumn('number', 'Latency');
+        data.addColumn('number', 'Signal Strength');
+    
+        this.latencyData.forEach(record => {
+          data.addRow([new Date(record.TimeStamp.toString()), record.LatencyValue, record.SignalStrength]); // Converitng to local time zone of user
+          // data.addRow([new Date(record.TimeStamp.toString().replace('T',' ').replace('Z','')), record.LatencyValue]); // UTC time
+        });
+    
+        var options = {
+    
+          hAxis: {
+            title: 'Time', titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
+            slantedText: true, slantedTextAngle: 80,
+            textStyle: {
+              color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
+            }
+          },
+          vAxis: {
+            minValue: 0, title: "MilliSeconds",
+            titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
+            textStyle: {
+              color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
+            },
+            gridlines: {
+              count: 10
+            }
+          },
+          chartArea: { left: 55, right: 0, top: 10, width: '80%', height: '75%' },
+          animation: {
+            "startup": true, duration: 1000,
+            easing: 'out'
+          },
+          explorer: {
+            actions: ['dragToZoom', 'rightClickToReset'],
+            axis: 'horizontal',
+            keepInBounds: true,
+            maxZoomIn: 4.0
+          },
+          backgroundColor: {
+            fill: this.currentTheme === 'Dusk' ? '#373c41' : '#fff',
+            strokeWidth: 0
+          },
+          //   chartArea:{left:0,top:0,width:'80%',height:'100%'},
+          // crosshair: { focused: { color: '#3bc', opacity: 0.8 } },
+          // colors: ['#D44E41'],
+          colors: ['#D44E41', '#4169E1'],
+          defaultColors: ['#0000FF'],
+          curveType: 'function',
+          legend: { position: 'bottom', textStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333', fontSize: 16 } }
+          // isStacked: "true",
+          // fill: 20,
+          // "displayExactValues": true,
+        };
+        let container: any = document.getElementById('latency_chart');
+        this.latencyChart = new google.visualization.LineChart(container);
+      this.eventListner =   google.visualization.events.addListener(this.latencyChart, 'ready', () => {
+          var zoomLast = this.getCoords();
+          var observer = new MutationObserver(() => {
+            var zoomCurrent = this.getCoords();
+            if (JSON.stringify(zoomLast) !== JSON.stringify(zoomCurrent)) {
+              zoomLast = this.getCoords();
+              this.connectivityMonitoringService.setZoomChangeSubject(zoomLast);
+             
+            }
+          });
+          observer.observe(container, {
+            childList: true,
+            subtree: true
+          });
+        });
+    
+        this.latencyChart.draw(data, options);
+        if (this.latencyData.length == 0) {
+          // this.latencyChart.clearChart();
+          var elements = document.querySelectorAll('[id^=google-visualization-errors-all]');
+          if (elements.length > 0) {
+            elements[0].setAttribute("style", "display: none;");
+          }
         }
-      },
-      vAxis: {
-        minValue: 0, title: "MilliSeconds",
-        titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
-        textStyle: {
-          color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
-        },
-        gridlines: {
-          count: 10
-        }
-      },
-      chartArea: { left: 55, right: 0, top: 10, width: '80%', height: '75%' },
-      animation: {
-        "startup": true, duration: 1000,
-        easing: 'out'
-      },
-      explorer: {
-        actions: ['dragToZoom', 'rightClickToReset'],
-        axis: 'horizontal',
-        keepInBounds: true,
-        maxZoomIn: 4.0
-      },
-      backgroundColor: {
-        fill: this.currentTheme === 'Dusk' ? '#373c41' : '#fff',
-        strokeWidth: 0
-      },
-      //   chartArea:{left:0,top:0,width:'80%',height:'100%'},
-      // crosshair: { focused: { color: '#3bc', opacity: 0.8 } },
-      // colors: ['#D44E41'],
-      colors: ['#D44E41', '#4169E1'],
-      defaultColors: ['#0000FF'],
-      curveType: 'function',
-      legend: { position: 'bottom', textStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333', fontSize: 16 } }
-      // isStacked: "true",
-      // fill: 20,
-      // "displayExactValues": true,
-    };
-    let container: any = document.getElementById('latency_chart');
-    this.latencyChart = new google.visualization.LineChart(container);
-  this.eventListner =   google.visualization.events.addListener(this.latencyChart, 'ready', () => {
-      var zoomLast = this.getCoords();
-      var observer = new MutationObserver(() => {
-        var zoomCurrent = this.getCoords();
-        if (JSON.stringify(zoomLast) !== JSON.stringify(zoomCurrent)) {
-          zoomLast = this.getCoords();
-          this.connectivityMonitoringService.setZoomChangeSubject(zoomLast);
-         
-        }
-      });
-      observer.observe(container, {
-        childList: true,
-        subtree: true
-      });
-    });
-
-    this.latencyChart.draw(data, options);
-    if (this.latencyData.length == 0) {
-      // this.latencyChart.clearChart();
-      var elements = document.querySelectorAll('[id^=google-visualization-errors-all]');
-      if (elements.length > 0) {
-        elements[0].setAttribute("style", "display: none;");
       }
+    }catch(ex){
+
     }
+    
+
   }
   getCoords() {
     if (this.latencyChart) {
