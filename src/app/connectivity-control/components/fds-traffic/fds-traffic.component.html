@@ -1,6 +1,6 @@
 <app-load *ngIf="!vesselListLoaded"></app-load>
 <div *ngIf="vesselListLoaded" class="kx-card kx-card--skin-default">
-    <div class="kx-p--medium">
+    <div class="kx-p--tiny kx-p--medium@mob-m">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="kx-row">
                 <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
@@ -32,13 +32,13 @@
                 </div>
                 <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                     <button [disabled]="!form.valid" type="submit"
-                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium kx-mr--medium">
+                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m kx-mr--medium">
                         <span class="kx-btn__inner">
                             <span class="kx-btn__txt">Get Logs</span>
                         </span>
                     </button>
                     <button type="button" (click)="form.reset()"
-                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
+                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m">
                         <span class="kx-btn__inner">
                             <span class="kx-btn__txt">Reset</span>
                         </span>
@@ -53,7 +53,7 @@
     <div *ngIf="vesselHistoricalUploadStatus.filesUploadStatus.length > 0" class=" kx-mt--small">
         <p-table tableStyleClass="kx-table kx-table--outer-border" #tt
             [value]="vesselHistoricalUploadStatus.filesUploadStatus" [columns]="cols" [paginator]="true"
-            [rows]="PRIMENG_CONSTANTS.rowCount">
+            [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall u--fontBold">

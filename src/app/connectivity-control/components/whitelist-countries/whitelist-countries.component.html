@@ -1,14 +1,14 @@
 <div class="kx-card kx-card--skin-default" *ngIf="activeVessel">
-    <div class="kx-p--medium">
+    <div class="kx-p--tiny kx-p--medium@mob-m">
         <div class="kx-row">
-            <div class="kx-col kx-col--3">
+            <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                 <label class="kx-label" for="selectbox1">Select Vessel</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="vesselList" [(ngModel)]="activeVessel"
                         optionLabel="VesselName" filter="true" (onChange)="loadWhitelistedCountries()"></p-dropdown>
                 </div>
             </div>
-            <div class="kx-col kx-col--3">
+            <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                 <label class="kx-label" for="selectbox1">Select Country</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="operatorCountryList"
@@ -16,17 +16,17 @@
                         optionLabel="CountryName" filter="true"></p-dropdown>
                 </div>
             </div>
-            <div class="kx-col kx-col--3">
+            <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                 <button (click)="markCountryWhitelist()" [disabled]="disableActivity || activeOperatorCountry === null"
-                    class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium">
+                    class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m">
                     <span class="kx-btn__inner">
                         <span class="kx-btn__txt">Whitelist for {{activeVessel.VesselName}}</span>
                     </span>
                 </button>
             </div>
-            <div class="kx-col kx-col--3">
+            <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                 <button (click)="toggleManageCountryGroup()" style="position: initial;"
-                    class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--medium">
+                    class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m">
                     <span class="kx-btn__inner">
                         <span class="kx-btn__txt">Add/Edit Country Group</span>
                     </span>
@@ -111,7 +111,7 @@
     <div class="modal-body">
         <div class="kx-container kx-p--none">
             <div class="kx-row">
-                <div class="kx-col kx-col--3 kx-pr--small">
+                <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m kx-pr--small@mob-m kx-pr--tiny">
                     <div class="kx-card kx-card--skin-default kx-p--medium kx-mb--small">
                         <div>
                             <label class="kx-label" for="selectbox1">Select Group</label>
@@ -152,7 +152,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="kx-col kx-col--9 kx-pl--small">
+                <div class="kx-col kx-col--12 kx-col--9@tab-m kx-col--6@mob-m kx-pl--small@mob-m kx-pl--tiny">
                     <div class="kx-card kx-card--skin-default kx-p--medium">
                         <p-pickList [source]="operatorCountryList" [target]="groupCountryList"
                             sourceHeader="Operating Countries" targetHeader="Group Countries" [responsive]="true"
