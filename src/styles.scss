@@ -60,7 +60,7 @@
 .u--capitalize {
     text-transform: capitalize;
 }
-.u--spinnerIcon{
+.u--spinnerIcon {
     position: absolute;
     top: 3px;
     right: 13px;
@@ -185,12 +185,26 @@
 
 .ui-dropdown {
     &.ui-state-disabled {
-        background: #E2E6E8;
-        .ui-dropdown-label{
+        background: #e2e6e8;
+        .ui-dropdown-label {
             cursor: not-allowed;
         }
     }
 }
-body{
+body {
     overflow: hidden;
+}
+
+@media (max-width: 40em) {
+    .kx-tabs{
+        padding-left: 0!important;
+    }
+    .kx-tabs__label{
+        padding: 0.2rem!important;
+        font-size: 12px;
+    }
+    .kx-modal__dialog {
+        margin-top: 4rem!important;
+        margin-left: 2.25rem!important;
+    }
 }
