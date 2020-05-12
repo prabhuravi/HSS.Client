@@ -1,11 +1,11 @@
 <div class="kx-row">
-    <div class="kx-col kx-col--4 kx-pr--small">
+    <div class="kx-col kx-col--12 kx-col--4@mob-m kx-pr--small@mob-m">
         <app-dynamic-form [formValues]="formValues" [config]="config" [formReset]="formReset" (formSubmitted)="formSubmitted($event)">
         </app-dynamic-form>
     </div>
-    <div class="kx-col kx-col--8">
+    <div class="kx-col kx-col--12 kx-col--8@mob-m">
         <div class="kx-card kx-card--skin-default">
-            <div class="kx-p--medium">
+            <div class="kx-p--medium@mob-m kx-p--tiny">
                 <app-load *ngIf="isDataLoading"></app-load>
                 <div *ngIf="!isDataLoading">
                     <p-table #tt [value]="operatorList" [columns]="cols"

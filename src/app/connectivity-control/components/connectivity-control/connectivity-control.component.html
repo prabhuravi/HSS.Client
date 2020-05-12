@@ -107,7 +107,7 @@
                         <strong>IMO</strong> : {{activeVessel.IMONumber}}
                     </div>
                 </div>
-                <div class="kx-row kx-mt--medium">
+                <div class="kx-row kx-mt--tiny kx-mt--medium@mob-m">
                     <div class="kx-col kx-col--12">
                         <app-load *ngIf="isActionLogDataLoading"></app-load>
                         <table *ngIf="!isActionLogDataLoading && vesselConnectivityActionLogList.length > 0"

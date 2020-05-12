@@ -1,8 +1,8 @@
 <div>
     <app-navigation-tab [routeList]=operationalPlanMainRouteList></app-navigation-tab>
-    <div class="kx-p--small">
+    <div class="kx-p--small@mob-m kx-p--tiny">
         <div class="kx-btngroup kx-flex kx-flex-wrap kx-btngroup--spacing" role="group" aria-label="Buttons with spacing">
-            <button class="kx-btn kx-btn--skin-primary kx-btn--size-small" *ngFor="let routeItem of operationalPlanSubRouteList;" (click)="redirectTo(routeItem.route)">
+            <button class="kx-btn kx-btn--skin-primary kx-btn--size-small u-mx--large" *ngFor="let routeItem of operationalPlanSubRouteList;" (click)="redirectTo(routeItem.route)">
                 <span class="kx-btn__inner">
                     <span class="kx-btn__txt">{{routeItem.label}}</span>
                 </span>

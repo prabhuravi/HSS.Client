@@ -1,5 +1,5 @@
 <div class="kx-row">
-    <div class="kx-col kx-col--10">
+    <div class="kx-col kx-col--12 kx-col--10@tab-m">
         <app-load *ngIf="showLoader"></app-load>
         <div *ngIf="!showLoader">
             <p-table *ngIf="vesselLinksList.length > 0" [value]="vesselLinksList" #tt [columns]="cols"
@@ -72,7 +72,7 @@
             <app-no-data [displayme]="vesselLinksList.length === 0"></app-no-data>
         </div>
     </div>
-    <div class="kx-col kx-col--2">
+    <div class="kx-col kx-col--12 kx-col--2@tab-m">
         <app-donut-chart [chartId]="'chart'" [totalVessels]="vesselLinksList"></app-donut-chart>
     </div>
 </div>
