@@ -104,6 +104,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
         this.cachedResultFromAPI = data.Result;
         if (data.Result.length > 0) {
           this.cachedResultFromAPI = data.Result;
+          this.removeExistingMarkers();
           this.plotPathonMap(data.Result);
         }
       });
@@ -120,11 +121,9 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
         //  [latlngs[i].Latitude,latlngs[i].Longitude];
         path.push(pointA);
         // for testing purpose
-        if (i % 2 === 0) {
-          latlngs[i].OnlineStatus = 1;
-        }
+       
         const polyline = L.polyline([pointA, pointB]).addTo(this.map);
-       ;
+       
         polyline.setStyle({
           color: latlngs[i].OnlineStatus === 0 ? 'red' : 'green'
         });
