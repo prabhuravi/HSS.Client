@@ -7,7 +7,23 @@ import { HttpService } from './http.service';
 
 const MockConfigurationObj = {
   config: {
-    apiCollection: {}
+    apiCollection: {
+      VesselConfiguration: {
+        domainURL: 'https://hgstest.kognif.ai',
+        path: '/VesselConfig/api/VesselConfiguration',
+        endpoints: {}
+      },
+      VesselLinkQuality: {
+        domainURL: 'https://hgstest.kognif.ai',
+        path: '/VesselLinkQualityAPIService/API/VesselLinkQuality',
+        endpoints: {}
+      },
+      OperationalPlan: {
+        domainURL: 'https://hgstest.kognif.ai',
+        path: '/OperationPlanAPI/api/OperationalPlan',
+        endpoints: {}
+      }
+    }
   }
 };
 class MockHttpService {

@@ -84,12 +84,21 @@ describe('VesselUploadStatusComponent', () => {
           ToMission: {
             name: '',
             value: ''
-          }
+          },
+          FromDate: new Date(),
+          ToDate: new Date()
         }
       } as any;
+      const formData = {
+        VesselId: component.form.value.VesselId.Id,
+        FromMission: component.form.value.FromMission.value,
+        ToMission: component.form.value.ToMission.value,
+        FromDate: component.form.value.FromDate,
+        ToDate: component.form.value.ToDate
+      };
       spyOn(component.connectivityControlService, 'getVesselUploadStatus').and.returnValue(of({}));
       component.onSubmit();
-      expect(component.connectivityControlService.getVesselUploadStatus).toHaveBeenCalledWith(component.form.value);
+      expect(component.connectivityControlService.getVesselUploadStatus).toHaveBeenCalledWith(formData);
     });
 
     describe('getMissionList()', () => {
