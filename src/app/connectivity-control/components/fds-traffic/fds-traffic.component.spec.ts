@@ -76,12 +76,19 @@ describe('FdsTrafficComponent', () => {
       component.form = {
         valid: true,
         value: {
-          VesselIds: []
+          VesselIds: [],
+          FromDate: new Date(),
+          ToDate: new Date()
         }
       } as any;
+      const formData = {
+        VesselIds: component.form.value.VesselIds.map((e) => e.Id),
+        FromDate: component.form.value.FromDate,
+        ToDate: component.form.value.ToDate
+      };
       spyOn(component.connectivityControlService, 'getVesselHistoricalStatus').and.returnValue(of({}));
       component.onSubmit();
-      expect(component.connectivityControlService.getVesselHistoricalStatus).toHaveBeenCalledWith(component.form.value);
+      expect(component.connectivityControlService.getVesselHistoricalStatus).toHaveBeenCalledWith(formData);
     });
 
   });

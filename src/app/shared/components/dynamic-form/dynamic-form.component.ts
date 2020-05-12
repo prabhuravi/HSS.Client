@@ -33,6 +33,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     this.form = this.buildForm();
   }
   ngOnChanges(changes: SimpleChanges): void {
+    // formvalues: obj sets default value received from parent component
     if (this.formValues !== null && this.formValues !== undefined) {
       setTimeout(() => {
         if (!this.formReset) {
@@ -43,6 +44,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
       });
     }
+    // formReset: boolean sets form values to empty state (mostly after form data postted successfully) received from parent component
     if (this.formReset && this.form) {
       this.form.reset();
       this.isFormSubmitted = false;
