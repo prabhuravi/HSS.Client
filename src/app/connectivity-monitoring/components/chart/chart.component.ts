@@ -26,7 +26,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   latencyChart: any;
   latencyData: any;
   currentTheme: string;
-  eventListner:any;
+  eventListner: any;
 
   tooltipBody: any;
   ngAfterViewInit() {
@@ -61,7 +61,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
         this.latencyData = data.Result;
 
         try {
-          google.charts.load('current', { 'packages': ['corechart'] });
+          google.charts.load('current', { packages: ['corechart'] });
           google.charts.setOnLoadCallback(() => {
             this.bindDataToLatencyChart();
           });
@@ -70,10 +70,6 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
             this.bindDataToLatencyChart();
           });
         }
-
-
-
-
       });
   }
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService, private themeservice: ThemeService) {
@@ -88,20 +84,20 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (this.latencyChart) {
       this.latencyChart.clearChart();
     }
-    try{
-      if(google){
-        var data = new google.visualization.DataTable();
+    try {
+      if (google) {
+        const data = new google.visualization.DataTable();
         data.addColumn('datetime', 'Time');
         data.addColumn('number', 'Latency');
         data.addColumn('number', 'Signal Strength');
-    
-        this.latencyData.forEach(record => {
+
+        this.latencyData.forEach((record) => {
           data.addRow([new Date(record.TimeStamp.toString()), record.LatencyValue, record.SignalStrength]); // Converitng to local time zone of user
           // data.addRow([new Date(record.TimeStamp.toString().replace('T',' ').replace('Z','')), record.LatencyValue]); // UTC time
         });
-    
-        var options = {
-    
+
+        const options = {
+
           hAxis: {
             title: 'Time', titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
             slantedText: true, slantedTextAngle: 80,
@@ -110,7 +106,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
             }
           },
           vAxis: {
-            minValue: 0, title: "MilliSeconds",
+            minValue: 0, title: 'MilliSeconds',
             titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
             textStyle: {
               color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
@@ -121,7 +117,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
           },
           chartArea: { left: 55, right: 0, top: 10, width: '80%', height: '75%' },
           animation: {
-            "startup": true, duration: 1000,
+            startup: true, duration: 1000,
             easing: 'out'
           },
           explorer: {
@@ -141,20 +137,20 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
           defaultColors: ['#0000FF'],
           curveType: 'function',
           legend: { position: 'bottom', textStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333', fontSize: 16 } }
-          // isStacked: "true",
+          // isStacked: 'true',
           // fill: 20,
-          // "displayExactValues": true,
+          // 'displayExactValues': true,
         };
-        let container: any = document.getElementById('latency_chart');
+        const container: any = document.getElementById('latency_chart');
         this.latencyChart = new google.visualization.LineChart(container);
-      this.eventListner =   google.visualization.events.addListener(this.latencyChart, 'ready', () => {
-          var zoomLast = this.getCoords();
-          var observer = new MutationObserver(() => {
-            var zoomCurrent = this.getCoords();
+        this.eventListner = google.visualization.events.addListener(this.latencyChart, 'ready', () => {
+          let zoomLast = this.getCoords();
+          const observer = new MutationObserver(() => {
+            const zoomCurrent = this.getCoords();
             if (JSON.stringify(zoomLast) !== JSON.stringify(zoomCurrent)) {
               zoomLast = this.getCoords();
               this.connectivityMonitoringService.setZoomChangeSubject(zoomLast);
-             
+
             }
           });
           observer.observe(container, {
@@ -162,26 +158,25 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
             subtree: true
           });
         });
-    
+
         this.latencyChart.draw(data, options);
+        // tslint:disable-next-line:triple-equals
         if (this.latencyData.length == 0) {
           // this.latencyChart.clearChart();
-          var elements = document.querySelectorAll('[id^=google-visualization-errors-all]');
+          const elements = document.querySelectorAll('[id^=google-visualization-errors-all]');
           if (elements.length > 0) {
-            elements[0].setAttribute("style", "display: none;");
+            elements[0].setAttribute('style', 'display: none;');
           }
         }
       }
-    }catch(ex){
+    } catch (ex) {
 
     }
-    
-
   }
   getCoords() {
     if (this.latencyChart) {
-      var chartLayout = this.latencyChart.getChartLayoutInterface();
-      var chartBounds = chartLayout.getChartAreaBoundingBox();
+      const chartLayout = this.latencyChart.getChartLayoutInterface();
+      const chartBounds = chartLayout.getChartAreaBoundingBox();
 
       return {
         x: {

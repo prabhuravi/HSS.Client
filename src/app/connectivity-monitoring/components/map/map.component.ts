@@ -39,9 +39,9 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     });
     this.chartHandleSubscription = this.connectivityMonitoringService.getZoomChangeSubject().subscribe((chartChanges: any) => {
       console.log(chartChanges);
-      if(this.cachedResultFromAPI && this.cachedResultFromAPI.length>0){
-        let finalData = this.getFilteredBetweenMinMax(this.cachedResultFromAPI,chartChanges.x.min,chartChanges.x.max);
-         if(finalData.length>0){
+      if (this.cachedResultFromAPI && this.cachedResultFromAPI.length > 0) {
+        const finalData = this.getFilteredBetweenMinMax(this.cachedResultFromAPI, chartChanges.x.min, chartChanges.x.max);
+        if (finalData.length > 0) {
           this.removeExistingMarkers();
           this.plotPathonMap(finalData);
         }
@@ -49,16 +49,16 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     });
   }
   getFilteredBetweenMinMax(dateList, min, max) {
-    min= this.dateToUnixtime(min);
+    min = this.dateToUnixtime(min);
     max = this.dateToUnixtime(max);
-    var dateListFiltered = dateList.filter( (date)=> {
-      var unixtime = this.dateToUnixtime(date.TimeStamp);
+    const dateListFiltered = dateList.filter((date) => {
+      const unixtime = this.dateToUnixtime(date.TimeStamp);
       return unixtime >= min && unixtime <= max;
     });
     return dateListFiltered;
   }
-  dateToUnixtime(date_string) {
-    return new Date(date_string).getTime();
+  dateToUnixtime(dateString) {
+    return new Date(dateString).getTime();
   }
   ngOnDestroy(): void {
     this.nodeSubject.unsubscribe();
@@ -112,24 +112,24 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   }
   plotPathonMap(latlngs) {
     const path = [];
-    this.markers=[];
+    this.markers = [];
     this.markerClusterer = L.markerClusterGroup();
     for (let i = 0; i < latlngs.length; i++) {
       const pointA = new L.LatLng(latlngs[i].Latitude, latlngs[i].Longitude);
       if (latlngs[i + 1]) {
-        
+
         const pointB = new L.LatLng(latlngs[i + 1].Latitude, latlngs[i + 1].Longitude);
         //  [latlngs[i].Latitude,latlngs[i].Longitude];
         path.push(pointA);
         // for testing purpose
-       
+
         const polyline = L.polyline([pointA, pointB]).addTo(this.map);
-       
+
         polyline.setStyle({
           color: latlngs[i].OnlineStatus === 0 ? 'red' : 'green'
         });
-        
-      this.markers.push(polyline)
+
+        this.markers.push(polyline);
       }
       const iconURL = latlngs[i].OnlineStatus === 0 ? './assets/navigation-arrow-offline.png' : './assets/navigation-arrow-online.png';
       // tslint:disable-next-line:radix
@@ -142,17 +142,15 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       // adding marker to marker Array
       this.markers.push(marker);
       this.markerClusterer.addLayer(marker);
-      if(path.length>0){
+      if (path.length > 0) {
 
         const bounds = new L.LatLngBounds(path);
         this.map.fitBounds(bounds);
-      }else{
-       this.removeExistingMarkers();
+      } else {
+        this.removeExistingMarkers();
       }
       this.map.addLayer(this.markerClusterer);
     }
-
-
   }
   createPolyLine() {
 
