@@ -7,7 +7,7 @@ interface IVesselList {
     IsUploadEnabled: boolean,
     RemainingMinutes: number,
     RemainingTime: string,
-    DisableTime: string,
+    DisableTime: any,
     EnabledBy: string,
     NodeNumber: number,
     ImoNumber: number

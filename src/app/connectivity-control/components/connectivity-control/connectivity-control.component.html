@@ -33,7 +33,7 @@
                             <div *ngSwitchCase="'IsUploadEnabled'" class="kx-py--tiny">
                                 <label class="kx-selector kx-selector__switch">
                                     <input type="checkbox" name="IsUploadEnabled" [(ngModel)]="rowData[col.field]"
-                                        (ngModelChange)="updateUploadStatus(rowData)" />
+                                        (ngModelChange)="updateUploadStatus(rowData)" [disabled]="!rowData.AlwaysOn && rowData.DisableTime !== null && rowData.DisableTime.getTime() <= currentUTC.getTime()" />
                                     <div class="kx-selector__indicator"></div>
                                     <span *ngIf="!rowData[col.field]" class="label-text">OFF</span>
                                     <span *ngIf="rowData[col.field]" class="label-text">ON</span>
@@ -53,7 +53,7 @@
                                         inputStyleClass="kx-field kx-field--size-small" hourFormat="24"
                                         showButtonBar="true" hideOnDateTimeSelect="true"
                                         placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
-                                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [minDate]="now"
+                                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [minDate]="currentUTC" [defaultDate]="currentUTC"
                                         [(ngModel)]="rowData.DisableTime">
                                     </p-calendar>
                                 </div>

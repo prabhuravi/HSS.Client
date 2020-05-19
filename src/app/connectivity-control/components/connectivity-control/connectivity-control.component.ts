@@ -25,17 +25,28 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   isDataLoading: boolean = true;
   isActionLogDataLoading: boolean = true;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
-  now: Date = new Date();
+  currentUTC: Date;
   dateTimeInterval = interval(60000);
   dateTimeIntervalSubscription: Subscription;
 
   constructor(
     public connectivityControlService: ConnectivityControlService
-  ) { }
+  ) {
+    this.updateDisableCalendarDefaultTime();
+  }
+  updateDisableCalendarDefaultTime(): void {
+    const dateToday = new Date();
+    const month = dateToday.getMonth() + 1;
+    const stringDate = dateToday.getUTCFullYear().toString() + '-' + month.toString() + '-' + dateToday.getUTCDate().toString() +
+      ' ' + dateToday.getUTCHours().toString() + ':' + dateToday.getUTCMinutes().toString() + ':' + dateToday.getUTCSeconds().toString();
+    const currentTime: Date = new Date(Date.parse(stringDate));
+    currentTime.setMinutes(currentTime.getMinutes() + 5);
+    this.currentUTC = currentTime;
+  }
 
   ngOnInit(): void {
     this.dateTimeIntervalSubscription = this.dateTimeInterval.subscribe(() => {
-      this.now = new Date();
+      this.updateDisableCalendarDefaultTime();
     });
     this.loadData();
   }
@@ -74,6 +85,9 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   updateUploadStatus(data: IVesselList): void {
     this.isDataLoading = true;
     data.EnabledBy = '';
+    data.DisableTime = new Date(data.DisableTime.toString());
+    data.DisableTime = data.DisableTime.toString().slice(0, data.DisableTime.toString().indexOf('GMT')) + 'GMT';
+    data.DisableTime = new Date(data.DisableTime).toISOString();
     this.connectivityControlService.UpdateVessel(data).pipe(take(1)).subscribe(() => {
       this.loadData();
     });
