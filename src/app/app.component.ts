@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { SidebarsVisibilityService } from '@kognifai/poseidon-sidebar-visibilityservice';
 import { SettingsMenuService } from '@kognifai/poseidon-ng-settings-menu';
 import { Sublocation, NavigationSubitemsService } from '@kognifai/poseidon-ng-navigation-subitems-service';
+import { CustomHeaderComponent } from './custom-header/custom-header.component';
+import { HeaderService } from '@kognifai/poseidon-header-component';
 
 @Component({
     selector: 'app-root',
@@ -28,7 +30,8 @@ export class AppComponent implements OnInit, OnDestroy {
         private initializeService: InitializeService,
         public sidebarsVisibilityService: SidebarsVisibilityService,
         private settingsMenuService: SettingsMenuService,
-        private navigationSubitemsService: NavigationSubitemsService
+        private navigationSubitemsService: NavigationSubitemsService,
+        private headerService: HeaderService
     ) {
         this.initializing = true;
         this.navigationVisible = true;
@@ -41,15 +44,21 @@ export class AppComponent implements OnInit, OnDestroy {
         window.addEventListener('offline', this.updateNetworkStatusUI);
 
         this.subscription = this.initializeService.initialize().subscribe(
-          () => { },
-          (error) => { console.log('Initialize error.'); },
-          () => {
-              // finished
-              this.settingsMenuService.ShowAppSettingsItem();
-              this.initializing = false;
-              this.router.initialNavigation();
-              this.navigationSubitemsService.populateSidebar(this.sublocations);
-          }
+            () => { },
+            (error) => { console.log('Initialize error.'); },
+            () => {
+                // finished
+                this.settingsMenuService.ShowAppSettingsItem();
+                this.initializing = false;
+                this.router.initialNavigation();
+                this.navigationSubitemsService.populateSidebar(this.sublocations);
+                const config = {
+                    title: 'Custom component',
+                    action: () => { }
+                };
+
+                this.headerService.setContent(CustomHeaderComponent, config);
+            }
         );
 
         this.navigationVisibilitySubscription = this.sidebarsVisibilityService.navigationVisibilityChanged.subscribe((visible: boolean) => {

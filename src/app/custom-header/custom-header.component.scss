@@ -1,0 +1,13 @@
+span{
+    float: right;
+    margin-top: 12px;
+    font-size: 12px;
+    b{
+        padding-top: 2px;
+    }
+}
+@media(max-width: 330px){
+    span{
+        margin-top: 2px;
+    }
+}

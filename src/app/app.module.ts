@@ -39,6 +39,7 @@ export function initConfig(config: ConfigurationService<IConfiguration>) {
 import { ConfirmationService, MessageService as PrimengMessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { CustomHeaderComponent } from './custom-header/custom-header.component';
 
 @NgModule({
   imports: [
@@ -64,9 +65,12 @@ import { ToastModule } from 'primeng/toast';
     AppComponent,
     AppSettingsComponent,
     MainComponent,
-    HomeComponent
+    HomeComponent,
+    CustomHeaderComponent
   ],
-  entryComponents: [],
+  entryComponents: [
+    CustomHeaderComponent
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
