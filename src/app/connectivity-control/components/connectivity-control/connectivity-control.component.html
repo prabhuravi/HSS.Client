@@ -6,8 +6,8 @@
             [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--cursorPointer"
-                        title="Click to sort">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
+                        title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
                         {{col.header}}
                         <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
@@ -56,7 +56,7 @@
                                         placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                                         [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [minDate]="currentUTC"
                                         [defaultDate]="currentUTC" [(ngModel)]="rowData.DisableTime"
-                                        [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050">
+                                        [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050" selectOtherMonths="true">
                                     </p-calendar>
                                 </div>
                             </div>

@@ -122,5 +122,10 @@ export class VesselUploadStatusComponent implements OnInit {
       });
     }
   }
+  resetMissions(): void {
+    this.missionList = [];
+    this.fromMissionList = [];
+    this.toMissionList = [];
+  }
 
 }

@@ -23,7 +23,7 @@
                                     placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                                     [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
                                     [formControlName]="'OperationFromDate'" [monthNavigator]="true"
-                                    [yearNavigator]="true" yearRange="1950:2050">
+                                    [yearNavigator]="true" yearRange="1950:2050" selectOtherMonths="true">
                                 </p-calendar>
                             </div>
                         </div>
@@ -34,8 +34,8 @@
                                     hourFormat="24" hideOnDateTimeSelect="true" showButtonBar="true"
                                     placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                                     [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
-                                    [formControlName]="'OperationToDate'" [monthNavigator]="true"
-                                    [yearNavigator]="true" yearRange="1950:2050">
+                                    [formControlName]="'OperationToDate'" [monthNavigator]="true" [yearNavigator]="true"
+                                    yearRange="1950:2050" selectOtherMonths="true">
                                 </p-calendar>
                             </div>
                         </div>
@@ -68,8 +68,9 @@
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width: 1.5em" class="u--cursorPointer kx-p--small"></th>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
-                        class="u--cursorPointer kx-p--small" title="Click to sort">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="kx-p--small"
+                        [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
+                        title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
                         {{col.header}}
                         <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
@@ -184,8 +185,9 @@
                                         tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
                                         <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
-                        class="u--cursorPointer kx-p--small" title="Click to sort">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="kx-p--small"
+                        [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
+                        title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
                         {{col.header}}
                         <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"

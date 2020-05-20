@@ -35,7 +35,7 @@
                             hideOnDateTimeSelect="true" showButtonBar="true" [appendTo]="pcalendarRef"
                             placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                             [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'FromDate'"
-                            [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050">
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050" selectOtherMonths="true">
                         </p-calendar>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                             hideOnDateTimeSelect="true" showButtonBar="true" [appendTo]="pcalendarRef"
                             placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm" [minDate]="form.value.FromDate"
                             [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'ToDate'"
-                            [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050">
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050" selectOtherMonths="true">
                         </p-calendar>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                             <span class="kx-btn__txt">Get Logs</span>
                         </span>
                     </button>
-                    <button type="button" (click)="form.reset()"
+                    <button type="button" (click)="form.reset();resetMissions()"
                         class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-kx-mt--tiny kx-mt--medium@mob-m">
                         <span class="kx-btn__inner">
                             <span class="kx-btn__txt">Reset</span>
@@ -98,7 +98,9 @@
             [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall u--fontBold">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall u--fontBold"
+                        [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
+                        title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
                         {{col.header}}
                         <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"

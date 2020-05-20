@@ -2,9 +2,6 @@
 .u--floatRight {
     float: right;
 }
-.u--cursorPointer {
-    cursor: pointer;
-}
 .u--with-tbody-scroll {
     tbody {
         display: block;
@@ -81,6 +78,7 @@
 .ui-table-wrapper {
     .ui-table-thead {
         th {
+            cursor: initial;
             &.kx-p--xlarge {
                 padding: 1rem 0.5rem !important;
                 background-color: #f6f6f6 !important;
@@ -226,4 +224,7 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+.u--cursorPointer {
+    cursor: pointer!important;
 }

@@ -81,7 +81,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
       this.VesselDataSubscription.unsubscribe();
     }
   }
-  getVesselDetails(nodeNumber: number, fromDrpDownChange?: boolean) {
+  getVesselDetails(nodeNumber: number, fromDrpDownChange?: boolean): void {
     if (nodeNumber) {
       this.selectedVesselNodeNumber = nodeNumber.toString();
 
@@ -119,22 +119,28 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     }
 
   }
-  changeVesselDetails() {
+  changeVesselDetails(): void {
     this.router.navigateByUrl(`/connectivity-monitoring/cacti/${this.selectedVessel.NodeNumber}`);
   }
-  resetDate() {
+  resetDate(): void {
     this.selectedPreset = { name: 'Last Day', value: 24 };
     this.toDate = new Date();
     this.fromDate = new Date();
     this.fromDate = new Date(this.fromDate.setDate(this.toDate.getDate() - 1));
     this.getLatencyTrendData();
   }
-  filterData() {
+  filterData(): void {
     this.getLatencyTrendData();
     // tslint:disable-next-line:radix
     this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
   }
-  getLatencyTrendData() {
+  updatePreset(): void {
+    this.selectedPreset = {
+      name: 'Custom',
+      value: 0
+    };
+  }
+  getLatencyTrendData(): void {
     const a: any = {};
     a.NodeNumber = this.selectedVesselNodeNumber;
     a.FromDate = this.fromDate.toISOString();
@@ -142,7 +148,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     this.latencyRequest = Object.assign({}, a);
     this.aisRequest = Object.assign({}, a);
   }
-  onDropDownSelection() {
+  onDropDownSelection(): void {
     this.toDate = new Date();
     this.fromDate = this.getDateFromDropDown(this.selectedPreset.value);
     this.getLatencyTrendData();

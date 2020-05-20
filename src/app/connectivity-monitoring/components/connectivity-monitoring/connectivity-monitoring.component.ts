@@ -13,9 +13,9 @@ export class ConnectivityMonitoringComponent implements OnInit {
   cols = [
     { field: 'NodeNumber', header: 'Node Number', sortfield: 'NodeNumber', filterMatchMode: 'contains' },
     { field: 'Name', header: 'Vessel Name', sortfield: 'Name', filterMatchMode: 'contains' },
-    { field: 'IPAddress', header: 'IP Address', sortfield: 'IPAddress', filterMatchMode: 'contains' },
+    { field: 'IPAddress', header: 'IP Address', sortfield: '', filterMatchMode: 'contains' },
     { field: 'Status', header: 'Status', sortfield: 'Status', filterMatchMode: 'contains' },
-    { field: 'LastLatency', header: 'Last Latency', sortfield: '' },
+    { field: 'LastLatency', header: 'Last Latency', sortfield: 'LastLatency' },
     { field: 'LastSeen', header: 'Last Updated(GMT) (dd/MM/yyyy HH:mm)', sortfield: '' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;

@@ -8,14 +8,14 @@
             <div class="kx-card__body card-body kx-p--small">
                 <div class="kx-row">
                     <div class="kx-col kx-col--6">
-                        <label class="kx-label">Node Number:</label>
+                        <strong>Node Number:</strong>
                         <div class="kx-mt--tiny">
                             {{cachedVesselDetails && cachedVesselDetails.NodeNumber  ? cachedVesselDetails.NodeNumber : noData}}
                         </div>
                     </div>
                     <div class="kx-col kx-col--6">
                         <div class="kx-mt--tiny">
-                            <label class="kx-label" for="selectbox1">Vessel Name :</label>
+                            <strong>Vessel Name :</strong>
                             <div class="kx-mt--tiny">
                                 <p-dropdown styleClass="kx-p--none" [(ngModel)]="selectedVessel"
                                     placeholder="Select Vessel" [options]="allVessels"
@@ -26,13 +26,13 @@
                 </div>
                 <div class="kx-row">
                     <div class="kx-col kx-col--6">
-                        <label class="kx-label">Status:</label>
+                        <strong>Status:</strong>
                         <div class="kx-mt--tiny">
                             {{cachedVesselDetails && cachedVesselDetails.Status  ? cachedVesselDetails.Status : noData}}
                         </div>
                     </div>
                     <div class="kx-col kx-col--6">
-                        <label class="kx-label">Latency:</label>
+                        <strong>Latency:</strong>
                         <div class="kx-mt--tiny">
                             {{cachedVesselDetails && cachedVesselDetails.LastLatency  ? cachedVesselDetails.LastLatency : noData}}
                         </div>
@@ -49,19 +49,19 @@
             <div class="kx-card__body card-body kx-p--small">
                 <div class="kx-row">
                     <div class="kx-col  kx-col--4">
-                        <label class="kx-label">Network Type:</label>
+                        <strong>Network Type:</strong>
                         <div class="kx-mt--tiny">
                             {{ vesselDetails && vesselDetails.NetworkType ? vesselDetails.NetworkType : noData}}
                         </div>
                     </div>
                     <div class="kx-col  kx-col--4">
-                        <label class="kx-label">MCC:</label>
+                        <strong>MCC:</strong>
                         <div class="kx-mt--tiny">
                             {{ vesselDetails && vesselDetails.MCC ? vesselDetails.MCC : noData}}
                         </div>
                     </div>
                     <div class="kx-col  kx-col--4">
-                        <label class="kx-label">Country:</label>
+                        <strong>Country:</strong>
                         <div class="kx-mt--tiny">
                             {{ vesselDetails && vesselDetails.CountryName ? vesselDetails.CountryName : noData}}
                         </div>
@@ -69,20 +69,20 @@
                 </div>
                 <div class="kx-row">
                     <div class="kx-col  kx-col--4">
-                        <label class="kx-label">APN:</label>
+                        <strong>APN:</strong>
                         <div class="kx-mt--tiny">
                             {{ vesselDetails && vesselDetails.ApnName ? vesselDetails.ApnName : noData}}
                         </div>
                     </div>
                     <div class="kx-col  kx-col--4">
 
-                        <label class="kx-label">Provider Name:</label>
+                        <strong>Provider Name:</strong>
                         <div class="kx-mt--tiny">
                             {{ vesselDetails && vesselDetails.ProviderName ? vesselDetails.ProviderName : noData}}
                         </div>
                     </div>
                     <div class="kx-col  kx-col--4">
-                        <label class="kx-label">Router Position:</label>
+                        <strong>Router Position:</strong>
                         <div class="kx-mt--tiny">
                             <span *ngIf="vesselDetails && !vesselDetails.Latitude">{{noData}}</span>
                             <span *ngIf="vesselDetails && vesselDetails.Latitude">
@@ -128,10 +128,10 @@
             </div>
             <div class="kx-col kx-col--12 kx-col--2@mob-m kx-pr--large@mob-m">
                 <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
-                    (onSelect)="getLatencyTrendData()" [(ngModel)]="fromDate" showTime="true" hourFormat="24"
+                    (onSelect)="updatePreset();getLatencyTrendData()" [(ngModel)]="fromDate" showTime="true" hourFormat="24"
                     showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
                     [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [monthNavigator]="true" [yearNavigator]="true"
-                    yearRange="1950:2050">
+                    yearRange="1950:2050" selectOtherMonths="true">
                 </p-calendar>
             </div>
             <div class="kx-col kx-col--12 kx-col--1@mob-m kx-pt--tiny u--textCenter">
@@ -139,10 +139,10 @@
             </div>
             <div class="kx-col kx-col--12 kx-col--2@mob-m kx-pr--large@mob-m">
                 <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
-                    [minDate]="fromDate" (onSelect)="getLatencyTrendData()" [(ngModel)]="toDate" showTime="true"
+                    [minDate]="fromDate" (onSelect)="updatePreset();getLatencyTrendData()" [(ngModel)]="toDate" showTime="true"
                     hourFormat="24" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
                     [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [monthNavigator]="true" [yearNavigator]="true"
-                    yearRange="1950:2050">
+                    yearRange="1950:2050" selectOtherMonths="true">
                 </p-calendar>
             </div>
             <div class="kx-col kx-col--12 kx-col--3@mob-m">
