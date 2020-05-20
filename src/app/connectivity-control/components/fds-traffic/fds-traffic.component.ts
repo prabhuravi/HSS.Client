@@ -17,7 +17,7 @@ export class FdsTrafficComponent implements OnInit {
   vesselList: IVesselList[] = [];
   vesselHistoricalUploadStatus: IVesselUploadStatus;
   cols = [
-    { field: 'FileUploadedDate', sortfield: 'VesselName', header: 'Uploaded Date', filterMatchMode: 'contains' },
+    { field: 'FileUploadedDate', sortfield: 'FileUploadedDate', header: 'Uploaded Date', filterMatchMode: 'contains' },
     { field: 'VesselName', sortfield: 'VesselName', header: 'Vessel Name', filterMatchMode: 'contains' },
     { field: 'Mission', sortfield: 'Mission', header: 'Mission Name', filterMatchMode: 'contains' },
     { field: 'FileName', sortfield: 'FileName', header: 'File Name', filterMatchMode: 'contains' },

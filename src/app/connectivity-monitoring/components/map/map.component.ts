@@ -29,6 +29,8 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   cachedResultFromAPI: any;
   markerClusterer: any;
   map: any;
+  loading = true;
+  emptyAISData = false;
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService, private themeservice: ThemeService) {
     this.nodeSubject = this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
       if (nodeNumber) {
@@ -38,7 +40,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       }
     });
     this.chartHandleSubscription = this.connectivityMonitoringService.getZoomChangeSubject().subscribe((chartChanges: any) => {
-      console.log(chartChanges);
       if (this.cachedResultFromAPI && this.cachedResultFromAPI.length > 0) {
         const finalData = this.getFilteredBetweenMinMax(this.cachedResultFromAPI, chartChanges.x.min, chartChanges.x.max);
         if (finalData.length > 0) {
@@ -68,7 +69,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
 
   }
   ngAfterViewInit(): void {
-
     this.mapMouseOverInfoHandler();
   }
 
@@ -100,12 +100,17 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
 
   getAisData(aisRequest: AISRequest) {
     if (this.aisRequest && this.aisRequest.NodeNumber) {
+      this.loading = true;
+      this.emptyAISData = false;
       this.connectivityMonitoringService.getAISData(this.aisRequest).pipe(take(1)).subscribe((data: any) => {
         this.cachedResultFromAPI = data.Result;
+        this.loading = false;
         if (data.Result.length > 0) {
           this.cachedResultFromAPI = data.Result;
           this.removeExistingMarkers();
           this.plotPathonMap(data.Result);
+        } else {
+          this.emptyAISData = true;
         }
       });
     }
@@ -151,9 +156,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       }
       this.map.addLayer(this.markerClusterer);
     }
-  }
-  createPolyLine() {
-
   }
   removeExistingMarkers() {
     // tslint:disable-next-line:prefer-for-of

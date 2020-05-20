@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-    <div class="kx-col kx-col--12 kx-col--6@ltp-s kx-pt--tiny kx-pl--small@ltp-s">
+    <div class="kx-col kx-col--12 kx-col--6@ltp-s kx-pl--small@ltp-s">
         <div class="kx-row kx-card kx-card--skin-default">
             <div class="kx-card__header">
                 <h3 class="kx-card__title">SNMP</h3>
@@ -94,7 +94,7 @@
             </div>
         </div>
     </div>
-    <div class="kx-col kx-col--12 kx-col--2@ltp-s kx-pt--tiny kx-pl--small@ltp-s">
+    <div class="kx-col kx-col--12 kx-col--2@ltp-s kx-pl--small@ltp-s">
         <div class="kx-card kx-card--skin-default" style="height: 198px;">
             <div class="kx-card__body kx-p--mini">
                 <div class="row centerme">
@@ -113,42 +113,42 @@
         </div>
     </div>
 </div>
-<div class="kx-card kx-card--skin-default kx-mt--small">
-    <div class="kx-p--mini">
+<div class="kx-card kx-card--skin-default kx-mt--tiny">
+    <div class="kx-p--tiny">
         <div class="kx-row">
+            <div class="kx-col kx-col--12 kx-col--1@mob-m kx-pt--tiny u--textCenter">
+                <label class="kx-label" for="selectbox1">Presets : </label>
+            </div>
+            <div class="kx-col kx-col--12 kx-col--2@mob-m">
+                <p-dropdown styleClass="kx-p--none" [options]="presetOptions" (onChange)="onDropDownSelection();"
+                    [(ngModel)]="selectedPreset" optionLabel="name"></p-dropdown>
+            </div>
+            <div class="kx-col kx-col--12 kx-col--1@mob-m kx-pt--tiny u--textCenter">
+                <label class="kx-label" for="selectbox1">From Date : </label>
+            </div>
+            <div class="kx-col kx-col--12 kx-col--2@mob-m kx-pr--large@mob-m">
+                <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
+                    (onSelect)="getLatencyTrendData()" [(ngModel)]="fromDate" showTime="true" hourFormat="24"
+                    showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
+                    [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
+            </div>
+            <div class="kx-col kx-col--12 kx-col--1@mob-m kx-pt--tiny u--textCenter">
+                <label class="kx-label" for="selectbox1">To Date : </label>
+            </div>
+            <div class="kx-col kx-col--12 kx-col--2@mob-m kx-pr--large@mob-m">
+                <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
+                    [minDate]="fromDate" (onSelect)="getLatencyTrendData()" [(ngModel)]="toDate" showTime="true"
+                    hourFormat="24" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
+                    [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
+            </div>
             <div class="kx-col kx-col--12 kx-col--3@mob-m">
-                <label class="kx-label" for="selectbox1">Presets</label>
-                <div class="kx-mt--tiny">
-                    <p-dropdown styleClass="kx-p--none" [options]="presetOptions" (onChange)="onDropDownSelection();"
-                        [(ngModel)]="selectedPreset" optionLabel="name"></p-dropdown>
-                </div>
-            </div>
-            <div class="kx-col kx-col--12 kx-col--3@mob-m kx-pt--tiny kx-pr--large@mob-m">
-                <label class="kx-label" for="selectbox1">From Date</label>
-                <div class="kx-mt--tiny">
-                    <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
-                        (onSelect)="getLatencyTrendData()" [(ngModel)]="fromDate" showTime="true" hourFormat="24"
-                        showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
-                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
-                </div>
-            </div>
-            <div class="kx-col kx-col--12 kx-col--3@mob-m kx-pt--tiny kx-pr--large@mob-m">
-                <label class="kx-label" for="selectbox1">To Date</label>
-                <div class="kx-mt--tiny">
-                    <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
-                        [minDate]="fromDate" (onSelect)="getLatencyTrendData()" [(ngModel)]="toDate" showTime="true"
-                        hourFormat="24" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
-                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
-                </div>
-            </div>
-            <div class="kx-col kx-col--12 kx-col--3@mob-m">
-                <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m kx-mr--tiny kx-mr--large@tab-m"
+                <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mr--tiny kx-mr--large@tab-m"
                     (click)="filterData()">
                     <span class="kx-btn__inner">
                         <span class="kx-btn__txt">Filter</span>
                     </span>
                 </button>
-                <button (click)="resetDate()" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m">
+                <button (click)="resetDate()" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
                     <span class="kx-btn__inner">
                         <span class="kx-btn__txt">Reset</span>
                     </span>
@@ -157,7 +157,7 @@
         </div>
     </div>
 </div>
-<div class="kx-row kx-mt--small">
+<div class="kx-row kx-mt--tiny">
     <div class="kx-col kx-col--6" [ngClass]="{'kx-col--12' : viewFullChart }">
         <span title="toggle full screen" (click)="viewFullChart=!viewFullChart;viewFullMap=false;"
             class="kx-navigation-icon collapse-icon"><i
