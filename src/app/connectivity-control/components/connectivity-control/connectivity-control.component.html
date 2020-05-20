@@ -6,8 +6,8 @@
             [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
-                        class="u--cursorPointer" title="Click to sort">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--cursorPointer"
+                        title="Click to sort">
                         {{col.header}}
                         <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
                             ariaLabelDesc="Activate to sort in descending order"
@@ -33,7 +33,8 @@
                             <div *ngSwitchCase="'IsUploadEnabled'" class="kx-py--tiny">
                                 <label class="kx-selector kx-selector__switch">
                                     <input type="checkbox" name="IsUploadEnabled" [(ngModel)]="rowData[col.field]"
-                                        (ngModelChange)="updateUploadStatus(rowData)" [disabled]="!rowData.AlwaysOn && rowData.DisableTime !== null && rowData.DisableTime.getTime() <= currentUTC.getTime()" />
+                                        (ngModelChange)="updateUploadStatus(rowData)"
+                                        [disabled]="!rowData.AlwaysOn && rowData.DisableTime !== null && rowData.DisableTime.getTime() <= currentUTC.getTime()" />
                                     <div class="kx-selector__indicator"></div>
                                     <span *ngIf="!rowData[col.field]" class="label-text">OFF</span>
                                     <span *ngIf="rowData[col.field]" class="label-text">ON</span>
@@ -53,15 +54,18 @@
                                         inputStyleClass="kx-field kx-field--size-small" hourFormat="24"
                                         showButtonBar="true" hideOnDateTimeSelect="true"
                                         placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
-                                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [minDate]="currentUTC" [defaultDate]="currentUTC"
-                                        [(ngModel)]="rowData.DisableTime">
+                                        [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [minDate]="currentUTC"
+                                        [defaultDate]="currentUTC" [(ngModel)]="rowData.DisableTime"
+                                        [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050">
                                     </p-calendar>
                                 </div>
                             </div>
                             <div *ngSwitchCase="'LastAction'" class="kx-py--tiny">
-                                {{rowData['LastAction']}} at 
-                                <span *ngIf="rowData['IsUploadEnabled']">{{rowData['EnabledTime'] | date:'MM/dd/yyyy HH:mm'}}</span>
-                                <span *ngIf="!rowData['IsUploadEnabled']">{{rowData['DisableRetainTime'] | date:'MM/dd/yyyy HH:mm'}}</span>
+                                {{rowData['LastAction']}} at
+                                <span
+                                    *ngIf="rowData['IsUploadEnabled']">{{rowData['EnabledTime'] | date:'MM/dd/yyyy HH:mm'}}</span>
+                                <span
+                                    *ngIf="!rowData['IsUploadEnabled']">{{rowData['DisableRetainTime'] | date:'MM/dd/yyyy HH:mm'}}</span>
                                 <i (click)="toggleActivityLogModal(); loadVesselActivityLog(rowData)"
                                     class="kx-icon kx-icon--size-base u--floatRight u--cursorPointer">
                                     <svg focusable="false">
@@ -125,7 +129,8 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <app-no-data [displayme]="!isActionLogDataLoading && vesselConnectivityActionLogList.length === 0">
+                        <app-no-data
+                            [displayme]="!isActionLogDataLoading && vesselConnectivityActionLogList.length === 0">
                         </app-no-data>
                     </div>
                 </div>

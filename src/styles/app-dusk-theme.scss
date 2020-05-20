@@ -202,4 +202,12 @@ input[type="number"]::-webkit-inner-spin-button {
             color: #2bdeee;
         }
     }
+    select {
+        &.ui-datepicker-month,
+        &.ui-datepicker-year {
+            border: 1px solid #71767a;
+            color: #f6f6f6;
+            background-color: #373c41;
+        }
+    }
 }

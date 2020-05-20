@@ -16,7 +16,8 @@
                         <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
                             hideOnDateTimeSelect="true" showButtonBar="true"
                             placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
-                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'FromDate'">
+                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'FromDate'"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050">
                         </p-calendar>
                     </div>
                 </div>
@@ -26,7 +27,8 @@
                         <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
                             hideOnDateTimeSelect="true" showButtonBar="true"
                             placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
-                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'ToDate'">
+                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'ToDate'"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050">
                         </p-calendar>
                     </div>
                 </div>

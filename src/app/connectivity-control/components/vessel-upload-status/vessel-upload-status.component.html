@@ -4,7 +4,8 @@
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="kx-row">
                 <div class="kx-col kx-col--12 kx-col--2@ltp-s kx-col--6@mob-m">
-                    <label class="kx-label" for="selectbox1">Select Vessel</label><small class="u--textDanger"> Required *</small>
+                    <label class="kx-label" for="selectbox1">Select Vessel</label><small class="u--textDanger"> Required
+                        *</small>
                     <div class="kx-mt--tiny">
                         <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselId'"
                             [options]="vesselList" optionLabel="VesselName" filter="true" (onChange)="getMissionList()">
@@ -33,7 +34,8 @@
                         <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
                             hideOnDateTimeSelect="true" showButtonBar="true" [appendTo]="pcalendarRef"
                             placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
-                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'FromDate'">
+                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'FromDate'"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050">
                         </p-calendar>
                     </div>
                 </div>
@@ -43,7 +45,8 @@
                         <p-calendar inputStyleClass="kx-field kx-field--size-base" showTime="true" hourFormat="24"
                             hideOnDateTimeSelect="true" showButtonBar="true" [appendTo]="pcalendarRef"
                             placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm" [minDate]="form.value.FromDate"
-                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'ToDate'">
+                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'ToDate'"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050">
                         </p-calendar>
                     </div>
                 </div>
@@ -54,7 +57,8 @@
                             <span class="kx-btn__txt">Get Logs</span>
                         </span>
                     </button>
-                    <button type="button" (click)="form.reset()" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-kx-mt--tiny kx-mt--medium@mob-m">
+                    <button type="button" (click)="form.reset()"
+                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-kx-mt--tiny kx-mt--medium@mob-m">
                         <span class="kx-btn__inner">
                             <span class="kx-btn__txt">Reset</span>
                         </span>

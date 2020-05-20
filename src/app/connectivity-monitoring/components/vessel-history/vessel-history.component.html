@@ -130,7 +130,9 @@
                 <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
                     (onSelect)="getLatencyTrendData()" [(ngModel)]="fromDate" showTime="true" hourFormat="24"
                     showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
-                    [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
+                    [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [monthNavigator]="true" [yearNavigator]="true"
+                    yearRange="1950:2050">
+                </p-calendar>
             </div>
             <div class="kx-col kx-col--12 kx-col--1@mob-m kx-pt--tiny u--textCenter">
                 <label class="kx-label" for="selectbox1">To Date : </label>
@@ -139,7 +141,9 @@
                 <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
                     [minDate]="fromDate" (onSelect)="getLatencyTrendData()" [(ngModel)]="toDate" showTime="true"
                     hourFormat="24" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
-                    [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"></p-calendar>
+                    [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [monthNavigator]="true" [yearNavigator]="true"
+                    yearRange="1950:2050">
+                </p-calendar>
             </div>
             <div class="kx-col kx-col--12 kx-col--3@mob-m">
                 <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mr--tiny kx-mr--large@tab-m"

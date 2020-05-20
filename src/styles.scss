@@ -196,15 +196,34 @@ body {
 }
 
 @media (max-width: 40em) {
-    .kx-tabs{
-        padding-left: 0!important;
+    .kx-tabs {
+        padding-left: 0 !important;
     }
-    .kx-tabs__label{
-        padding: 0.2rem!important;
+    .kx-tabs__label {
+        padding: 0.2rem !important;
         font-size: 12px;
     }
     .kx-modal__dialog {
-        margin-top: 4rem!important;
-        margin-left: 2.25rem!important;
+        margin-top: 4rem !important;
+        margin-left: 2.25rem !important;
     }
+}
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

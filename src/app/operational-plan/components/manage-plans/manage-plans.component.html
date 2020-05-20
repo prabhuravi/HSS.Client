@@ -22,7 +22,8 @@
                                     hourFormat="24" hideOnDateTimeSelect="true" showButtonBar="true"
                                     placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                                     [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
-                                    [formControlName]="'OperationFromDate'">
+                                    [formControlName]="'OperationFromDate'" [monthNavigator]="true"
+                                    [yearNavigator]="true" yearRange="1950:2050">
                                 </p-calendar>
                             </div>
                         </div>
@@ -33,7 +34,8 @@
                                     hourFormat="24" hideOnDateTimeSelect="true" showButtonBar="true"
                                     placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                                     [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
-                                    [formControlName]="'OperationToDate'">
+                                    [formControlName]="'OperationToDate'" [monthNavigator]="true"
+                                    [yearNavigator]="true" yearRange="1950:2050">
                                 </p-calendar>
                             </div>
                         </div>
