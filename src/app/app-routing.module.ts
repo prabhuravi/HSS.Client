@@ -14,12 +14,12 @@ const routes: Routes = [
     canActivate: [ApplicationsGuardService],
     children: [
       {
-        path: 'vessel-configuration',
-        loadChildren: () => import('./connectivity-control/connectivity-control.module').then((m) => m.ConnectivityControlModule)
-      },
-      {
         path: 'connectivity-monitoring',
         loadChildren: () => import('./connectivity-monitoring/connectivity-monitoring.module').then((m) => m.ConnectivityMonitoringModule)
+      },
+      {
+        path: 'vessel-configuration',
+        loadChildren: () => import('./connectivity-control/connectivity-control.module').then((m) => m.ConnectivityControlModule)
       },
       {
         path: 'operational-plan',
@@ -27,7 +27,7 @@ const routes: Routes = [
       },
       { path: 'appsettings', component: AppSettingsComponent, pathMatch: 'full' },
       { path: 'globalsettings', component: GlobalSettingsComponent, pathMatch: 'full' },
-      { path: '', redirectTo: '/vessel-configuration', pathMatch: 'full' },
+      { path: '', redirectTo: '/connectivity-monitoring', pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent }
     ]
   }
