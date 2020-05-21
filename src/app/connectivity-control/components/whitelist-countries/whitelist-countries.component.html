@@ -46,7 +46,7 @@
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
-                        class="kx-p--xlarge"  [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
+                        [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
                         title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
                         {{col.header}}
                         <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
@@ -143,7 +143,8 @@
                                 </div>
                             </div>
                             <div>
-                                <button type="submit" [disabled]="disableActivity || (form && form.value && form.value.GroupName === '')"
+                                <button type="submit"
+                                    [disabled]="disableActivity || (form && form.value && form.value.GroupName === '')"
                                     class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--medium kx-btn--fluid">
                                     <span class="kx-btn__inner">
                                         <span class="kx-btn__txt">Add Group</span>

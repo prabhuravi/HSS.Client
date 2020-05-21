@@ -125,3 +125,7 @@ input[type="number"]::-webkit-inner-spin-button {
     }
   }
 }
+input.kx-field:read-only::placeholder {
+  color: #A9ABAD !important;
+  font-size: 15px;
+}
