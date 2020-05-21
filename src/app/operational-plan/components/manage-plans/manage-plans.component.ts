@@ -4,6 +4,7 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AppConstants } from 'src/app/app.constants';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-manage-plans',
@@ -86,6 +87,14 @@ export class ManagePlansComponent implements OnInit {
     if (this.form.valid) {
       this.isDataLoading = true;
       this.form.value.showLogs = this.showLogs;
+      if (this.form.value.OperationFromDate instanceof Date) {
+        const OperationFromDate = moment(this.form.value.OperationFromDate).format().split('+');
+        this.form.value.OperationFromDate = `${OperationFromDate[0]}`;
+      }
+      if (this.form.value.OperationToDate instanceof Date) {
+        const OperationToDate = moment(this.form.value.OperationToDate).format().split('+');
+        this.form.value.OperationToDate = `${OperationToDate[0]}`;
+      }
       this.operationalPlanService.searchOperationPlans(this.form.value).subscribe((data) => {
         this.isDataLoading = false;
         this.operationalPlansList = data;

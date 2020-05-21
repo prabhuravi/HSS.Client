@@ -4,6 +4,7 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
 import { ConnectivityControlService } from 'src/app/services/connectivity-control.service';
 import { AppConstants } from 'src/app/app.constants';
 import { take } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-fds-traffic',
@@ -68,6 +69,14 @@ export class FdsTrafficComponent implements OnInit {
         FromDate: this.form.value.FromDate,
         ToDate: this.form.value.ToDate
       };
+      if (formData.FromDate instanceof Date) {
+        const FromDate = moment(formData.FromDate).format().split('+');
+        formData.FromDate = `${FromDate[0]}`;
+      }
+      if (formData.ToDate instanceof Date) {
+        const ToDate = moment(formData.ToDate).format().split('+');
+        formData.ToDate = `${ToDate[0]}`;
+      }
       this.connectivityControlService.getVesselHistoricalStatus(formData).pipe(take(1)).subscribe((data) => {
         this.isFormSubmitted = false;
         this.vesselHistoricalUploadStatusLoaded = true;

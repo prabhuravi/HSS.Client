@@ -8,6 +8,7 @@ import { AISRequest } from 'src/app/models/AISRequest';
 import { AppConstants } from 'src/app/app.constants';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import * as moment from 'moment';
 @Component({
   selector: 'app-vessel-history',
   templateUrl: './vessel-history.component.html',
@@ -150,8 +151,14 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   getLatencyTrendData(): void {
     const a: any = {};
     a.NodeNumber = this.selectedVesselNodeNumber;
-    a.FromDate = this.fromDate.toISOString();
-    a.ToDate = this.toDate.toISOString();
+    if (this.fromDate instanceof Date) {
+      const FromDate = moment(this.fromDate).format().split('+');
+      a.FromDate = `${FromDate[0]}`;
+    }
+    if (this.toDate instanceof Date) {
+      const ToDate = moment(this.toDate).format().split('+');
+      a.ToDate = `${ToDate[0]}`;
+    }
     this.latencyRequest = Object.assign({}, a);
     this.aisRequest = Object.assign({}, a);
   }
