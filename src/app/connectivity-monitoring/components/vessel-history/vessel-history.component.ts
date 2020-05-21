@@ -90,6 +90,9 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
       this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().pipe(take(1)).subscribe((data) => {
         if (data) {
           this.cachedVesselDetails = data;
+          if (this.cachedVesselDetails && this.cachedVesselDetails.Status === 'Down') {
+            this.chart.data = [['dBm', 0]];
+          }
           this.allVessels = this.connectivityMonitoringService.getAllCachedResult();
           this.allVessels.filter((data1) => {
             // tslint:disable-next-line:triple-equals
@@ -106,7 +109,11 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
             // tslint:disable-next-line:radix
             this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
             if (vesselDetails && vesselDetails.SignalStrength) {
-              this.chart.data = [['dBm', vesselDetails.SignalStrength]];
+              if (this.cachedVesselDetails && this.cachedVesselDetails.Status === 'Down') {
+                this.chart.data = [['dBm', 0]];
+              } else {
+                this.chart.data = [['dBm', vesselDetails.SignalStrength]];
+              }
               this.noGaugeData = false;
             } else {
               this.noGaugeData = true;

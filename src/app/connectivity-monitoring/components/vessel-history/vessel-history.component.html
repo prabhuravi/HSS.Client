@@ -113,8 +113,8 @@
         </div>
     </div>
 </div>
-<div class="kx-card kx-card--skin-default kx-mt--tiny">
-    <div class="kx-p--tiny">
+<div class="kx-card kx-card--skin-default kx-mt--small">
+    <div class="kx-p--small">
         <div class="kx-row">
             <div class="kx-col kx-col--12 kx-col--1@mob-m kx-pt--tiny u--textCenter">
                 <label class="kx-label" for="selectbox1">Presets : </label>
@@ -128,10 +128,10 @@
             </div>
             <div class="kx-col kx-col--12 kx-col--2@mob-m kx-pr--large@mob-m">
                 <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
-                    (onSelect)="updatePreset();getLatencyTrendData()" [(ngModel)]="fromDate" showTime="true" hourFormat="24"
-                    showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
+                    (onSelect)="updatePreset();getLatencyTrendData()" [(ngModel)]="fromDate" showTime="true"
+                    hourFormat="24" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
                     [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [monthNavigator]="true" [yearNavigator]="true"
-                    yearRange="1950:2050" selectOtherMonths="true">
+                    yearRange="1950:2050" selectOtherMonths="true" readonlyInput="true">
                 </p-calendar>
             </div>
             <div class="kx-col kx-col--12 kx-col--1@mob-m kx-pt--tiny u--textCenter">
@@ -139,10 +139,11 @@
             </div>
             <div class="kx-col kx-col--12 kx-col--2@mob-m kx-pr--large@mob-m">
                 <p-calendar [appendTo]="pcalendarRef" inputStyleClass="kx-field kx-field--size-small"
-                    [minDate]="fromDate" (onSelect)="updatePreset();getLatencyTrendData()" [(ngModel)]="toDate" showTime="true"
-                    hourFormat="24" showButtonBar="true" [placeholder]="PRIMENG_CONSTANTS.datepickerFormat"
-                    [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [monthNavigator]="true" [yearNavigator]="true"
-                    yearRange="1950:2050" selectOtherMonths="true">
+                    [minDate]="fromDate" (onSelect)="updatePreset();getLatencyTrendData()" [(ngModel)]="toDate"
+                    showTime="true" hourFormat="24" showButtonBar="true"
+                    [placeholder]="PRIMENG_CONSTANTS.datepickerFormat" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
+                    [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050" selectOtherMonths="true"
+                    readonlyInput="true">
                 </p-calendar>
             </div>
             <div class="kx-col kx-col--12 kx-col--3@mob-m">
@@ -161,7 +162,7 @@
         </div>
     </div>
 </div>
-<div class="kx-row kx-mt--tiny">
+<div class="kx-row kx-mt--small">
     <div class="kx-col kx-col--6" [ngClass]="{'kx-col--12' : viewFullChart }">
         <span title="toggle full screen" (click)="viewFullChart=!viewFullChart;viewFullMap=false;"
             class="kx-navigation-icon collapse-icon"><i
