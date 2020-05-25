@@ -48,6 +48,11 @@
                 "output": "./assets/img/icons/"
               },
               {
+                "glob": "ai.svg",
+                "input": "node_modules/@kognifai/design-system/styles/img/icons/general/",
+                "output": "./assets/images/headerlogo.svg"
+              },
+              {
                 "glob": "oidc-client.min.js",
                 "input": "../../node_modules/oidc-client/dist/",
                 "output": "./"
@@ -82,29 +87,29 @@
               {
                 "input": "node_modules/@kognifai/design-system/styles/css/day-theme.css",
                 "lazy": true,
-                "bundleName":"kx-day-theme"
+                "bundleName": "kx-day-theme"
               },
               {
                 "input": "node_modules/@kognifai/design-system/styles/css/dusk-theme.css",
                 "lazy": true,
-                "bundleName":"kx-dusk-theme"
+                "bundleName": "kx-dusk-theme"
               },
               {
                 "input": "src/styles/app-day-theme.scss",
                 "lazy": true,
-                "bundleName":"app-day-theme"
+                "bundleName": "app-day-theme"
               },
               {
                 "input": "src/styles/app-dusk-theme.scss",
-                "lazy": true, 
-                "bundleName":"app-dusk-theme"
+                "lazy": true,
+                "bundleName": "app-dusk-theme"
               },
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles.scss",
               "node_modules/leaflet/dist/leaflet.css",
               "node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css",
               "node_modules/leaflet.markercluster/dist/MarkerCluster.css",
-              "node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css", 
+              "node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
               "node_modules/primeicons/primeicons.css"
             ],
             "extractCss": true,
@@ -114,7 +119,6 @@
               "node_modules/google-charts/dist/googleCharts.min.js",
               "node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js",
               "node_modules/leaflet-rotatedmarker/leaflet.rotatedMarker.js"
-
             ]
           },
           "configurations": {

@@ -7,6 +7,8 @@ import { SettingsMenuService } from '@kognifai/poseidon-ng-settings-menu';
 import { Sublocation, NavigationSubitemsService } from '@kognifai/poseidon-ng-navigation-subitems-service';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { HeaderService } from '@kognifai/poseidon-header-component';
+import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
+import { Configuration } from './configuration';
 
 @Component({
     selector: 'app-root',
@@ -19,11 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription;
     private navigationVisibilitySubscription: Subscription;
-    private sublocations: Sublocation[] = [
-        new Sublocation('Connectivity Monitoring', 'connectivity-monitoring'),
-        new Sublocation('Connectivity Control', 'vessel-configuration'),
-        new Sublocation('Operational Plan', 'operational-plan')
-    ];
+    private sublocations: Sublocation[] = [];
 
     constructor(
         private router: Router,
@@ -31,10 +29,22 @@ export class AppComponent implements OnInit, OnDestroy {
         public sidebarsVisibilityService: SidebarsVisibilityService,
         private settingsMenuService: SettingsMenuService,
         private navigationSubitemsService: NavigationSubitemsService,
-        private headerService: HeaderService
+        private headerService: HeaderService,
+        public configurationService: ConfigurationService<Configuration>
     ) {
         this.initializing = true;
         this.navigationVisible = true;
+        this.sublocations = [
+            new Sublocation('Connectivity Monitoring', 'connectivity-monitoring'),
+            new Sublocation('Connectivity Control', 'vessel-configuration'),
+            new Sublocation('Operational Plan', 'operational-plan'),
+            new Sublocation('File Manager', '', [], [], '', '', () => {
+                window.open(
+                    `${this.configurationService.config.filemanagerLink}`,
+                    '_blank' // <- This is what makes it open in a new window.
+                );
+            })
+        ];
     }
 
     ngOnInit() {

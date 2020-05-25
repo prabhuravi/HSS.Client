@@ -4,4 +4,5 @@ export interface Configuration extends IConfiguration {
     environment?: string;
     userInfoApiUrl?: string;
     apiCollection?: any;
+    filemanagerLink?: any;
 }
