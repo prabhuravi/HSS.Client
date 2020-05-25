@@ -172,7 +172,7 @@ export class WhitelistCountriesComponent implements OnInit {
                 GroupName: ''
               }
             );
-            this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
+            this.triggerToast('success', 'Success Message', data);
             this.getOperatorCountryList();
           });
         }
@@ -205,6 +205,14 @@ export class WhitelistCountriesComponent implements OnInit {
       });
   }
   sortCountries(): void {
+    for (let i = this.operatorCountryList.length - 1; i >= 0; i--) {
+      // tslint:disable-next-line:prefer-for-of
+      for (let j = 0; j < this.groupCountryList.length; j++) {
+        if (this.operatorCountryList[i] && (this.operatorCountryList[i].CountryId === this.groupCountryList[j].CountryId)) {
+          this.operatorCountryList.splice(i, 1);
+        }
+      }
+    }
     this.operatorCountryList = this.operatorCountryList.sort((a, b) => (a.CountryName > b.CountryName) ? 1 : -1);
     this.groupCountryList = this.groupCountryList.sort((a, b) => (a.CountryName > b.CountryName) ? 1 : -1);
   }

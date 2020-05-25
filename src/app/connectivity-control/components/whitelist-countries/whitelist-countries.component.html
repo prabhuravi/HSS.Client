@@ -42,7 +42,7 @@
             {{activeVessel.VesselName}} to upload data:</small>
         <p-table *ngIf="whiteListedCountries.length > 0" tableStyleClass="kx-table kx-table--outer-border"
             [value]="whiteListedCountries" [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount"
-            autoLayout="true">
+            autoLayout="true" #tt>
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
@@ -119,7 +119,7 @@
                             <div class="kx-mt--tiny">
                                 <p-dropdown styleClass="u--fullWidth" [options]="groupList" [(ngModel)]="activeGroup"
                                     optionLabel="CountryName" filter="true" placeholder="Select Group"
-                                    (onChange)="loadGroupCountries()">
+                                    (onChange)="getOperatorCountryList();loadGroupCountries()">
                                 </p-dropdown>
                             </div>
                         </div>

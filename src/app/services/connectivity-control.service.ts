@@ -102,7 +102,7 @@ export class ConnectivityControlService {
     };
     return this.http.postData(requestData);
   }
-  addCountryGroup(formData: any): Observable<boolean> {
+  addCountryGroup(formData: any): Observable<string> {
     const requestData = {
       endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.AddCountryGroup}`,
       data: formData
