@@ -11,6 +11,8 @@ import { ThemeService, Theme } from '@kognifai/poseidon-ng-theming';
 import { ISetting } from '@kognifai/poseidon-settingsservice';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
+import { Configuration } from '../../../configuration';
 
 @Component({
   selector: 'app-map',
@@ -31,7 +33,15 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   map: any;
   loading = true;
   emptyAISData = false;
-  constructor(private connectivityMonitoringService: ConnectivityMonitoringService, private themeservice: ThemeService) {
+  mapDayTileLayer = '';
+  mapDuskTileLayer = '';
+  constructor(
+    private connectivityMonitoringService: ConnectivityMonitoringService,
+    private themeservice: ThemeService,
+    public configurationService: ConfigurationService<Configuration>
+  ) {
+    this.mapDayTileLayer = this.configurationService.config.apiCollection.theme.mapDayTileLayer;
+    this.mapDuskTileLayer = this.configurationService.config.apiCollection.theme.mapDuskTileLayer;
     this.nodeSubject = this.connectivityMonitoringService.getNodeNumberSubject().subscribe((nodeNumber: number) => {
       if (nodeNumber) {
         this.nodeNumber = nodeNumber;
@@ -231,14 +241,14 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
 
     }
     if (theme === 'Dusk') {
-      const CartoDBDarkMatter = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+      const CartoDBDarkMatter = L.tileLayer(this.mapDuskTileLayer, {
         subdomains: 'abcd',
         id: 'darkLayer',
         maxZoom: 19,
         attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
       }).addTo(this.map);
     } else {
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      L.tileLayer(this.mapDayTileLayer, {
         id: 'duskLayer',
         attribution: `&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors`
       }).addTo(this.map);
