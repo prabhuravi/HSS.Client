@@ -1,12 +1,9 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, ViewEncapsulation, SimpleChanges, SimpleChange, OnChanges, OnDestroy, HostListener } from '@angular/core';
-import { ChartDataSet } from './data-set';
-import { IDataPoint } from './data-point';
+import { Component, Input, AfterViewInit, ViewEncapsulation, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import * as d3 from 'd3';
 import { LatencyRequest } from 'src/app/models/LatencyRequest';
 import { Subscription } from 'rxjs';
 import { GoogleCharts } from 'google-charts';
-import { ResizedEvent } from 'angular-resize-event';
 import { ThemeService, Theme } from '@kognifai/poseidon-ng-theming';
 import { ISetting } from '@kognifai/poseidon-settingsservice';
 
@@ -105,17 +102,33 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
               color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
             }
           },
-          vAxis: {
-            minValue: 0, title: 'MilliSeconds',
-            titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
-            textStyle: {
-              color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
+          series: [
+            { targetAxisIndex: 1 },
+            { targetAxisIndex: 0 }
+          ],
+          vAxes: {
+            0: {
+              title: 'dBm',
+              titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
+              textStyle: {
+                color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
+              },
+              gridlines: {
+                count: 10
+              }
             },
-            gridlines: {
-              count: 10
+            1: {
+              title: 'milliseconds',
+              titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
+              textStyle: {
+                color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
+              },
+              gridlines: {
+                count: 0
+              }
             }
           },
-          chartArea: { left: 55, right: 0, top: 10, width: '80%', height: '75%' },
+          chartArea: { left: 55, right: 55, top: 10, width: '80%', height: '70%' },
           animation: {
             startup: true, duration: 1000,
             easing: 'out'

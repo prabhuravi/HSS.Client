@@ -244,7 +244,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       const CartoDBDarkMatter = L.tileLayer(this.mapDuskTileLayer, {
         subdomains: 'abcd',
         id: 'darkLayer',
-        maxZoom: 19,
+        maxZoom: this.configurationService.config.apiCollection.theme.defaultZoomLevel,
         attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
       }).addTo(this.map);
     } else {
