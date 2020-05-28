@@ -232,5 +232,7 @@
       "defaultZoomLevel": 19
     }
   },
-  "filemanagerLink":"https://hsstest.kognif.ai/poseidonnext/kognifai-file-manager-client/"
+  "filemanagerLink":"https://hsstest.kognif.ai/poseidonnext/kognifai-file-manager-client/",
+  "galoreApiUrl": "https://hgs.kognif.ai/galoreapi/",
+  "galoreSignalRUrl": "https://hgs.kognif.ai/galoreapi/"
 }

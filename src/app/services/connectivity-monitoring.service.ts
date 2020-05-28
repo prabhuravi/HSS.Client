@@ -5,7 +5,7 @@ import { LatencyRequest } from '../models/LatencyRequest';
 import { AISRequest } from '../models/AISRequest';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
-
+import * as moment from 'moment';
 @Injectable({
   providedIn: 'root'
 })
@@ -93,7 +93,6 @@ export class ConnectivityMonitoringService {
     return this.http.getData(requestData);
   }
   public getChartData(latencyRequest: LatencyRequest): Observable<any> {
-    // const a = { NodeNumber: 17876, FromDate: '2020-04-16T09:16:55.754Z', ToDate: '2020-04-17T09:16:55.754Z' };
     const requestData = {
       endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.LatencyTrendData}`,
       data: latencyRequest

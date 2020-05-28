@@ -5,4 +5,6 @@ export interface Configuration extends IConfiguration {
     userInfoApiUrl?: string;
     apiCollection?: any;
     filemanagerLink?: any;
+    galoreApiUrl?: string;
+    galoreSignalRUrl?: string;
 }

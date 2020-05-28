@@ -40,6 +40,14 @@ import { ConfirmationService, MessageService as PrimengMessageService } from 'pr
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
+import { NodeSelectorService, QueryService, QueryExecutionService , HttpClientHelperService } from '@kognifai/galore-ng-client';
+import { GaloreDataService } from './services/galore-data.service';
+const GALORE_PROVIDER = [
+  NodeSelectorService,
+  QueryService,
+  QueryExecutionService,
+  HttpClientHelperService
+];
 
 @NgModule({
   imports: [
@@ -97,7 +105,9 @@ import { CustomHeaderComponent } from './custom-header/custom-header.component';
     SidebarsVisibilityService,
     NavigationSubitemsService,
     ConfirmationService,
-    PrimengMessageService
+    PrimengMessageService,
+    GaloreDataService,
+    ...GALORE_PROVIDER
   ],
   bootstrap: [AppComponent]
 })

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import { AppConstants } from 'src/app/app.constants';
+import { GaloreDataService, GaloreApiConnectionStatus } from 'src/app/services/galore-data.service';
+import { GaloreQueryService } from 'src/app/services/galore-query.service';
+import { NodeDc } from '@kognifai/galore-client';
 import { take } from 'rxjs/operators';
 @Component({
   selector: 'app-connectivity-monitoring',
@@ -21,10 +24,20 @@ export class ConnectivityMonitoringComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   showLoader = true;
   constructor(
-    public connectivityMonitoringService: ConnectivityMonitoringService
+    public connectivityMonitoringService: ConnectivityMonitoringService,
+    public galoreDataService: GaloreDataService,
+    public galoreQueryService: GaloreQueryService
   ) { }
 
   ngOnInit() {
+    this.galoreDataService.initialize().subscribe((status: GaloreApiConnectionStatus) => {
+      console.log(status);
+      if (status !== GaloreApiConnectionStatus.Reconnected) {
+        this.galoreQueryService.fetchVesselEdge().subscribe((vesselEdgeNode: NodeDc[]) => {
+          console.log(vesselEdgeNode);
+        });
+      }
+    });
     this.connectivityMonitoringService.getVesselLinks().pipe(take(1)).subscribe((data: IVesselLinks[]) => {
       if (data && data.length > 0) {
         this.showLoader = false;
