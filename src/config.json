@@ -1,5 +1,5 @@
 {
-  "authenticationEndpoint": "https://INBEN10286/PoseidonNext/kognifaiidp/",
+  "authenticationEndpoint": "https://localhost/PoseidonNext/kognifaiidp/",
   "authenticationClientId": "projecty",
   "applicationId": "509c836e-987e-4b6c-9492-ff0fff2f18f4",
   "authenticationScope": "openid profile",
@@ -7,13 +7,13 @@
   "authenticationExtraQueryParams": {
     "resource": ""
   },
-  "poseidonApiUrl": "https://INBEN10286/PoseidonNext/poseidonnext.api/",
+  "poseidonApiUrl": "https://localhost/PoseidonNext/poseidonnext.api/",
   "customerApiUrl": "https://localhost:9446/",
   "homeUrl": "/",
-  "userProfileUrl": "https://INBEN10286/PoseidonNext/poseidon-user-profile",
-  "userInfoApiUrl": "https://INBEN10286/PoseidonNext/kognifaiidp/api/v1/Users/",
+  "userProfileUrl": "https://localhost/PoseidonNext/poseidon-user-profile",
+  "userInfoApiUrl": "https://localhost/PoseidonNext/kognifaiidp/api/v1/Users/",
   "environment": "dev",
-  "entitlementsApiUrl": "https://INBEN10286/PoseidonNext/entitlements.api",
+  "entitlementsApiUrl": "https://localhost/PoseidonNext/entitlements.api",
   "logging": {
     "logLevel": 4,
     "bufferingTime": 5000
@@ -64,12 +64,12 @@
       }
     },
     "VesselLinkQuality": {
-      "domainURL": "https://hgs.kognif.ai",
-      "path": "/VesselLinkQualityAPIService/API/VesselLinkQuality",
+      "domainURL": "https://localhost:5001",
+      "path": "/ConnectivityMonitoring",
       "endpoints": {
         "GetVesselLinks": "/GetVesselLinks",
         "AISPositionData": "/AISPositionData",
-        "GetSNMPData": "/GetSNMPData",
+        "GetSNMPData": "/GetSNMPDataByNodeNumber",
         "LatencyTrendData": "/LatencyTrendData"
       }
     },
@@ -232,7 +232,7 @@
       "defaultZoomLevel": 19
     }
   },
-  "filemanagerLink":"https://hsstest.kognif.ai/poseidonnext/kognifai-file-manager-client/",
-  "galoreApiUrl": "https://hgs.kognif.ai/galoreapi/",
-  "galoreSignalRUrl": "https://hgs.kognif.ai/galoreapi/"
+  "filemanagerLink":"https://localhost/poseidonnext/kognifai-file-manager-client/",
+  "galoreApiUrl": "https://hsstest.kognif.ai/galoreapi/",
+  "galoreSignalRUrl": "https://hsstest.kognif.ai/galoreapi/"
 }
