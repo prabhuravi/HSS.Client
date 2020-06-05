@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { AuthenticationService } from '@kognifai/poseidon-authenticationservice';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
@@ -30,6 +30,18 @@ export class HttpService {
 
   getData(requestData: any): Observable<any> {
     return this.http.get(requestData.endPoint).pipe(
+      retry(2),
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  getDataV2(requestData: any): Observable<any> {
+    return this.http.get(requestData.endPoint, {
+      params: new HttpParams({
+        fromObject: requestData.params
+      })
+    }
+    ).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
     );

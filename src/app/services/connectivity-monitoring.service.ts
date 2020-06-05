@@ -26,10 +26,12 @@ export class ConnectivityMonitoringService {
     this.vesselLinkQualityConfigPath = `${this.vesselLinkQualityConfig.domainURL}${this.vesselLinkQualityConfig.path}`;
   }
   getVesselLinks(): Observable<any> {
+
     const requestData = {
-      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.GetVesselLinks}`
+      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.GetVesselLinks}`,
+      params: { }
     };
-    return this.http.getData(requestData);
+    return this.http.getDataV2(requestData);
   }
   setZoomChangeSubject(nodeNumber: any) {
     this.zoomChartSubject.next(nodeNumber);
@@ -70,12 +72,17 @@ export class ConnectivityMonitoringService {
   }
   getAISData(aisRequest?: AISRequest) {
     const a = { VesselName: 'Talisman', FromDate: '2020-03-30T11:46:23.000Z', ToDate: '2020-04-14T11:46:23.000Z' };
+
     aisRequest.VesselName = this.getVesselNameByNodeNumber(aisRequest.NodeNumber);
     const requestData = {
       endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.AISPositionData}`,
-      data: aisRequest
+      params: {
+        vesselName: aisRequest.VesselName,
+        fromDate: aisRequest.FromDate,
+        toDate: aisRequest.ToDate }
     };
-    return this.http.postData(requestData);
+
+    return this.http.getDataV2(requestData);
   }
   getVesselSubject(): Observable<any> {
     return this.vesselSubject.asObservable();
@@ -88,15 +95,19 @@ export class ConnectivityMonitoringService {
   }
   getSnMPData(nodeNumber: number) {
     const requestData = {
-      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.GetSNMPData}/${nodeNumber}`
+      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.GetSNMPData}/${nodeNumber}`,
+      params: { }
     };
-    return this.http.getData(requestData);
+    return this.http.getDataV2(requestData);
   }
   public getChartData(latencyRequest: LatencyRequest): Observable<any> {
     const requestData = {
       endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.LatencyTrendData}`,
-      data: latencyRequest
+      params: {
+        nodeNumber: latencyRequest.NodeNumber,
+        fromDate: latencyRequest.FromDate,
+        toDate: latencyRequest.ToDate }
     };
-    return this.http.postData(requestData);
+    return this.http.getDataV2(requestData);
   }
 }
