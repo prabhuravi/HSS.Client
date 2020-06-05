@@ -34,8 +34,7 @@
                             <div *ngSwitchCase="'IsUploadEnabled'" class="kx-py--tiny">
                                 <label class="kx-selector kx-selector__switch">
                                     <input type="checkbox" name="IsUploadEnabled" [(ngModel)]="rowData[col.field]"
-                                        (ngModelChange)="updateUploadStatus(rowData)"
-                                        [disabled]="!rowData.AlwaysOn && rowData.DisableTime !== null && rowData.DisableTime.getTime() <= currentUTC.getTime()" />
+                                        (ngModelChange)="updateUploadStatus(rowData)"/>
                                     <div class="kx-selector__indicator"></div>
                                     <span *ngIf="!rowData[col.field]" class="label-text">OFF</span>
                                     <span *ngIf="rowData[col.field]" class="label-text">ON</span>

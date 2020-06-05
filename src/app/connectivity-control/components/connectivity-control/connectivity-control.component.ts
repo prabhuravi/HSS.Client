@@ -85,9 +85,11 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   updateUploadStatus(data: IVesselList): void {
     this.isDataLoading = true;
     data.EnabledBy = '';
-    data.DisableTime = new Date(data.DisableTime.toString());
-    data.DisableTime = data.DisableTime.toString().slice(0, data.DisableTime.toString().indexOf('GMT')) + 'GMT';
-    data.DisableTime = new Date(data.DisableTime).toISOString();
+    if (data.DisableTime !== null) {
+      data.DisableTime = new Date(data.DisableTime.toString());
+      data.DisableTime = data.DisableTime.toString().slice(0, data.DisableTime.toString().indexOf('GMT')) + 'GMT';
+      data.DisableTime = new Date(data.DisableTime).toISOString();
+    }
     this.connectivityControlService.UpdateVessel(data).pipe(take(1)).subscribe(() => {
       this.loadData();
     });
