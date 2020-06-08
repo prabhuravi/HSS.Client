@@ -39,6 +39,8 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   cachedVesselDetails: IVesselLinks;
   VesselDataSubscription: Subscription;
   selectedVesselNodeNumber: string;
+  viewFullChart: boolean;
+  viewFullMap: boolean;
 
   currentState = 'initial';
   showMap: boolean = false;

@@ -16,44 +16,44 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
   @Input() totalVessels: any;
   @ViewChild('chart', null) chartElement: ElementRef;
 
-  private host: d3.Selection<any, any, any, any>;
-  private hostWidth: number;
-  private hostHeight: number;
+  host: d3.Selection<any, any, any, any>;
+  hostWidth: number;
+  hostHeight: number;
 
-  private margin: { top: number, right: number, bottom: number, left: number };
-  private width: number;
-  private height: number;
+  margin: { top: number, right: number, bottom: number, left: number };
+  width: number;
+  height: number;
 
-  private svg: d3.Selection<any, any, any, any>;
-  private chartBody: d3.Selection<any, any, any, any>;
-  private axesContainer: d3.Selection<any, any, any, any>;
-  private clipPath: d3.Selection<any, any, any, any>;
+  svg: d3.Selection<any, any, any, any>;
+  chartBody: d3.Selection<any, any, any, any>;
+  axesContainer: d3.Selection<any, any, any, any>;
+  clipPath: d3.Selection<any, any, any, any>;
 
-  private xScaleUnzoomed: d3.ScaleTime<number, number>;
-  private xScale: d3.ScaleTime<number, number>;
-  private xAxis: d3.Axis<any>;
-  private xAxisElement: d3.Selection<any, any, any, any>;
+  xScaleUnzoomed: d3.ScaleTime<number, number>;
+  xScale: d3.ScaleTime<number, number>;
+  xAxis: d3.Axis<any>;
+  xAxisElement: d3.Selection<any, any, any, any>;
 
-  private yScaleUnzoomed: d3.ScaleLinear<number, number>;
-  private yScale: d3.ScaleLinear<number, number>;
-  private yAxis: d3.Axis<any>;
-  private yAxisElement: d3.Selection<any, any, any, any>;
+  yScaleUnzoomed: d3.ScaleLinear<number, number>;
+  yScale: d3.ScaleLinear<number, number>;
+  yAxis: d3.Axis<any>;
+  yAxisElement: d3.Selection<any, any, any, any>;
 
-  private brushElement: d3.Selection<any, any, any, any>;
-  private brush: d3.BrushBehavior<any>;
+  brushElement: d3.Selection<any, any, any, any>;
+  brush: d3.BrushBehavior<any>;
 
-  private zoomX: d3.ZoomBehavior<any, any>;
-  private zoomY: d3.ZoomBehavior<any, any>;
-  private zoomXElement: d3.Selection<any, any, any, any>;
-  private zoomYElement: d3.Selection<any, any, any, any>;
+  zoomX: d3.ZoomBehavior<any, any>;
+  zoomY: d3.ZoomBehavior<any, any>;
+  zoomXElement: d3.Selection<any, any, any, any>;
+  zoomYElement: d3.Selection<any, any, any, any>;
 
-  private scatterPointSize = 2.5;
-  private scatterPoints: d3.Selection<any, any, any, any>;
-  private areaElement: d3.Selection<any, any, any, any>;
-  private lineElement: d3.Selection<any, any, any, any>;
-  private signallineElement: d3.Selection<any, any, any, any>;
-  private showChart: boolean = false;
-  private NodeSuscription: Subscription;
+  scatterPointSize = 2.5;
+  scatterPoints: d3.Selection<any, any, any, any>;
+  areaElement: d3.Selection<any, any, any, any>;
+  lineElement: d3.Selection<any, any, any, any>;
+  signallineElement: d3.Selection<any, any, any, any>;
+  showChart: boolean = false;
+  NodeSuscription: Subscription;
 
   ngAfterViewInit(): void {
 

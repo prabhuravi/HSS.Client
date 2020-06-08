@@ -1,43 +1,238 @@
 {
-    "authenticationEndpoint": "https://localhost:9445/",
-    "authenticationClientId": "projecty",
-    "applicationId": "509c836e-987e-4b6c-9492-ff0fff2f18f4",
-    "authenticationScope": "openid profile",
-    "fetchOpenIdConfigFromPoseidonNextAPI": false,
-    "authenticationExtraQueryParams": {
-      "resource": ""
+  "authenticationEndpoint": "https://INBEN10286/PoseidonNext/kognifaiidp/",
+  "authenticationClientId": "projecty",
+  "applicationId": "509c836e-987e-4b6c-9492-ff0fff2f18f4",
+  "authenticationScope": "openid profile",
+  "fetchOpenIdConfigFromPoseidonNextAPI": false,
+  "authenticationExtraQueryParams": {
+    "resource": ""
+  },
+  "poseidonApiUrl": "https://INBEN10286/PoseidonNext/poseidonnext.api/",
+  "customerApiUrl": "https://localhost:9446/",
+  "homeUrl": "/",
+  "userProfileUrl": "https://INBEN10286/PoseidonNext/poseidon-user-profile",
+  "userInfoApiUrl": "https://INBEN10286/PoseidonNext/kognifaiidp/api/v1/Users/",
+  "environment": "dev",
+  "entitlementsApiUrl": "https://INBEN10286/PoseidonNext/entitlements.api",
+  "logging": {
+    "logLevel": 4,
+    "bufferingTime": 5000
+  },
+  "formatting": {
+    "dateFormat": "MMMM dd YYYY",
+    "timeFormat": "HH:mm:ss",
+    "formatDate": {
+      "long": "dddd, d MMMM yyyy",
+      "longForMoment": "dddd, D MMMM YYYY",
+      "short": "dd/MM/yyyy",
+      "shortForMoment": "DD/MM/YYYY"
     },
-    "poseidonApiUrl": "https://localhost:9443/",
-    "customerApiUrl": "https://localhost:9446/",
-    "homeUrl": "/",
-    "userProfileUrl": "http://localhost:8080/poseidon-user-profile",
-    "logging": {
-      "logLevel": 4,
-      "bufferingTime": 5000,
-      "endpoint": "bulkEntry"
+    "formatTime": {
+      "long": "HH:mm:ss",
+      "short": "HH:mm"
     },
-    "formatting": {
-      "dateFormat": "MMMM dd YYYY",
-      "timeFormat": "HH:mm:ss",
-      "formatDate": {
-        "long": "dddd, d MMMM yyyy",
-        "longForMoment": "dddd, D MMMM YYYY",
-        "short": "dd/MM/yyyy",
-        "shortForMoment": "DD/MM/YYYY"
-      },
-      "formatTime": {
-        "long": "HH:mm:ss",
-        "short": "HH:mm"
-      },
-      "formatNumber": {
-        "decimalSeparator": ".",
-        "groupSeparator": " ",
-        "decimalDigits": 2,
-        "decimalGorup": 3,
-        "leadingZeros": 1
+    "formatNumber": {
+      "decimalSeparator": ".",
+      "groupSeparator": " ",
+      "decimalDigits": 2,
+      "decimalGorup": 3,
+      "leadingZeros": 1
+    }
+  },
+  "logoTooltip": "Poseidon Next",
+  "supportMenuItemHyperlink": "",
+  "apiCollection": {
+    "VesselConfiguration": {
+      "domainURL": "https://hgstest.kognif.ai",
+      "path": "/VesselConfig/api/VesselConfiguration",
+      "endpoints": {
+        "GetVessels": "/GetVessels",
+        "UpdateVessel": "/UpdateVessel?vesselId=",
+        "GetConnectivityControlTransaction": "/GetConnectivityControlTransaction",
+        "MissionsOnVessel": "/MissionsOnVessel",
+        "FDSUploadStatus": "/FDSUploadStatus",
+        "FDSHistoricalUploadStatus": "/FDSHistoricalUploadStatus",
+        "GetWhitelistedCountries": "/GetWhitelistedCountries",
+        "GetOperatorCountryList": "/GetOperatorCountryList",
+        "RemoveWhitelistCountry": "/RemoveWhitelistCountry",
+        "MarkCountryWhitelist": "/MarkCountryWhitelist",
+        "GetGroupCountries": "/GetGroupCountries",
+        "DeleteCountryGroup": "/DeleteCountryGroup",
+        "AddCountryGroup": "/AddCountryGroup",
+        "RemoveGroupCountry": "/RemoveGroupCountry",
+        "AddCountriesToGroup": "/AddCountriesToGroup"
       }
     },
-    "logoTooltip": "Poseidon Next",
-    "supportMenuItemHyperlink": ""
-  }
-  
+    "VesselLinkQuality": {
+      "domainURL": "https://hgs.kognif.ai",
+      "path": "/VesselLinkQualityAPIService/API/VesselLinkQuality",
+      "endpoints": {
+        "GetVesselLinks": "/GetVesselLinks",
+        "AISPositionData": "/AISPositionData",
+        "GetSNMPData": "/GetSNMPData",
+        "LatencyTrendData": "/LatencyTrendData"
+      }
+    },
+    "OperationalPlan": {
+      "domainURL": "https://hgstest.kognif.ai",
+      "path": "/OperationPlanAPI/api/OperationalPlan",
+      "endpoints": {
+        "GetOperationPlans": "/GetOperationPlans",
+        "UpdateOperationPlan": "/UpdateOperationPlan",
+        "SearchOperationPlan": "/SearchOperationPlan",
+        "GetSubOperations": "/GetSubOperations",
+        "UpdateSubOperation": "/UpdateSubOperation",
+        "GetRobotSystemDetails": "/GetRobotSystemDetails",
+        "AddRobotSystemDetail": "/AddRobotSystemDetail",
+        "DeleteRobotSystem": "/DeleteRobotSystem",
+        "GetOperationTypes": "/GetOperationTypes",
+        "AddOperationType": "/AddOperationType",
+        "DeleteOperationType": "/DeleteOperationType",
+        "GetOperators": "/GetOperators",
+        "AddOperator": "/AddOperator",
+        "DeleteOperator": "/DeleteOperator",
+        "GetVesselDetails": "/GetVesselDetails",
+        "AddVesselDetail": "/AddVesselDetail",
+        "DeleteVessel": "/DeleteVessel",
+        "FilterPortLocations": "/FilterPortLocations",
+        "GetOperationPlanById":"/GetOperationPlanById?planId=",
+        "GetTimeZone": [
+          {
+            "name": "GMT",
+            "offset": "GMT"
+          },
+          {
+            "name": "GMT+1:00",
+            "offset": "GMT+1:00"
+          },
+          {
+            "name": "GMT+2:00",
+            "offset": "GMT+2:00"
+          },
+          {
+            "name": "GMT+3:00",
+            "offset": "GMT+3:00"
+          },
+          {
+            "name": "GMT+3:30",
+            "offset": "GMT+3:30"
+          },
+          {
+            "name": "GMT+4:00",
+            "offset": "GMT+4:00"
+          },
+          {
+            "name": "GMT+5:00",
+            "offset": "GMT+5:00"
+          },
+          {
+            "name": "GMT+5:30",
+            "offset": "GMT+5:30"
+          },
+          {
+            "name": "GMT+6:00",
+            "offset": "GMT+6:00"
+          },
+          {
+            "name": "GMT+7:00",
+            "offset": "GMT+7:00"
+          },
+          {
+            "name": "GMT+8:00",
+            "offset": "GMT+8:00"
+          },
+          {
+            "name": "GMT+9:00",
+            "offset": "GMT+9:00"
+          },
+          {
+            "name": "GMT+9:30",
+            "offset": "GMT+9:30"
+          },
+          {
+            "name": "GMT+10:00",
+            "offset": "GMT+10:00"
+          },
+          {
+            "name": "GMT+11:00",
+            "offset": "GMT+11:00"
+          },
+          {
+            "name": "GMT+12:00",
+            "offset": "GMT+12:00"
+          },
+          {
+            "name": "GMT-11:00",
+            "offset": "GMT-11:00"
+          },
+          {
+            "name": "GMT-10:00",
+            "offset": "GMT-10:00"
+          },
+          {
+            "name": "GMT-9:00",
+            "offset": "GMT-9:00"
+          },
+          {
+            "name": "GMT-8:00",
+            "offset": "GMT-8:00"
+          },
+          {
+            "name": "GMT-7:00",
+            "offset": "GMT-7:00"
+          },
+          {
+            "name": "GMT-6:00",
+            "offset": "GMT-6:00"
+          },
+          {
+            "name": "GMT-5:00",
+            "offset": "GMT-5:00"
+          },
+          {
+            "name": "GMT-4:00",
+            "offset": "GMT-4:00"
+          },
+          {
+            "name": "GMT-3:30",
+            "offset": "GMT-3:30"
+          },
+          {
+            "name": "GMT-3:00",
+            "offset": "GMT-3:00"
+          },
+          {
+            "name": "GMT-1:00",
+            "offset": "GMT-1:00"
+          }
+        ],
+        "GetPlanStatus": [
+          {
+            "name": "New",
+            "value": "New"
+          },
+          {
+            "name": "Completed",
+            "value": "Completed"
+          },
+          {
+            "name": "Cancelled",
+            "value": "Cancelled"
+          },
+          {
+            "name": "Deleted",
+            "value": "Deleted"
+          }
+        ]
+      }
+    },
+    "theme": {
+      "mapDayTileLayer": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      "mapDuskTileLayer": "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
+      "defaultZoomLevel": 19
+    }
+  },
+  "filemanagerLink":"https://hsstest.kognif.ai/poseidonnext/kognifai-file-manager-client/",
+  "galoreApiUrl": "https://hgs.kognif.ai/galoreapi/",
+  "galoreSignalRUrl": "https://hgs.kognif.ai/galoreapi/"
+}
