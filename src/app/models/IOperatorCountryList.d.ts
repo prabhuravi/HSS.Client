@@ -1,7 +1,6 @@
 interface IOperatorCountryList{
-    CountryId: number,
-    CountryName: string,
-    Zone: string,
+    Id: number,
+    Name: string,
     IsCountryGroup?: boolean,
     GroupCountryIDs?: object
 }

@@ -8,7 +8,7 @@
                         *</small>
                     <div class="kx-mt--tiny">
                         <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselId'"
-                            [options]="vesselList" optionLabel="VesselName" filter="true" (onChange)="getMissionList()">
+                            [options]="vesselList" optionLabel="Name" filter="true" (onChange)="getMissionList()">
                         </p-dropdown>
                     </div>
                 </div>
@@ -77,26 +77,26 @@
         <div class="kx-p--medium">
             <div class="kx-row">
                 <div class="kx-col">
-                    <strong>Total Files : </strong>{{vesselHistoricalUploadStatus.FilesOnVessel}}
+                    <strong>Total Files : </strong>{{vesselHistoricalUploadStatus.TotalFilesOnVessel}}
                 </div>
                 <div class="kx-col">
-                    <strong>Uploaded Files : </strong>{{vesselHistoricalUploadStatus.FilesUploaded}}
+                    <strong>Uploaded Files : </strong>{{vesselHistoricalUploadStatus.TotalFilesUploaded}}
                 </div>
                 <div class="kx-col">
-                    <strong>Not Uploaded Files : </strong>{{vesselHistoricalUploadStatus.FilesNotUploaded}}
+                    <strong>Not Uploaded Files : </strong>{{vesselHistoricalUploadStatus.TotalFilesNotUploaded}}
                 </div>
                 <div class="kx-col">
-                    <strong>In Progress Files : </strong>{{vesselHistoricalUploadStatus.FilesInProgress}}
+                    <strong>In Progress Files : </strong>{{vesselHistoricalUploadStatus.TotalFilesInProgress}}
                 </div>
                 <div class="kx-col">
-                    <strong>Exclusion Count : </strong>{{vesselHistoricalUploadStatus.FilesExcluded}}
+                    <strong>Exclusion Count : </strong>{{vesselHistoricalUploadStatus.TotalFilesExcluded}}
                 </div>
             </div>
         </div>
     </div>
-    <div *ngIf="vesselHistoricalUploadStatus.filesUploadStatus.length > 0" class="kx-mt--small">
+    <div *ngIf="vesselHistoricalUploadStatus.FileOnVessels.length > 0" class="kx-mt--small">
         <p-table tableStyleClass="kx-table kx-table--outer-border" #tt
-            [value]="vesselHistoricalUploadStatus.filesUploadStatus" [columns]="cols" [paginator]="true"
+            [value]="vesselHistoricalUploadStatus.FileOnVessels" [columns]="cols" [paginator]="true"
             [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -171,5 +171,5 @@
             </ng-template>
         </p-table>
     </div>
-    <app-no-data [displayme]="vesselHistoricalUploadStatus.filesUploadStatus.length === 0"></app-no-data>
+    <app-no-data [displayme]="vesselHistoricalUploadStatus.FileOnVessels.length === 0"></app-no-data>
 </div>

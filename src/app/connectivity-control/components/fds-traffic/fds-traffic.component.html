@@ -6,7 +6,7 @@
                 <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
-                        <p-multiSelect [options]="vesselList" [formControlName]="'VesselIds'" optionLabel="VesselName">
+                        <p-multiSelect [options]="vesselList" [formControlName]="'VesselIds'" optionLabel="Name">
                         </p-multiSelect>
                     </div>
                 </div>
@@ -54,9 +54,23 @@
 </div>
 <app-load *ngIf="isFormSubmitted && !vesselHistoricalUploadStatusLoaded"></app-load>
 <div *ngIf="!isFormSubmitted && vesselHistoricalUploadStatusLoaded">
-    <div *ngIf="vesselHistoricalUploadStatus.filesUploadStatus.length > 0" class=" kx-mt--small">
+
+    <div class="kx-card kx-card--skin-default kx-mt--tiny">
+        <div class="kx-p--medium">
+            <div class="kx-row">
+                <div class="kx-col">
+                    <strong>Total Files : </strong>{{vesselHistoricalUploadStatus.TotalFileCount}}
+                </div>
+                <div class="kx-col">
+                    <strong>Total Files Size : </strong>{{vesselHistoricalUploadStatus.TotalFileSize}} MB
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="vesselHistoricalUploadStatus.FileLogs.length > 0" class=" kx-mt--small">
         <p-table tableStyleClass="kx-table kx-table--outer-border" #tt
-            [value]="vesselHistoricalUploadStatus.filesUploadStatus" [columns]="cols" [paginator]="true"
+            [value]="vesselHistoricalUploadStatus.FileLogs" [columns]="cols" [paginator]="true"
             [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -87,10 +101,10 @@
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="File Type"
                             style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'UploadStatus'" pInputText type="text"
+                        <!-- <input *ngSwitchCase="'UploadStatus'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Status"
                             style="width: 115px;margin-right:5px;"
-                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)"> -->
                     </th>
                 </tr>
             </ng-template>
@@ -98,18 +112,18 @@
                 <tr>
                     <td *ngFor="let col of columns" class="kx-p--base u--fontXSmall">
                         <div [ngSwitch]="col.field">
-                            <div *ngSwitchCase="'FileUploadedDate'">
+                            <!-- <div *ngSwitchCase="'FileUploadedDate'">
+                                <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
+                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
+                            </div> -->
+                            <div *ngSwitchCase="'Date'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
                                     {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
                             </div>
-                            <div *ngSwitchCase="'FileCreatedDate'">
+                            <!-- <div *ngSwitchCase="'FileModifiedDate'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
                                     {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
-                            </div>
-                            <div *ngSwitchCase="'FileModifiedDate'">
-                                <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
-                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
-                            </div>
+                            </div> -->
                             <div *ngSwitchCase="'Mission'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">{{rowData[col.field]}}
                                 </div>
@@ -131,5 +145,5 @@
             </ng-template>
         </p-table>
     </div>
-    <app-no-data [displayme]="vesselHistoricalUploadStatus.filesUploadStatus.length === 0"></app-no-data>
+    <app-no-data [displayme]="vesselHistoricalUploadStatus.FileLogs.length === 0"></app-no-data>
 </div>

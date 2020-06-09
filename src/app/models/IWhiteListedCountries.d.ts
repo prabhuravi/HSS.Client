@@ -1,9 +1,9 @@
 interface IWhiteListedCountries {
+    Id: number,
     VesselId: number,
-    CountryId: number,
-    CountryName: string,
-    Vessel: string,
+    CountryOrGroupId: number,
     IsCountryGroup: false,
-    MCCs: string,
-    Status: string
+    Name: string,
+    Status: string,
+    MCCs: string
 }

@@ -4,8 +4,8 @@
             <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                 <label class="kx-label" for="selectbox1">Select Vessel</label>
                 <div class="kx-mt--tiny">
-                    <p-dropdown styleClass="kx-p--tiny" [options]="vesselList" [(ngModel)]="activeVessel"
-                        optionLabel="VesselName" filter="true" (onChange)="loadWhitelistedCountries()"></p-dropdown>
+                    <p-dropdown styleClass="kx-p--tiny" [options]="vessels" [(ngModel)]="activeVessel"
+                        optionLabel="Name" filter="true" (onChange)="loadWhitelistedCountries()"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
@@ -13,14 +13,14 @@
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="operatorCountryList"
                         placeholder="Select a Country/Group to Whitelist" [(ngModel)]="activeOperatorCountry"
-                        optionLabel="CountryName" filter="true"></p-dropdown>
+                        optionLabel="Name" filter="true"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                 <button (click)="markCountryWhitelist()" [disabled]="disableActivity || activeOperatorCountry === null"
                     class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m">
                     <span class="kx-btn__inner">
-                        <span class="kx-btn__txt">Whitelist for {{activeVessel.VesselName}}</span>
+                        <span class="kx-btn__txt">Whitelist for {{activeVessel.Name}}</span>
                     </span>
                 </button>
             </div>
@@ -39,7 +39,7 @@
     <app-load *ngIf="isDataLoading"></app-load>
     <div *ngIf="!isDataLoading">
         <small *ngIf="whiteListedCountries.length > 0">Below countries/groups are already white listed for
-            {{activeVessel.VesselName}} to upload data:</small>
+            {{activeVessel.Name}} to upload data:</small>
         <p-table *ngIf="whiteListedCountries.length > 0" tableStyleClass="kx-table kx-table--outer-border"
             [value]="whiteListedCountries" [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount"
             autoLayout="true" #tt>
@@ -56,7 +56,7 @@
                 </tr>
                 <tr>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                        <input *ngSwitchCase="'CountryName'" pInputText type="text"
+                        <input *ngSwitchCase="'Name'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small"
                             placeholder="Type to filter Country / Group"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
@@ -118,7 +118,7 @@
                             <label class="kx-label" for="selectbox1">Select Group</label>
                             <div class="kx-mt--tiny">
                                 <p-dropdown styleClass="u--fullWidth" [options]="groupList" [(ngModel)]="activeGroup"
-                                    optionLabel="CountryName" filter="true" placeholder="Select Group"
+                                    optionLabel="Name" filter="true" placeholder="Select Group"
                                     (onChange)="getOperatorCountryList();loadGroupCountries()">
                                 </p-dropdown>
                             </div>
@@ -156,14 +156,14 @@
                 </div>
                 <div class="kx-col kx-col--12 kx-col--9@tab-m kx-col--6@mob-m kx-pl--small@mob-m kx-pl--tiny">
                     <div class="kx-card kx-card--skin-default kx-p--medium">
-                        <p-pickList [source]="operatorCountryList" [target]="groupCountryList"
+                        <p-pickList [source]="countryList" [target]="groupCountryList"
                             sourceHeader="Operating Countries" targetHeader="Group Countries" [responsive]="true"
-                            filterBy="CountryName" dragdrop="true" sourceFilterPlaceholder="Search by Country Name"
+                            filterBy="Name" dragdrop="true" sourceFilterPlaceholder="Search by Country Name"
                             targetFilterPlaceholder="Search by Country Name" [sourceStyle]="{'height':'300px'}"
                             [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortCountries()"
                             (onMoveToSource)="sortCountries()">
                             <ng-template let-country pTemplate="item">
-                                <div class="u--picklistItem">{{country.CountryName}}</div>
+                                <div class="u--picklistItem">{{country.Name}}</div>
                             </ng-template>
                         </p-pickList>
                         <button (click)="updateGroupCountries()" [disabled]="disableActivity || activeGroup === null"

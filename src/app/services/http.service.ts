@@ -78,9 +78,17 @@ export class HttpService {
       catchError(this.handleError.bind(this))
     );
   }
+
   putData(requestData: any): Observable<any> {
     requestData.data.EnabledBy = this.username;
     return this.http.put(requestData.endPoint, requestData.data).pipe(
+      retry(2),
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  deleteData(requestData: any): Observable<any> {
+    return this.http.delete(requestData.endPoint).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
     );

@@ -63,6 +63,41 @@
         "AddCountriesToGroup": "/AddCountriesToGroup"
       }
     },
+    "ConnectivityControl": {
+      "domainURL": "https://localhost:5001/api",
+      "path": "/ConnectivityControl",
+      "endpoints": {
+        "GetVessels": "",
+        "UpdateVessel": "",
+        "GetConnectivityControlTransaction": "/TransactionHistory"
+      }
+    },
+    "WhiteList": {
+      "domainURL": "https://localhost:5001/api",
+      "path": "/WhiteList",
+      "endpoints": {
+        "GetVessels": "/GetVessels",
+        "GetWhitelistedCountries": "",
+        "GetOperatorCountryList": "/CountryOperator",
+        "RemoveWhitelistCountry": "",
+        "MarkCountryWhitelist": "",
+        "GetGroupCountries": "/CountryGroup",
+        "DeleteCountryGroup": "/CountryGroup/Remove",
+        "AddCountryGroup": "/CountryGroup/Add",
+        "RemoveGroupCountry": "/CountryGroup/DeleteCountry",
+        "AddCountriesToGroup": "/CountryGroup/AddCountries"
+      }
+    },
+    "FileUploadStatus": {
+      "domainURL": "https://localhost:5001/api",
+      "path": "/FileUploadStatus", 
+      "endpoints": {
+        "MissionsOnVessel": "/MissionByVessel",
+        "FDSDefaultUploadStatus": "/Logs",
+        "FDSUploadStatus": "/Status/ByFilters",
+        "FDSHistoricalUploadStatus": "/Logs/ByFilters"
+      }
+    },
     "VesselLinkQuality": {
       "domainURL": "https://localhost:5001",
       "path": "/ConnectivityMonitoring",
@@ -95,7 +130,7 @@
         "AddVesselDetail": "/AddVesselDetail",
         "DeleteVessel": "/DeleteVessel",
         "FilterPortLocations": "/FilterPortLocations",
-        "GetOperationPlanById":"/GetOperationPlanById?planId=",
+        "GetOperationPlanById": "/GetOperationPlanById?planId=",
         "GetTimeZone": [
           {
             "name": "GMT",
@@ -232,7 +267,7 @@
       "defaultZoomLevel": 19
     }
   },
-  "filemanagerLink":"https://localhost/poseidonnext/kognifai-file-manager-client/",
+  "filemanagerLink": "https://localhost/poseidonnext/kognifai-file-manager-client/",
   "galoreApiUrl": "https://hsstest.kognif.ai/galoreapi/",
   "galoreSignalRUrl": "https://hsstest.kognif.ai/galoreapi/"
 }
