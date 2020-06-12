@@ -41,28 +41,8 @@
   },
   "logoTooltip": "Poseidon Next",
   "supportMenuItemHyperlink": "",
+
   "apiCollection": {
-    "VesselConfiguration": {
-      "domainURL": "https://hgstest.kognif.ai",
-      "path": "/VesselConfig/api/VesselConfiguration",
-      "endpoints": {
-        "GetVessels": "/GetVessels",
-        "UpdateVessel": "/UpdateVessel?vesselId=",
-        "GetConnectivityControlTransaction": "/GetConnectivityControlTransaction",
-        "MissionsOnVessel": "/MissionsOnVessel",
-        "FDSUploadStatus": "/FDSUploadStatus",
-        "FDSHistoricalUploadStatus": "/FDSHistoricalUploadStatus",
-        "GetWhitelistedCountries": "/GetWhitelistedCountries",
-        "GetOperatorCountryList": "/GetOperatorCountryList",
-        "RemoveWhitelistCountry": "/RemoveWhitelistCountry",
-        "MarkCountryWhitelist": "/MarkCountryWhitelist",
-        "GetGroupCountries": "/GetGroupCountries",
-        "DeleteCountryGroup": "/DeleteCountryGroup",
-        "AddCountryGroup": "/AddCountryGroup",
-        "RemoveGroupCountry": "/RemoveGroupCountry",
-        "AddCountriesToGroup": "/AddCountriesToGroup"
-      }
-    },
     "ConnectivityControl": {
       "domainURL": "https://localhost:5001/api",
       "path": "/ConnectivityControl",
@@ -98,7 +78,7 @@
         "FDSHistoricalUploadStatus": "/Logs/ByFilters"
       }
     },
-    "VesselLinkQuality": {
+    "ConnectivityMonitoring": {
       "domainURL": "https://localhost:5001",
       "path": "/ConnectivityMonitoring",
       "endpoints": {
@@ -304,6 +284,7 @@
       "defaultZoomLevel": 19
     }
   },
+  
   "filemanagerLink": "https://localhost/poseidonnext/kognifai-file-manager-client/",
   "galoreApiUrl": "https://hsstest.kognif.ai/galoreapi/",
   "galoreSignalRUrl": "https://hsstest.kognif.ai/galoreapi/"

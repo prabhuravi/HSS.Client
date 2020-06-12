@@ -8,16 +8,10 @@ import { Configuration } from '../configuration';
   providedIn: 'root'
 })
 export class ConnectivityControlService {
-
-  vesselConfigurationConfig: any;
-  vesselConfigurationConfigPath: string;
-
   connectivityControlConfigCollection: any;
   connectivityControlApiUrl: string;
-
   whitelistConfigCollection: any;
   whitelistApiUrl: string;
-
   fileUploadStatusConfigCollection: any;
   fileUploadStatusApiUrl: string;
 
@@ -25,15 +19,10 @@ export class ConnectivityControlService {
     private http: HttpService,
     public configurationService: ConfigurationService<Configuration>
   ) {
-    this.vesselConfigurationConfig = this.configurationService.config.apiCollection.VesselConfiguration;
-    this.vesselConfigurationConfigPath = `${this.vesselConfigurationConfig.domainURL}${this.vesselConfigurationConfig.path}`;
-
     this.connectivityControlConfigCollection = this.configurationService.config.apiCollection.ConnectivityControl;
     this.connectivityControlApiUrl = `${this.connectivityControlConfigCollection.domainURL}${this.connectivityControlConfigCollection.path}`;
-
     this.whitelistConfigCollection = this.configurationService.config.apiCollection.WhiteList;
     this.whitelistApiUrl = `${this.whitelistConfigCollection.domainURL}${this.whitelistConfigCollection.path}`;
-
     this.fileUploadStatusConfigCollection = this.configurationService.config.apiCollection.FileUploadStatus;
     this.fileUploadStatusApiUrl = `${this.fileUploadStatusConfigCollection.domainURL}${this.fileUploadStatusConfigCollection.path}`;
   }
