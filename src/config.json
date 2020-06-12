@@ -90,7 +90,7 @@
     },
     "FileUploadStatus": {
       "domainURL": "https://localhost:5001/api",
-      "path": "/FileUploadStatus", 
+      "path": "/FileUploadStatus",
       "endpoints": {
         "MissionsOnVessel": "/MissionByVessel",
         "FDSDefaultUploadStatus": "/Logs",
@@ -109,157 +109,194 @@
       }
     },
     "OperationalPlan": {
-      "domainURL": "https://hgstest.kognif.ai",
-      "path": "/OperationPlanAPI/api/OperationalPlan",
-      "endpoints": {
-        "GetOperationPlans": "/GetOperationPlans",
-        "UpdateOperationPlan": "/UpdateOperationPlan",
-        "SearchOperationPlan": "/SearchOperationPlan",
-        "GetSubOperations": "/GetSubOperations",
-        "UpdateSubOperation": "/UpdateSubOperation",
-        "GetRobotSystemDetails": "/GetRobotSystemDetails",
-        "AddRobotSystemDetail": "/AddRobotSystemDetail",
-        "DeleteRobotSystem": "/DeleteRobotSystem",
-        "GetOperationTypes": "/GetOperationTypes",
-        "AddOperationType": "/AddOperationType",
-        "DeleteOperationType": "/DeleteOperationType",
-        "GetOperators": "/GetOperators",
-        "AddOperator": "/AddOperator",
-        "DeleteOperator": "/DeleteOperator",
-        "GetVesselDetails": "/GetVesselDetails",
-        "AddVesselDetail": "/AddVesselDetail",
-        "DeleteVessel": "/DeleteVessel",
-        "FilterPortLocations": "/FilterPortLocations",
-        "GetOperationPlanById": "/GetOperationPlanById?planId=",
-        "GetTimeZone": [
-          {
-            "name": "GMT",
-            "offset": "GMT"
-          },
-          {
-            "name": "GMT+1:00",
-            "offset": "GMT+1:00"
-          },
-          {
-            "name": "GMT+2:00",
-            "offset": "GMT+2:00"
-          },
-          {
-            "name": "GMT+3:00",
-            "offset": "GMT+3:00"
-          },
-          {
-            "name": "GMT+3:30",
-            "offset": "GMT+3:30"
-          },
-          {
-            "name": "GMT+4:00",
-            "offset": "GMT+4:00"
-          },
-          {
-            "name": "GMT+5:00",
-            "offset": "GMT+5:00"
-          },
-          {
-            "name": "GMT+5:30",
-            "offset": "GMT+5:30"
-          },
-          {
-            "name": "GMT+6:00",
-            "offset": "GMT+6:00"
-          },
-          {
-            "name": "GMT+7:00",
-            "offset": "GMT+7:00"
-          },
-          {
-            "name": "GMT+8:00",
-            "offset": "GMT+8:00"
-          },
-          {
-            "name": "GMT+9:00",
-            "offset": "GMT+9:00"
-          },
-          {
-            "name": "GMT+9:30",
-            "offset": "GMT+9:30"
-          },
-          {
-            "name": "GMT+10:00",
-            "offset": "GMT+10:00"
-          },
-          {
-            "name": "GMT+11:00",
-            "offset": "GMT+11:00"
-          },
-          {
-            "name": "GMT+12:00",
-            "offset": "GMT+12:00"
-          },
-          {
-            "name": "GMT-11:00",
-            "offset": "GMT-11:00"
-          },
-          {
-            "name": "GMT-10:00",
-            "offset": "GMT-10:00"
-          },
-          {
-            "name": "GMT-9:00",
-            "offset": "GMT-9:00"
-          },
-          {
-            "name": "GMT-8:00",
-            "offset": "GMT-8:00"
-          },
-          {
-            "name": "GMT-7:00",
-            "offset": "GMT-7:00"
-          },
-          {
-            "name": "GMT-6:00",
-            "offset": "GMT-6:00"
-          },
-          {
-            "name": "GMT-5:00",
-            "offset": "GMT-5:00"
-          },
-          {
-            "name": "GMT-4:00",
-            "offset": "GMT-4:00"
-          },
-          {
-            "name": "GMT-3:30",
-            "offset": "GMT-3:30"
-          },
-          {
-            "name": "GMT-3:00",
-            "offset": "GMT-3:00"
-          },
-          {
-            "name": "GMT-1:00",
-            "offset": "GMT-1:00"
-          }
-        ],
-        "GetPlanStatus": [
-          {
-            "name": "New",
-            "value": "New"
-          },
-          {
-            "name": "Completed",
-            "value": "Completed"
-          },
-          {
-            "name": "Cancelled",
-            "value": "Cancelled"
-          },
-          {
-            "name": "Deleted",
-            "value": "Deleted"
-          }
-        ]
-      }
+      "domainURL": "https://localhost:5001/api",
+      "OperationPlan": {
+        "path": "/OperationalPlan",
+        "endpoints": {
+          "GetOperationPlans": "",
+          "GetSubOperations": "/GetSubOperationsByPlan",
+          "SearchOperationPlan": "/ByFiliters",
+          "AddOperationPlan": "",
+          "UpdateOperationPlan": "",
+          "CompleteOperationPlan": "/Complete",
+          "AddSubOperationPlan": "/SubOperation",
+          "UpdateSubOperationPlan": "/SubOperation",
+          "CompleteSubOperationPlan": "/SubOperation/Complete",
+          "GetOperationPlanById": ""
+        }
+      },
+      "Vessel": {
+        "path": "/Vessel",
+        "endpoints": {
+          "GetVesselDetails": "",
+          "GetActiveVesselDetails": "/ActiveMapped",
+          "AddVesselDetail": "",
+          "UpdateVesselDetail": "",
+          "UpsertVesselDetail": "/Upsert/MappedVessel",
+          "DeleteVessel": ""
+        }
+      },
+      "OperationType": {
+        "path": "/OperationType",
+        "endpoints": {
+          "GetOperationTypes": "",
+          "AddOperationType": "",
+          "UpdateOperationType": "",
+          "DeleteOperationType": ""
+        }
+      },
+      "Operator": {
+        "path": "/Operator",
+        "endpoints": {
+          "GetOperators": "",
+          "AddOperator": "",
+          "UpdateOperator": "",
+          "DeleteOperator": ""
+        }
+      },
+      "Robot": {
+        "path": "/Robot",
+        "endpoints": {
+          "GetRobotSystemDetails": "",
+          "AddRobotSystemDetail": "",
+          "UpdateRobotSystemDetail": "",
+          "DeleteRobotSystem": ""
+        }
+      },
+      "PortLocation": {
+        "path": "/PortLocation",
+        "endpoints": {
+          "FilterPortLocations": "/FilterByLocation"
+        }
+      },
+      "GetTimeZone": [
+        {
+          "name": "GMT",
+          "offset": "GMT"
+        },
+        {
+          "name": "GMT+1:00",
+          "offset": "GMT+1:00"
+        },
+        {
+          "name": "GMT+2:00",
+          "offset": "GMT+2:00"
+        },
+        {
+          "name": "GMT+3:00",
+          "offset": "GMT+3:00"
+        },
+        {
+          "name": "GMT+3:30",
+          "offset": "GMT+3:30"
+        },
+        {
+          "name": "GMT+4:00",
+          "offset": "GMT+4:00"
+        },
+        {
+          "name": "GMT+5:00",
+          "offset": "GMT+5:00"
+        },
+        {
+          "name": "GMT+5:30",
+          "offset": "GMT+5:30"
+        },
+        {
+          "name": "GMT+6:00",
+          "offset": "GMT+6:00"
+        },
+        {
+          "name": "GMT+7:00",
+          "offset": "GMT+7:00"
+        },
+        {
+          "name": "GMT+8:00",
+          "offset": "GMT+8:00"
+        },
+        {
+          "name": "GMT+9:00",
+          "offset": "GMT+9:00"
+        },
+        {
+          "name": "GMT+9:30",
+          "offset": "GMT+9:30"
+        },
+        {
+          "name": "GMT+10:00",
+          "offset": "GMT+10:00"
+        },
+        {
+          "name": "GMT+11:00",
+          "offset": "GMT+11:00"
+        },
+        {
+          "name": "GMT+12:00",
+          "offset": "GMT+12:00"
+        },
+        {
+          "name": "GMT-11:00",
+          "offset": "GMT-11:00"
+        },
+        {
+          "name": "GMT-10:00",
+          "offset": "GMT-10:00"
+        },
+        {
+          "name": "GMT-9:00",
+          "offset": "GMT-9:00"
+        },
+        {
+          "name": "GMT-8:00",
+          "offset": "GMT-8:00"
+        },
+        {
+          "name": "GMT-7:00",
+          "offset": "GMT-7:00"
+        },
+        {
+          "name": "GMT-6:00",
+          "offset": "GMT-6:00"
+        },
+        {
+          "name": "GMT-5:00",
+          "offset": "GMT-5:00"
+        },
+        {
+          "name": "GMT-4:00",
+          "offset": "GMT-4:00"
+        },
+        {
+          "name": "GMT-3:30",
+          "offset": "GMT-3:30"
+        },
+        {
+          "name": "GMT-3:00",
+          "offset": "GMT-3:00"
+        },
+        {
+          "name": "GMT-1:00",
+          "offset": "GMT-1:00"
+        }
+      ],
+      "GetPlanStatus": [
+        {
+          "name": "New",
+          "value": "New"
+        },
+        {
+          "name": "Completed",
+          "value": "Completed"
+        },
+        {
+          "name": "Cancelled",
+          "value": "Cancelled"
+        },
+        {
+          "name": "Deleted",
+          "value": "Deleted"
+        }
+      ]
     },
     "theme": {
       "mapDayTileLayer": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",

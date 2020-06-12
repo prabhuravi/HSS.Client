@@ -63,31 +63,15 @@ export class WhitelistCountriesComponent implements OnInit {
         Id: -1,
         Name: 'All Vessels',
         ImoNo: 0,
-        DisplayName: 'All Vessels'
+        DisplayName: 'All Vessels',
+        InstallationId: '',
+        LloydsVesselId: 0,
+        Owner: '',
+        Status: ''
       });
       this.activeVessel = this.vessels[0];
       this.loadWhitelistedCountries();
     });
-
-    // this.operationalPlanService.getVesselList().pipe(take(1)).subscribe((data) => {
-    //   this.vesselList = data;
-    //   this.vesselList.unshift({
-    //     Id: -1,
-    //     VesselName: 'All Vessels',
-    //     IpAddress: '',
-    //     EnabledTime: '',
-    //     TimeLimit: 0,
-    //     IsUploadEnabled: false,
-    //     RemainingMinutes: 0,
-    //     RemainingTime: '',
-    //     DisableTime: '',
-    //     EnabledBy: '',
-    //     NodeNumber: 0,
-    //     ImoNumber: 0
-    //   });
-    //   this.activeVessel = this.vesselList[0];
-    //   this.loadWhitelistedCountries();
-    // });
   }
 
   getOperatorCountryList(): void {
@@ -232,7 +216,6 @@ export class WhitelistCountriesComponent implements OnInit {
   }
   sortCountries(): void {
     for (let i = this.operatorCountryList.length - 1; i >= 0; i--) {
-      // tslint:disable-next-line:prefer-for-of
       for (let j = 0; j < this.groupCountryList.length; j++) {
         if (this.operatorCountryList[i] && (this.operatorCountryList[i].Id === this.groupCountryList[j].Id)) {
           this.operatorCountryList.splice(i, 1);

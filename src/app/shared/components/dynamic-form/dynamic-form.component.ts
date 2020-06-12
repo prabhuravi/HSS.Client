@@ -82,10 +82,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   }
 
   filterPortLocations(event) {
-    const query = {
-      PortName: event.query
-    };
-    this.operationalPlanService.filterPortLocations(query).subscribe((data) => {
+    this.operationalPlanService.filterPortLocations(event.query).subscribe((data) => {
       this.portLocations = data;
     });
   }

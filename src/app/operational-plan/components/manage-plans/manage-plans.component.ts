@@ -22,15 +22,15 @@ export class ManagePlansComponent implements OnInit {
     { field: 'OperationDate', sortfield: '', header: 'Operation Date', filterMatchMode: 'contains' },
     { field: 'ETADate', sortfield: '', header: 'Vessel ETA Date', filterMatchMode: 'contains' },
     { field: 'OperationLoc', sortfield: '', header: 'Location', filterMatchMode: 'contains' },
-    { field: 'OperationType', sortfield: '', header: 'Operation Type', filterMatchMode: 'contains' },
+    { field: 'OperationTypeName', sortfield: '', header: 'Operation Type', filterMatchMode: 'contains' },
     { field: 'OperationDes', sortfield: '', header: 'Description', filterMatchMode: 'contains' },
     { field: 'Status', sortfield: '', header: 'Status', filterMatchMode: 'contains' },
     { field: 'OperatorName', sortfield: '', header: 'Operator', filterMatchMode: 'contains' },
-    { field: 'Planner', sortfield: '', header: 'Planner', filterMatchMode: 'contains' },
+    { field: 'PlannerName', sortfield: '', header: 'Planner', filterMatchMode: 'contains' },
     { field: 'CreatedBy', sortfield: '', header: 'Created By', filterMatchMode: 'contains' },
     { field: 'LastUpdatedBy', sortfield: '', header: 'Updated By', filterMatchMode: 'contains' },
-    { field: 'LastUpdatedDate', sortfield: '', header: 'Updated Date', filterMatchMode: 'contains' },
-    { field: 'PlanId', sortfield: '', header: 'Action', filterMatchMode: 'contains' }
+    { field: 'ModifiedDate', sortfield: '', header: 'Updated Date', filterMatchMode: 'contains' },
+    { field: 'Id', sortfield: '', header: 'Action', filterMatchMode: 'contains' }
   ];
   subOperationsList: ISubOperations[] = [];
   subOperationCols = [
@@ -40,8 +40,8 @@ export class ManagePlansComponent implements OnInit {
     { field: 'Status', sortfield: '', header: 'Status' },
     { field: 'CreatedBy', sortfield: '', header: 'Created By' },
     { field: 'LastUpdatedBy', sortfield: '', header: 'Updated By' },
-    { field: 'LastUpdatedDate', sortfield: '', header: 'Updated Date' },
-    { field: 'SubPlanId', sortfield: '', header: 'Action' }
+    { field: 'ModifiedDate', sortfield: '', header: 'Updated Date' },
+    { field: 'Id', sortfield: '', header: 'Action' }
   ];
   showLogs = false;
   isDataLoading: boolean;
@@ -62,17 +62,19 @@ export class ManagePlansComponent implements OnInit {
 
   getPlanList(): void {
     this.isDataLoading = true;
-    this.operationalPlanService.getOperationPlans({ showLogs: this.showLogs }).subscribe((data) => {
+    this.operationalPlanService.getOperationPlans().subscribe((data) => {
       this.isDataLoading = false;
       this.operationalPlansList = data;
+      console.log(this.operationalPlansList);
     });
   }
 
-  loadSubOperations(planData): void {
+  loadSubOperations(planId): void {
     this.isSubOperationDataLoading = true;
-    this.operationalPlanService.getSubOperations(planData).subscribe((data) => {
+    this.operationalPlanService.getSubOperations(planId).subscribe((data) => {
       this.isSubOperationDataLoading = false;
       this.subOperationsList = data;
+      console.log(this.subOperationsList);
     });
   }
 
@@ -84,36 +86,46 @@ export class ManagePlansComponent implements OnInit {
   }
 
   searchFormOnSubmit() {
+    const searchData = {
+      fromDate: this.form.value.OperationFromDate,
+      toDate: this.form.value.OperationToDate,
+      showLogs: this.showLogs,
+    };
     if (this.form.valid) {
-      this.isDataLoading = true;
-      this.form.value.showLogs = this.showLogs;
-      if (this.form.value.OperationFromDate instanceof Date) {
-        const OperationFromDate = moment(this.form.value.OperationFromDate).format().split('+');
-        this.form.value.OperationFromDate = `${OperationFromDate[0]}`;
+      // this.form.value.showLogs = this.showLogs;
+      if (searchData.fromDate instanceof Date) {
+        const OperationFromDate = moment(searchData.fromDate).format().split('+');
+        searchData.fromDate = `${OperationFromDate[0]}`;
       }
-      if (this.form.value.OperationToDate instanceof Date) {
-        const OperationToDate = moment(this.form.value.OperationToDate).format().split('+');
-        this.form.value.OperationToDate = `${OperationToDate[0]}`;
+      if (searchData.toDate instanceof Date) {
+        const OperationToDate = moment(searchData.toDate).format().split('+');
+        searchData.toDate = `${OperationToDate[0]}`;
       }
-      this.operationalPlanService.searchOperationPlans(this.form.value).subscribe((data) => {
-        this.isDataLoading = false;
-        this.operationalPlansList = data;
-      });
     }
+    else {
+      searchData.fromDate = '';
+      searchData.toDate = '';
+    }
+    this.isDataLoading = true;
+    this.operationalPlanService.searchOperationPlans(searchData).subscribe((data) => {
+      this.isDataLoading = false;
+      this.operationalPlansList = data;
+      console.log(this.operationalPlansList);
+    });
   }
-  completeOperation(rowData: any) {
-    rowData.Status = 'Completed';
-    rowData.Action = 'Edit';
-    this.operationalPlanService.updateOperationPlan(rowData).subscribe((data) => {
+
+  completeOperation(PlanId: number) {
+    this.operationalPlanService.completeOperationPlan(PlanId).subscribe((data) => {
       this.getPlanList();
     });
   }
-  completeSubOperation(rowData: any): void {
-    rowData.Status = 'Completed';
-    this.operationalPlanService.updateSubOperationPlan(rowData).subscribe((data) => {
+
+  completeSubOperation(SubPlanId: number): void {
+    this.operationalPlanService.completeSubOperationPlan(SubPlanId).subscribe((data) => {
       this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
     });
   }
+
   triggerToast(severity: string, summary: string, detail: string): void {
     this.messageService.add(
       {
@@ -122,5 +134,4 @@ export class ManagePlansComponent implements OnInit {
         detail
       });
   }
-
 }

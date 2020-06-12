@@ -14,13 +14,13 @@ export class RobotSystemComponent implements OnInit {
   robotsystemList: IRobotSystemDetails[] = [];
   formType = FormType;
   config = {
-    formTitle: 'Add Robot System',
+    formTitle: 'Add Hull Skater',
     formList: []
   };
   cols = [
-    { field: 'RobotSerialNumber', header: 'Robot Serial Number' },
-    { field: 'NodeNumber', header: 'Node Number' },
-    { field: 'IPAddress', header: 'Gateway Address' },
+    { field: 'SerialNumber', header: 'HullSkater Serial Number' },
+    { field: 'Name', header: 'Name' },
+    { field: 'Version', header: 'Version' },
     { field: 'Action', header: 'Action' }
   ];
   formValues: any;
@@ -40,6 +40,7 @@ export class RobotSystemComponent implements OnInit {
     this.loadData();
     this.constructForm();
   }
+
   loadData(): void {
     this.isDataLoading = true;
     this.operationalPlanService.getRobotSystemDetails().pipe(take(1)).subscribe((robotsystemData) => {
@@ -52,54 +53,38 @@ export class RobotSystemComponent implements OnInit {
     this.config.formList = [
       {
         type: FormType.text,
-        label: 'Robot Serial Number',
+        label: 'HullSkater Serial Number',
         value: '',
-        key: 'RobotSerialNumber',
-        validators: ['required'],
-        disabled: false
-      },
-      {
-        type: FormType.number,
-        label: 'Node Number',
-        value: '',
-        key: 'NodeNumber',
+        key: 'SerialNumber',
         validators: ['required'],
         disabled: false
       },
       {
         type: FormType.text,
-        label: 'Operational Gateway Address',
-        labelSmall: '(Only Valid IP Address)',
+        label: 'Name',
         value: '',
-        key: 'IPAddress',
-        validators: ['required', 'ipaddress'],
-        disabled: false,
-        ipaddress: true
-      },
-      {
-        type: FormType.checkbox,
-        label: 'Connectivity Control',
-        value: false,
-        key: 'ConnectivityControl',
-        validators: [],
+        key: 'Name',
+        validators: ['required'],
         disabled: false
       },
       {
-        type: FormType.checkbox,
-        label: 'Connectivity Monitoring',
-        value: false,
-        key: 'ConnectivityMonitoring',
-        validators: [],
+        type: FormType.text,
+        label: 'Version',
+        value: '',
+        key: 'Version',
+        validators: ['required'],
         disabled: false
       }
     ];
   }
+
   editData(data: IRobotSystemDetails): void {
-    this.activeId = data.RobotSystemId;
-    this.config.formTitle = 'Edit Robot System';
+    this.activeId = data.Id;
+    this.config.formTitle = 'Edit Hull Skater';
     this.formReset = false;
     this.formValues = data;
   }
+
   formSubmitted(data): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
@@ -108,36 +93,53 @@ export class RobotSystemComponent implements OnInit {
       }
     });
   }
+
   updateData(data): void {
-    if (this.activeId !== 0) {
-      data.RobotSystemId = this.activeId;
+    if (this.activeId !== 0) {  //Update
+      data.Id = this.activeId;
+      this.operationalPlanService.updateRobotSystemDetail(data.Id, data).subscribe((success) => {
+        this.triggerToast('success', 'Success Message', `Hull Skater Updated Successfully`);
+        this.formReset = new Boolean(true);
+        this.activeId = 0;
+        this.config.formTitle = 'Update Hull Skater';
+        this.formValues = null;
+        this.loadData();
+      });
     }
-    this.operationalPlanService.addRobotSystemDetail(data).subscribe((success) => {
-      this.triggerToast('success', 'Success Message', `Data ${(this.activeId !== 0) ? 'Updated' : 'Added'} Successfully`);
-      // tslint:disable-next-line:no-construct
+    else {  //Add
+      this.operationalPlanService.addRobotSystemDetail(data).subscribe((success) => {
+        this.triggerToast('success', 'Success Message', `Hull Skater Added Successfully`);
+        this.formReset = new Boolean(true);
+        this.activeId = 0;
+        this.config.formTitle = 'Add Hull Skater';
+        this.formValues = null;
+        this.loadData();
+      });
+    }
+  }
+
+  deleteData(id): void {
+    this.disableDeleteButton = true;
+    this.operationalPlanService.deleteRobotSystemDetail(id).subscribe((success) => {
+      this.disableDeleteButton = false;
+      this.triggerToast('success', 'Success Message', `Hull Skater Deleted Successfully`);
       this.formReset = new Boolean(true);
-      this.activeId = null;
-      this.config.formTitle = 'Add Operator';
+      this.activeId = 0;
+      this.config.formTitle = 'Add Hull Skater';
       this.formValues = null;
       this.loadData();
     });
   }
-  deleteData(data): void {
-    this.disableDeleteButton = true;
-    this.operationalPlanService.deleteRobotSystemDetail(data).subscribe((success) => {
-      this.disableDeleteButton = false;
-      this.triggerToast('success', 'Success Message', `Data Deleted Successfully`);
-      this.loadData();
-    });
-  }
-  deleteDataConfirm(data) {
+
+  deleteDataConfirm(id) {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
       accept: () => {
-        this.deleteData(data);
+        this.deleteData(id);
       }
     });
   }
+
   triggerToast(severity: string, summary: string, detail: string): void {
     this.messageService.add(
       {
@@ -146,5 +148,4 @@ export class RobotSystemComponent implements OnInit {
         detail
       });
   }
-
 }

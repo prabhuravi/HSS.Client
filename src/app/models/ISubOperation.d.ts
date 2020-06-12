@@ -1,5 +1,5 @@
 interface ISubOperations {
-    SubPlanId: number,
+    Id: number,
     PlanId: number,
     SubOperationDes: string,
     SubOperationStartTime: string,
@@ -9,5 +9,5 @@ interface ISubOperations {
     CreatedBy: string,
     CreatedDate: string,
     LastUpdatedBy: string,
-    LastUpdatedDate: string
+    ModifiedDate: string
 }

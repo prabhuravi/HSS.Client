@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
       route: '/operational-plan/vessel'
     },
     {
-      label: 'Add Robot System',
+      label: 'Add Hull Skater',
       route: '/operational-plan/robot-system'
     }
   ];

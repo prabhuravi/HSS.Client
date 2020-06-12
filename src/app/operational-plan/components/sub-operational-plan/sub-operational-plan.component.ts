@@ -12,25 +12,26 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./sub-operational-plan.component.scss']
 })
 export class SubOperationalPlanComponent implements OnInit {
-
   planStatusList: IPlanStatus[] = [];
+  planDetails: any;
   subOperationsList: ISubOperations[] = [];
   formType = FormType;
   config = {
     formTitle: 'Sub Operation',
     formList: []
   };
+
   subOperationCols = [
     { field: 'SubOperationStartTime', header: 'Start Time' },
     { field: 'SubOperationEndTime', header: 'End Time' },
     { field: 'SubOperationDes', header: 'Description' },
     { field: 'Status', header: 'Status' },
-    { field: 'Operator', header: 'Operator' },
+    { field: 'OperatorName', header: 'Operator' },
     { field: 'Action', header: 'Action' }
   ];
+
   isDataLoading: boolean;
   formValues: any = null;
-  planDetails: any;
   activeId = 0;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   allSubscription: Subscription[] = [];
@@ -55,12 +56,17 @@ export class SubOperationalPlanComponent implements OnInit {
       );
     }
   }
+
   loadData(): void {
     this.isDataLoading = true;
     this.operationalPlanService.getOperationPlanById(this.planId).pipe(take(1)).subscribe((data) => {
-      this.isDataLoading = false;
       this.planDetails = data;
       this.constructForm();
+      this.operationalPlanService.getSubOperations(this.planId).subscribe((data) => {
+        this.isDataLoading = false;
+        this.subOperationsList = data;
+      });
+
     });
   }
   constructForm(): void {
@@ -108,6 +114,7 @@ export class SubOperationalPlanComponent implements OnInit {
       }
     ];
   }
+
   formSubmitted(formData: any): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
@@ -116,34 +123,47 @@ export class SubOperationalPlanComponent implements OnInit {
       }
     });
   }
+
   editData(data: any): void {
-    this.activeId = data.SubPlanId;
+    this.activeId = data.Id;
     data.Status = this.planStatusList.find((e) => e.name === data.Status).value;
     data.SubOperationStartTime = new Date(data.SubOperationStartTime);
     data.SubOperationEndTime = new Date(data.SubOperationEndTime);
     this.formReset = false;
     this.formValues = data;
   }
+
   updateData(formData: any): void {
-    formData.PlanId = this.planDetails.PlanId;
+    formData.PlanId = this.planDetails.Id;
     if (this.activeId !== 0) {
-      formData.SubPlanId = this.activeId;
+      formData.Id = this.activeId;
       formData.Status = formData.Status.value;
     } else {
       formData.Status = 'New';
     }
-    this.operationalPlanService.updateSubOperationPlan(formData).subscribe((data) => {
-      // tslint:disable-next-line:no-construct
-      this.formReset = new Boolean(true);
-      this.activeId = null;
-      this.config.formTitle = 'Add Operator';
-      this.formValues = null;
-      this.loadData();
-    });
+
+    if (this.activeId !== 0) {
+      this.operationalPlanService.updateSubOperationPlan(formData.Id, formData).subscribe((data) => {
+        this.formReset = new Boolean(true);
+        this.activeId = null;
+        this.config.formTitle = 'Add Operator';
+        this.formValues = null;
+        this.loadData();
+      });
+    }
+    else {
+      this.operationalPlanService.addSubOperationPlan(formData).subscribe((data) => {
+        this.formReset = new Boolean(true);
+        this.activeId = null;
+        this.config.formTitle = 'Add Operator';
+        this.formValues = null;
+        this.loadData();
+      });
+    }
   }
+
   completeSubOperation(rowData: any): void {
-    rowData.Status = 'Completed';
-    this.operationalPlanService.updateSubOperationPlan(rowData).subscribe((data) => {
+    this.operationalPlanService.completeSubOperationPlan(rowData.Id).subscribe((data) => {
       this.loadData();
     });
   }

@@ -4,7 +4,7 @@
             <div class="kx-col kx-col--12 kx-col--6@ltp-s" style="padding: 0;">
                 <div style="padding: 2rem 2rem 0 0;float:right;">
                     <label class="kx-selector kx-selector__switch">
-                        <input type="checkbox" name="ShowLogs" [(ngModel)]="showLogs" (ngModelChange)="getPlanList()" />
+                        <input type="checkbox" name="ShowLogs" [(ngModel)]="showLogs" (ngModelChange)="searchFormOnSubmit()" />
                         <div class="kx-selector__indicator"></div>
                         <!-- {{form.ShowLogs | json}} -->
                         <span *ngIf="!showLogs" class="label-text">Hide Logs</span>
@@ -64,7 +64,7 @@
     <div class="kx-col">
         <app-load *ngIf="isDataLoading"></app-load>
         <p-table *ngIf="!isDataLoading && operationalPlansList.length > 0" #tt [value]="operationalPlansList"
-            [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" dataKey="PlanId"
+            [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" dataKey="Id"
             rowExpandMode="single" tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -94,7 +94,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
                 <tr>
-                    <td (click)="loadSubOperations(rowData)" class="kx-p--small">
+                    <td (click)="loadSubOperations(rowData.Id)" class="kx-p--small">
                         <a href="#" [pRowToggler]="rowData">
                             <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
                         </a>
@@ -107,15 +107,15 @@
                             <div *ngSwitchCase="'ETADate'">
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
-                            <div *ngSwitchCase="'LastUpdatedDate'">
+                            <div *ngSwitchCase="'ModifiedDate'">
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
-                            <div *ngSwitchCase="'PlanId'" class="u--withEllipsis" style="width: 100px;">
+                            <div *ngSwitchCase="'Id'" class="u--withEllipsis" style="width: 100px;">
                                 <div class="kx-btngroup kx-flex kx-flex-wrap kx-btngroup--spacing" role="group"
                                     aria-label="Aria label example">
                                     <a class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                         aria-label="Edit Operational Plan" title="Edit Operational Plan"
-                                        [routerLink]="['plan', 'edit', rowData.PlanId]">
+                                        [routerLink]="['plan', 'edit', rowData.Id]">
                                         <span class="kx-btn__inner">
                                             <i class="kx-icon kx-icon--size-moderate">
                                                 <svg focusable="false">
@@ -128,7 +128,7 @@
                                     </a>
                                     <a class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                         aria-label="Copy Operational Plan" title="Copy Operational Plan"
-                                        [routerLink]="['plan', 'copy', rowData.PlanId]">
+                                        [routerLink]="['plan', 'copy', rowData.Id]">
                                         <span class="kx-btn__inner">
                                             <i class="kx-icon kx-icon--size-moderate">
                                                 <svg focusable="false">
@@ -142,7 +142,7 @@
                                     <button [disabled]="rowData.Status !== 'New'"
                                         class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                         aria-label="Complete Operational Plan" title="Complete Operational Plan"
-                                        (click)="completeOperation(rowData)">
+                                        (click)="completeOperation(rowData.Id)">
                                         <span class="kx-btn__inner">
                                             <i class="kx-icon kx-icon--size-moderate">
                                                 <svg focusable="false">
@@ -155,7 +155,7 @@
                                     </button>
                                     <a class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                         aria-label="Add Sub Operational Plan" title="Add Sub Operational Plan"
-                                        [routerLink]="['sub-operational-plan', rowData.PlanId]">
+                                        [routerLink]="['sub-operational-plan', rowData.Id]">
                                         <span class="kx-btn__inner">
                                             <i class="kx-icon kx-icon--size-moderate">
                                                 <svg focusable="false">
@@ -206,14 +206,14 @@
                             <div *ngSwitchCase="'SubOperationEndTime'">
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
-                            <div *ngSwitchCase="'LastUpdatedDate'">
+                            <div *ngSwitchCase="'ModifiedDate'">
                                 {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                             </div>
-                            <div *ngSwitchCase="'SubPlanId'">
+                            <div *ngSwitchCase="'Id'">
                                 <button [disabled]="rowData.Status !== 'New'"
                                     class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                     aria-label="Complete Sub Operational Plan" title="Complete Sub Operational Plan"
-                                    (click)="completeSubOperation(rowData)">
+                                    (click)="completeSubOperation(rowData.Id)">
                                     <span class="kx-btn__inner">
                                         <i class="kx-icon kx-icon--size-moderate">
                                             <svg focusable="false">

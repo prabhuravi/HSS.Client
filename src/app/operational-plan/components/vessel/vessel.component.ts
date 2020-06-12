@@ -11,15 +11,15 @@ import { take } from 'rxjs/operators';
 })
 export class VesselComponent implements OnInit {
 
-  vesselList: IVesselList[] = [];
+  vesselList: IVessel[] = [];
   formType = FormType;
   config = {
     formTitle: 'Add Vessel',
     formList: []
   };
   cols = [
-    { field: 'VesselName', header: 'Vessel Name' },
-    { field: 'ImoNumber', header: 'IMO Number' },
+    { field: 'Name', header: 'Vessel Name' },
+    { field: 'ImoNo', header: 'IMO Number' },
     { field: 'Action', header: 'Action' }
   ];
   formValues: any;
@@ -39,6 +39,7 @@ export class VesselComponent implements OnInit {
     this.loadData();
     this.constructForm();
   }
+
   loadData(): void {
     this.isDataLoading = true;
     this.operationalPlanService.getVesselList().subscribe((data) => {
@@ -52,7 +53,7 @@ export class VesselComponent implements OnInit {
         type: FormType.text,
         label: 'Vessel Name',
         value: '',
-        key: 'VesselName',
+        key: 'Name',
         validators: ['required'],
         disabled: false
       },
@@ -60,18 +61,20 @@ export class VesselComponent implements OnInit {
         type: FormType.number,
         label: 'IMO Number',
         value: '',
-        key: 'ImoNumber',
+        key: 'ImoNo',
         validators: ['required'],
         disabled: false
       }
     ];
   }
-  editData(data: IVesselList): void {
+
+  editData(data: IVessel): void {
     this.activeId = data.Id;
     this.config.formTitle = 'Edit Vessel';
     this.formReset = false;
     this.formValues = data;
   }
+
   formSubmitted(data): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
@@ -80,36 +83,63 @@ export class VesselComponent implements OnInit {
       }
     });
   }
+
   updateData(data): void {
+    const formData = {  // Take more input from UI later
+      Id: this.activeId ,
+      ImoNo: data.ImoNo,
+      Name: data.Name,
+      DisplayName: data.Name,
+      Owner: '',
+      Status: 'Active',
+      InstallationId: '',
+      LloydsVesselId: 0,
+    };
+    console.log(formData);
     if (this.activeId !== 0) {
-      data.Id = this.activeId;
+      this.operationalPlanService.updateVessel(formData.Id, formData).subscribe((success) => {
+        this.triggerToast('success', 'Success Message', `Vessel Updated Successfully`);
+        this.formReset = new Boolean(true);
+        this.activeId = 0;
+        this.config.formTitle = 'Update Vessel';
+        this.formValues = null;
+        this.loadData();
+      });
     }
-    this.operationalPlanService.addVessel(data).subscribe((success) => {
-      this.triggerToast('success', 'Success Message', `Data ${(this.activeId !== 0) ? 'Updated' : 'Added'} Successfully`);
-      // tslint:disable-next-line:no-construct
+    else {
+      this.operationalPlanService.addVessel(formData).subscribe((success) => {
+        this.triggerToast('success', 'Success Message', `Vessel Added Successfully`);
+        this.formReset = new Boolean(true);
+        this.activeId = 0;
+        this.config.formTitle = 'Add Vessel';
+        this.formValues = null;
+        this.loadData();
+      });
+    }
+  }
+
+  deleteData(id): void {
+    this.disableDeleteButton = true;
+    this.operationalPlanService.deleteVessel(id).subscribe((success) => {
+      this.disableDeleteButton = false;
+      this.triggerToast('success', 'Success Message', `Vessel Deleted Successfully`);
       this.formReset = new Boolean(true);
-      this.activeId = null;
-      this.config.formTitle = 'Add Operator';
+      this.activeId = 0;
+      this.config.formTitle = 'Add Vessel';
       this.formValues = null;
       this.loadData();
     });
   }
-  deleteData(data): void {
-    this.disableDeleteButton = true;
-    this.operationalPlanService.deleteVessel(data).subscribe((success) => {
-      this.disableDeleteButton = false;
-      this.triggerToast('success', 'Success Message', `Data Deleted Successfully`);
-      this.loadData();
-    });
-  }
-  deleteDataConfirm(data) {
+
+  deleteDataConfirm(id) {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
       accept: () => {
-        this.deleteData(data);
+        this.deleteData(id);
       }
     });
   }
+
   triggerToast(severity: string, summary: string, detail: string): void {
     this.messageService.add(
       {
