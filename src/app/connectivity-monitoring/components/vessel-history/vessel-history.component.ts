@@ -39,6 +39,8 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   cachedVesselDetails: IVesselLinks;
   VesselDataSubscription: Subscription;
   selectedVesselNodeNumber: string;
+  viewFullChart: boolean;
+  viewFullMap: boolean;
 
   currentState = 'initial';
   showMap: boolean = false;
@@ -63,8 +65,6 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   toDate: Date;
   allVessels: any;
   selectedVessel: any;
-  viewFullChart = false;
-  viewFullMap = false;
   constructor(
     public connectivityMonitoringService: ConnectivityMonitoringService,
     public route: ActivatedRoute,

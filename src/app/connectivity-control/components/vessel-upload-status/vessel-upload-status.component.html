@@ -48,7 +48,8 @@
                             readonlyInput="true" placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                             [minDate]="form.value.FromDate" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
                             [formControlName]="'ToDate'" [monthNavigator]="true" [yearNavigator]="true"
-                            yearRange="1950:2050" selectOtherMonths="true">
+                            yearRange="1950:2050" selectOtherMonths="true"
+                            (onSelect)="form.controls.FromDate.setValue(form.controls.ToDate.value)">
                         </p-calendar>
                     </div>
                 </div>

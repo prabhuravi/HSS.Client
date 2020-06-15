@@ -19,7 +19,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() viewFullChart: boolean;
 
   showChart: boolean = false;
-  private NodeSuscription: Subscription;
+  NodeSuscription: Subscription;
   latencyChart: any;
   latencyData: any;
   currentTheme: string;

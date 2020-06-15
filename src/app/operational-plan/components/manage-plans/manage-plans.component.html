@@ -6,7 +6,6 @@
                     <label class="kx-selector kx-selector__switch">
                         <input type="checkbox" name="ShowLogs" [(ngModel)]="showLogs" (ngModelChange)="searchFormOnSubmit()" />
                         <div class="kx-selector__indicator"></div>
-                        <!-- {{form.ShowLogs | json}} -->
                         <span *ngIf="!showLogs" class="label-text">Hide Logs</span>
                         <span *ngIf="showLogs" class="label-text">Show Logs</span>
                     </label>
