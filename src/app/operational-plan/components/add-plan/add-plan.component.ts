@@ -37,7 +37,7 @@ export class AddPlanComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
     this.operationalPlanService.getOperationalData().pipe(take(1)).subscribe((data) => {
       this.vesselList = data[0];
       this.robotsystemList = data[1];
@@ -216,7 +216,8 @@ export class AddPlanComponent implements OnInit {
       OperatorId: formData.OperatorId.Id,
       Comments: formData.Comments,
       OperationDate: formData.OperationDate,
-      ETADate: formData.ETADate
+      ETADate: formData.ETADate,
+      CreatedBy: formData.CreatedBy
     };
     if ((this.planId)) {
       planData.PlanId = (this.planId);

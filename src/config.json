@@ -1,6 +1,6 @@
 {
   "authenticationEndpoint": "https://localhost/PoseidonNext/kognifaiidp/",
-  "authenticationClientId": "projecty",
+  "authenticationClientId": "hss-modules",
   "applicationId": "509c836e-987e-4b6c-9492-ff0fff2f18f4",
   "authenticationScope": "openid profile",
   "fetchOpenIdConfigFromPoseidonNextAPI": false,
@@ -79,12 +79,12 @@
       }
     },
     "ConnectivityMonitoring": {
-      "domainURL": "https://localhost:5001",
-      "path": "/ConnectivityMonitoring",
+      "domainURL": "https://hgs.kognif.ai",
+      "path": "/VesselLinkQualityAPIService/API/VesselLinkQuality",
       "endpoints": {
         "GetVesselLinks": "/GetVesselLinks",
         "AISPositionData": "/AISPositionData",
-        "GetSNMPData": "/GetSNMPDataByNodeNumber",
+        "GetSNMPData": "/GetSNMPData",
         "LatencyTrendData": "/LatencyTrendData"
       }
     },
