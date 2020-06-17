@@ -159,4 +159,8 @@ export class ConnectivityControlService {
     };
     return this.http.postData(requestData);
   }
+
+  getLoggedInUser() {
+    return this.http.getLoggedInUser();
+}
 }

@@ -146,7 +146,8 @@
       "PortLocation": {
         "path": "/PortLocation",
         "endpoints": {
-          "FilterPortLocations": "/FilterByLocation"
+          "FilterPortLocations": "/FilterByLocation",
+          "GetPortLocationById": "/GetPortById"
         }
       },
       "GetTimeZone": [

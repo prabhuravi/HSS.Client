@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormType } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -29,12 +29,13 @@ export class AddPlanComponent implements OnInit {
   allSubscription: Subscription[] = [];
   planId = 0;
   planType = 'Add';
+  planCreatedBy = '';
 
   constructor(
     private operationalPlanService: OperationalPlanService,
     private router: Router,
     private confirmationService: ConfirmationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, public messageService: MessageService
   ) { }
 
   ngOnInit(): void { 
@@ -48,25 +49,29 @@ export class AddPlanComponent implements OnInit {
       this.isDataLoading = false;
       this.allSubscription.push(
         this.route.params.subscribe((params) => {
-          // tslint:disable-next-line:radix
           this.planId = parseInt(params.id);
           this.planType = params.type;
           this.config.formTitle = `${this.planType} Plan`;
           if (this.planId) {
             this.operationalPlanService.getOperationPlanById(this.planId).pipe(take(1)).subscribe((planData) => {
-              this.formValues = planData;
-              this.formValues.VesselId = this.vesselList.find((e) => e.Id === this.formValues.VesselId);
-              this.formValues.HullSkaterId = this.robotsystemList.find((e) => e.Id === this.formValues.HullSkaterId);
-              this.formValues.OperationDate = new Date(this.formValues.OperationDate);
-              this.formValues.ETADate = new Date(this.formValues.ETADate);
-              this.formValues.LocalTimeZone = this.timeZoneList.find((e) => e.offset === this.formValues.LocalTimeZone);
-              this.formValues.OperationTypeId = this.operationtypeList.find((e) => e.Id === this.formValues.OperationTypeId);
-              this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
-              this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
-              this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
-              this.formValues.PortId = {
-                Id: this.formValues.PortId
-              };
+              this.operationalPlanService.getPortLocationById(planData.PortId).pipe(take(1)).subscribe((portData) => {
+                this.planCreatedBy = planData.CreatedBy;
+                this.formValues = planData;
+                this.formValues.VesselId = this.vesselList.find((e) => e.Id === this.formValues.VesselId);
+                this.formValues.HullSkaterId = this.robotsystemList.find((e) => e.Id === this.formValues.HullSkaterId);
+                this.formValues.OperationDate = new Date(this.formValues.OperationDate);
+                this.formValues.ETADate = new Date(this.formValues.ETADate);
+                this.formValues.LocalTimeZone = this.timeZoneList.find((e) => e.offset === this.formValues.LocalTimeZone);
+                this.formValues.OperationTypeId = this.operationtypeList.find((e) => e.Id === this.formValues.OperationTypeId);
+                this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
+                this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
+                this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
+                this.formValues.PortId = {
+                  Id: portData.Id,
+                  PortName: portData.PortName
+                 };
+              });
+
             });
           }
           this.constructForm();
@@ -217,7 +222,7 @@ export class AddPlanComponent implements OnInit {
       Comments: formData.Comments,
       OperationDate: formData.OperationDate,
       ETADate: formData.ETADate,
-      CreatedBy: formData.CreatedBy
+      CreatedBy: this.planCreatedBy
     };
     if ((this.planId)) {
       planData.PlanId = (this.planId);
@@ -225,11 +230,13 @@ export class AddPlanComponent implements OnInit {
     console.log(planData);
     if (action === 'Add' || action === 'Copy') {
       this.operationalPlanService.addOperationPlan(planData).subscribe((data) => {
+        this.triggerToast('success', 'Success Message', `Operation Plan Added Successfully`);
         this.router.navigateByUrl('/operational-plan');
       });
     }
     else {  // Update
       this.operationalPlanService.updateOperationPlan(this.planId, planData).subscribe((data) => {
+        this.triggerToast('success', 'Success Message', `Operation Plan Updated Successfully`);
         this.router.navigateByUrl('/operational-plan');
       });
     }
@@ -239,6 +246,15 @@ export class AddPlanComponent implements OnInit {
   capitalize = (s) => {
     if (typeof s !== 'string') { return ''; }
     return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
   }
 
 }

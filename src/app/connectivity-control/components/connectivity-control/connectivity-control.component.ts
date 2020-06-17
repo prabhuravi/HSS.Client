@@ -28,6 +28,7 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   currentUTC: Date;
   dateTimeInterval = interval(60000);
   dateTimeIntervalSubscription: Subscription;
+  loggedInUser: string = '';
 
   constructor(
     public connectivityControlService: ConnectivityControlService
@@ -49,7 +50,9 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
       this.updateDisableCalendarDefaultTime();
     });
     this.loadData();
+    this.loggedInUser = this.connectivityControlService.getLoggedInUser();
   }
+
   ngOnDestroy(): void {
     if (this.dateTimeIntervalSubscription) {
       this.dateTimeIntervalSubscription.unsubscribe();
@@ -84,7 +87,7 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   }
   updateUploadStatus(data: IVesselList): void {
     this.isDataLoading = true;
-    data.EnabledBy = '';
+    data.EnabledBy = this.loggedInUser;
     if (data.DisableTime !== null) {
       data.DisableTime = new Date(data.DisableTime.toString());
       data.DisableTime = data.DisableTime.toString().slice(0, data.DisableTime.toString().indexOf('GMT')) + 'GMT';

@@ -66,7 +66,6 @@ export class SubOperationalPlanComponent implements OnInit {
         this.isDataLoading = false;
         this.subOperationsList = data;
       });
-
     });
   }
   constructForm(): void {
@@ -146,7 +145,7 @@ export class SubOperationalPlanComponent implements OnInit {
       this.operationalPlanService.updateSubOperationPlan(formData.Id, formData).subscribe((data) => {
         this.formReset = new Boolean(true);
         this.activeId = null;
-        this.config.formTitle = 'Add Operator';
+        this.config.formTitle = 'Edit Sub Operation Plan';
         this.formValues = null;
         this.loadData();
       });
@@ -155,7 +154,7 @@ export class SubOperationalPlanComponent implements OnInit {
       this.operationalPlanService.addSubOperationPlan(formData).subscribe((data) => {
         this.formReset = new Boolean(true);
         this.activeId = null;
-        this.config.formTitle = 'Add Operator';
+        this.config.formTitle = 'Add Sub Operation Plan';
         this.formValues = null;
         this.loadData();
       });

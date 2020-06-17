@@ -247,5 +247,13 @@ export class OperationalPlanService {
     };
     return this.http.getData(requestData);
   }
+
+  getPortLocationById(portId: string): Observable<any> {
+    const requestData = {
+      endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.GetPortLocationById}/${portId}`,
+    };
+    return this.http.getData(requestData);
+  }
+  
   
 }

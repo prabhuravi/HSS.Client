@@ -100,6 +100,10 @@ export class HttpService {
     });
   }
 
+  getLoggedInUser() {
+      return this.username;
+  }
+
   getLoggedInUserInfo(user: User): Observable<any> {
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
