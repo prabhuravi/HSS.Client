@@ -83,6 +83,14 @@ export class FdsTrafficComponent implements OnInit {
         FromDate: this.form.value.FromDate,
         ToDate: this.form.value.ToDate
       };
+      if(!filterData.FromDate)
+      {
+        filterData.FromDate = '';
+      }
+      if(!filterData.ToDate)
+      {
+        filterData.ToDate = '';
+      }
       if (filterData.FromDate instanceof Date) {
         const FromDate = moment(filterData.FromDate).format().split('+');
         filterData.FromDate = `${FromDate[0]}`;

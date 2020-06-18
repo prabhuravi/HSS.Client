@@ -95,7 +95,6 @@ export class VesselComponent implements OnInit {
       InstallationId: '',
       LloydsVesselId: 0,
     };
-    console.log(formData);
     if (this.activeId !== 0) {
       this.operationalPlanService.updateVessel(formData.Id, formData).subscribe((success) => {
         this.triggerToast('success', 'Success Message', `Vessel Updated Successfully`);

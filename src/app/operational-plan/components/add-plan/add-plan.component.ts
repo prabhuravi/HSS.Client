@@ -207,7 +207,6 @@ export class AddPlanComponent implements OnInit {
   }
 
   updateData(formData): void {
-    console.log(formData);
     let action = (this.planId) ? this.capitalize(this.planType) : 'Add';
     const planData: any = {
       Status: (this.planId) ? formData.Status.value : 'New',
@@ -227,7 +226,6 @@ export class AddPlanComponent implements OnInit {
     if ((this.planId)) {
       planData.PlanId = (this.planId);
     }
-    console.log(planData);
     if (action === 'Add' || action === 'Copy') {
       this.operationalPlanService.addOperationPlan(planData).subscribe((data) => {
         this.triggerToast('success', 'Success Message', `Operation Plan Added Successfully`);

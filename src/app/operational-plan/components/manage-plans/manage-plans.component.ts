@@ -65,7 +65,6 @@ export class ManagePlansComponent implements OnInit {
     this.operationalPlanService.getOperationPlans().subscribe((data) => {
       this.isDataLoading = false;
       this.operationalPlansList = data;
-      console.log(this.operationalPlansList);
     });
   }
 
@@ -74,7 +73,6 @@ export class ManagePlansComponent implements OnInit {
     this.operationalPlanService.getSubOperations(planId).subscribe((data) => {
       this.isSubOperationDataLoading = false;
       this.subOperationsList = data;
-      console.log(this.subOperationsList);
     });
   }
 
@@ -110,7 +108,6 @@ export class ManagePlansComponent implements OnInit {
     this.operationalPlanService.searchOperationPlans(searchData).subscribe((data) => {
       this.isDataLoading = false;
       this.operationalPlansList = data;
-      console.log(this.operationalPlansList);
     });
   }
 

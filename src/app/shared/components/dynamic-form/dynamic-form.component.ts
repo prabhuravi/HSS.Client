@@ -74,7 +74,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     return group;
   }
   onSubmit(): void {
-    console.log(this.form.valid);
     this.isFormSubmitted = true;
     if (this.form.valid) {
       this.formSubmitted.emit(this.form.value);

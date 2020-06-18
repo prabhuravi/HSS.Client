@@ -77,11 +77,8 @@ export class WhitelistCountriesComponent implements OnInit {
   getOperatorCountryList(): void {
     this.connectivityControlService.getOperatorCountryList().pipe(take(1)).subscribe((data) => {
       this.operatorCountryList = data;
-      console.log(this.operatorCountryList);
       this.countryList = this.operatorCountryList.filter((e) => !e.IsCountryGroup);
-      console.log(this.countryList);
       this.groupList = this.operatorCountryList.filter((e) => e.IsCountryGroup);
-      console.log(this.groupList);
       this.sortCountries();
     });
   }
@@ -91,7 +88,6 @@ export class WhitelistCountriesComponent implements OnInit {
     this.connectivityControlService.getWhiteListedCountries(this.activeVessel.Id).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       this.whiteListedCountries = data;
-      console.log(this.whiteListedCountries);
     });
   }
 
@@ -112,7 +108,6 @@ export class WhitelistCountriesComponent implements OnInit {
       IsCountryGroup: this.activeOperatorCountry.IsCountryGroup,
       GroupCountryIDs: this.activeOperatorCountry.GroupCountryIDs
     };
-    console.log(formData);
     this.connectivityControlService.markCountryWhitelist(formData).pipe(take(1)).subscribe((data) => {
       this.disableActivity = false;
       this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
@@ -133,7 +128,6 @@ export class WhitelistCountriesComponent implements OnInit {
     rowData.VesselId = this.activeVessel.Id;
     this.disableActivity = true;
     this.connectivityControlService.removeWhitelistCountry(rowData.Id).pipe(take(1)).subscribe((data) => {
-      console.log(data);
       this.disableActivity = false;
       this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
       this.loadWhitelistedCountries();
