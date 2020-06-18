@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { FormType, AppConstants } from '../../../app.constants';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -41,7 +41,8 @@ export class SubOperationalPlanComponent implements OnInit {
   constructor(
     private operationalPlanService: OperationalPlanService,
     private confirmationService: ConfirmationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router, public messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -123,9 +124,10 @@ export class SubOperationalPlanComponent implements OnInit {
     });
   }
 
-  editData(data: any): void {
+  editData(subPlanData: any): void {
+    const data = JSON.parse(JSON.stringify((subPlanData)));
     this.activeId = data.Id;
-    data.Status = this.planStatusList.find((e) => e.name === data.Status).value;
+    data.Status = this.planStatusList.find((e) => e.name === data.Status);
     data.SubOperationStartTime = new Date(data.SubOperationStartTime);
     data.SubOperationEndTime = new Date(data.SubOperationEndTime);
     this.formReset = false;
@@ -143,28 +145,48 @@ export class SubOperationalPlanComponent implements OnInit {
 
     if (this.activeId !== 0) {
       this.operationalPlanService.updateSubOperationPlan(formData.Id, formData).subscribe((data) => {
-        this.formReset = new Boolean(true);
-        this.activeId = null;
-        this.config.formTitle = 'Edit Sub Operation Plan';
-        this.formValues = null;
-        this.loadData();
+        this.triggerToast('success', 'Success Message', `Sub Operation Plan Updated Successfully`);
+        // this.formReset = new Boolean(true);
+        // this.activeId = null;
+        // this.config.formTitle = 'Edit Sub Operation Plan';
+        // this.formValues = null;
+        this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
+          this.router.navigate([`/operational-plan/sub-operational-plan/${this.planId}`]);
+        });
       });
     }
     else {
       this.operationalPlanService.addSubOperationPlan(formData).subscribe((data) => {
-        this.formReset = new Boolean(true);
-        this.activeId = null;
-        this.config.formTitle = 'Add Sub Operation Plan';
-        this.formValues = null;
-        this.loadData();
+        this.triggerToast('success', 'Success Message', `Sub Operation Plan Added Successfully`);
+        // this.formReset = new Boolean(true);
+        // this.activeId = null;
+        // this.config.formTitle = 'Add Sub Operation Plan';
+        // this.formValues = null;
+        this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
+          this.router.navigate([`/operational-plan/sub-operational-plan/${this.planId}`]);
+        });
       });
     }
+
   }
 
   completeSubOperation(rowData: any): void {
     this.operationalPlanService.completeSubOperationPlan(rowData.Id).subscribe((data) => {
-      this.loadData();
+      this.triggerToast('success', 'Success Message', `Sub Operation Plan Completed Successfully`);
+      this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
+        this.router.navigate([`/operational-plan/sub-operational-plan/${this.planId}`]);
+      });
+      // this.loadData();
     });
+  }
+
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
   }
 
 }

@@ -67,12 +67,12 @@ export class HttpService {
   }
 
   postData(requestData: any): Observable<any> {
-    if (requestData.data.EnabledBy) {
+    if (requestData.data) {
       requestData.data.EnabledBy = this.username;
+      requestData.data.CreatedBy = this.username;
+      requestData.data.LastUpdatedBy = this.username;
+      requestData.data.LastUpdatedDate = new Date();
     }
-    requestData.data.CreatedBy = this.username;
-    requestData.data.LastUpdatedBy = this.username;
-    requestData.data.LastUpdatedDate = new Date();
     return this.http.post(requestData.endPoint, requestData.data).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
@@ -80,7 +80,9 @@ export class HttpService {
   }
 
   putData(requestData: any): Observable<any> {
-    requestData.data.LastUpdatedBy = this.username;
+    if (requestData.data) {
+      requestData.data.LastUpdatedBy = this.username;
+    }
     return this.http.put(requestData.endPoint, requestData.data).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
@@ -101,7 +103,7 @@ export class HttpService {
   }
 
   getLoggedInUser() {
-      return this.username;
+    return this.username;
   }
 
   getLoggedInUserInfo(user: User): Observable<any> {
