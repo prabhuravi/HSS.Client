@@ -43,9 +43,9 @@ export class ConnectivityControlService {
     return this.http.putData(requestData);
   }
 
-  getConnectivityActionLog(connectivityId: number): Observable<IConnectivityActionLog[]> {
+  getConnectivityActionLog(vesselId: number): Observable<IConnectivityActionLog[]> {
     const requestData = {
-      endPoint: `${this.connectivityControlApiUrl}${this.connectivityControlConfigCollection.endpoints.GetConnectivityControlTransaction}/${connectivityId}`
+      endPoint: `${this.connectivityControlApiUrl}${this.connectivityControlConfigCollection.endpoints.GetConnectivityControlTransaction}/${vesselId}`
     };
     return this.http.getData(requestData);
   }

@@ -80,7 +80,7 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   loadVesselActivityLog(vesselDetail): void {
     this.activeVessel = vesselDetail;
     this.isActionLogDataLoading = true;
-    this.connectivityControlService.getConnectivityActionLog(this.activeVessel.Id).pipe(take(1)).subscribe((data) => {
+    this.connectivityControlService.getConnectivityActionLog(this.activeVessel.VesselId).pipe(take(1)).subscribe((data) => {
       this.isActionLogDataLoading = false;
       this.vesselConnectivityActionLogList = data;
     });
