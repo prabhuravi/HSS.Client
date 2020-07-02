@@ -15,7 +15,8 @@ export class VesselUploadStatusComponent implements OnInit {
 
   form: FormGroup;
   isFormSubmitted: boolean;
-  vesselList: IVesselList[] = [];
+  // vesselList: IVesselList[] = [];
+  vesselList: IVessel[] = [];
   missionList: IBasicDropdown[] = [];
   fromMissionList: IBasicDropdown[] = [];
   toMissionList: IBasicDropdown[] = [];
@@ -47,20 +48,18 @@ export class VesselUploadStatusComponent implements OnInit {
     this.loadVessels();
   }
   loadVessels(): void {
-    this.operationalPlanService.getVesselList().subscribe((data) => {
+    this.connectivityControlService.getVessels().subscribe((data) => {
       this.vesselListLoaded = true;
       this.vesselList = data;
       this.form = this.buildForm();
     });
   }
   getMissionList(): void {
-    let formData = {};
+    let vesselId;
     if (this.form && this.form.get) {
-      formData = {
-        VesselId: this.form.get('VesselId').value.Id
-      };
+      vesselId = this.form.get('VesselId').value.Id
     }
-    this.connectivityControlService.getMissionList(formData).pipe(take(1)).subscribe((data) => {
+    this.connectivityControlService.getMissionList(vesselId).pipe(take(1)).subscribe((data) => {
       this.missionList = [];
       data.forEach((e) => {
         const mission = {
@@ -110,22 +109,22 @@ export class VesselUploadStatusComponent implements OnInit {
     this.vesselHistoricalUploadStatus = null;
     this.isFormSubmitted = true;
     if (this.form.valid) {
-      const formData = {
+      const filterData = {
         VesselId: this.form.value.VesselId.Id,
-        FromMission: this.form.value.FromMission.value,
-        ToMission: this.form.value.ToMission.value,
+        FromMission: this.form.value.FromMission.value == undefined? '': this.form.value.FromMission.value,
+        ToMission: this.form.value.ToMission.value == undefined? '': this.form.value.ToMission.value,
         FromDate: this.form.value.FromDate,
         ToDate: this.form.value.ToDate
       };
-      if (formData.FromDate instanceof Date) {
-        const FromDate = moment(formData.FromDate).format().split('+');
-        formData.FromDate = `${FromDate[0]}`;
+      if (filterData.FromDate instanceof Date) {
+        const FromDate = moment(filterData.FromDate).format().split('+');
+        filterData.FromDate = `${FromDate[0]}`;
       }
-      if (formData.ToDate instanceof Date) {
-        const ToDate = moment(formData.ToDate).format().split('+');
-        formData.ToDate = `${ToDate[0]}`;
+      if (filterData.ToDate instanceof Date) {
+        const ToDate = moment(filterData.ToDate).format().split('+');
+        filterData.ToDate = `${ToDate[0]}`;
       }
-      this.connectivityControlService.getVesselUploadStatus(formData).pipe(take(1)).subscribe((data) => {
+      this.connectivityControlService.getVesselUploadStatus(filterData).pipe(take(1)).subscribe((data) => {
         this.isFormSubmitted = false;
         this.vesselHistoricalUploadStatus = data;
       });

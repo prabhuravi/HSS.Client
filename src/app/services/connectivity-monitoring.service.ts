@@ -15,40 +15,51 @@ export class ConnectivityMonitoringService {
   zoomChartSubject = new Subject();
   cachedVesselLatencyChart: ILatencyCacheData;
   nodeChangeSubject = new Subject();
-  vesselLinkQualityConfig: any;
-  vesselLinkQualityConfigPath: string;
+
+  connectivityMonitoringConfig: any;
+  connectivityMonitoringApiUrl: string;
 
   constructor(
     public http: HttpService,
     public configurationService: ConfigurationService<Configuration>
   ) {
-    this.vesselLinkQualityConfig = this.configurationService.config.apiCollection.VesselLinkQuality;
-    this.vesselLinkQualityConfigPath = `${this.vesselLinkQualityConfig.domainURL}${this.vesselLinkQualityConfig.path}`;
+    this.connectivityMonitoringConfig = this.configurationService.config.apiCollection.ConnectivityMonitoring;
+    this.connectivityMonitoringApiUrl = `${this.connectivityMonitoringConfig.domainURL}${this.connectivityMonitoringConfig.path}`;
   }
+
   getVesselLinks(): Observable<any> {
+
     const requestData = {
-      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.GetVesselLinks}`
+      endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.GetVesselLinks}`,
+      params: { }
     };
-    return this.http.getData(requestData);
+    return this.http.getDataV2(requestData);
   }
+
   setZoomChangeSubject(nodeNumber: any) {
     this.zoomChartSubject.next(nodeNumber);
   }
+
   getZoomChangeSubject() {
     return this.zoomChartSubject.asObservable();
   }
+
   setNodeChangeSubject(nodeNumber: number) {
     this.nodeChangeSubject.next(nodeNumber);
   }
+
   getNodeNumberSubject() {
     return this.nodeChangeSubject.asObservable();
   }
+
   setAllVesselLinks(IVesselLinks: IVesselLinks[]) {
     this.allVesselLinks = IVesselLinks;
   }
+
   getAllCachedResult() {
     return this.allVesselLinks;
   }
+
   getVesselLinksByNodeNumber(nodeNumber: number) {
     this.getVesselLinks().subscribe((data) => {
       this.allVesselLinks = data;
@@ -59,6 +70,7 @@ export class ConnectivityMonitoringService {
       this.vesselSubject.next(vessel[0]);
     });
   }
+
   getVesselNameByNodeNumber(nodeNumber) {
     if (this.allVesselLinks) {
       const vessel = this.allVesselLinks.filter((vessel1: IVesselLinks) => {
@@ -68,35 +80,49 @@ export class ConnectivityMonitoringService {
       return vessel[0].Name;
     }
   }
+
   getAISData(aisRequest?: AISRequest) {
     const a = { VesselName: 'Talisman', FromDate: '2020-03-30T11:46:23.000Z', ToDate: '2020-04-14T11:46:23.000Z' };
     aisRequest.VesselName = this.getVesselNameByNodeNumber(aisRequest.NodeNumber);
     const requestData = {
-      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.AISPositionData}`,
-      data: aisRequest
+      endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.AISPositionData}`,
+      params: {
+        vesselName: aisRequest.VesselName,
+        fromDate: aisRequest.FromDate,
+        toDate: aisRequest.ToDate }
     };
-    return this.http.postData(requestData);
+
+    return this.http.getDataV2(requestData);
   }
+
   getVesselSubject(): Observable<any> {
     return this.vesselSubject.asObservable();
   }
+
   returncacheVesselLatencyChart() {
     return this.cachedVesselLatencyChart;
   }
+
   setLatencyChartData(data: ILatencyCacheData) {
     this.cachedVesselLatencyChart = data;
   }
+
   getSnMPData(nodeNumber: number) {
     const requestData = {
-      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.GetSNMPData}/${nodeNumber}`
+      endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.GetSNMPData}/${nodeNumber}`,
+      params: { }
     };
-    return this.http.getData(requestData);
+    return this.http.getDataV2(requestData);
   }
+
   public getChartData(latencyRequest: LatencyRequest): Observable<any> {
     const requestData = {
-      endPoint: `${this.vesselLinkQualityConfigPath}${this.vesselLinkQualityConfig.endpoints.LatencyTrendData}`,
-      data: latencyRequest
+      endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.LatencyTrendData}`,
+      params: {
+        nodeNumber: latencyRequest.NodeNumber,
+        fromDate: latencyRequest.FromDate,
+        toDate: latencyRequest.ToDate }
     };
-    return this.http.postData(requestData);
+    return this.http.getDataV2(requestData);
   }
 }

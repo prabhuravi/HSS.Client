@@ -24,6 +24,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   latencyData: any;
   currentTheme: string;
   eventListner: any;
+  emptyLatencyData = false;
 
   tooltipBody: any;
   ngAfterViewInit() {
@@ -52,11 +53,15 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     });
   }
   getChartData(latencyRequest: LatencyRequest) {
+    this.emptyLatencyData = false;
     this.connectivityMonitoringService.getChartData(latencyRequest)
       .subscribe((data: any) => {
         this.showChart = true;
-        this.latencyData = data.Result;
-
+        this.latencyData = data;
+        if(this.latencyData.length < 1)
+        {
+          this.emptyLatencyData = true;
+        }
         try {
           google.charts.load('current', { packages: ['corechart'] });
           google.charts.setOnLoadCallback(() => {

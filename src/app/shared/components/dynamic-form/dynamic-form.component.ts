@@ -74,7 +74,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     return group;
   }
   onSubmit(): void {
-    console.log(this.form.valid);
     this.isFormSubmitted = true;
     if (this.form.valid) {
       this.formSubmitted.emit(this.form.value);
@@ -82,10 +81,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   }
 
   filterPortLocations(event) {
-    const query = {
-      PortName: event.query
-    };
-    this.operationalPlanService.filterPortLocations(query).subscribe((data) => {
+    this.operationalPlanService.filterPortLocations(event.query).subscribe((data) => {
       this.portLocations = data;
     });
   }

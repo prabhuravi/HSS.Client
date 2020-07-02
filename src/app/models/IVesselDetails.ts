@@ -1,5 +1,5 @@
 
-export interface IVesselDetails {
+export interface IVesselDetails {   // Change this to SNMPDataView
     VesselName: string;
     NodeNumber: number;
     Latitude: string;

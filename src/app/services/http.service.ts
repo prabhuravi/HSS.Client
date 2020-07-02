@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { AuthenticationService } from '@kognifai/poseidon-authenticationservice';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
@@ -35,6 +35,18 @@ export class HttpService {
     );
   }
 
+  getDataV2(requestData: any): Observable<any> {
+    return this.http.get(requestData.endPoint, {
+      params: new HttpParams({
+        fromObject: requestData.params
+      })
+    }
+    ).pipe(
+      retry(2),
+      catchError(this.handleError.bind(this))
+    );
+  }
+
   handleError(error) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
@@ -55,20 +67,30 @@ export class HttpService {
   }
 
   postData(requestData: any): Observable<any> {
-    if (requestData.data.EnabledBy) {
+    if (requestData.data) {
       requestData.data.EnabledBy = this.username;
+      requestData.data.CreatedBy = this.username;
+      requestData.data.LastUpdatedBy = this.username;
+      requestData.data.LastUpdatedDate = new Date();
     }
-    requestData.data.CreatedBy = this.username;
-    requestData.data.LastUpdatedBy = this.username;
-    requestData.data.LastUpdatedDate = new Date();
     return this.http.post(requestData.endPoint, requestData.data).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
     );
   }
+
   putData(requestData: any): Observable<any> {
-    requestData.data.EnabledBy = this.username;
+    if (requestData.data) {
+      requestData.data.LastUpdatedBy = this.username;
+    }
     return this.http.put(requestData.endPoint, requestData.data).pipe(
+      retry(2),
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  deleteData(requestData: any): Observable<any> {
+    return this.http.delete(requestData.endPoint).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
     );
@@ -78,6 +100,10 @@ export class HttpService {
     this.getLoggedInUserInfo(user).subscribe((userInfo: any) => {
       this.username = userInfo.username;
     });
+  }
+
+  getLoggedInUser() {
+    return this.username;
   }
 
   getLoggedInUserInfo(user: User): Observable<any> {

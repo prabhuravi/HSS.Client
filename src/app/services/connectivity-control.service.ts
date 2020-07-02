@@ -8,119 +8,159 @@ import { Configuration } from '../configuration';
   providedIn: 'root'
 })
 export class ConnectivityControlService {
-
-  vesselConfigurationConfig: any;
-  vesselConfigurationConfigPath: string;
+  connectivityControlConfigCollection: any;
+  connectivityControlApiUrl: string;
+  whitelistConfigCollection: any;
+  whitelistApiUrl: string;
+  fileUploadStatusConfigCollection: any;
+  fileUploadStatusApiUrl: string;
 
   constructor(
     private http: HttpService,
     public configurationService: ConfigurationService<Configuration>
   ) {
-    this.vesselConfigurationConfig = this.configurationService.config.apiCollection.VesselConfiguration;
-    this.vesselConfigurationConfigPath = `${this.vesselConfigurationConfig.domainURL}${this.vesselConfigurationConfig.path}`;
+    this.connectivityControlConfigCollection = this.configurationService.config.apiCollection.ConnectivityControl;
+    this.connectivityControlApiUrl = `${this.connectivityControlConfigCollection.domainURL}${this.connectivityControlConfigCollection.path}`;
+    this.whitelistConfigCollection = this.configurationService.config.apiCollection.WhiteList;
+    this.whitelistApiUrl = `${this.whitelistConfigCollection.domainURL}${this.whitelistConfigCollection.path}`;
+    this.fileUploadStatusConfigCollection = this.configurationService.config.apiCollection.FileUploadStatus;
+    this.fileUploadStatusApiUrl = `${this.fileUploadStatusConfigCollection.domainURL}${this.fileUploadStatusConfigCollection.path}`;
   }
 
+  // Connectivity Control
   getConnectivityData(): Observable<IConnectivityControl[]> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.GetVessels}`
+      endPoint: `${this.connectivityControlApiUrl}${this.connectivityControlConfigCollection.endpoints.GetVessels}`
     };
     return this.http.getData(requestData);
   }
+
   UpdateVessel(vesselData: IVesselList): Observable<boolean> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.UpdateVessel}${vesselData.Id}`,
+      endPoint: `${this.connectivityControlApiUrl}${this.connectivityControlConfigCollection.endpoints.UpdateVessel}/${vesselData.Id}`,
       data: vesselData
     };
     return this.http.putData(requestData);
   }
 
-  getConnectivityActionLog(connectivityId: number): Observable<IConnectivityActionLog[]> {
+  getConnectivityActionLog(vesselId: number): Observable<IConnectivityActionLog[]> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.GetConnectivityControlTransaction}/${connectivityId}`
+      endPoint: `${this.connectivityControlApiUrl}${this.connectivityControlConfigCollection.endpoints.GetConnectivityControlTransaction}/${vesselId}`
     };
     return this.http.getData(requestData);
   }
 
-  getMissionList(formData: any): Observable<number[]> {
+
+  // File Upload Status
+  getMissionList(vesselId: number): Observable<number[]> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.MissionsOnVessel}`,
-      data: formData
+      endPoint: `${this.fileUploadStatusApiUrl}${this.fileUploadStatusConfigCollection.endpoints.MissionsOnVessel}/${vesselId}`,
     };
-    return this.http.postData(requestData);
+    return this.http.getData(requestData);
   }
-  getVesselUploadStatus(formData: any): Observable<IVesselUploadStatus> {
+
+  getDefaultFileLogStatus(): Observable<IFileLoggingStatus> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.FDSUploadStatus}`,
-      data: formData
+      endPoint: `${this.fileUploadStatusApiUrl}${this.fileUploadStatusConfigCollection.endpoints.FDSDefaultUploadStatus}`,
     };
-    return this.http.postData(requestData);
+    return this.http.getData(requestData);
   }
-  getVesselHistoricalStatus(formData: any): Observable<IVesselUploadStatus> {
+
+  getVesselUploadStatus(filterData: any): Observable<IVesselUploadStatus> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.FDSHistoricalUploadStatus}`,
-      data: formData
+      endPoint: `${this.fileUploadStatusApiUrl}${this.fileUploadStatusConfigCollection.endpoints.FDSUploadStatus}`,
+      params: {
+        vesselId: filterData.VesselId,
+        fromDate: filterData.FromDate,
+        toDate: filterData.ToDate,
+        fromMission: filterData.FromMission,
+        toMission: filterData.ToMission
+      }
     };
-    return this.http.postData(requestData);
+    return this.http.getDataV2(requestData);
+  }
+
+  getVesselHistoricalStatus(filterData: any): Observable<IFileLoggingStatus> {
+    const requestData = {
+      endPoint: `${this.fileUploadStatusApiUrl}${this.fileUploadStatusConfigCollection.endpoints.FDSHistoricalUploadStatus}`,
+      params: {
+        vesselIds: filterData.VesselIds,
+        fromDate: filterData.FromDate,
+        toDate: filterData.ToDate,
+      }
+    };
+    return this.http.getDataV2(requestData);
+  }
+
+
+  //Whitelist
+  getVessels(): Observable<IVessel[]> {
+    const requestData = {
+      endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.GetVessels}`
+    };
+    return this.http.getData(requestData);
   }
 
   getWhiteListedCountries(vesselId: number): Observable<IWhiteListedCountries[]> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.GetWhitelistedCountries}/${vesselId}`
+      endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.GetWhitelistedCountries}/${vesselId}`
     };
     return this.http.getData(requestData);
   }
+
   getOperatorCountryList(): Observable<IOperatorCountryList[]> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.GetOperatorCountryList}`
+      endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.GetOperatorCountryList}`
     };
     return this.http.getData(requestData);
   }
-  removeWhitelistCountry(formData: IWhiteListedCountries): Observable<boolean> {
+
+  removeWhitelistCountry(id: number): Observable<boolean> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.RemoveWhitelistCountry}`,
-      data: formData
+      endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.RemoveWhitelistCountry}/${id}`
     };
-    return this.http.postData(requestData);
+    return this.http.deleteData(requestData);
   }
+
   markCountryWhitelist(formData: any): Observable<string> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.MarkCountryWhitelist}`,
+      endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.MarkCountryWhitelist}`,
       data: formData
     };
     return this.http.postData(requestData);
   }
+
   getGroupCountries(CountryId: number): Observable<IOperatorCountryList[]> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.GetGroupCountries}/${CountryId}`
+      endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.GetGroupCountries}/${CountryId}`
     };
     return this.http.getData(requestData);
   }
-  deleteCountryGroup(formData: any): Observable<boolean> {
+
+  deleteCountryGroup(groupId: number): Observable<boolean> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.DeleteCountryGroup}`,
-      data: formData
+      endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.DeleteCountryGroup}/${groupId}`,
     };
-    return this.http.postData(requestData);
+    return this.http.deleteData(requestData);
   }
+
   addCountryGroup(formData: any): Observable<string> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.AddCountryGroup}`,
+      endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.AddCountryGroup}`,
       data: formData
     };
     return this.http.postData(requestData);
   }
+
   addCountriesToGroup(formData: any): Observable<string> {
     const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.AddCountriesToGroup}`,
+      endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.AddCountriesToGroup}`,
       data: formData
     };
     return this.http.postData(requestData);
   }
-  removeGroupCountry(formData: any): Observable<boolean> {
-    const requestData = {
-      endPoint: `${this.vesselConfigurationConfigPath}${this.vesselConfigurationConfig.endpoints.RemoveGroupCountry}`,
-      data: formData
-    };
-    return this.http.postData(requestData);
-  }
+
+  getLoggedInUser() {
+    return this.http.getLoggedInUser();
+}
 }

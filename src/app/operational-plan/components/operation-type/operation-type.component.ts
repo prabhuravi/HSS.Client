@@ -37,6 +37,7 @@ export class OperationTypeComponent implements OnInit {
     this.loadData();
     this.constructForm();
   }
+
   loadData(): void {
     this.isDataLoading = true;
     this.operationalPlanService.getOperationTypes().pipe(take(1)).subscribe((operationtypeData) => {
@@ -44,6 +45,7 @@ export class OperationTypeComponent implements OnInit {
       this.operationtypeList = operationtypeData;
     });
   }
+
   constructForm() {
     this.config.formList = [
       {
@@ -56,12 +58,14 @@ export class OperationTypeComponent implements OnInit {
       }
     ];
   }
+
   editData(data: IOperationTypes): void {
     this.activeId = data.Id;
     this.config.formTitle = 'Edit Operation Type';
     this.formReset = false;
     this.formValues = data;
   }
+
   formSubmitted(data): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
@@ -70,36 +74,53 @@ export class OperationTypeComponent implements OnInit {
       }
     });
   }
+
   updateData(data): void {
-    if (this.activeId !== 0) {
+    if (this.activeId !== 0) { //Update
       data.Id = this.activeId;
+      this.operationalPlanService.updateOperationType(data.Id, data).subscribe((success) => {
+        this.triggerToast('success', 'Success Message', `Data Updated Successfully`);
+        this.formReset = new Boolean(true);
+        this.activeId = 0;
+        this.config.formTitle = 'Add Operation Type';
+        this.formValues = null;
+        this.loadData();
+      });
     }
-    this.operationalPlanService.addOperationType(data).subscribe((success) => {
-      this.triggerToast('success', 'Success Message', `Data ${(this.activeId !== 0) ? 'Updated' : 'Added'} Successfully`);
-      // tslint:disable-next-line:no-construct
+    else {  // Add
+      this.operationalPlanService.addOperationType(data).subscribe((success) => {
+        this.triggerToast('success', 'Success Message', `Data Added Successfully`);
+        this.formReset = new Boolean(true);
+        this.activeId = 0;
+        this.config.formTitle = 'Add Operation Type';
+        this.formValues = null;
+        this.loadData();
+      });
+    }
+  }
+
+  deleteData(id): void {
+    this.disableDeleteButton = true;
+    this.operationalPlanService.deleteOperationType(id).subscribe((success) => {
+      this.disableDeleteButton = false;
+      this.triggerToast('success', 'Success Message', `Data Deleted Successfully`);
       this.formReset = new Boolean(true);
-      this.activeId = null;
-      this.config.formTitle = 'Add Operator';
+      this.activeId = 0;
+      this.config.formTitle = 'Add Operation Type';
       this.formValues = null;
       this.loadData();
     });
   }
-  deleteData(data): void {
-    this.disableDeleteButton = true;
-    this.operationalPlanService.deleteOperationType(data).subscribe((success) => {
-      this.disableDeleteButton = false;
-      this.triggerToast('success', 'Success Message', `Data Deleted Successfully`);
-      this.loadData();
-    });
-  }
-  deleteDataConfirm(data) {
+
+  deleteDataConfirm(id) {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
       accept: () => {
-        this.deleteData(data);
+        this.deleteData(id);
       }
     });
   }
+
   triggerToast(severity: string, summary: string, detail: string): void {
     this.messageService.add(
       {

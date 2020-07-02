@@ -38,12 +38,12 @@ export class AppComponent implements OnInit, OnDestroy {
             new Sublocation('Connectivity Monitoring', 'connectivity-monitoring'),
             new Sublocation('Connectivity Control', 'vessel-configuration'),
             new Sublocation('Operational Plan', 'operational-plan'),
-            new Sublocation('File Manager', '', [], [], '', '', () => {
-                window.open(
-                    `${this.configurationService.config.filemanagerLink}`,
-                    '_blank' // <- This is what makes it open in a new window.
-                );
-            })
+            // new Sublocation('File Manager', '', [], [], '', '', () => {
+            //     window.open(
+            //         `${this.configurationService.config.filemanagerLink}`,
+            //         '_blank' // <- This is what makes it open in a new window.
+            //     );
+            // })
         ];
     }
 

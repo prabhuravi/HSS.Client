@@ -1,4 +1,4 @@
-interface IVesselList {
+interface IVesselList {   //Change this to ConnectivityControlView
     Id: number,
     VesselName: string,
     IpAddress: string,

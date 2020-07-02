@@ -67,7 +67,8 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.totalVessels.currentValue.length > 0) {
+    if(changes && changes.totalVessels && changes.totalVessels.currentValue && changes.totalVessels.currentValue.length>0)
+    {
       const grouped = _.groupBy(this.totalVessels, (vessel) => vessel.Status);
       this.setupChart();
     }
@@ -83,8 +84,8 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
     // define data
     const data = _.groupBy(this.totalVessels, (vessel) => vessel.Status);
     const dataset: any = [
-      { label: `Up ${data.Up.length}`, count: data.Up.length },
-      { label: `Down ${data.Down.length}`, count: data.Down.length }
+      { label: `Up ${data.Up ? data.Up.length :0 }`, count: data.Up ? data.Up.length :0 },
+      { label: `Down ${data.Down ? data.Down.length :0}`, count: data.Down ? data.Down.length :0}
     ];
 
     // a circle chart needs a radius

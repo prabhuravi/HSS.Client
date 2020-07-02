@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormType } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -13,7 +13,7 @@ import { take } from 'rxjs/operators';
 })
 export class AddPlanComponent implements OnInit {
 
-  vesselList: IVesselList[] = [];
+  vesselList: IVessel[] = [];
   robotsystemList: IRobotSystemDetails[] = [];
   operationtypeList: IOperationTypes[] = [];
   operatorList: IOperators[] = [];
@@ -29,15 +29,16 @@ export class AddPlanComponent implements OnInit {
   allSubscription: Subscription[] = [];
   planId = 0;
   planType = 'Add';
+  planCreatedBy = '';
 
   constructor(
     private operationalPlanService: OperationalPlanService,
     private router: Router,
     private confirmationService: ConfirmationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, public messageService: MessageService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
     this.operationalPlanService.getOperationalData().pipe(take(1)).subscribe((data) => {
       this.vesselList = data[0];
       this.robotsystemList = data[1];
@@ -48,25 +49,29 @@ export class AddPlanComponent implements OnInit {
       this.isDataLoading = false;
       this.allSubscription.push(
         this.route.params.subscribe((params) => {
-          // tslint:disable-next-line:radix
           this.planId = parseInt(params.id);
           this.planType = params.type;
           this.config.formTitle = `${this.planType} Plan`;
           if (this.planId) {
             this.operationalPlanService.getOperationPlanById(this.planId).pipe(take(1)).subscribe((planData) => {
-              this.formValues = planData;
-              this.formValues.VesselId = this.vesselList.find((e) => e.Id === this.formValues.VesselId);
-              this.formValues.RobotSystemId = this.robotsystemList.find((e) => e.RobotSerialNumber === this.formValues.RobotSerialNumber);
-              this.formValues.OperationDate = new Date(this.formValues.OperationDate);
-              this.formValues.ETADate = new Date(this.formValues.ETADate);
-              this.formValues.LocalTimeZone = this.timeZoneList.find((e) => e.offset === this.formValues.LocalTimeZone);
-              this.formValues.OperationTypeId = this.operationtypeList.find((e) => e.Id === this.formValues.OperationTypeId);
-              this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
-              this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
-              this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
-              this.formValues.OperationLoc = {
-                PortName: this.formValues.OperationLoc
-              };
+              this.operationalPlanService.getPortLocationById(planData.PortId).pipe(take(1)).subscribe((portData) => {
+                this.planCreatedBy = planData.CreatedBy;
+                this.formValues = planData;
+                this.formValues.VesselId = this.vesselList.find((e) => e.Id === this.formValues.VesselId);
+                this.formValues.HullSkaterId = this.robotsystemList.find((e) => e.Id === this.formValues.HullSkaterId);
+                this.formValues.OperationDate = new Date(this.formValues.OperationDate);
+                this.formValues.ETADate = new Date(this.formValues.ETADate);
+                this.formValues.LocalTimeZone = this.timeZoneList.find((e) => e.offset === this.formValues.LocalTimeZone);
+                this.formValues.OperationTypeId = this.operationtypeList.find((e) => e.Id === this.formValues.OperationTypeId);
+                this.formValues.Status = this.planStatusList.find((e) => e.name === this.formValues.Status);
+                this.formValues.PlannerId = this.operatorList.find((e) => e.Id === this.formValues.PlannerId);
+                this.formValues.OperatorId = this.operatorList.find((e) => e.Id === this.formValues.OperatorId);
+                this.formValues.PortId = {
+                  Id: portData.Id,
+                  PortName: portData.PortName
+                 };
+              });
+
             });
           }
           this.constructForm();
@@ -83,7 +88,7 @@ export class AddPlanComponent implements OnInit {
         value: '',
         key: 'VesselId',
         validators: ['required'],
-        optionLabel: 'VesselName',
+        optionLabel: 'Name',
         disabled: false
       },
       {
@@ -91,9 +96,9 @@ export class AddPlanComponent implements OnInit {
         label: 'Robot System',
         options: this.robotsystemList,
         value: '',
-        key: 'RobotSystemId',
+        key: 'HullSkaterId',
         validators: ['required'],
-        optionLabel: 'RobotSerialNumber',
+        optionLabel: 'Name',
         disabled: false
       },
       {
@@ -128,8 +133,9 @@ export class AddPlanComponent implements OnInit {
         type: FormType.autocomplete,
         label: 'Location',
         value: '',
-        key: 'OperationLoc',
+        key: 'PortId',
         validators: ['required'],
+        optionLabel: 'PortName',
         disabled: false
       },
       {
@@ -199,33 +205,54 @@ export class AddPlanComponent implements OnInit {
       }
     });
   }
+
   updateData(formData): void {
-    const plandData: any = {
+    let action = (this.planId) ? this.capitalize(this.planType) : 'Add';
+    const planData: any = {
       Status: (this.planId) ? formData.Status.value : 'New',
-      Action: (this.planId) ? this.capitalize(this.planType) : 'Add',
       VesselId: formData.VesselId.Id,
-      RobotSystemId: formData.RobotSystemId.RobotSystemId,
+      HullSkaterId: formData.HullSkaterId.Id,
       LocalTimeZone: formData.LocalTimeZone.offset,
-      OperationLoc: formData.OperationLoc.PortName,
-      portCode: formData.OperationLoc.PortCode,
+      PortId: formData.PortId.Id,
       OperationTypeId: formData.OperationTypeId.Id,
       OperationDes: formData.OperationDes,
       PlannerId: formData.PlannerId.Id,
       OperatorId: formData.OperatorId.Id,
       Comments: formData.Comments,
       OperationDate: formData.OperationDate,
-      ETADate: formData.ETADate
+      ETADate: formData.ETADate,
+      CreatedBy: this.planCreatedBy
     };
     if ((this.planId)) {
-      plandData.PlanId = (this.planId);
+      planData.PlanId = (this.planId);
     }
-    this.operationalPlanService.updateOperationPlan(plandData).subscribe((data) => {
-      this.router.navigateByUrl('/operational-plan');
-    });
+    if (action === 'Add' || action === 'Copy') {
+      this.operationalPlanService.addOperationPlan(planData).subscribe((data) => {
+        this.triggerToast('success', 'Success Message', `Operation Plan Added Successfully`);
+        this.router.navigateByUrl('/operational-plan');
+      });
+    }
+    else {  // Update
+      this.operationalPlanService.updateOperationPlan(this.planId, planData).subscribe((data) => {
+        this.triggerToast('success', 'Success Message', `Operation Plan Updated Successfully`);
+        this.router.navigateByUrl('/operational-plan');
+      });
+    }
+
   }
+
   capitalize = (s) => {
     if (typeof s !== 'string') { return ''; }
     return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
   }
 
 }

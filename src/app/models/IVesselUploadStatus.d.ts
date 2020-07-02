@@ -1,10 +1,10 @@
 interface IVesselUploadStatus {
-    FilesOnVessel: number,
-    FilesUploaded: number,
-    FilesNotUploaded: number,
-    FilesInProgress: number,
-    FilesExcluded: number,
-    filesUploadStatus: IFilesUploadStatus[]
+    TotalFilesOnVessel: number,
+    TotalFilesUploaded: number,
+    TotalFilesNotUploaded: number,
+    TotalFilesInProgress: number,
+    TotalFilesExcluded: number,
+    FileOnVessels: IFilesUploadStatus[]
 }
 interface IFilesUploadStatus {
     Id: number,

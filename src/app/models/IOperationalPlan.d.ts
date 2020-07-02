@@ -1,5 +1,5 @@
 interface IOperationalPlan {
-    PlanId: number,
+    Id: number,
     VesselName: string,
     ImoNumber: number,
     VesselId: number,
@@ -11,17 +11,17 @@ interface IOperationalPlan {
     PortCode: string,
     LocalTimeZone: string,
     OperationTypeId: number,
-    OperationType: string,
+    OperationTypeName: string,
     Status: string,
     ETADate: string,
     OperatorId: number,
     OperatorName: string,
     PlannerId: number,
-    Planner: string,
+    PlannerName: string,
     Comments: string,
     CreatedBy: string,
     CreatedDate: string,
     LastUpdatedBy: string,
-    LastUpdatedDate: string,
+    ModifiedDate: string,
     Action: object
 }

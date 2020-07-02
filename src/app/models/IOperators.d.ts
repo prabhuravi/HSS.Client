@@ -4,5 +4,5 @@ interface IOperators {
     CreatedDate: string,
     CreatedBy: string,
     LastUpdatedBy: string,
-    LastUpdatedDate: string
+    ModifiedDate: string
 }

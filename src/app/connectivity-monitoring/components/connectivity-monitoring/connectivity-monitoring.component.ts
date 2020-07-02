@@ -31,10 +31,8 @@ export class ConnectivityMonitoringComponent implements OnInit {
 
   ngOnInit() {
     this.galoreDataService.initialize().subscribe((status: GaloreApiConnectionStatus) => {
-      console.log(status);
       if (status !== GaloreApiConnectionStatus.Reconnected) {
         this.galoreQueryService.fetchVesselEdge().subscribe((vesselEdgeNode: NodeDc[]) => {
-          console.log(vesselEdgeNode);
         });
       }
     });
