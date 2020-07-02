@@ -79,12 +79,12 @@
       }
     },
     "ConnectivityMonitoring": {
-      "domainURL": "https://hgs.kognif.ai",
-      "path": "/VesselLinkQualityAPIService/API/VesselLinkQuality",
+      "domainURL": "https://localhost:5001/api",
+      "path": "/ConnectivityMonitoring",
       "endpoints": {
         "GetVesselLinks": "/GetVesselLinks",
         "AISPositionData": "/AISPositionData",
-        "GetSNMPData": "/GetSNMPData",
+        "GetSNMPData": "/GetSNMPDataByNodeNumber",
         "LatencyTrendData": "/LatencyTrendData"
       }
     },

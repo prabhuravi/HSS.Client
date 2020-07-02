@@ -113,12 +113,13 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       this.loading = true;
       this.emptyAISData = false;
       this.connectivityMonitoringService.getAISData(this.aisRequest).pipe(take(1)).subscribe((data: any) => {
-        this.cachedResultFromAPI = data.Result;
+        this.cachedResultFromAPI = data;
+        // this.cachedResultFromAPI = data.Result;
         this.loading = false;
-        if (data.Result.length > 0) {
-          this.cachedResultFromAPI = data.Result;
+        if (data.length > 0) {
+          this.cachedResultFromAPI = data;
           this.removeExistingMarkers();
-          this.plotPathonMap(data.Result);
+          this.plotPathonMap(data);
         } else {
           this.emptyAISData = true;
         }

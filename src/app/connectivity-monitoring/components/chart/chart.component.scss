@@ -65,3 +65,14 @@ text.shadow {
     display: block;
   }
 }
+
+.emptylatency {
+  position: absolute;
+  bottom: 50%;
+  z-index: 1;
+  background: #686d72;
+  color: #2bdeee;
+  width: 98%;
+  text-align:center;
+  border: 1px solid #2bdeee;
+}
