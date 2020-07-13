@@ -58,7 +58,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
       .subscribe((data: any) => {
         this.showChart = true;
         this.latencyData = data;
-        if(this.latencyData.length < 1)
+        if(this.latencyData.length < 2)
         {
           this.emptyLatencyData = true;
         }

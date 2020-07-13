@@ -94,12 +94,13 @@
             </div>
         </div>
     </div>
+
     <div class="kx-col kx-col--12 kx-col--2@ltp-s kx-pl--small@ltp-s">
         <div class="kx-card kx-card--skin-default" style="height: 198px;">
             <div class="kx-card__body kx-p--mini">
                 <div class="row centerme">
                     <div class="kx-col kx-col--12">
-                        <div *ngIf="!noGaugeData && chart && chart.data" class="kx-pl--small">
+                        <div *ngIf="!noGaugeData" class="kx-pl--small">
                             <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data"
                                 [options]="chart.options">
                             </google-chart>
@@ -112,6 +113,7 @@
             </div>
         </div>
     </div>
+
 </div>
 <div class="kx-card kx-card--skin-default kx-mt--small">
     <div class="kx-p--small">

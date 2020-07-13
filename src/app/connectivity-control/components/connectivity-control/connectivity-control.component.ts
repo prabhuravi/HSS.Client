@@ -45,6 +45,11 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
     this.currentUTC = currentTime;
   }
 
+  onDisableTimeSelect()
+  {
+    this.updateDisableCalendarDefaultTime();
+  }
+
   ngOnInit(): void {
     this.dateTimeIntervalSubscription = this.dateTimeInterval.subscribe(() => {
       this.updateDisableCalendarDefaultTime();

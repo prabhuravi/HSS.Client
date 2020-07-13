@@ -20,6 +20,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   googlechart: GoogleChartComponent;
   chart: any = {
     type: 'Gauge',
+    data: [['dBm', 0]],
     options: {
       width: 180, height: 180,
       min: -110,
@@ -93,9 +94,9 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
       this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().pipe(take(1)).subscribe((data) => {
         if (data) {
           this.cachedVesselDetails = data;
-          if (this.cachedVesselDetails && this.cachedVesselDetails.Status === 'Down') {
-            this.chart.data = [['dBm', 0]];
-          }
+          // if (this.cachedVesselDetails && this.cachedVesselDetails.Status === 'Down') {
+          //   this.chart.data = [['dBm', 0]];
+          // }
           this.allVessels = this.connectivityMonitoringService.getAllCachedResult();
           this.allVessels.filter((data1) => {
             // tslint:disable-next-line:triple-equals

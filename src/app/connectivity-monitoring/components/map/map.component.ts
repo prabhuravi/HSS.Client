@@ -116,7 +116,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
         this.cachedResultFromAPI = data;
         // this.cachedResultFromAPI = data.Result;
         this.loading = false;
-        if (data.length > 0) {
+        if (data.length > 1) {
           this.cachedResultFromAPI = data;
           this.removeExistingMarkers();
           this.plotPathonMap(data);
@@ -129,7 +129,36 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   plotPathonMap(latlngs) {
     const path = [];
     this.markers = [];
-    this.markerClusterer = L.markerClusterGroup();
+    // this.markerClusterer = L.markerClusterGroup();
+    this.markerClusterer = L.markerClusterGroup(
+      {
+        iconCreateFunction: function (cluster) {
+          var childCount = cluster.getChildCount();
+          // var c = ' marker-cluster';
+          // if (childCount < 10) {
+          //   c += '-small';
+          // }
+          // else if (childCount < 100) {
+          //   c += '-medium';
+          // }
+          // else {
+          //   c += '-large';
+          // }
+          // return new L.DivIcon({
+          //   html: '<div><span>' + childCount + '</span></div>',
+          //   className: 'marker-cluster' + c, iconSize: new L.Point(40, 40)
+          // });
+          return new L.DivIcon({
+            html: '<div><span>' + childCount + '</span></div>',
+            className: 'marker-cluster marker-cluster-new',
+            iconSize: new L.Point(40, 40),
+          });
+        },
+        //Disable all of the defaults:
+			  // spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false
+      }
+    );
+
     for (let i = 0; i < latlngs.length; i++) {
       const pointA = new L.LatLng(latlngs[i].Latitude, latlngs[i].Longitude);
       if (latlngs[i + 1]) {
@@ -165,9 +194,19 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       } else {
         this.removeExistingMarkers();
       }
-      this.map.addLayer(this.markerClusterer);
+      if (this.markerClusterer) {
+        this.map.addLayer(this.markerClusterer);
+      }
     }
+
+    this.markerClusterer.on('clustermouseover', function (a) {
+			a.layer.setOpacity(0.4);
+    });
+    this.markerClusterer.on('clustermouseout', function (a) {
+			a.layer.setOpacity(.8);
+    });
   }
+
   removeExistingMarkers() {
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.markers.length; i++) {
