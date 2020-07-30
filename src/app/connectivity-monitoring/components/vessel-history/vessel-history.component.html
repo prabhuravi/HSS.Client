@@ -1,4 +1,4 @@
-<app-load *ngIf="!cachedVesselDetails"></app-load>
+<app-load *ngIf="loading"></app-load>
 <div class="kx-row">
     <div class="kx-col kx-col--12 kx-col--4@ltp-s">
         <div class="kx-row kx-card kx-card--skin-default">
@@ -10,7 +10,7 @@
                     <div class="kx-col kx-col--6">
                         <strong>Node Number:</strong>
                         <div class="kx-mt--tiny">
-                            {{cachedVesselDetails && cachedVesselDetails.NodeNumber  ? cachedVesselDetails.NodeNumber : noData}}
+                            {{selectedVessel && selectedVessel.NodeNumber  ? selectedVessel.NodeNumber : noData}}
                         </div>
                     </div>
                     <div class="kx-col kx-col--6">
@@ -28,13 +28,13 @@
                     <div class="kx-col kx-col--6">
                         <strong>Status:</strong>
                         <div class="kx-mt--tiny">
-                            {{cachedVesselDetails && cachedVesselDetails.Status  ? cachedVesselDetails.Status : noData}}
+                            {{selectedVessel && selectedVessel.Status  ? selectedVessel.Status : noData}}
                         </div>
                     </div>
                     <div class="kx-col kx-col--6">
                         <strong>Latency:</strong>
                         <div class="kx-mt--tiny">
-                            {{cachedVesselDetails && cachedVesselDetails.LastLatency  ? cachedVesselDetails.LastLatency : noData}}
+                            {{selectedVessel && selectedVessel.LastLatency  ? selectedVessel.LastLatency : noData}}
                         </div>
                     </div>
                 </div>

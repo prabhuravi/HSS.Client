@@ -66,6 +66,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   toDate: Date;
   allVessels: any;
   selectedVessel: any;
+  loading = true;
   constructor(
     public connectivityMonitoringService: ConnectivityMonitoringService,
     public route: ActivatedRoute,
@@ -89,43 +90,42 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     if (nodeNumber) {
       this.selectedVesselNodeNumber = nodeNumber.toString();
 
-      this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
+      // this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
 
-      this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().pipe(take(1)).subscribe((data) => {
-        if (data) {
-          this.cachedVesselDetails = data;
-          // if (this.cachedVesselDetails && this.cachedVesselDetails.Status === 'Down') {
-          //   this.chart.data = [['dBm', 0]];
-          // }
-          this.allVessels = this.connectivityMonitoringService.getAllCachedResult();
-          this.allVessels.filter((data1) => {
-            // tslint:disable-next-line:triple-equals
-            if (data1.NodeNumber == nodeNumber) {
-              this.selectedVessel = data1;
-            }
-          });
+      // this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().pipe(take(1)).subscribe((data) => {
+      //   if (data) {
+      //     this.cachedVesselDetails = data;
 
-          this.resetDate();
-
-          // tslint:disable-next-line:radix
-          this.connectivityMonitoringService.getSnMPData(parseInt(this.selectedVesselNodeNumber)).subscribe((vesselDetails: IVesselDetails) => {
-            this.vesselDetails = vesselDetails;
-            // tslint:disable-next-line:radix
-            this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
-            if (vesselDetails && vesselDetails.SignalStrength) {
-              if (this.cachedVesselDetails && this.cachedVesselDetails.Status === 'Down') {
-                this.chart.data = [['dBm', 0]];
-              } else {
-                this.chart.data = [['dBm', vesselDetails.SignalStrength]];
-              }
-              this.noGaugeData = false;
-            } else {
-              this.noGaugeData = true;
-            }
-          });
+      // if (this.cachedVesselDetails && this.cachedVesselDetails.Status === 'Down') {
+      //   this.chart.data = [['dBm', 0]];
+      // }
+      this.allVessels = this.connectivityMonitoringService.getAllCachedResult();
+      this.allVessels.filter((data1) => {
+        if (data1.NodeNumber == nodeNumber) {
+          this.selectedVessel = data1;
         }
-
       });
+
+      this.resetDate();
+
+      this.connectivityMonitoringService.getSnMPData(parseInt(this.selectedVesselNodeNumber)).subscribe((vesselDetails: IVesselDetails) => {
+        this.vesselDetails = vesselDetails;
+        this.loading = false;
+        this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
+        if (vesselDetails && vesselDetails.SignalStrength) {
+          if (this.selectedVessel && this.selectedVessel.Status === 'Down') {
+            this.chart.data = [['dBm', 0]];
+          } else {
+            this.chart.data = [['dBm', vesselDetails.SignalStrength]];
+          }
+          this.noGaugeData = false;
+        } else {
+          this.noGaugeData = true;
+        }
+      });
+
+      //   }
+      // });
 
     }
 
@@ -142,7 +142,6 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   }
   filterData(): void {
     this.getLatencyTrendData();
-    // tslint:disable-next-line:radix
     this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
   }
   updatePreset(): void {
