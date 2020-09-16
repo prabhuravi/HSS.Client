@@ -64,6 +64,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   ngOnInit() {
     this.map = (L as any).map('map', {
       fullscreenControl: true,
+      preferCanvas: true,
       fullscreenControlOptions: {
         position: 'topleft'
       }
@@ -201,10 +202,14 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
 
       const iconURL = latlngs[i].OnlineStatus === 0 ? './assets/navigation-arrow-offline.png' : './assets/navigation-arrow-online.png';
       const rotation = parseInt(latlngs[i].CompassOverGroundHeading.toFixed(0));
-      const marker = L.marker(pointA, {
-        icon: this.getIcon(iconURL),
-        rotationAngle: rotation
-      });
+      // const marker = L.marker(pointA, {
+      //   icon: this.getIcon(iconURL),
+      //   rotationAngle: rotation
+      // });
+
+      var marker = L.circleMarker(pointA, {
+        color: '#3388ff'
+    });
 
       this.bindMarkerEvents(marker, latlngs[i]);
       this.markers.push(marker);
