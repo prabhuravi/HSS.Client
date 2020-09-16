@@ -84,12 +84,14 @@
       "endpoints": {
         "GetVesselLinks": "/GetVesselLinks",
         "AISPositionData": "/AISPositionData",
+        "GetLatestAISRecord": "/GetLatestAISRecord",
+        "GetImoNumberByNodeNumber": "/GetImoNumberByNodeNumber",
         "GetSNMPData": "/GetSNMPDataByNodeNumber",
         "LatencyTrendData": "/LatencyTrendData"
       }
     },
     "OperationalPlan": {
-      "domainURL": "https://localhost:5001/api",
+      "domainURL": "https://hsstest.kognif.ai/OperationPlan/api",
       "OperationPlan": {
         "path": "/OperationalPlan",
         "endpoints": {
@@ -280,7 +282,8 @@
       ]
     },
     "theme": {
-      "mapDayTileLayer": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+     
+      "mapDayTileLayer": "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
       "mapDuskTileLayer": "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
       "defaultZoomLevel": 19
     }
