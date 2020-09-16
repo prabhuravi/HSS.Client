@@ -9,6 +9,7 @@ import { AppConstants } from 'src/app/app.constants';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import * as moment from 'moment';
+import { AISData } from 'src/app/models/AISData';
 @Component({
   selector: 'app-vessel-history',
   templateUrl: './vessel-history.component.html',
@@ -37,29 +38,41 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   latencyRequest = new LatencyRequest();
   aisRequest = new AISRequest();
   vesselDetails: IVesselDetails;
+  aisData: AISData = new AISData();
   cachedVesselDetails: IVesselLinks;
   VesselDataSubscription: Subscription;
   selectedVesselNodeNumber: string;
+  imoNumber: number;
   viewFullChart: boolean;
   viewFullMap: boolean;
+  aisCardLoading: boolean;
 
   currentState = 'initial';
   showMap: boolean = false;
-  presetOptions = [{
-    name: 'Last Hour',
-    value: 1
-  }, {
-    name: 'Last 2 Hours',
-    value: 2
-  }, {
-    name: 'Last Day',
-    value: 24
-  }, {
-    name: 'Custom',
-    value: 0
-  }];
+  presetOptions = [
+    //   {
+    //   name: 'Last Hour',
+    //   value: 1
+    // }, {
+    //   name: 'Last 2 Hours',
+    //   value: 2
+    // }, 
+    {
+      name: 'Last Day',
+      value: 24
+    }, {
+      name: 'Last Week',
+      value: 168
+    }, {
+      name: 'Last Two Week',
+      value: 336
+    }, {
+      name: 'Custom',
+      value: 0
+    }];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   noData: string = 'No Data Available';
+  snmpNoData: string = 'Missing SNMP';
   noGaugeData = false;
   selectedPreset: any = { name: 'Last Day', value: 24 };
   fromDate: Date;
@@ -67,25 +80,58 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   allVessels: any;
   selectedVessel: any;
   loading = true;
+  showAISCard: boolean;
+  nodeNumber: number;
   constructor(
     public connectivityMonitoringService: ConnectivityMonitoringService,
     public route: ActivatedRoute,
     public router: Router
   ) {
   }
+  
   ngOnInit(): void {
     if (this.route && this.route.params) {
       this.route.params.subscribe((params) => {
+        this.nodeNumber = params.nodeNumber;
         this.getVesselDetails(params.nodeNumber);
+        // this.getAISLatestPosition(params.nodeNumber);
       }
       );
     }
   }
+
   ngOnDestroy(): void {
     if (this.VesselDataSubscription) {
       this.VesselDataSubscription.unsubscribe();
     }
   }
+
+  getAISLatestPosition(nodeNumber: number) {
+    this.aisCardLoading = true;
+    this.connectivityMonitoringService.getImoNumberByNodeNumber(nodeNumber).subscribe((data: any) => {
+      this.imoNumber = data;
+      console.log(this.imoNumber);
+      this.aisCardLoading = false;
+      this.connectivityMonitoringService.getGetLatestAISRecord(this.imoNumber).subscribe((aisData: any) => {
+        this.aisData = aisData;
+        console.log(this.aisData);
+        this.aisCardLoading = false;
+      });
+    });
+  }
+
+  viewAISCard(e)
+  {
+    e.preventDefault();
+    this. toggleShowAISCard();
+    this.getAISLatestPosition(this.nodeNumber);
+  }
+
+  toggleShowAISCard()
+  {
+    this.showAISCard = !this.showAISCard;
+  }
+
   getVesselDetails(nodeNumber: number, fromDrpDownChange?: boolean): void {
     if (nodeNumber) {
       this.selectedVesselNodeNumber = nodeNumber.toString();

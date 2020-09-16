@@ -1,6 +1,6 @@
 <app-load *ngIf="!showChart"></app-load>
-<div style="height: 380px;">
+<div style="height: 450px;">
   <h5 style="text-align: center;">Latency & Signal Strength Graph</h5>
   <div id="latency_chart" class="chart1"></div>
 </div>
-<div *ngIf="emptyLatencyData" class="emptylatency">No Data Available</div>
+<div *ngIf="emptyLatencyData" class="emptylatency">No data in the selected period</div>

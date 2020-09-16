@@ -4,7 +4,8 @@
         <div *ngIf="!showLoader">
             <p-table *ngIf="vesselLinksList.length > 0" [value]="vesselLinksList" #tt [columns]="cols"
                 [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true"
-                tableStyleClass="kx-table kx-table--outer-border">
+                tableStyleClass="kx-table kx-table--outer-border" [paginator]="true" [rows]="15"
+                [rowsPerPageOptions]="[5,10,15,20,50,100]" totalRecords=500 pageLinks="3">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
                         <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
@@ -65,6 +66,13 @@
                                     {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
                                 </div>
                                 <div *ngSwitchDefault>{{rowData[col.field]}}</div>
+                                <div *ngSwitchCase="'CactiLink'">
+                                    <span *ngIf="rowData[col.field]">
+                                        <a href="{{rowData[col.field]}}" target="_blank"> <img src="./assets/stats.png"
+                                                alt="Cacti" style="width:25px; height:25px; align-content:center"> </a>
+                                    </span>
+                                </div>
+
                             </div>
                         </td>
                     </tr>

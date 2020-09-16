@@ -49,6 +49,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
         this.removeExistingMarkers();
       }
     });
+
     this.chartHandleSubscription = this.connectivityMonitoringService.getZoomChangeSubject().subscribe((chartChanges: any) => {
       if (this.cachedResultFromAPI && this.cachedResultFromAPI.length > 0) {
         const finalData = this.getFilteredBetweenMinMax(this.cachedResultFromAPI, chartChanges.x.min, chartChanges.x.max);
@@ -59,6 +60,24 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       }
     });
   }
+
+  ngOnInit() {
+    this.map = (L as any).map('map', {
+      fullscreenControl: true,
+      fullscreenControlOptions: {
+        position: 'topleft'
+      }
+    }).setView([43.068661, 141.350755], 8);
+
+    this.themeservice.getSelectedTheme().then((data: ISetting<Theme>) => {
+      this.applyThemeForTiles(data.value.name);
+    });
+
+    this.themeservice.themeChanged.subscribe((changes: any) => {
+      this.applyThemeForTiles(changes);
+    });
+  }
+
   getFilteredBetweenMinMax(dateList, min, max) {
     min = this.dateToUnixtime(min);
     max = this.dateToUnixtime(max);
@@ -68,16 +87,19 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     });
     return dateListFiltered;
   }
+
   dateToUnixtime(dateString) {
     return new Date(dateString).getTime();
   }
+
   ngOnDestroy(): void {
     this.nodeSubject.unsubscribe();
     this.chartHandleSubscription.unsubscribe();
   }
-  ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
 
+  ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
   }
+  
   ngAfterViewInit(): void {
     this.mapMouseOverInfoHandler();
   }
@@ -126,6 +148,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       });
     }
   }
+
   plotPathonMap(latlngs) {
     const path = [];
     this.markers = [];
@@ -155,14 +178,13 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
           });
         },
         //Disable all of the defaults:
-			  // spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false
+        // spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false
       }
     );
 
     for (let i = 0; i < latlngs.length; i++) {
       const pointA = new L.LatLng(latlngs[i].Latitude, latlngs[i].Longitude);
       if (latlngs[i + 1]) {
-
         const pointB = new L.LatLng(latlngs[i + 1].Latitude, latlngs[i + 1].Longitude);
         //  [latlngs[i].Latitude,latlngs[i].Longitude];
         path.push(pointA);
@@ -176,34 +198,35 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
 
         this.markers.push(polyline);
       }
+
       const iconURL = latlngs[i].OnlineStatus === 0 ? './assets/navigation-arrow-offline.png' : './assets/navigation-arrow-online.png';
-      // tslint:disable-next-line:radix
       const rotation = parseInt(latlngs[i].CompassOverGroundHeading.toFixed(0));
       const marker = L.marker(pointA, {
         icon: this.getIcon(iconURL),
         rotationAngle: rotation
       });
+
       this.bindMarkerEvents(marker, latlngs[i]);
-      // adding marker to marker Array
       this.markers.push(marker);
       this.markerClusterer.addLayer(marker);
-      if (path.length > 0) {
 
+      if (path.length > 0) {
         const bounds = new L.LatLngBounds(path);
         this.map.fitBounds(bounds);
       } else {
         this.removeExistingMarkers();
       }
+
       if (this.markerClusterer) {
         this.map.addLayer(this.markerClusterer);
       }
     }
 
     this.markerClusterer.on('clustermouseover', function (a) {
-			a.layer.setOpacity(0.4);
+      a.layer.setOpacity(0.4);
     });
     this.markerClusterer.on('clustermouseout', function (a) {
-			a.layer.setOpacity(.8);
+      a.layer.setOpacity(.8);
     });
   }
 
@@ -218,14 +241,17 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       this.markerClusterer = null;
     }
   }
+
   public bindMarkerEvents(markerValue: any, data: any): void {
     //   markerValue.setRotationAngle(data.CompassOverGroundHeading.toFixed(0));
     markerValue.on('click', (e) => { this.markerClick(data, markerValue); });
   }
+
   public markerClick(vessel: any, markerValue: any): void {
     const vesselDetails = this.connectivityMonitoringService.getVesselNameByNodeNumber(this.nodeNumber);
     markerValue.bindPopup(this.generateVoyagePopup('Origin', vessel, vesselDetails), { closeButton: true, className: 'map-tooltip' });
   }
+
   public generateVoyagePopup(title: string, value: any, name: string) {
     const containerDiv = document.createElement('div');
     containerDiv.innerHTML = `<div><b>Vessel Name : ${name}</b>
@@ -236,6 +262,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     </div>`;
     return containerDiv;
   }
+
   getIcon(url) {
     // L.divIcon({
     //   html: `<img class='leaflet-marker-icon leaflet-zoom-animated' src='${iconURL}'
@@ -254,31 +281,14 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
     });
     return vesselNavigationIcon;
   }
-  ngOnInit() {
-    this.map = (L as any).map('map', {
-      fullscreenControl: true,
-      fullscreenControlOptions: {
-        position: 'topleft'
-      }
-    }).setView([43.068661, 141.350755], 8);
-    this.themeservice.getSelectedTheme().then((data: ISetting<Theme>) => {
-      this.applyThemeForTiles(data.value.name);
-    });
-    this.themeservice.themeChanged.subscribe((changes: any) => {
-      this.applyThemeForTiles(changes);
 
-    });
-
-  }
   applyThemeForTiles(theme: string) {
     if (this.map._layers) {
       for (const key in this.map._layers) {
         if (this.map._layers[key].options && this.map._layers[key].options.id) {
           this.map.removeLayer(this.map._layers[key]);
-
         }
       }
-
     }
     if (theme === 'Dusk') {
       const CartoDBDarkMatter = L.tileLayer(this.mapDuskTileLayer, {

@@ -15,7 +15,7 @@
                     </div>
                     <div class="kx-col kx-col--6">
                         <div class="kx-mt--tiny">
-                            <strong>Vessel Name :</strong>
+                            <strong>Installation :</strong>
                             <div class="kx-mt--tiny">
                                 <p-dropdown styleClass="kx-p--none" [(ngModel)]="selectedVessel"
                                     placeholder="Select Vessel" [options]="allVessels"
@@ -51,19 +51,45 @@
                     <div class="kx-col  kx-col--4">
                         <strong>Network Type:</strong>
                         <div class="kx-mt--tiny">
-                            {{ vesselDetails && vesselDetails.NetworkType ? vesselDetails.NetworkType : noData}}
+                            <span *ngIf="vesselDetails">
+                                {{ vesselDetails && vesselDetails.NetworkType ? vesselDetails.NetworkType : ''}}
+                            </span>
+                            <span *ngIf="!vesselDetails">
+                                {{snmpNoData}}
+                            </span>
                         </div>
                     </div>
+                    <!-- <div class="kx-col  kx-col--4">
+                        <strong>Signal Strength:</strong>
+                        <div class="kx-mt--tiny">
+                                 <span *ngIf="vesselDetails">
+                                {{ vesselDetails && vesselDetails.SignalStrength ? vesselDetails.SignalStrength : ''}}
+                            </span>
+                            <span *ngIf="!vesselDetails">
+                                {{snmpNoData}}
+                            </span>
+                        </div>
+                    </div> -->
                     <div class="kx-col  kx-col--4">
                         <strong>MCC:</strong>
                         <div class="kx-mt--tiny">
-                            {{ vesselDetails && vesselDetails.MCC ? vesselDetails.MCC : noData}}
+                            <span *ngIf="vesselDetails">
+                                {{ vesselDetails && vesselDetails.MCC ? vesselDetails.MCC : ''}}
+                            </span>
+                            <span *ngIf="!vesselDetails">
+                                {{snmpNoData}}
+                            </span>
                         </div>
                     </div>
                     <div class="kx-col  kx-col--4">
                         <strong>Country:</strong>
                         <div class="kx-mt--tiny">
-                            {{ vesselDetails && vesselDetails.CountryName ? vesselDetails.CountryName : noData}}
+                            <span *ngIf="vesselDetails">
+                                {{ vesselDetails && vesselDetails.CountryName ? vesselDetails.CountryName : ''}}
+                            </span>
+                            <span *ngIf="!vesselDetails">
+                                {{snmpNoData}}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -71,29 +97,91 @@
                     <div class="kx-col  kx-col--4">
                         <strong>APN:</strong>
                         <div class="kx-mt--tiny">
-                            {{ vesselDetails && vesselDetails.ApnName ? vesselDetails.ApnName : noData}}
+                            <span *ngIf="vesselDetails">
+                                {{ vesselDetails && vesselDetails.ApnName ? vesselDetails.ApnName : ''}}
+                            </span>
+                            <span *ngIf="!vesselDetails">
+                                {{snmpNoData}}
+                            </span>
                         </div>
                     </div>
                     <div class="kx-col  kx-col--4">
 
                         <strong>Provider Name:</strong>
                         <div class="kx-mt--tiny">
-                            {{ vesselDetails && vesselDetails.ProviderName ? vesselDetails.ProviderName : noData}}
+                            <span *ngIf="vesselDetails">
+                                {{ vesselDetails && vesselDetails.ProviderName ? vesselDetails.ProviderName : ''}}
+                            </span>
+                            <span *ngIf="!vesselDetails">
+                                {{snmpNoData}}
+                            </span>
                         </div>
                     </div>
+
                     <div class="kx-col  kx-col--4">
+                        <strong>Cacti:</strong>
+                        <div class="kx-mt--tiny">
+                            <span *ngIf="selectedVessel && selectedVessel.CactiLink"><a
+                                    href="{{selectedVessel.CactiLink}}" target="_blank">
+                                    <img src="./assets/stats.png" alt="Cacti"
+                                        style="width:25px; height:25px; align-content:center"> </a></span>
+                        </div>
+                    </div>
+
+                    <!-- <div class="kx-col  kx-col--4">
                         <strong>Router Position:</strong>
                         <div class="kx-mt--tiny">
-                            <span *ngIf="vesselDetails && !vesselDetails.Latitude">{{noData}}</span>
+                            <span *ngIf="!(vesselDetails && vesselDetails.Latitude)">{{snmpNoData}}</span>
                             <span *ngIf="vesselDetails && vesselDetails.Latitude">
-                                {{  vesselDetails.Latitude }}
+                                {{ vesselDetails.Latitude }}
                                 {{ vesselDetails.Longitude }}</span>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="kx-col kx-col--12 kx-col--4@ltp-s">
+        <div class="kx-row kx-card kx-card--skin-default">
+            <div class="kx-card__header">
+                <h3 class="kx-card__title">AIS</h3>
+            </div>
+            <div class="kx-card__body card-body kx-p--small">
+                <div class="kx-row">
+                    <div class="kx-col kx-col--6">
+                        <strong>Destination:</strong>
+                        <div class="kx-mt--tiny">
+                            Newcastle(AUS)
+                        </div>
+                    </div>
+                    <div class="kx-col kx-col--6">
+                        <div class="kx-mt--tiny">
+                            <strong>ETA :</strong>
+                            <div class="kx-mt--tiny">
+                                07/09/2020 10:30 PM
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="kx-row">
+                    <div class="kx-col kx-col--6">
+                        <strong>Speed:</strong>
+                        <div class="kx-mt--tiny">
+                            7.90
+                        </div>
+                    </div>
+                    <div class="kx-col kx-col--6">
+                        <strong>Position:</strong>
+                        <div class="kx-mt--tiny">
+                            (-32.9047, 151.7756) <a href="https://maps.google.com/?q=-32.9047,151.7756" target="_blank">
+                                View </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="kx-col kx-col--12 kx-col--2@ltp-s kx-pl--small@ltp-s">
         <div class="kx-card kx-card--skin-default" style="height: 198px;">
@@ -106,7 +194,7 @@
                             </google-chart>
                         </div>
                         <div *ngIf="noGaugeData">
-                            {{noData}}
+                            {{snmpNoData}}
                         </div>
                     </div>
                 </div>
@@ -152,7 +240,7 @@
                 <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mr--tiny kx-mr--large@tab-m"
                     (click)="filterData()">
                     <span class="kx-btn__inner">
-                        <span class="kx-btn__txt">Filter</span>
+                        <span class="kx-btn__txt">Apply</span>
                     </span>
                 </button>
                 <button (click)="resetDate()" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
@@ -181,9 +269,107 @@
         </div>
     </div>
     <div class="kx-col kx-col--6" [ngClass]="{'kx-col--12' : !viewFullChart && viewFullMap }">
+        <a href="#" style="padding-left: 10px;" (click)="viewAISCard($event)"> AIS Information </a>
         <div class="row" style="margin-left:10px">
             <app-map [showMap]="showMap" [aisRequest]="aisRequest"></app-map>
         </div>
     </div>
 </div>
+
+<app-modal [displayMe]="showAISCard">
+    <div class="modal-header">
+        <div>
+            AIS Information
+            <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon u--modalclosebtn"
+                aria-label="close modal" title="close modal" (click)="toggleShowAISCard()">
+                <span class="kx-btn__inner">
+                    <i class="kx-icon kx-icon--size-moderate">
+                        <svg focusable="false">
+                            <use href="./assets/img/icons/sprites/icons.svg#close">
+                            </use>
+                        </svg>
+                    </i>
+                    <span class="kx-btn__txt kx-is-vishidden">close modal</span>
+                </span>
+            </button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="kx-container kx-p--none">
+            <div *ngIf="!aisData" class="kx-card kx-card--skin-default kx-p--small">
+                No AIS Information available.
+            </div>
+            <div *ngIf="aisData" class="kx-card kx-card--skin-default kx-p--small">
+                <div class="kx-row">
+                    <div class="kx-col  kx-col--4">
+                        <strong>Vessel</strong> : {{selectedVessel.Name}}
+                    </div>
+                    <div class="kx-col  kx-col--4">
+                        <strong>IMO</strong> : {{imoNumber}}
+                    </div>
+                </div> <br>
+                <div class="kx-row kx-card kx-card--skin-default">
+                    <div class="kx-card__body card-body kx-p--small">
+                        <div class="kx-row">
+                            <div class="kx-col kx-col--4">
+                                <div class="kx-mt--tiny">
+                                    <strong>Timestamp :</strong>
+                                    <div class="kx-mt--tiny">
+                                        {{aisData && aisData.AIS_Latest_Position  ? (aisData.AIS_Latest_Position | date:'dd/MM/yyyy HH:mm') : ''}}
+                                        <!-- 07/09/2020 10:30 PM -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kx-col kx-col--4">
+                                <strong>Destination:</strong>
+                                <div class="kx-mt--tiny">
+                                    {{aisData && aisData.ETA_Place  ? aisData.ETA_Place : ''}}
+                                    <!-- Newcastle(AUS) -->
+                                </div>
+                            </div>
+                            <div class="kx-col kx-col--4">
+                                <div class="kx-mt--tiny">
+                                    <strong>ETA :</strong>
+                                    <div class="kx-mt--tiny">
+                                        {{aisData && aisData.ETA_Date  ? (aisData.ETA_Date | date:'dd/MM/yyyy HH:mm') : ''}}
+                                        <!-- 07/09/2020 10:30 PM -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kx-row">
+                            <div class="kx-col kx-col--4">
+                                <strong>Speed:</strong>
+                                <div class="kx-mt--tiny">
+                                    {{aisData && aisData.Speed_Over_Ground  ? aisData.Speed_Over_Ground : ''}}
+                                    <!-- 7.90 -->
+                                </div>
+                            </div>
+                            <div class="kx-col kx-col--4">
+                                <div class="kx-mt--tiny">
+                                    <strong>Draft :</strong>
+                                    <div class="kx-mt--tiny">
+                                        <!-- {{aisData && aisData.Draft  ? aisData.Draft : ''}} -->
+                                        3 Mts
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kx-col kx-col--4">
+                                <strong>Position:</strong>
+                                <div *ngIf="aisData && aisData.AIS_Latitude " class="kx-mt--tiny">
+                                    ({{aisData && aisData.AIS_Latitude  ? aisData.AIS_Latitude : 0}},
+                                    {{aisData && aisData.AIS_Longitude  ? aisData.AIS_Longitude : 0}})
+                                    <!-- (-32.9047, 151.7756)  -->
+                                    <a href="https://maps.google.com/?q={{aisData && aisData.AIS_Latitude  ? aisData.AIS_Latitude : 0}},{{aisData && aisData.AIS_Longitude  ? aisData.AIS_Longitude : 0}}"
+                                        target="_blank"> View </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-modal>
+
 <div #pcalendarRef style="position: absolute;top: 20px;"></div>

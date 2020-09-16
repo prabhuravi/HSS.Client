@@ -95,6 +95,22 @@ export class ConnectivityMonitoringService {
     return this.http.getDataV2(requestData);
   }
 
+  getGetLatestAISRecord(imoNumber: number) {
+    const requestData = {
+      endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.GetLatestAISRecord}/${imoNumber}`,
+      params: { }
+    };
+    return this.http.getDataV2(requestData);
+  }
+
+  getImoNumberByNodeNumber(nodeNumber: number) {
+    const requestData = {
+      endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.GetImoNumberByNodeNumber}/${nodeNumber}`,
+      params: { }
+    };
+    return this.http.getDataV2(requestData);
+  }
+
   getVesselSubject(): Observable<any> {
     return this.vesselSubject.asObservable();
   }
