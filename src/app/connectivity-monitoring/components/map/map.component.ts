@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, ViewEncapsulation, OnDestroy, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
+import 'Leaflet.MultiOptionsPolyline'
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import { AISRequest } from 'src/app/models/AISRequest';
 import { Control, DomUtil } from 'leaflet';
@@ -26,8 +27,9 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   cusCtrl: Control;
   nodeSubject: Subscription;
   chartHandleSubscription: Subscription;
-  markers: any = [];
+  mapItems: any = [];
   nodeNumber: number;
+  vesselName: string = '';
   cachedResultFromAPI: any;
   markerClusterer: any;
   map: any;
@@ -100,7 +102,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
   }
-  
+
   ngAfterViewInit(): void {
     this.mapMouseOverInfoHandler();
   }
@@ -137,7 +139,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
       this.emptyAISData = false;
       this.connectivityMonitoringService.getAISData(this.aisRequest).pipe(take(1)).subscribe((data: any) => {
         this.cachedResultFromAPI = data;
-        // this.cachedResultFromAPI = data.Result;
         this.loading = false;
         if (data.length > 1) {
           this.cachedResultFromAPI = data;
@@ -151,8 +152,12 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   }
 
   plotPathonMap(latlngs) {
-    const path = [];
-    this.markers = [];
+    let polylinePoints = [];
+    const onlineImagePath = './assets/navigation-arrow-online.png';
+    const offlineImagePath = './assets/navigation-arrow-offline.png';
+    this.mapItems = [];
+    this.vesselName = this.connectivityMonitoringService.getVesselNameByNodeNumber(this.nodeNumber);
+
     // this.markerClusterer = L.markerClusterGroup();
     this.markerClusterer = L.markerClusterGroup(
       {
@@ -185,46 +190,51 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
 
     for (let i = 0; i < latlngs.length; i++) {
       const pointA = new L.LatLng(latlngs[i].Latitude, latlngs[i].Longitude);
-      if (latlngs[i + 1]) {
-        const pointB = new L.LatLng(latlngs[i + 1].Latitude, latlngs[i + 1].Longitude);
-        //  [latlngs[i].Latitude,latlngs[i].Longitude];
-        path.push(pointA);
-        // for testing purpose
 
-        const polyline = L.polyline([pointA, pointB]).addTo(this.map);
+      polylinePoints.push([latlngs[i].Latitude, latlngs[i].Longitude]);
 
-        polyline.setStyle({
-          color: latlngs[i].OnlineStatus === 0 ? 'red' : 'green'
-        });
-
-        this.markers.push(polyline);
-      }
-
-      const iconURL = latlngs[i].OnlineStatus === 0 ? './assets/navigation-arrow-offline.png' : './assets/navigation-arrow-online.png';
+      const iconURL = latlngs[i].OnlineStatus === 0 ? offlineImagePath : onlineImagePath;
       const rotation = parseInt(latlngs[i].CompassOverGroundHeading.toFixed(0));
-      // const marker = L.marker(pointA, {
-      //   icon: this.getIcon(iconURL),
-      //   rotationAngle: rotation
+
+      const marker = L.marker(pointA, {
+        icon: this.getIcon(iconURL),
+        rotationAngle: rotation
+      });
+      //   var marker = L.circleMarker(pointA, {
+      //     color: '#3388ff'
       // });
 
-      var marker = L.circleMarker(pointA, {
-        color: '#3388ff'
-    });
-
       this.bindMarkerEvents(marker, latlngs[i]);
-      this.markers.push(marker);
       this.markerClusterer.addLayer(marker);
+    }
+    // const polyline = L.polyline(polylinePoints).addTo(this.map);
+    const polyline = L.multiOptionsPolyline(polylinePoints, {
+      multiOptions: {
+        optionIdxFn: function (latLng, prevLatLng, index, allLatlngs) {
+          if (latlngs[index + 1]) {
+            if (latlngs[index].OnlineStatus && latlngs[index + 1].OnlineStatus)
+              return 0
+            else
+              return 1
+          }
+        },
+        options: [
+          { color: 'green' }, { color: 'red' }
+        ]
+      },
+      opacity: 0.75
+    }).addTo(this.map);
 
-      if (path.length > 0) {
-        const bounds = new L.LatLngBounds(path);
-        this.map.fitBounds(bounds);
-      } else {
-        this.removeExistingMarkers();
-      }
+    this.mapItems.push(polyline);
 
-      if (this.markerClusterer) {
-        this.map.addLayer(this.markerClusterer);
-      }
+    if (latlngs.length > 0) {
+      this.map.fitBounds(polyline.getBounds());
+    } else {
+      this.removeExistingMarkers();
+    }
+
+    if (this.markerClusterer) {
+      this.map.addLayer(this.markerClusterer);
     }
 
     this.markerClusterer.on('clustermouseover', function (a) {
@@ -236,50 +246,38 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   }
 
   removeExistingMarkers() {
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.markers.length; i++) {
-      this.map.removeLayer(this.markers[i]);
+    for (let i = 0; i < this.mapItems.length; i++) {
+      this.map.removeLayer(this.mapItems[i]);
     }
     if (this.markerClusterer) {
-
       this.markerClusterer.clearLayers();
       this.markerClusterer = null;
     }
   }
 
-  public bindMarkerEvents(markerValue: any, data: any): void {
-    //   markerValue.setRotationAngle(data.CompassOverGroundHeading.toFixed(0));
-    markerValue.on('click', (e) => { this.markerClick(data, markerValue); });
+  public bindMarkerEvents(marker: any, latLong: any): void {
+    marker.on('click', (e) => { this.markerClick(latLong, marker); });
   }
 
-  public markerClick(vessel: any, markerValue: any): void {
-    const vesselDetails = this.connectivityMonitoringService.getVesselNameByNodeNumber(this.nodeNumber);
-    markerValue.bindPopup(this.generateVoyagePopup('Origin', vessel, vesselDetails), { closeButton: true, className: 'map-tooltip' });
+  public markerClick(latLong: any, marker: any): void {
+    console.log(this.vesselName);
+    marker.bindPopup(this.generateVoyagePopup('Origin', latLong, this.vesselName), { closeButton: true, className: 'map-tooltip' });
   }
 
-  public generateVoyagePopup(title: string, value: any, name: string) {
+  public generateVoyagePopup(title: string, latLong: any, name: string) {
     const containerDiv = document.createElement('div');
     containerDiv.innerHTML = `<div><b>Vessel Name : ${name}</b>
     </br>
-    <b>Speed : ${value.SpeedOverGround.toFixed(2)} Knots</b></br>
-    <b>Heading : ${value.CompassOverGroundHeading.toFixed(2)} deg</b></br>
-    <b>Date : ${new Date(value.TimeStamp)} </b></br>
+    <b>Speed : ${latLong.SpeedOverGround.toFixed(2)} Knots</b></br>
+    <b>Heading : ${latLong.CompassOverGroundHeading.toFixed(2)} deg</b></br>
+    <b>Date : ${new Date(latLong.TimeStamp)} </b></br>
     </div>`;
     return containerDiv;
   }
 
   getIcon(url) {
-    // L.divIcon({
-    //   html: `<img class='leaflet-marker-icon leaflet-zoom-animated' src='${iconURL}'
-    //    style='width:20px; height: 20px;transform: rotate(${rotation}deg);
-    //     -webkit-transform: rotate(${rotation}deg); -moz-transform:rotate(${rotation}deg);' />`,
-    //     iconSize: [20, 20], // size of the icon
-    //     iconAnchor: [-10, -10], // point of the icon which will correspond to marker's location
-    //     popupAnchor: [10, 0] // point from which the popup should open relative to the ico
-    //   })
     const vesselNavigationIcon = L.icon({
       iconUrl: url,
-
       iconSize: [22, 22], // size of the icon
       iconAnchor: [10, 10], // point of the icon which will correspond to marker's location
       popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor

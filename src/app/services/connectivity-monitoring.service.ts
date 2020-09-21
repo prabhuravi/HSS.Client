@@ -74,7 +74,6 @@ export class ConnectivityMonitoringService {
   getVesselNameByNodeNumber(nodeNumber) {
     if (this.allVesselLinks) {
       const vessel = this.allVesselLinks.filter((vessel1: IVesselLinks) => {
-        // tslint:disable-next-line:triple-equals
         return vessel1.NodeNumber.toFixed(0) == nodeNumber;
       });
       return vessel[0].Name;

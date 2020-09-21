@@ -67,6 +67,7 @@
     "@types/leaflet": "^1.5.12",
     "@types/leaflet-rotatedmarker": "^0.2.1",
     "@types/leaflet.markercluster": "^1.4.2",
+    "Leaflet.MultiOptionsPolyline": "github:hgoebl/Leaflet.MultiOptionsPolyline",
     "angular-google-charts": "^0.1.6",
     "angular-resize-event": "^1.2.1",
     "core-js": "^2.5.4",
