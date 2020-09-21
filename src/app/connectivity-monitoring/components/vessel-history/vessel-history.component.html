@@ -52,7 +52,7 @@
                         <strong>Network Type:</strong>
                         <div class="kx-mt--tiny">
                             <span *ngIf="vesselDetails">
-                                {{ vesselDetails && vesselDetails.NetworkType ? vesselDetails.NetworkType : ''}}
+                                {{ vesselDetails && vesselDetails.NetworkType ? vesselDetails.NetworkType : noData}}
                             </span>
                             <span *ngIf="!vesselDetails">
                                 {{snmpNoData}}
@@ -63,7 +63,7 @@
                         <strong>Signal Strength:</strong>
                         <div class="kx-mt--tiny">
                                  <span *ngIf="vesselDetails">
-                                {{ vesselDetails && vesselDetails.SignalStrength ? vesselDetails.SignalStrength : ''}}
+                                {{ vesselDetails && vesselDetails.SignalStrength ? vesselDetails.SignalStrength : noData}}
                             </span>
                             <span *ngIf="!vesselDetails">
                                 {{snmpNoData}}
@@ -74,7 +74,7 @@
                         <strong>MCC:</strong>
                         <div class="kx-mt--tiny">
                             <span *ngIf="vesselDetails">
-                                {{ vesselDetails && vesselDetails.MCC ? vesselDetails.MCC : ''}}
+                                {{ vesselDetails && vesselDetails.MCC ? vesselDetails.MCC : noData}}
                             </span>
                             <span *ngIf="!vesselDetails">
                                 {{snmpNoData}}
@@ -85,7 +85,7 @@
                         <strong>Country:</strong>
                         <div class="kx-mt--tiny">
                             <span *ngIf="vesselDetails">
-                                {{ vesselDetails && vesselDetails.CountryName ? vesselDetails.CountryName : ''}}
+                                {{ vesselDetails && vesselDetails.CountryName ? vesselDetails.CountryName : noData}}
                             </span>
                             <span *ngIf="!vesselDetails">
                                 {{snmpNoData}}
@@ -98,7 +98,7 @@
                         <strong>APN:</strong>
                         <div class="kx-mt--tiny">
                             <span *ngIf="vesselDetails">
-                                {{ vesselDetails && vesselDetails.ApnName ? vesselDetails.ApnName : ''}}
+                                {{ vesselDetails && vesselDetails.ApnName ? vesselDetails.ApnName : noData}}
                             </span>
                             <span *ngIf="!vesselDetails">
                                 {{snmpNoData}}
@@ -110,7 +110,7 @@
                         <strong>Provider Name:</strong>
                         <div class="kx-mt--tiny">
                             <span *ngIf="vesselDetails">
-                                {{ vesselDetails && vesselDetails.ProviderName ? vesselDetails.ProviderName : ''}}
+                                {{ vesselDetails && vesselDetails.ProviderName ? vesselDetails.ProviderName : noData}}
                             </span>
                             <span *ngIf="!vesselDetails">
                                 {{snmpNoData}}
@@ -125,6 +125,7 @@
                                     href="{{selectedVessel.CactiLink}}" target="_blank">
                                     <img src="./assets/stats.png" alt="Cacti"
                                         style="width:25px; height:25px; align-content:center"> </a></span>
+                            <span *ngIf="!(selectedVessel && selectedVessel.CactiLink)">No Link</span>
                         </div>
                     </div>
 
@@ -302,7 +303,8 @@
             <div *ngIf="aisData" class="kx-card kx-card--skin-default kx-p--small">
                 <div class="kx-row">
                     <div class="kx-col  kx-col--4">
-                        <strong>Vessel</strong> : {{selectedVessel.Name}}
+                        <strong>Vessel</strong> :
+                        {{ selectedVessel && selectedVessel.Name ? selectedVessel.Name : noData}}
                     </div>
                     <div class="kx-col  kx-col--4">
                         <strong>IMO</strong> : {{imoNumber}}
@@ -315,7 +317,7 @@
                                 <div class="kx-mt--tiny">
                                     <strong>Timestamp :</strong>
                                     <div class="kx-mt--tiny">
-                                        {{aisData && aisData.AIS_Latest_Position  ? (aisData.AIS_Latest_Position | date:'dd/MM/yyyy HH:mm') : ''}}
+                                        {{aisData && aisData.AIS_Latest_Position  ? (aisData.AIS_Latest_Position | date:'dd/MM/yyyy HH:mm') : noData}}
                                         <!-- 07/09/2020 10:30 PM -->
                                     </div>
                                 </div>
@@ -323,7 +325,7 @@
                             <div class="kx-col kx-col--4">
                                 <strong>Destination:</strong>
                                 <div class="kx-mt--tiny">
-                                    {{aisData && aisData.ETA_Place  ? aisData.ETA_Place : ''}}
+                                    {{aisData && aisData.ETA_Place  ? aisData.ETA_Place : noData}}
                                     <!-- Newcastle(AUS) -->
                                 </div>
                             </div>
@@ -331,7 +333,7 @@
                                 <div class="kx-mt--tiny">
                                     <strong>ETA :</strong>
                                     <div class="kx-mt--tiny">
-                                        {{aisData && aisData.ETA_Date  ? (aisData.ETA_Date | date:'dd/MM/yyyy HH:mm') : ''}}
+                                        {{aisData && aisData.ETA_Date  ? (aisData.ETA_Date | date:'dd/MM/yyyy HH:mm') : noData}}
                                         <!-- 07/09/2020 10:30 PM -->
                                     </div>
                                 </div>
@@ -341,7 +343,7 @@
                             <div class="kx-col kx-col--4">
                                 <strong>Speed:</strong>
                                 <div class="kx-mt--tiny">
-                                    {{aisData && aisData.Speed_Over_Ground  ? aisData.Speed_Over_Ground : ''}}
+                                    {{aisData && aisData.Speed_Over_Ground  ? aisData.Speed_Over_Ground : noData}}
                                     <!-- 7.90 -->
                                 </div>
                             </div>
@@ -349,7 +351,7 @@
                                 <div class="kx-mt--tiny">
                                     <strong>Draft :</strong>
                                     <div class="kx-mt--tiny">
-                                        <!-- {{aisData && aisData.Draft  ? aisData.Draft : ''}} -->
+                                        <!-- {{aisData && aisData.Draft  ? aisData.Draft : noData}} -->
                                         3 Mts
                                     </div>
                                 </div>
