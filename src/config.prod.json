@@ -280,7 +280,7 @@
       ]
     },
     "theme": {
-      "mapDayTileLayer": "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
+      "mapDayTileLayer": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       "mapDuskTileLayer": "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
       "defaultZoomLevel": 19
     }
