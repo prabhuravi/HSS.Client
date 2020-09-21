@@ -189,6 +189,17 @@
             <div class="kx-card__body kx-p--mini">
                 <div class="row centerme">
                     <div class="kx-col kx-col--12">
+
+                        <strong>Signal Strength:</strong>
+                        <div class="kx-mt--tiny">
+                            <span *ngIf="vesselDetails">
+                                {{ vesselDetails && vesselDetails.SignalStrength ? vesselDetails.SignalStrength : noData}}
+                            </span>
+                            <span *ngIf="!vesselDetails">
+                                {{snmpNoData}}
+                            </span>
+                        </div>
+<!-- 
                         <div *ngIf="!noGaugeData" class="kx-pl--small">
                             <google-chart #googlechart [title]="chart.title" [type]="chart.type" [data]="chart.data"
                                 [options]="chart.options">
@@ -196,7 +207,7 @@
                         </div>
                         <div *ngIf="noGaugeData">
                             {{snmpNoData}}
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
