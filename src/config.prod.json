@@ -84,6 +84,8 @@
       "endpoints": {
         "GetVesselLinks": "/GetVesselLinks",
         "AISPositionData": "/AISPositionData",
+        "GetLatestAISRecord": "/GetLatestAISRecord",
+        "GetImoNumberByNodeNumber": "/GetImoNumberByNodeNumber",
         "GetSNMPData": "/GetSNMPDataByNodeNumber",
         "LatencyTrendData": "/LatencyTrendData"
       }
