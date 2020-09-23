@@ -99,15 +99,13 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
         });
 
         const options = {
-
           hAxis: {
             title: 'Time', titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
             slantedText: true, slantedTextAngle: 80,
             textStyle: {
               color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
             },
-            format: 'd/M/YY,HH:mm',
-            // format: 'Y,M,d,H'
+            format: 'd/M/YY HH:mm',
           },
           series: [
             { targetAxisIndex: 0 },
