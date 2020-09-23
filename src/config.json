@@ -282,9 +282,8 @@
       ]
     },
     "theme": {
-     
-      "mapDayTileLayer": "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
-      "mapDuskTileLayer": "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
+      "mapDayTileLayer": "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+            "mapDuskTileLayer": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
       "defaultZoomLevel": 19
     }
   },
