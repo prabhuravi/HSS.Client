@@ -6,6 +6,7 @@ interface IVesselLinks {
     LastLatency: number,
     LastSeenUTC: string,
     CreatedBy: string,
-    IPAddress: string
+    IPAddress: string,
+    CactiLink: string
 }
 

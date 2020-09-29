@@ -57,7 +57,7 @@
                                         [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [minDate]="currentUTC"
                                         [defaultDate]="currentUTC" [(ngModel)]="rowData.DisableTime"
                                         [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050"
-                                        selectOtherMonths="true" readonlyInput="true">
+                                        selectOtherMonths="true" readonlyInput="true" (click)="onDisableTimeSelect()">
                                     </p-calendar>
                                 </div>
                             </div>

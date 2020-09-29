@@ -15,11 +15,12 @@ export class ConnectivityMonitoringComponent implements OnInit {
   vesselLinksList: IVesselLinks[] = [];
   cols = [
     { field: 'NodeNumber', header: 'Node Number', sortfield: 'NodeNumber', filterMatchMode: 'contains' },
-    { field: 'Name', header: 'Vessel Name', sortfield: 'Name', filterMatchMode: 'contains' },
+    { field: 'Name', header: 'Installation', sortfield: 'Name', filterMatchMode: 'contains' },
     { field: 'IPAddress', header: 'IP Address', sortfield: '', filterMatchMode: 'contains' },
     { field: 'Status', header: 'Status', sortfield: 'Status', filterMatchMode: 'contains' },
     { field: 'LastLatency', header: 'Last Latency', sortfield: 'LastLatency' },
-    { field: 'LastSeen', header: 'Last Updated(GMT) (dd/MM/yyyy HH:mm)', sortfield: '' }
+    { field: 'LastSeen', header: 'Last Updated(GMT)', sortfield: '' },
+    { field: 'CactiLink', header: 'Cacti', sortfield: '' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   showLoader = true;
@@ -41,6 +42,9 @@ export class ConnectivityMonitoringComponent implements OnInit {
         this.showLoader = false;
         data = data.sort((a, b) => (a.Status === 'Up') ? -1 : 1);
         this.vesselLinksList = data;
+        // this.vesselLinksList.forEach(element => {
+        //   element.CactiLink = 'https://cacti.kognif.ai/cacti/graph_view.php?action=preview&host_id=1686';
+        // });
         this.connectivityMonitoringService.setAllVesselLinks(data);
       }
     });

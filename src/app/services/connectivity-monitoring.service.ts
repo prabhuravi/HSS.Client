@@ -74,7 +74,6 @@ export class ConnectivityMonitoringService {
   getVesselNameByNodeNumber(nodeNumber) {
     if (this.allVesselLinks) {
       const vessel = this.allVesselLinks.filter((vessel1: IVesselLinks) => {
-        // tslint:disable-next-line:triple-equals
         return vessel1.NodeNumber.toFixed(0) == nodeNumber;
       });
       return vessel[0].Name;
@@ -92,6 +91,22 @@ export class ConnectivityMonitoringService {
         toDate: aisRequest.ToDate }
     };
 
+    return this.http.getDataV2(requestData);
+  }
+
+  getGetLatestAISRecord(imoNumber: number) {
+    const requestData = {
+      endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.GetLatestAISRecord}/${imoNumber}`,
+      params: { }
+    };
+    return this.http.getDataV2(requestData);
+  }
+
+  getImoNumberByNodeNumber(nodeNumber: number) {
+    const requestData = {
+      endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.GetImoNumberByNodeNumber}/${nodeNumber}`,
+      params: { }
+    };
     return this.http.getDataV2(requestData);
   }
 

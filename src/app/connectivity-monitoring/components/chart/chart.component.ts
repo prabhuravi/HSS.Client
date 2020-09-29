@@ -58,7 +58,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
       .subscribe((data: any) => {
         this.showChart = true;
         this.latencyData = data;
-        if(this.latencyData.length < 1)
+        if(this.latencyData.length < 2)
         {
           this.emptyLatencyData = true;
         }
@@ -94,26 +94,26 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
         data.addColumn('number', 'Signal Strength');
 
         this.latencyData.forEach((record) => {
-          data.addRow([new Date(record.TimeStamp.toString()), record.LatencyValue, record.SignalStrength]); // Converitng to local time zone of user
+          data.addRow([new Date(record.TimeStamp.toString()), record.LatencyValue, record.SignalStrength ]); // Converitng to local time zone of user
           // data.addRow([new Date(record.TimeStamp.toString().replace('T',' ').replace('Z','')), record.LatencyValue]); // UTC time
         });
 
         const options = {
-
           hAxis: {
             title: 'Time', titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
             slantedText: true, slantedTextAngle: 80,
             textStyle: {
               color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
-            }
+            },
+            format: 'd/M/YY HH:mm',
           },
           series: [
-            { targetAxisIndex: 1 },
-            { targetAxisIndex: 0 }
+            { targetAxisIndex: 0 },
+            { targetAxisIndex: 1 }
           ],
           vAxes: {
-            0: {
-              title: 'dBm',
+            1: {
+              title: 'Signal Strength (dBm)',
               titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
               textStyle: {
                 color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
@@ -122,8 +122,8 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
                 count: 10
               }
             },
-            1: {
-              title: 'milliseconds',
+            0: {
+              title: 'Latency (ms)',
               titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
               textStyle: {
                 color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
@@ -153,11 +153,12 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
           // colors: ['#D44E41'],
           colors: ['#D44E41', '#4169E1'],
           defaultColors: ['#0000FF'],
-          curveType: 'function',
-          legend: { position: 'bottom', textStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333', fontSize: 16 } }
+          // curveType: 'function',
+          legend: { position: 'bottom', textStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333', fontSize: 16 } },
           // isStacked: 'true',
           // fill: 20,
           // 'displayExactValues': true,
+          dateFormat: 'dd.MM.yy hh:mm'
         };
         const container: any = document.getElementById('latency_chart');
         this.latencyChart = new google.visualization.LineChart(container);
