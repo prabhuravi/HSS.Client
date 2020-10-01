@@ -2,8 +2,9 @@
 <div *ngIf="!isDataLoading">
     <div *ngIf="vesselConnectivityControlList.length > 0">
         <p-table tableStyleClass="kx-table kx-table--outer-border kx-table--slim-rows" *ngIf="!isDataLoading" #tt
-            [value]="vesselConnectivityControlList" [columns]="cols" [paginator]="true"
-            [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
+            [value]="vesselConnectivityControlList" [columns]="cols" 
+            [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true" [paginator]="true" [rows]="15"
+            [rowsPerPageOptions]="[5,10,15,20,50,100]" totalRecords=500 pageLinks="3">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
