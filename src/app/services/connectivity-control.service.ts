@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpService } from './http.service';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
+import { text } from 'd3';
 
 @Injectable({
   providedIn: 'root'
@@ -92,8 +93,7 @@ export class ConnectivityControlService {
     return this.http.getDataV2(requestData);
   }
 
-
-  //Whitelist
+  // Whitelist
   getVessels(): Observable<IVessel[]> {
     const requestData = {
       endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.GetVessels}`
@@ -105,6 +105,13 @@ export class ConnectivityControlService {
     const requestData = {
       endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.GetWhitelistedCountries}/${vesselId}`
     };
+    return this.http.getData(requestData);
+  }
+
+  getLastSyncDate(vesselId: number): Observable<string> {
+    const requestData = {
+      endPoint: `${this.whitelistApiUrl}${this.whitelistConfigCollection.endpoints.GetLastSyncDate}/${vesselId}`
+     };
     return this.http.getData(requestData);
   }
 

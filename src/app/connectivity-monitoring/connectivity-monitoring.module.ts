@@ -33,8 +33,9 @@ Marker.prototype.options.icon = iconDefault;
 const routes: Routes = [
   {
     path: '', component: DashboardComponent, children: [
-      { path: '', component: ConnectivityMonitoringComponent, pathMatch: 'full' },
-      { path: 'cacti/:nodeNumber', component: VesselHistoryComponent }
+      // { path: '', component: ConnectivityMonitoringComponent, pathMatch: 'full' },
+      { path: 'cacti/:nodeNumber', component: VesselHistoryComponent },
+      { path: ':nodeType', component: ConnectivityMonitoringComponent }
     ]
   }
 ];

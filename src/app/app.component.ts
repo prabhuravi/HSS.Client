@@ -35,7 +35,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.initializing = true;
         this.navigationVisible = true;
         this.sublocations = [
-            new Sublocation('Connectivity Monitoring', 'connectivity-monitoring'),
+            new Sublocation('Connectivity Monitoring - Offshore', 'connectivity-monitoring/offshore'),
+            new Sublocation('Connectivity Monitoring - Onshore', 'connectivity-monitoring/onshore'),
             new Sublocation('Connectivity Control', 'vessel-configuration'),
             new Sublocation('Operational Plan', 'operational-plan'),
             // new Sublocation('File Manager', '', [], [], '', '', () => {

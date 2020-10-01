@@ -1,6 +1,7 @@
 interface IFileLoggingStatus {
     TotalFileSize: number,
     TotalFileCount: number,
+    LastContactDate:object,
     FileLogs: IFileLogs[]
 }
 interface IFileLogs {

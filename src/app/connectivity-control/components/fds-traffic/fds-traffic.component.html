@@ -6,7 +6,7 @@
                 <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                     <label class="kx-label" for="selectbox1">Select Vessel</label>
                     <div class="kx-mt--tiny">
-                        <p-multiSelect [options]="vesselList" [formControlName]="'VesselIds'" optionLabel="Name">
+                        <p-multiSelect [options]="vesselList" [formControlName]="'VesselIds'" optionLabel="DisplayName">
                         </p-multiSelect>
                     </div>
                 </div>
@@ -64,6 +64,9 @@
                 </div>
                 <div class="kx-col">
                     <strong>Total Files Size : </strong>{{vesselHistoricalUploadStatus.TotalFileSize}} MB
+                </div>
+                <div class="kx-col">
+                    <strong>Last Contact Date : </strong>{{vesselHistoricalUploadStatus.LastContactDate}}
                 </div>
             </div>
         </div>

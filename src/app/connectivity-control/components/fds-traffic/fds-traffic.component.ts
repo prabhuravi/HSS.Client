@@ -28,8 +28,8 @@ export class FdsTrafficComponent implements OnInit {
     // { field: 'FileModifiedDate', sortfield: '', header: 'File Modified Date', filterMatchMode: 'contains' },
     { field: 'FileType', sortfield: 'FileType', header: 'File Type', filterMatchMode: 'contains' },
     // { field: 'UploadStatus', sortfield: 'UploadStatus', header: 'Status', filterMatchMode: 'contains' },
-    { field: 'FileSize', sortfield: '', header: 'Actual File Size (KB)', filterMatchMode: 'contains' },
-    { field: 'FileSize', sortfield: '', header: 'Uploaded Size (KB)', filterMatchMode: 'contains' },
+    { field: 'FileSize', sortfield: '', header: 'Actual(KB)', filterMatchMode: 'contains' },
+    { field: 'FileSize', sortfield: '', header: 'Uploaded(KB)', filterMatchMode: 'contains' },
     { field: 'UploadCount', sortfield: '', header: 'Count', filterMatchMode: 'contains' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;

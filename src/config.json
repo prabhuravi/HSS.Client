@@ -44,7 +44,7 @@
 
   "apiCollection": {
     "ConnectivityControl": {
-      "domainURL": "https://localhost:5001/api",
+      "domainURL": "https://localhost:5002/api",
       "path": "/ConnectivityControl",
       "endpoints": {
         "GetVessels": "",
@@ -53,7 +53,7 @@
       }
     },
     "WhiteList": {
-      "domainURL": "https://localhost:5001/api",
+      "domainURL": "https://localhost:5002/api",
       "path": "/WhiteList",
       "endpoints": {
         "GetVessels": "/GetVessels",
@@ -65,11 +65,12 @@
         "DeleteCountryGroup": "/CountryGroup/Remove",
         "AddCountryGroup": "/CountryGroup/Add",
         "RemoveGroupCountry": "/CountryGroup/DeleteCountry",
-        "AddCountriesToGroup": "/CountryGroup/AddCountries"
+        "AddCountriesToGroup": "/CountryGroup/AddCountries",
+        "GetLastSyncDate": "/LastSyncDate"
       }
     },
     "FileUploadStatus": {
-      "domainURL": "https://localhost:5001/api",
+      "domainURL": "https://localhost:5002/api",
       "path": "/FileUploadStatus",
       "endpoints": {
         "MissionsOnVessel": "/MissionByVessel",

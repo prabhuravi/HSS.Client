@@ -5,7 +5,7 @@
                 <label class="kx-label" for="selectbox1">Select Vessel</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="vessels" [(ngModel)]="activeVessel"
-                        optionLabel="Name" filter="true" (onChange)="loadWhitelistedCountries()"></p-dropdown>
+                        optionLabel="DisplayName" filter="true" (onChange)="loadWhitelistedCountries()"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
@@ -40,6 +40,7 @@
     <div *ngIf="!isDataLoading">
         <small *ngIf="whiteListedCountries.length > 0">Below countries/groups are already white listed for
             {{activeVessel.Name}} to upload data:</small>
+            <small class="lastSync" *ngIf="whiteListedCountries.length > 0">{{lastContact}} </small>  
         <p-table *ngIf="whiteListedCountries.length > 0" tableStyleClass="kx-table kx-table--outer-border"
             [value]="whiteListedCountries" [columns]="cols" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount"
             autoLayout="true" #tt>

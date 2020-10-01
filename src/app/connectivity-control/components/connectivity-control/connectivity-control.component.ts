@@ -14,11 +14,11 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   vesselConnectivityControlList: IConnectivityControl[] = [];
   vesselConnectivityActionLogList: IConnectivityActionLog[] = [];
   cols = [
-    { field: 'VesselName', sortfield: 'VesselName', header: `Vessel Name`, filterMatchMode: 'contains' },
+    { field: 'VesselName', sortfield: 'VesselName', header: `Installation Name`, filterMatchMode: 'contains' },
     { field: 'IMONumber', sortfield: 'IMONumber', header: 'IMO Number', filterMatchMode: 'contains' },
     { field: 'DisableTime', sortfield: '', header: 'Disable Time (Optional, GMT)', filterMatchMode: 'contains' },
     { field: 'IsUploadEnabled', sortfield: '', header: 'File Upload Status', filterMatchMode: 'contains' },
-    { field: 'LastAction', sortfield: '', header: 'Action Log(MM/dd/yyyy HH:mm, GMT)', filterMatchMode: 'contains' }
+    { field: 'LastAction', sortfield: '', header: 'Action Log', filterMatchMode: 'contains' }
   ];
   displayActionLogModal: boolean;
   activeVessel: any = {};

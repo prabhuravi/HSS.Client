@@ -27,10 +27,10 @@ export class ConnectivityMonitoringService {
     this.connectivityMonitoringApiUrl = `${this.connectivityMonitoringConfig.domainURL}${this.connectivityMonitoringConfig.path}`;
   }
 
-  getVesselLinks(): Observable<any> {
+  getVesselLinks(nodeType: string): Observable<any> {
 
     const requestData = {
-      endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.GetVesselLinks}`,
+      endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.GetVesselLinks}/${nodeType}`,
       params: { }
     };
     return this.http.getDataV2(requestData);
@@ -61,13 +61,13 @@ export class ConnectivityMonitoringService {
   }
 
   getVesselLinksByNodeNumber(nodeNumber: number) {
-    this.getVesselLinks().subscribe((data) => {
-      this.allVesselLinks = data;
-      const vessel = this.allVesselLinks.filter((vessel1: IVesselLinks) => {
+    this.getVesselLinks('any').subscribe((data) => {
+     // this.allVesselLinks = data;
+           const vessel = this.allVesselLinks.filter((vessel1: IVesselLinks) => {
         // tslint:disable-next-line:triple-equals
         return vessel1.NodeNumber.toFixed(0) == nodeNumber;
       });
-      this.vesselSubject.next(vessel[0]);
+           this.vesselSubject.next(vessel[0]);
     });
   }
 

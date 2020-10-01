@@ -4,6 +4,7 @@ interface IVesselUploadStatus {
     TotalFilesNotUploaded: number,
     TotalFilesInProgress: number,
     TotalFilesExcluded: number,
+    LastContactDate:object,
     FileOnVessels: IFilesUploadStatus[]
 }
 interface IFilesUploadStatus {

@@ -27,14 +27,14 @@ const routes: Routes = [
       },
       { path: 'appsettings', component: AppSettingsComponent, pathMatch: 'full' },
       { path: 'globalsettings', component: GlobalSettingsComponent, pathMatch: 'full' },
-      { path: '', redirectTo: '/connectivity-monitoring', pathMatch: 'full' },
+      { path: '', redirectTo: '/connectivity-monitoring/offshore', pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent }
     ]
   }
 ];
 
 @NgModule({
-  imports: [UnauthorizedModule, RouterModule.forRoot(routes, { useHash: true, initialNavigation: false })],
+  imports: [UnauthorizedModule, RouterModule.forRoot(routes, { useHash: true, initialNavigation: false, onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -24,6 +24,7 @@ export class WhitelistCountriesComponent implements OnInit {
   vessels: IVessel[] = [];
   activeVessel: IVessel;
   operatorCountryList: IOperatorCountryList[] = [];
+  lastContact: string;
   countryList: IOperatorCountryList[] = [];
   groupList: IOperatorCountryList[] = [];
   groupCountryList: IOperatorCountryList[] = [];
@@ -85,10 +86,18 @@ export class WhitelistCountriesComponent implements OnInit {
 
   loadWhitelistedCountries(): void {
     this.isDataLoading = true;
+    this.lastContact = '';
     this.connectivityControlService.getWhiteListedCountries(this.activeVessel.Id).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       this.whiteListedCountries = data;
     });
+
+    if (this.activeVessel.Id > 0 ) {
+      this.connectivityControlService.getLastSyncDate(this.activeVessel.Id).pipe(take(1)).subscribe((data) => {
+        this.isDataLoading = false;
+        this.lastContact = data;
+      });
+    }
   }
 
   markCountryWhitelist(): void {
