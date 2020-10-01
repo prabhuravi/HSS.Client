@@ -81,12 +81,12 @@ export class ConnectivityMonitoringService {
   }
 
   getAISData(aisRequest?: AISRequest) {
-    const a = { VesselName: 'Talisman', FromDate: '2020-03-30T11:46:23.000Z', ToDate: '2020-04-14T11:46:23.000Z' };
-    aisRequest.VesselName = this.getVesselNameByNodeNumber(aisRequest.NodeNumber);
+    // const a = { VesselName: 'Talisman', FromDate: '2020-03-30T11:46:23.000Z', ToDate: '2020-04-14T11:46:23.000Z' };
+    // aisRequest.VesselName = this.getVesselNameByNodeNumber(aisRequest.NodeNumber);
     const requestData = {
       endPoint: `${this.connectivityMonitoringApiUrl}${this.connectivityMonitoringConfig.endpoints.AISPositionData}`,
       params: {
-        vesselName: aisRequest.VesselName,
+        nodeNumber: aisRequest.NodeNumber,
         fromDate: aisRequest.FromDate,
         toDate: aisRequest.ToDate }
     };
