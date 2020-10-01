@@ -81,7 +81,6 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
     this.height = this.hostHeight - this.margin.top - this.margin.bottom;
     // define data
     const data = _.groupBy(this.totalVessels, (vessel) => vessel.Status);
-    console.log(this.totalVessels);
     const dataset: any = [
       { label: `Up ${data.Up ? data.Up.length :0 }`, count: data.Up ? data.Up.length :0 },
       { label: `Down ${data.Down ? data.Down.length :0}`, count: data.Down ? data.Down.length :0}

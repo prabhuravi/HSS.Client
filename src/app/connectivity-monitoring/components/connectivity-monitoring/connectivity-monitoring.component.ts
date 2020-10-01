@@ -16,11 +16,12 @@ export class ConnectivityMonitoringComponent implements OnInit {
   vesselLinksList: IVesselLinks[] = [];
   cols = [
     { field: 'NodeNumber', header: 'Node Number', sortfield: 'NodeNumber', filterMatchMode: 'contains' },
-    { field: 'Name', header: 'Installation Name', sortfield: 'Name', filterMatchMode: 'contains' },
+    { field: 'Name', header: 'Installation', sortfield: 'Name', filterMatchMode: 'contains' },
     { field: 'IPAddress', header: 'IP Address', sortfield: '', filterMatchMode: 'contains' },
     { field: 'Status', header: 'Status', sortfield: 'Status', filterMatchMode: 'contains' },
     { field: 'LastLatency', header: 'Last Latency', sortfield: 'LastLatency' },
-    { field: 'LastSeen', header: 'Last Updated(GMT)', sortfield: '' }
+    { field: 'LastSeen', header: 'Last Updated(GMT)', sortfield: '' },
+    { field: 'CactiLink', header: 'Cacti', sortfield: '' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   showLoader = true;
@@ -36,7 +37,6 @@ export class ConnectivityMonitoringComponent implements OnInit {
     let nodeType: string = '';
     if (this.route && this.route.params) {
       this.route.params.subscribe((params) => {
-        console.log(params.nodeType);
         this.vesselLinksList = [];
         if (params.nodeType === 'onshore') {
           nodeType = 'onshore';
@@ -49,9 +49,7 @@ export class ConnectivityMonitoringComponent implements OnInit {
             });
           }
         });
-        console.log('entry1');
         this.connectivityMonitoringService.getVesselLinks(nodeType).pipe(take(1)).subscribe((data: IVesselLinks[]) => {
-          console.log('entry2');
           if (data && data.length > 0) {
            this.showLoader = false;
            data = data.sort((a, b) => (a.Status === 'Up') ? -1 : 1);

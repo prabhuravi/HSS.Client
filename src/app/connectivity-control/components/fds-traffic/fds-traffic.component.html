@@ -18,7 +18,7 @@
                             placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                             [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'FromDate'"
                             readonlyInput="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050"
-                            selectOtherMonths="true">
+                            selectOtherMonths="true" [maxDate]="form.value['ToDate']">
                         </p-calendar>
                     </div>
                 </div>
@@ -30,8 +30,8 @@
                             placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                             [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'ToDate'"
                             readonlyInput="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050"
-                            selectOtherMonths="true" [minDate]="form.value['FromDate']"
-                            (onSelect)="form.controls.FromDate.setValue(form.controls.ToDate.value)">
+                            selectOtherMonths="true" [minDate]="form.value['FromDate']">
+                            <!-- (onSelect)="form.controls.FromDate.setValue(form.controls.ToDate.value)"> -->
                         </p-calendar>
                     </div>
                 </div>
@@ -49,6 +49,7 @@
                         </span>
                     </button>
                 </div>
+                <div *ngIf="showDefaultData" style="margin-top: 10px;"> <span style = "color:red">Note: </span> By default showing data for all the vessels for last 30 days.</div>
             </div>
         </form>
     </div>

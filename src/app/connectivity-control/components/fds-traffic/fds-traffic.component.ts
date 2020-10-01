@@ -35,6 +35,7 @@ export class FdsTrafficComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   vesselListLoaded: boolean;
   vesselHistoricalUploadStatusLoaded: boolean;
+  showDefaultData: boolean = true;
 
   constructor(
     public operationalPlanService: OperationalPlanService,
@@ -75,11 +76,12 @@ export class FdsTrafficComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.showDefaultData = false;
     this.isFormSubmitted = true;
     this.vesselHistoricalUploadStatusLoaded = false;
     if (this.form.valid) {
       const filterData = {
-        VesselIds: this.form.value.VesselIds.map((e) => e.Id),
+        VesselIds: this.form.value.VesselIds? this.form.value.VesselIds.map((e) => e.Id): [],
         FromDate: this.form.value.FromDate,
         ToDate: this.form.value.ToDate
       };

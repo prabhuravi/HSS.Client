@@ -1,5 +1,5 @@
 {
-  "authenticationEndpoint": "https://hsstest.kognif.ai/PoseidonNext/kognifaiidp/",
+  "authenticationEndpoint": "https://hss.kognif.ai/PoseidonNext/kognifaiidp/",
   "authenticationClientId": "hss-modules",
   "applicationId": "509c836e-987e-4b6c-9492-ff0fff2f18f4",
   "authenticationScope": "openid profile",
@@ -7,13 +7,13 @@
   "authenticationExtraQueryParams": {
     "resource": ""
   },
-  "poseidonApiUrl": "https://hsstest.kognif.ai/PoseidonNext/poseidonnext.api/",
-  "customerApiUrl": "https://hsstest.kognif.ai:9446/",
+  "poseidonApiUrl": "https://hss.kognif.ai/PoseidonNext/poseidonnext.api/",
+  "customerApiUrl": "https://hss.kognif.ai:9446/",
   "homeUrl": "/",
-  "userProfileUrl": "https://hsstest.kognif.ai/PoseidonNext/poseidon-user-profile",
-  "userInfoApiUrl": "https://hsstest.kognif.ai/PoseidonNext/kognifaiidp/api/v1/Users/",
-  "environment": "dev",
-  "entitlementsApiUrl": "https://hsstest.kognif.ai/PoseidonNext/entitlements.api",
+  "userProfileUrl": "https://hss.kognif.ai/PoseidonNext/poseidon-user-profile",
+  "userInfoApiUrl": "https://hss.kognif.ai/PoseidonNext/kognifaiidp/api/v1/Users/",
+  "environment": "prod",
+  "entitlementsApiUrl": "https://hss.kognif.ai/PoseidonNext/entitlements.api",
   "logging": {
     "logLevel": 4,
     "bufferingTime": 5000
@@ -44,7 +44,7 @@
 
   "apiCollection": {
     "ConnectivityControl": {
-      "domainURL": "https://hsstest.kognif.ai/ConnectivityControl/api",
+      "domainURL": "https://hss.kognif.ai/ConnectivityControl/api",
       "path": "/ConnectivityControl",
       "endpoints": {
         "GetVessels": "",
@@ -53,7 +53,7 @@
       }
     },
     "WhiteList": {
-      "domainURL": "https://hsstest.kognif.ai/ConnectivityControl/api",
+      "domainURL": "https://hss.kognif.ai/ConnectivityControl/api",
       "path": "/WhiteList",
       "endpoints": {
         "GetVessels": "/GetVessels",
@@ -69,7 +69,7 @@
       }
     },
     "FileUploadStatus": {
-      "domainURL": "https://hsstest.kognif.ai/ConnectivityControl/api",
+      "domainURL": "https://hss.kognif.ai/ConnectivityControl/api",
       "path": "/FileUploadStatus",
       "endpoints": {
         "MissionsOnVessel": "/MissionByVessel",
@@ -79,17 +79,19 @@
       }
     },
     "ConnectivityMonitoring": {
-      "domainURL": "https://hsstest.kognif.ai/ConnectivityMonitoring/api",
+      "domainURL": "https://hss.kognif.ai/ConnectivityMonitoring/api",
       "path": "/ConnectivityMonitoring",
       "endpoints": {
         "GetVesselLinks": "/GetVesselLinks",
         "AISPositionData": "/AISPositionData",
+        "GetLatestAISRecord": "/GetLatestAISRecord",
+        "GetImoNumberByNodeNumber": "/GetImoNumberByNodeNumber",
         "GetSNMPData": "/GetSNMPDataByNodeNumber",
         "LatencyTrendData": "/LatencyTrendData"
       }
     },
     "OperationalPlan": {
-      "domainURL": "https://hsstest.kognif.ai/OperationPlan/api",
+      "domainURL": "https://hss.kognif.ai/OperationPlan/api",
       "OperationPlan": {
         "path": "/OperationalPlan",
         "endpoints": {
@@ -280,13 +282,13 @@
       ]
     },
     "theme": {
-      "mapDayTileLayer": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      "mapDuskTileLayer": "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
+      "mapDayTileLayer": "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+      "mapDuskTileLayer": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
       "defaultZoomLevel": 19
     }
   },
   
-  "filemanagerLink": "https://hsstest.kognif.ai/poseidonnext/kognifai-file-manager-client/",
-  "galoreApiUrl": "https://hsstest.kognif.ai/galoreapi/",
-  "galoreSignalRUrl": "https://hsstest.kognif.ai/galoreapi/"
+  "filemanagerLink": "https://hss.kognif.ai/poseidonnext/kognifai-file-manager-client/",
+  "galoreApiUrl": "https://hss.kognif.ai/galoreapi/",
+  "galoreSignalRUrl": "https://hss.kognif.ai/galoreapi/"
 }

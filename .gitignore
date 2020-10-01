@@ -285,3 +285,9 @@ Thumbs.db
 .history/.gitignore_20201001155359
 .history/src/config_20201001155709.json
 .history/src/app/services/connectivity-control.service_20201001155714.ts
+.history/src/app/connectivity-control/components/connectivity-control/connectivity-control.component_20201001161732.ts
+.history/src/app/connectivity-monitoring/components/connectivity-monitoring/connectivity-monitoring.component_20201001161732.ts
+.history/src/app/connectivity-monitoring/components/donut/donut-chart.component_20201001161732.ts
+.history/src/app/connectivity-monitoring/components/map/map.component_20201001160959.ts
+.history/src/app/connectivity-monitoring/components/map/map.component_20201001161732.ts
+.history/src/app/connectivity-monitoring/components/vessel-history/vessel-history.component_20201001161732.ts

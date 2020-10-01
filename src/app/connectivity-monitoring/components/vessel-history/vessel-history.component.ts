@@ -9,6 +9,7 @@ import { AppConstants } from 'src/app/app.constants';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import * as moment from 'moment';
+import { AISData } from 'src/app/models/AISData';
 @Component({
   selector: 'app-vessel-history',
   templateUrl: './vessel-history.component.html',
@@ -20,6 +21,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   googlechart: GoogleChartComponent;
   chart: any = {
     type: 'Gauge',
+    data: [['dBm', 0]],
     options: {
       width: 180, height: 180,
       min: -110,
@@ -36,95 +38,140 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   latencyRequest = new LatencyRequest();
   aisRequest = new AISRequest();
   vesselDetails: IVesselDetails;
+  aisData: AISData = new AISData();
   cachedVesselDetails: IVesselLinks;
   VesselDataSubscription: Subscription;
   selectedVesselNodeNumber: string;
+  imoNumber: number;
   viewFullChart: boolean;
   viewFullMap: boolean;
+  aisCardLoading: boolean;
 
   currentState = 'initial';
   showMap: boolean = false;
-  presetOptions = [{
-    name: 'Last Hour',
-    value: 1
-  }, {
-    name: 'Last 2 Hours',
-    value: 2
-  }, {
-    name: 'Last Day',
-    value: 24
-  }, {
-    name: 'Custom',
-    value: 0
-  }];
+  presetOptions = [
+    //   {
+    //   name: 'Last Hour',
+    //   value: 1
+    // }, {
+    //   name: 'Last 2 Hours',
+    //   value: 2
+    // }, 
+    {
+      name: 'Last Day',
+      value: 24
+    }, {
+      name: 'Last Week',
+      value: 168
+    }, {
+      name: 'Last Two Week',
+      value: 336
+    }, {
+      name: 'Custom',
+      value: 0
+    }];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   noData: string = 'No Data Available';
+  snmpNoData: string = 'Missing SNMP';
   noGaugeData = false;
   selectedPreset: any = { name: 'Last Day', value: 24 };
   fromDate: Date;
   toDate: Date;
   allVessels: any;
   selectedVessel: any;
+  loading = true;
+  showAISCard: boolean;
+  nodeNumber: number;
   constructor(
     public connectivityMonitoringService: ConnectivityMonitoringService,
     public route: ActivatedRoute,
     public router: Router
   ) {
   }
+  
   ngOnInit(): void {
     if (this.route && this.route.params) {
       this.route.params.subscribe((params) => {
+        this.nodeNumber = params.nodeNumber;
         this.getVesselDetails(params.nodeNumber);
+        // this.getAISLatestPosition(params.nodeNumber);
       }
       );
     }
   }
+
   ngOnDestroy(): void {
     if (this.VesselDataSubscription) {
       this.VesselDataSubscription.unsubscribe();
     }
   }
+
+  getAISLatestPosition(nodeNumber: number) {
+    this.aisCardLoading = true;
+    this.connectivityMonitoringService.getImoNumberByNodeNumber(nodeNumber).subscribe((data: any) => {
+      this.imoNumber = data;
+      
+      this.aisCardLoading = false;
+      this.connectivityMonitoringService.getGetLatestAISRecord(this.imoNumber).subscribe((aisData: any) => {
+        this.aisData = aisData;
+       
+        this.aisCardLoading = false;
+      });
+    });
+  }
+
+  viewAISCard(e)
+  {
+    e.preventDefault();
+    this. toggleShowAISCard();
+    this.getAISLatestPosition(this.nodeNumber);
+  }
+
+  toggleShowAISCard()
+  {
+    this.showAISCard = !this.showAISCard;
+  }
+
   getVesselDetails(nodeNumber: number, fromDrpDownChange?: boolean): void {
     if (nodeNumber) {
       this.selectedVesselNodeNumber = nodeNumber.toString();
 
-      this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
+      // this.connectivityMonitoringService.getVesselLinksByNodeNumber(nodeNumber);
 
-      this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().pipe(take(1)).subscribe((data) => {
-        if (data) {
-          this.cachedVesselDetails = data;
-          if (this.cachedVesselDetails && this.cachedVesselDetails.Status === 'Down') {
-            this.chart.data = [['dBm', 0]];
-          }
-          this.allVessels = this.connectivityMonitoringService.getAllCachedResult();
-          this.allVessels.filter((data1) => {
-            // tslint:disable-next-line:triple-equals
-            if (data1.NodeNumber == nodeNumber) {
-              this.selectedVessel = data1;
-            }
-          });
+      // this.VesselDataSubscription = this.connectivityMonitoringService.getVesselSubject().pipe(take(1)).subscribe((data) => {
+      //   if (data) {
+      //     this.cachedVesselDetails = data;
 
-          this.resetDate();
-
-          // tslint:disable-next-line:radix
-          this.connectivityMonitoringService.getSnMPData(parseInt(this.selectedVesselNodeNumber)).subscribe((vesselDetails: IVesselDetails) => {
-            this.vesselDetails = vesselDetails;
-            // tslint:disable-next-line:radix
-            this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
-            if (vesselDetails && vesselDetails.SignalStrength) {
-              if (this.cachedVesselDetails && this.cachedVesselDetails.Status === 'Down') {
-                this.chart.data = [['dBm', 0]];
-              } else {
-                this.chart.data = [['dBm', vesselDetails.SignalStrength]];
-              }
-              this.noGaugeData = false;
-            } else {
-              this.noGaugeData = true;
-            }
-          });
+      // if (this.cachedVesselDetails && this.cachedVesselDetails.Status === 'Down') {
+      //   this.chart.data = [['dBm', 0]];
+      // }
+      this.allVessels = this.connectivityMonitoringService.getAllCachedResult();
+      this.allVessels.filter((data1) => {
+        if (data1.NodeNumber == nodeNumber) {
+          this.selectedVessel = data1;
         }
-
       });
+
+      this.resetDate();
+
+      this.connectivityMonitoringService.getSnMPData(parseInt(this.selectedVesselNodeNumber)).subscribe((vesselDetails: IVesselDetails) => {
+        this.vesselDetails = vesselDetails;
+        this.loading = false;
+        this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
+        if (vesselDetails && vesselDetails.SignalStrength) {
+          if (this.selectedVessel && this.selectedVessel.Status === 'Down') {
+            this.chart.data = [['dBm', 0]];
+          } else {
+            this.chart.data = [['dBm', vesselDetails.SignalStrength]];
+          }
+          this.noGaugeData = false;
+        } else {
+          this.noGaugeData = true;
+        }
+      });
+
+      //   }
+      // });
 
     }
 
@@ -141,7 +188,6 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
   }
   filterData(): void {
     this.getLatencyTrendData();
-    // tslint:disable-next-line:radix
     this.connectivityMonitoringService.setNodeChangeSubject(parseInt(this.selectedVesselNodeNumber));
   }
   updatePreset(): void {

@@ -171,11 +171,14 @@
 }
 .kx-modal--size-large {
     &.u--modal--size-large {
-        max-width: 80rem;
+        max-width: 70rem;
     }
 }
 .kx-modal__body {
     max-height: calc(100vh - 200px) !important;
+}
+.kx-modal__dialog{
+    margin: 4.8rem 4rem 0.8rem auto !important;
 }
 .ui-confirmdialog-message {
     word-break: break-all;

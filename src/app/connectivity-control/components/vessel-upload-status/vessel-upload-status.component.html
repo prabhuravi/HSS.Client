@@ -35,7 +35,7 @@
                             hideOnDateTimeSelect="true" showButtonBar="true" [appendTo]="pcalendarRef"
                             placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm" readonlyInput="true"
                             [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'FromDate'"
-                            [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050"
+                            [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050" [maxDate]="form.value.ToDate"
                             selectOtherMonths="true">
                         </p-calendar>
                     </div>
@@ -48,8 +48,8 @@
                             readonlyInput="true" placeholder="{{PRIMENG_CONSTANTS.datepickerFormat}} HH:mm"
                             [minDate]="form.value.FromDate" [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat"
                             [formControlName]="'ToDate'" [monthNavigator]="true" [yearNavigator]="true"
-                            yearRange="1950:2050" selectOtherMonths="true"
-                            (onSelect)="form.controls.FromDate.setValue(form.controls.ToDate.value)">
+                            yearRange="1950:2050" selectOtherMonths="true">
+                            <!-- (onSelect)="form.controls.FromDate.setValue(form.controls.ToDate.value)"> -->
                         </p-calendar>
                     </div>
                 </div>
