@@ -85,7 +85,6 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
       { label: `Up ${data.Up ? data.Up.length :0 }`, count: data.Up ? data.Up.length :0 },
       { label: `Down ${data.Down ? data.Down.length :0}`, count: data.Down ? data.Down.length :0}
     ];
-    this.totalVessels =[];
     // a circle chart needs a radius
     const radius = Math.min(this.width, this.height) / 2;
 
