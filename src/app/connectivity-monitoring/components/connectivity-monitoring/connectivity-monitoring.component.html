@@ -23,7 +23,7 @@
                                 class="kx-field kx-field--size-base u--field--size-small"
                                 placeholder="Type to filter Node"
                                 (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                            <input *ngSwitchCase="'DisplayName'" pInputText type="text"
+                            <input *ngSwitchCase="'Name'" pInputText type="text"
                                 class="kx-field kx-field--size-base u--field--size-small"
                                 placeholder="Type to filter Vessel"
                                 (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">

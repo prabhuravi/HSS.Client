@@ -16,7 +16,7 @@ export class ConnectivityMonitoringComponent implements OnInit {
   vesselLinksList: IVesselLinks[] = [];
   cols = [
     { field: 'NodeNumber', header: 'Node', sortfield: 'NodeNumber', filterMatchMode: 'contains' },
-    { field: 'DisplayName', header: 'Installation', sortfield: 'DisplayName', filterMatchMode: 'contains' },
+    { field: 'Name', header: 'Installation', sortfield: 'Name', filterMatchMode: 'contains' },
     { field: 'IPAddress', header: 'IP Address', sortfield: '', filterMatchMode: 'contains' },
     { field: 'Status', header: 'Status', sortfield: 'Status', filterMatchMode: 'contains' },
     { field: 'LastLatency', header: 'Last Latency', sortfield: 'LastLatency' },
