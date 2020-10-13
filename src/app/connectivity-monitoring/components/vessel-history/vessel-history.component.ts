@@ -110,11 +110,11 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     this.aisCardLoading = true;
     this.connectivityMonitoringService.getImoNumberByNodeNumber(nodeNumber).subscribe((data: any) => {
       this.imoNumber = data;
-      console.log(this.imoNumber);
+      
       this.aisCardLoading = false;
       this.connectivityMonitoringService.getGetLatestAISRecord(this.imoNumber).subscribe((aisData: any) => {
         this.aisData = aisData;
-        console.log(this.aisData);
+       
         this.aisCardLoading = false;
       });
     });

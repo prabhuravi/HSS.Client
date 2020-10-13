@@ -8,7 +8,7 @@
                         *</small>
                     <div class="kx-mt--tiny">
                         <p-dropdown styleClass="kx-p--none" placeholder="Select Vessel" [formControlName]="'VesselId'"
-                            [options]="vesselList" optionLabel="Name" filter="true" (onChange)="getMissionList()">
+                            [options]="vesselList" optionLabel="DisplayName" filter="true" (onChange)="getMissionList()">
                         </p-dropdown>
                     </div>
                 </div>
@@ -91,6 +91,9 @@
                 </div>
                 <div class="kx-col">
                     <strong>Exclusion Count : </strong>{{vesselHistoricalUploadStatus.TotalFilesExcluded}}
+                </div>
+                <div class="kx-col">
+                    <strong>Last Contact Date : </strong>{{vesselHistoricalUploadStatus.LastContactDate}}
                 </div>
             </div>
         </div>

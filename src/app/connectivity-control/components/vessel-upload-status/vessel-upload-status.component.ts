@@ -23,16 +23,16 @@ export class VesselUploadStatusComponent implements OnInit {
   vesselHistoricalUploadStatus: IVesselUploadStatus;
   cols = [
     { field: 'FileUploadedDate', sortfield: 'VesselName', header: 'Uploaded Date', filterMatchMode: 'contains' },
-    { field: 'VesselName', sortfield: 'VesselName', header: 'Vessel Name', filterMatchMode: 'contains' },
+    { field: 'VesselName', sortfield: 'VesselName', header: 'Installation Name', filterMatchMode: 'contains' },
     { field: 'Mission', sortfield: 'Mission', header: 'Mission Name', filterMatchMode: 'contains' },
     { field: 'FileName', sortfield: 'FileName', header: 'File Name', filterMatchMode: 'contains' },
     { field: 'FilePath', sortfield: '', header: 'Vessel File Path', filterMatchMode: 'contains' },
-    { field: 'FileCreatedDate', sortfield: '', header: 'File Created Date', filterMatchMode: 'contains' },
-    { field: 'FileModifiedDate', sortfield: '', header: 'File Modified Date', filterMatchMode: 'contains' },
-    { field: 'FileType', sortfield: 'FileType', header: 'File Type', filterMatchMode: 'contains' },
+    { field: 'FileCreatedDate', sortfield: 'FileCreatedDate', header: 'Created Date', filterMatchMode: 'contains' },
+    { field: 'FileModifiedDate', sortfield: '', header: 'Modified Date', filterMatchMode: 'contains' },
+    { field: 'FileType', sortfield: 'FileType', header: 'Type', filterMatchMode: 'contains' },
     { field: 'UploadStatus', sortfield: 'UploadStatus', header: 'Status', filterMatchMode: 'contains' },
-    { field: 'FileSize', sortfield: '', header: 'Actual File Size (KB)', filterMatchMode: 'contains' },
-    { field: 'UploadedSize', sortfield: '', header: 'Uploaded Size (KB)', filterMatchMode: 'contains' },
+    { field: 'FileSize', sortfield: '', header: 'Act(KB)', filterMatchMode: 'contains' },
+    { field: 'UploadedSize', sortfield: '', header: 'Upload(KB)', filterMatchMode: 'contains' },
     { field: 'UploadCount', sortfield: '', header: 'Count', filterMatchMode: 'contains' }
   ];
   vesselListLoaded: boolean;

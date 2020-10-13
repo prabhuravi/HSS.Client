@@ -260,7 +260,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit
   }
 
   public markerClick(latLong: any, marker: any): void {
-    console.log(this.vesselName);
     marker.bindPopup(this.generateVoyagePopup('Origin', latLong, this.vesselName), { closeButton: true, className: 'map-tooltip' });
   }
 

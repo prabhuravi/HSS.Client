@@ -55,9 +55,7 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
   showChart: boolean = false;
   NodeSuscription: Subscription;
 
-  ngAfterViewInit(): void {
-
-  }
+  ngAfterViewInit(): void {    }
 
   constructor(private connectivityMonitoringService: ConnectivityMonitoringService) {
 
@@ -67,7 +65,7 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes && changes.totalVessels && changes.totalVessels.currentValue && changes.totalVessels.currentValue.length>0)
+    if (changes && changes.totalVessels && changes.totalVessels.currentValue && changes.totalVessels.currentValue.length > 0)
     {
       const grouped = _.groupBy(this.totalVessels, (vessel) => vessel.Status);
       this.setupChart();
@@ -87,7 +85,6 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
       { label: `Up ${data.Up ? data.Up.length :0 }`, count: data.Up ? data.Up.length :0 },
       { label: `Down ${data.Down ? data.Down.length :0}`, count: data.Down ? data.Down.length :0}
     ];
-
     // a circle chart needs a radius
     const radius = Math.min(this.width, this.height) / 2;
 
@@ -98,7 +95,7 @@ export class DonutChartComponent implements AfterViewInit, OnChanges, OnDestroy 
     // define color scale
     const color = d3.scaleOrdinal(['#1cb077', '#d1232c']);
     // more color scales: https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9
-
+    d3.select('#chart').selectAll('svg').remove();
     this.svg = d3.select('#chart') // select element in the DOM with id 'chart'
       .append('svg') // append an svg element to the element we've selected
       // .attr('width', this.width) // set the width of the svg element we just added

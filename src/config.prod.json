@@ -65,7 +65,8 @@
         "DeleteCountryGroup": "/CountryGroup/Remove",
         "AddCountryGroup": "/CountryGroup/Add",
         "RemoveGroupCountry": "/CountryGroup/DeleteCountry",
-        "AddCountriesToGroup": "/CountryGroup/AddCountries"
+        "AddCountriesToGroup": "/CountryGroup/AddCountries",
+        "GetLastSyncDate": "/LastSyncDate"
       }
     },
     "FileUploadStatus": {
