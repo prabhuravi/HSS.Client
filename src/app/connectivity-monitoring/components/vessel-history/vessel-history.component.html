@@ -331,24 +331,21 @@
                                 <div class="kx-mt--tiny">
                                     <strong>Timestamp :</strong>
                                     <div class="kx-mt--tiny">
-                                        {{aisData && aisData.AIS_Latest_Position  ? (aisData.AIS_Latest_Position | date:'dd/MM/yyyy HH:mm') : noData}}
-                                        <!-- 07/09/2020 10:30 PM -->
+                                        {{aisData && aisData.MessageTimestamp  ? (aisData.MessageTimestamp | date:'dd/MM/yyyy HH:mm') : noData}}
                                     </div>
                                 </div>
                             </div>
                             <div class="kx-col kx-col--4">
                                 <strong>Destination:</strong>
                                 <div class="kx-mt--tiny">
-                                    {{aisData && aisData.ETA_Place  ? aisData.ETA_Place : noData}}
-                                    <!-- Newcastle(AUS) -->
+                                    {{aisData && aisData.Destination ? aisData.Destination : noData}}
                                 </div>
                             </div>
                             <div class="kx-col kx-col--4">
                                 <div class="kx-mt--tiny">
                                     <strong>ETA :</strong>
                                     <div class="kx-mt--tiny">
-                                        {{aisData && aisData.ETA_Date  ? (aisData.ETA_Date | date:'dd/MM/yyyy HH:mm') : noData}}
-                                        <!-- 07/09/2020 10:30 PM -->
+                                        {{aisData && aisData.Eta ? (aisData.Eta | date:'dd/MM/yyyy HH:mm') : noData}}
                                     </div>
                                 </div>
                             </div>
@@ -357,26 +354,23 @@
                             <div class="kx-col kx-col--4">
                                 <strong>Speed:</strong>
                                 <div class="kx-mt--tiny">
-                                    {{aisData && aisData.Speed_Over_Ground  ? aisData.Speed_Over_Ground : noData}}
-                                    <!-- 7.90 -->
+                                    {{aisData && aisData.Speed ? aisData.Speed : noData}}
                                 </div>
                             </div>
                             <div class="kx-col kx-col--4">
                                 <div class="kx-mt--tiny">
                                     <strong>Draft :</strong>
                                     <div class="kx-mt--tiny">
-                                        <!-- {{aisData && aisData.Draft  ? aisData.Draft : noData}} -->
-                                        3 Mts
+                                        {{aisData && aisData.Draft ? aisData.Draft : noData}}
                                     </div>
                                 </div>
                             </div>
                             <div class="kx-col kx-col--4">
                                 <strong>Position:</strong>
                                 <div *ngIf="aisData && aisData.AIS_Latitude " class="kx-mt--tiny">
-                                    ({{aisData && aisData.AIS_Latitude  ? aisData.AIS_Latitude : 0}},
-                                    {{aisData && aisData.AIS_Longitude  ? aisData.AIS_Longitude : 0}})
-                                    <!-- (-32.9047, 151.7756)  -->
-                                    <a href="https://maps.google.com/?q={{aisData && aisData.AIS_Latitude  ? aisData.AIS_Latitude : 0}},{{aisData && aisData.AIS_Longitude  ? aisData.AIS_Longitude : 0}}"
+                                    ({{aisData && aisData.Latitude  ? aisData.Latitude : 0}},
+                                    {{aisData && aisData.Longitude  ? aisData.Longitude : 0}})
+                                    <a href="https://maps.google.com/?q={{aisData && aisData.Latitude  ? aisData.Latitude : 0}},{{aisData && aisData.Longitude  ? aisData.Longitude : 0}}"
                                         target="_blank"> View </a>
                                 </div>
                             </div>
