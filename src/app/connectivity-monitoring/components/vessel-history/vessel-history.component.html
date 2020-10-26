@@ -367,7 +367,7 @@
                             </div>
                             <div class="kx-col kx-col--4">
                                 <strong>Position:</strong>
-                                <div *ngIf="aisData && aisData.AIS_Latitude " class="kx-mt--tiny">
+                                <div *ngIf="aisData && aisData.Latitude " class="kx-mt--tiny">
                                     ({{aisData && aisData.Latitude  ? aisData.Latitude : 0}},
                                     {{aisData && aisData.Longitude  ? aisData.Longitude : 0}})
                                     <a href="https://maps.google.com/?q={{aisData && aisData.Latitude  ? aisData.Latitude : 0}},{{aisData && aisData.Longitude  ? aisData.Longitude : 0}}"
