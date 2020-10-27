@@ -100,9 +100,8 @@
     </div>
     <div *ngIf="vesselHistoricalUploadStatus.FileOnVessels.length > 0" class="kx-mt--small">
         <p-table tableStyleClass="kx-table kx-table--outer-border" #tt
-            [value]="vesselHistoricalUploadStatus.FileOnVessels" [columns]="cols"
-            [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true"  [paginator]="true"
-            [rowsPerPageOptions]="[5,10,15,20,50,100]" totalRecords=500 pageLinks="3">
+            [value]="vesselHistoricalUploadStatus.FileOnVessels" [columns]="cols" autoLayout="true" [paginator]="true" [rows]="10"
+            [rowsPerPageOptions]="[5,10,20,50,100,200,500]">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall u--fontBold"

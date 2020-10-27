@@ -42,9 +42,8 @@
             {{activeVessel.Name}} to upload data:</small>
             <small class="lastSync" *ngIf="whiteListedCountries.length > 0">{{lastContact}} </small>  
         <p-table *ngIf="whiteListedCountries.length > 0" tableStyleClass="kx-table kx-table--outer-border"
-            [value]="whiteListedCountries" [columns]="cols"[rows]="PRIMENG_CONSTANTS.rowCount"
-            autoLayout="true" #tt [paginator]="true"
-            [rowsPerPageOptions]="[5,10,15,20,50,100]" totalRecords=500 pageLinks="3">
+            [value]="whiteListedCountries" [columns]="cols" autoLayout="true" #tt [paginator]="true" [rows]="10"
+            [rowsPerPageOptions]="[5,10,20,50,100,200,500]">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
