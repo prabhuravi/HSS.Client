@@ -75,8 +75,9 @@
 
     <div *ngIf="vesselHistoricalUploadStatus.FileLogs.length > 0" class=" kx-mt--small">
         <p-table tableStyleClass="kx-table kx-table--outer-border" #tt
-            [value]="vesselHistoricalUploadStatus.FileLogs" [columns]="cols" [paginator]="true"
-            [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true">
+            [value]="vesselHistoricalUploadStatus.FileLogs" [columns]="cols"
+            [rows]="PRIMENG_CONSTANTS.rowCount" autoLayout="true"  [paginator]="true"
+            [rowsPerPageOptions]="[5,10,15,20,50,100]" totalRecords=500 pageLinks="3">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall u--fontBold"
