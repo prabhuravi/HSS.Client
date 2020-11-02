@@ -24,5 +24,6 @@ interface IFilesUploadStatus {
     IsMoved: boolean,
     UploadCount: number,
     RecordCreatedDate: string,
-    RecordModifiedDate: string
+    RecordModifiedDate: string,
+    MarkedForUpload : boolean
 }

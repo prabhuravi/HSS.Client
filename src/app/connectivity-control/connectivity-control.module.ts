@@ -8,6 +8,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
 import { PickListModule } from 'primeng/picklist';
+import {CheckboxModule} from 'primeng/checkbox';
 import { MultiSelectModule } from 'primeng/multiselect';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -40,7 +41,8 @@ const routes: Routes = [
     DropdownModule,
     TooltipModule,
     PickListModule,
-    MultiSelectModule
+    MultiSelectModule,
+    CheckboxModule
   ],
   exports: [RouterModule],
   providers: []

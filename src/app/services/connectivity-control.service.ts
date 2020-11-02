@@ -81,6 +81,14 @@ export class ConnectivityControlService {
     return this.http.getDataV2(requestData);
   }
 
+  MarkFileForUpload(ids: any): Observable<boolean> {
+    const requestData = {
+      endPoint: `${this.fileUploadStatusApiUrl}${this.fileUploadStatusConfigCollection.endpoints.MarkFileForUpload}`,
+      data: ids
+    };
+    return this.http.putData(requestData);
+  }
+
   getVesselHistoricalStatus(filterData: any): Observable<IFileLoggingStatus> {
     const requestData = {
       endPoint: `${this.fileUploadStatusApiUrl}${this.fileUploadStatusConfigCollection.endpoints.FDSHistoricalUploadStatus}`,

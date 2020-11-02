@@ -39,6 +39,7 @@ export function initConfig(config: ConfigurationService<IConfiguration>) {
 import { ConfirmationService, MessageService as PrimengMessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import {CheckboxModule} from 'primeng/checkbox';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { NodeSelectorService, QueryService, QueryExecutionService , HttpClientHelperService } from '@kognifai/galore-ng-client';
 import { GaloreDataService } from './services/galore-data.service';
@@ -67,7 +68,8 @@ const GALORE_PROVIDER = [
     AppRoutingModule,
     GoogleChartsModule.forRoot(),
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    CheckboxModule
   ],
   declarations: [
     AppComponent,

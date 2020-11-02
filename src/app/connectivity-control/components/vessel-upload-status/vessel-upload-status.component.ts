@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {CheckboxModule} from 'primeng/checkbox';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { ConnectivityControlService } from 'src/app/services/connectivity-control.service';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import * as moment from 'moment';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-vessel-upload-status',
@@ -21,7 +23,12 @@ export class VesselUploadStatusComponent implements OnInit {
   fromMissionList: IBasicDropdown[] = [];
   toMissionList: IBasicDropdown[] = [];
   vesselHistoricalUploadStatus: IVesselUploadStatus;
+  selectedRows: any[];
+  prevFiliterData: any;
+  disableMarkForUpload: boolean = true;
+  disableActivity: boolean;
   cols = [
+
     { field: 'FileUploadedDate', sortfield: 'VesselName', header: 'Uploaded Date', filterMatchMode: 'contains' },
     { field: 'VesselName', sortfield: 'VesselName', header: 'Installation Name', filterMatchMode: 'contains' },
     { field: 'Mission', sortfield: 'Mission', header: 'Mission Name', filterMatchMode: 'contains' },
@@ -41,6 +48,8 @@ export class VesselUploadStatusComponent implements OnInit {
   constructor(
     public operationalPlanService: OperationalPlanService,
     public connectivityControlService: ConnectivityControlService,
+    public confirmationService: ConfirmationService,
+    public messageService: MessageService,
     public fb: FormBuilder
   ) { }
 
@@ -96,6 +105,7 @@ export class VesselUploadStatusComponent implements OnInit {
       }
     });
   }
+
   buildForm() {
     const group = this.fb.group({});
     group.addControl('VesselId', this.fb.control({ value: '', disabled: false }, [Validators.required]));
@@ -127,6 +137,7 @@ export class VesselUploadStatusComponent implements OnInit {
       this.connectivityControlService.getVesselUploadStatus(filterData).pipe(take(1)).subscribe((data) => {
         this.isFormSubmitted = false;
         this.vesselHistoricalUploadStatus = data;
+        this.prevFiliterData = filterData;
       });
     }
   }
@@ -135,5 +146,64 @@ export class VesselUploadStatusComponent implements OnInit {
     this.fromMissionList = [];
     this.toMissionList = [];
   }
+
+  selectRow(checkValue) {
+    if (checkValue) {
+      this.selectedRows = this.vesselHistoricalUploadStatus.FileOnVessels.filter((value) => value.FileType === '.upload_later');
+    } else {
+      this.selectedRows = [];
+    }
+    this.checkRowSelection();
+  }
+
+  onRowSelect(event) {
+    this.checkRowSelection();
+
+}
+
+onRowUnselect(event) {
+  this.checkRowSelection();
+}
+
+checkRowSelection(): void {
+  if (this.selectedRows.length > 0 ) {
+    this.disableMarkForUpload = false;
+  } else {
+    this.disableMarkForUpload = true;
+  }
+}
+
+markSelectionForUpload(): void{
+  console.log(this.selectedRows);
+  const markForUploadIds = this.selectedRows.map(({ Id }) => Id);
+  console.log(markForUploadIds);
+
+  this.confirmationService.confirm({
+    message: 'Are you sure that you want to mark the selected ' + this.selectedRows.length + ' file(s) for upload ?',
+    accept: () => {
+
+      this.connectivityControlService.MarkFileForUpload(markForUploadIds).pipe(take(1)).subscribe(() => {
+        this.triggerToast('success', 'Success Message', 'Files will be uploaded in the next sync with vessel');
+        this.isFormSubmitted = true;
+        this.connectivityControlService.getVesselUploadStatus(this.prevFiliterData).pipe(take(1)).subscribe((data) => {
+            this.vesselHistoricalUploadStatus = data;
+            this.selectedRows = [];
+            this.checkRowSelection();
+            this.isFormSubmitted = false;
+        });
+      });
+
+    }
+  });
+}
+
+triggerToast(severity: string, summary: string, detail: string): void {
+  this.messageService.add(
+    {
+      severity,
+      summary,
+      detail
+    });
+}
 
 }
