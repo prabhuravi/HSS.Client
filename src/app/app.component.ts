@@ -9,6 +9,7 @@ import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { HeaderService } from '@kognifai/poseidon-header-component';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from './configuration';
+import {CheckboxModule} from 'primeng/primeng';
 
 @Component({
     selector: 'app-root',

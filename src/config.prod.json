@@ -76,7 +76,8 @@
         "MissionsOnVessel": "/MissionByVessel",
         "FDSDefaultUploadStatus": "/Logs",
         "FDSUploadStatus": "/Status/ByFilters",
-        "FDSHistoricalUploadStatus": "/Logs/ByFilters"
+        "FDSHistoricalUploadStatus": "/Logs/ByFilters",
+        "MarkFileForUpload": "/MarkFilesForUpload"
       }
     },
     "ConnectivityMonitoring": {

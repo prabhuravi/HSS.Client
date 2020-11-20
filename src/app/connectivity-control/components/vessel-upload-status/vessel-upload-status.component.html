@@ -95,15 +95,26 @@
                 <div class="kx-col">
                     <strong>Last Contact Date : </strong>{{vesselHistoricalUploadStatus.LastContactDate}}
                 </div>
+              
+                <button type="button" (click)="markSelectionForUpload()" [disabled]="disableMarkForUpload"
+                class="markforUploadbtn kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--small@mob-m kx-mr--tiny">
+                <span class="kx-btn__inner">
+                    <span class="kx-btn__txt">Mark for upload</span>    
+                </span>
+            </button>
+        
             </div>
         </div>
     </div>
     <div *ngIf="vesselHistoricalUploadStatus.FileOnVessels.length > 0" class="kx-mt--small">
         <p-table tableStyleClass="kx-table kx-table--outer-border" #tt
-            [value]="vesselHistoricalUploadStatus.FileOnVessels" [columns]="cols" autoLayout="true" [paginator]="true" [rows]="10"
+            [value]="vesselHistoricalUploadStatus.FileOnVessels" [columns]="cols" [(selection)]="selectedRows" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" autoLayout="true" [paginator]="true" [rows]="10"
             [rowsPerPageOptions]="[5,10,20,50,100,200,500]">
             <ng-template pTemplate="header" let-columns>
                 <tr>
+                    <th>
+                        <p-checkbox (click)="selectRow(e.checked)" #e></p-checkbox>
+                      </th>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" class="u--fontXSmall u--fontBold"
                         [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
                         title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
@@ -139,7 +150,14 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr>
+                <tr [pSelectableRow]="rowData">
+                    <td>
+                        <span *ngIf="rowData.MarkedForUpload" pTooltip="File already marked for upload"> <i class="pi pi-cloud-upload" style="font-size: 1.5rem"></i></span> 
+                     
+                    <p-tableCheckbox *ngIf="(rowData.FileName.includes('.upload_later') && rowData.MarkedForUpload==false)" ngDefaultControl  [value]="rowData" >
+                    </p-tableCheckbox>
+            
+                  </td>
                     <td *ngFor="let col of columns" class="kx-p--small u--fontXSmall">
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'FileUploadedDate'">

@@ -88,7 +88,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
     }
     try {
       if (google) {
-        const data = new google.visualization.DataTable();
+        let data = new google.visualization.DataTable();
         data.addColumn('datetime', 'Time');
         data.addColumn('number', 'Latency');
         data.addColumn('number', 'Signal Strength');
@@ -97,15 +97,17 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
           data.addRow([new Date(record.TimeStamp.toString()), record.LatencyValue, record.SignalStrength ]); // Converitng to local time zone of user
           // data.addRow([new Date(record.TimeStamp.toString().replace('T',' ').replace('Z','')), record.LatencyValue]); // UTC time
         });
-
+        const formattershort = new google.visualization.DateFormat({formatType: 'short'});
+        formattershort.format(data, 0);
         const options = {
           hAxis: {
             title: 'Time', titleTextStyle: { color: this.currentTheme === 'Dusk' ? '#fff' : '#333' },
             slantedText: true, slantedTextAngle: 80,
             textStyle: {
               color: this.currentTheme === 'Dusk' ? '#fff' : '#333'
-            },
-            format: 'd/M/YY HH:mm',
+            }
+
+            //format: 'short'
           },
           series: [
             { targetAxisIndex: 0 },
@@ -158,7 +160,7 @@ export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {
           // isStacked: 'true',
           // fill: 20,
           // 'displayExactValues': true,
-          dateFormat: 'dd.MM.yy hh:mm'
+          dateFormat: 'd/MM/yy hh:mm'
         };
         const container: any = document.getElementById('latency_chart');
         this.latencyChart = new google.visualization.LineChart(container);
