@@ -10,8 +10,16 @@ export class DashboardComponent implements OnInit {
 
   operationalPlanMainRouteList: IRouteList[] = [
     {
-      label: 'Operational Plan',
+      label: 'Installation',
       route: '/operational-plan'
+    },
+    {
+      label: 'Hull Skater',
+      route: '/operational-plan/HullSkater'
+    },
+    {
+      label: 'Admin',
+      route: '/operational-plan/HullSkater'
     }
   ];
   operationalPlanSubRouteList: IRouteList[] = [

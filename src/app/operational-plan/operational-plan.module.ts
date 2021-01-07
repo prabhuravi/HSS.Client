@@ -16,11 +16,15 @@ import { OperationTypeComponent } from './components/operation-type/operation-ty
 import { VesselComponent } from './components/vessel/vessel.component';
 import { RobotSystemComponent } from './components/robot-system/robot-system.component';
 import { SubOperationalPlanComponent } from './components/sub-operational-plan/sub-operational-plan.component';
+import { InstallationOverviewComponent } from './components/installation-overview/installation-overview.component';
+import { PrepareInstallationComponent } from './components/prepare-installation/prepare-installation.component';
 
 const routes: Routes = [
   {
     path: '', component: DashboardComponent, children: [
-      { path: '', component: ManagePlansComponent, pathMatch: 'full' },
+      { path: '', component: InstallationOverviewComponent, pathMatch: 'full' },
+      { path: 'prepare-installation', component: PrepareInstallationComponent },
+      { path: 'ManagePlans', component: ManagePlansComponent },
       { path: 'sub-operational-plan/:planid', component: SubOperationalPlanComponent },
       { path: 'plan/:type/:id', component: AddPlanComponent },
       { path: 'operator', component: OperatorComponent },
@@ -32,7 +36,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, ManagePlansComponent, AddPlanComponent, OperatorComponent, OperationTypeComponent, VesselComponent, RobotSystemComponent, SubOperationalPlanComponent],
+  declarations: [DashboardComponent,
+                ManagePlansComponent,
+                AddPlanComponent,
+                OperatorComponent,
+                OperationTypeComponent,
+                VesselComponent,
+                RobotSystemComponent,
+                SubOperationalPlanComponent,
+                InstallationOverviewComponent,
+                PrepareInstallationComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
