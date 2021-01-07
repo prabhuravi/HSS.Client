@@ -4,7 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -18,12 +18,27 @@ import { RobotSystemComponent } from './components/robot-system/robot-system.com
 import { SubOperationalPlanComponent } from './components/sub-operational-plan/sub-operational-plan.component';
 import { InstallationOverviewComponent } from './components/installation-overview/installation-overview.component';
 import { PrepareInstallationComponent } from './components/prepare-installation/prepare-installation.component';
+import { InstallationInformationComponent } from './components/installation-information/installation-information.component';
+import { TradeRouteComponent } from './components/trade-route/trade-route.component';
+import { SectionsComponent } from './components/sections/sections.component';
+import { CreateDocumentsComponent } from './components/create-documents/create-documents.component';
+import { CreateContactsComponent } from './components/create-contacts/create-contacts.component';
+import { FoulingStateComponent } from './components/fouling-state/fouling-state.component';
 
 const routes: Routes = [
   {
     path: '', component: DashboardComponent, children: [
       { path: '', component: InstallationOverviewComponent, pathMatch: 'full' },
-      { path: 'prepare-installation', component: PrepareInstallationComponent },
+      {
+        path: 'prepare-installation', component: PrepareInstallationComponent, children: [
+          { path: '', component: InstallationInformationComponent, pathMatch: 'full' },
+          { path: 'trade-route', component: TradeRouteComponent },
+          { path: 'sections', component: SectionsComponent },
+          { path: 'fouling-state', component: FoulingStateComponent },
+          { path: 'create-documents', component: CreateDocumentsComponent },
+          { path: 'create-contacts', component: CreateContactsComponent }
+        ]
+      },
       { path: 'ManagePlans', component: ManagePlansComponent },
       { path: 'sub-operational-plan/:planid', component: SubOperationalPlanComponent },
       { path: 'plan/:type/:id', component: AddPlanComponent },
@@ -37,15 +52,21 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [DashboardComponent,
-                ManagePlansComponent,
-                AddPlanComponent,
-                OperatorComponent,
-                OperationTypeComponent,
-                VesselComponent,
-                RobotSystemComponent,
-                SubOperationalPlanComponent,
-                InstallationOverviewComponent,
-                PrepareInstallationComponent],
+    ManagePlansComponent,
+    AddPlanComponent,
+    OperatorComponent,
+    OperationTypeComponent,
+    VesselComponent,
+    RobotSystemComponent,
+    SubOperationalPlanComponent,
+    InstallationOverviewComponent,
+    PrepareInstallationComponent,
+    InstallationInformationComponent,
+    TradeRouteComponent,
+    SectionsComponent,
+    FoulingStateComponent,
+    CreateDocumentsComponent,
+    CreateContactsComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

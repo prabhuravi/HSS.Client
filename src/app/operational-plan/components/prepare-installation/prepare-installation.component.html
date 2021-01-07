@@ -1,1 +1,28 @@
-<p>prepare-installation works!</p>
+
+    <div class="kx-p--small@mob-m kx-p--tiny">
+        <nav class="kx-breadcrumb">
+            <ol class="kx-breadcrumb__list">
+                <li class="kx-breadcrumb__item" *ngFor="let routeItem of prepareInstallationSteps; let i = index;" >
+                    <a routerLinkActive="kx-is-active"  [routerLink]="routeItem.route"  [routerLinkActiveOptions]= "{exact: true}" class="kx-breadcrumb__label u--fontLarge">{{routeItem.label}}</a>
+                    <i *ngIf = "!(prepareInstallationSteps.length == i + 1)" class="kx-icon kx-icon--size-tiny">
+                        <svg focusable="false">
+                            <use href="./assets/img/icons/sprites/icons.svg#chevron-right"></use>
+                        </svg>
+                    </i>
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <div>
+        <router-outlet></router-outlet>
+    </div>
+
+    <!-- <nav class="kx-tabs">
+        <ol class="kx-tabs__list">
+            <li class="kx-tabs__item u--cursorPointer" *ngFor="let routeItem of routeList; let i = index;" routerLinkActive="kx-is-active"  [routerLink]="routeItem.route"  [routerLinkActiveOptions]= "{exact: true}">
+                <a class="kx-tabs__label">
+                    <span class="kx-tabs__txt">{{routeItem.label}}</span>
+                </a>
+            </li>
+        </ol>
+    </nav> -->
