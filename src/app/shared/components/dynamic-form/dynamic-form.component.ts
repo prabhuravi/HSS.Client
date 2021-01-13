@@ -4,6 +4,7 @@ import { getInputTypes } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { AppConstants } from 'src/app/app.constants';
 
+
 @Component({
   selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
@@ -14,9 +15,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   @Input() config: any;
   @Input() formValues: any;
   @Input() formReset: any;
-  @Output() formSubmitted: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output() formOnchangeEvent: EventEmitter<any> = new EventEmitter<any>();
   inputTypes: any;
-  form: FormGroup;
+  @Input() form: FormGroup;
   isFormSubmitted = false;
   ipAddressPattern = '(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)';
   portLocations: any[] = [];
@@ -24,13 +26,16 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   constructor(
     public fb: FormBuilder,
-    public operationalPlanService: OperationalPlanService
+    public operationalPlanService: OperationalPlanService,
+    
   ) {
   }
 
   ngOnInit(): void {
     this.inputTypes = getInputTypes();
-    this.form = this.buildForm();
+    console.log(this.form);
+   // this.form = this.formBuliderService.buildForm(this.config);
+   // this.form = this.buildForm();
   }
   ngOnChanges(changes: SimpleChanges): void {
     // formvalues: obj sets default value received from parent component
@@ -50,34 +55,11 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       this.isFormSubmitted = false;
     }
   }
-  buildForm() {
-    if (!this.config || !this.config.formList || this.config.formList.length === 0) {
-      return;
-    }
-    const group = this.fb.group({});
-    this.config.formList.forEach((control) => {
-      const validatorList = [];
-      control.validators.forEach((validator) => {
-        switch (validator) {
-          case 'required':
-            validatorList.push(Validators.required);
-            break;
-          case 'ipaddress':
-            validatorList.push(Validators.pattern(this.ipAddressPattern));
-            break;
-          default:
-            break;
-        }
-      });
-      group.addControl(control.key, this.fb.control({ value: control.value, disabled: control.disabled }, validatorList));
-    });
-    return group;
-  }
-  onSubmit(): void {
-    this.isFormSubmitted = true;
-    if (this.form.valid) {
-      this.formSubmitted.emit(this.form.value);
-    }
+  
+
+  onchangeEvents(formItem: any) {
+
+    this.formOnchangeEvent.emit({ formItem, formValue: this.form.controls[formItem.key].value });
   }
 
   filterPortLocations(event) {
