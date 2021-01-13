@@ -1,9 +1,8 @@
-<div class="kx-card kx-card--skin-default" *ngIf="config && config.formList && config.formList.length>0">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="kx-p--medium@mob-m kx-p--tiny">
-            <h3 class="u--capitalize">{{config.formTitle}}</h3>
-            <hr class="kx-my--small" />
-            <div class="kx-row kx-mb--small" *ngFor="let formItem of config.formList; let i = index;"
+
+        <div class="kx-row kx-row--gutters" [formGroup]="form">
+            <h3 *ngIf="config.formTitle" class="u--capitalize">{{config.formTitle}}</h3>
+            <hr  *ngIf="config.formTitle" class="kx-my--small" />
+            <div class="kx-col kx-col--4" *ngFor="let formItem of config.formList; let i = index;"
                 [ngSwitch]="formItem.type">
                 {{formItem.key.valid}}
                 <div class="kx-col kx-col--12">
@@ -17,14 +16,23 @@
                             class="u--textDanger" style="position: relative;top: 2px;">*</span>
                     </label>
                 </div>
-                <div *ngSwitchCase="inputTypes.dropdown" class="kx-col kx-col--12">
+                <div *ngSwitchCase="inputTypes.dropdown" class="kx-col  kx-col--12">
                     <div class="kx-mt--tiny">
                         <p-dropdown styleClass="u--fullWidth" placeholder="Select {{formItem.label}}"
                             [formControlName]="formItem.key" [options]="formItem.options"
-                            [optionLabel]="formItem.optionLabel" filter="true"></p-dropdown>
+                            [optionLabel]="formItem.optionLabel" (onChange)= "onchangeEvents(formItem)"filter="true"></p-dropdown>
                     </div>
                 </div>
-                <div *ngSwitchCase="inputTypes.datepicker" class="kx-col kx-col--12">
+                <div *ngSwitchCase="inputTypes.button" class="kx-col   kx-col--12">
+                    <div class="kx-mt--tiny">
+                        <button  class="kx-btn kx-btn--skin-primary kx-btn--size-small">
+                            <span class="kx-btn__inner">
+                                <span class="kx-btn__txt">{{formItem.label}}</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div *ngSwitchCase="inputTypes.datepicker" class="kx-col   kx-col--12">
                     <div class="kx-mt--tiny">
                         <p-calendar [appendTo]="pcalendarRef" hideOnDateTimeSelect="true"
                             [formControlName]="formItem.key" inputStyleClass="kx-field kx-field--size-small"
@@ -35,13 +43,13 @@
                         </p-calendar>
                     </div>
                 </div>
-                <div *ngSwitchCase="inputTypes.text" class="kx-col kx-col--12">
+                <div *ngSwitchCase="inputTypes.text" class="kx-col   kx-col--12">
                     <div class="kx-form__element">
                         <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
                             type="text" placeholder="Enter {{formItem.label}}" />
                     </div>
                 </div>
-                <div *ngSwitchCase="inputTypes.checkbox" class="kx-col kx-col--12">
+                <div *ngSwitchCase="inputTypes.checkbox" class="kx-col   kx-col--12">
                     <div class="kx-form__element">
                         <label class="kx-selector kx-selector__switch">
                             <input type="checkbox" [formControlName]="formItem.key" />
@@ -51,13 +59,13 @@
                         </label>
                     </div>
                 </div>
-                <div *ngSwitchCase="inputTypes.number" class="kx-col kx-col--12">
+                <div *ngSwitchCase="inputTypes.number" class="kx-col   kx-col--12">
                     <div class="kx-form__element u--positionRelative">
                         <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
                             type="number" placeholder="Select {{formItem.label}}" />
                     </div>
                 </div>
-                <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col kx-col--12">
+                <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col   kx-col--12">
                     <div class="kx-mt--tiny">
                         <p-autoComplete [formControlName]="formItem.key" [suggestions]="portLocations"
                             inputStyleClass="kx-field kx-field--size-base"
@@ -69,7 +77,7 @@
                     {{formItem.type}} : input type is not handled
                 </div>
             </div>
-            <div class="kx-row">
+            <!-- <div class="kx-row">
                 <div class="kx-col kx-col--5">
                     <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-large">
                         <span class="kx-btn__inner">
@@ -77,8 +85,7 @@
                         </span>
                     </button>
                 </div>
-            </div>
+            </div> -->
         </div>
-    </form>
-</div>
+  
 <div style="position: absolute;top: 20px;" #pcalendarRef></div>
