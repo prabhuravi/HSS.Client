@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, observable, of } from 'rxjs';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
 
@@ -34,7 +34,7 @@ export class OperationalPlanService {
     };
     return this.http.getData(requestData);
   }
-  
+
   getSubOperations(planId: number): Observable<ISubOperations[]> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetSubOperations}/${planId}`,
@@ -55,6 +55,37 @@ export class OperationalPlanService {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationPlanById}/${planId}`
     };
     return this.http.getData(requestData);
+  }
+
+  getTradeRouteByVesselId(vesselId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetTradeRouteByVesselId}/${vesselId}`
+    };
+
+    return of([
+      { Id: '10788', PortName: 'Panama City(US PFN)', PortCode: 'US PFN' },
+      { Id: '17896', PortName: 'Savannah(US SAV)', PortCode: 'US SAV' }
+    ])
+
+    // return this.http.getData(requestData);
+  }
+
+  addPortToRoute(data: any): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.AddPortToRoute}`,
+      data: data
+    };
+      return of(true);
+    // return this.http.postData(requestData);
+  }
+
+  removePortFromRoute(data: any): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.AddPortToRoute}`,
+      data: data
+    };
+      return of(true);
+    // return this.http.postData(requestData);
   }
 
   addOperationPlan(planData: any): Observable<any> {
@@ -166,7 +197,7 @@ export class OperationalPlanService {
     return this.http.deleteData(requestData);
   }
 
-   // Operator
+  // Operator
   getOperators(): Observable<IOperators[]> {
     const requestData = {
       endPoint: `${this.operatorApiUrl}${this.operationalPlanConfig.Operator.endpoints.GetOperators}`
@@ -205,7 +236,7 @@ export class OperationalPlanService {
     return this.operationalPlanConfig.GetPlanStatus;
   }
 
-   // Vessel
+  // Vessel
   getVesselList(): Observable<IVessel[]> {
     const requestData = {
       endPoint: `${this.vesselApiUrl}${this.operationalPlanConfig.Vessel.endpoints.GetVesselDetails}`
@@ -254,6 +285,6 @@ export class OperationalPlanService {
     };
     return this.http.getData(requestData);
   }
-  
-  
+
+
 }

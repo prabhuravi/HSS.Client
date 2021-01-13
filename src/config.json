@@ -106,7 +106,9 @@
           "AddSubOperationPlan": "/SubOperation",
           "UpdateSubOperationPlan": "/SubOperation",
           "CompleteSubOperationPlan": "/SubOperation/Complete",
-          "GetOperationPlanById": ""
+          "GetOperationPlanById": "",
+          "GetTradeRouteByVesselId": "GetTradeRoute",
+          "AddPortToRoute": "AddPortToRoute"
         }
       },
       "Vessel": {
