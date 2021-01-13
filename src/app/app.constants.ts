@@ -11,7 +11,8 @@ export enum FormType {
     datepicker,
     checkbox,
     number,
-    autocomplete
+    autocomplete,
+    button
 }
 export function getInputTypes() {
     return FormType;
