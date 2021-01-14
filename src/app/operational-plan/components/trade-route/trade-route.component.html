@@ -1,1 +1,68 @@
-<p>trade-route works!</p>
+<div class="kx-card kx-card--skin-default">
+    <div class="kx-p--tiny kx-p--medium@mob-m">
+        <div class="kx-row">
+            <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
+                <label class="kx-label">Select a Port</label>
+
+                <div class="kx-mt--tiny">
+                    <p-autoComplete [(ngModel)]="port" [suggestions]="portLocations"
+                        inputStyleClass="kx-field kx-field--size-base" (completeMethod)="filterPortLocations($event)"
+                        field="PortName" [size]="30" placeholder="Type at least 3 chars for suggestions" [minLength]="3">
+                    </p-autoComplete>
+                </div>
+            </div>
+            <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
+                <button (click)="addNewPort()"
+                    class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
+                    [disabled]="disableAddToRoute(port)">
+                    <span class="kx-btn__inner">
+                        <span class="kx-btn__txt">Add to Route</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kx-pt--small">
+    <app-load *ngIf="isDataLoading"></app-load>
+    <div *ngIf="!isDataLoading">
+        <p-table *ngIf="vesselTradeRoute.length > 0" tableStyleClass="kx-table kx-table--outer-border" [value]="vesselTradeRoute" [columns]="cols"
+            autoLayout="true" #tt [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20,50,100,200,500]">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" [ngStyle]="{'width':'100px'}"
+                        [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
+                        title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
+                        {{col.header}}
+                        <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
+                            ariaLabelDesc="Activate to sort in descending order"
+                            ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                    </th>
+                </tr>
+                <tr>
+                    <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                        <input *ngSwitchCase="'PortName'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Port"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div [ngSwitch]="col.field">
+                            <div *ngSwitchCase="'Id'">
+                                <input type="image" src="./assets/delete1.svg" alt="Remove"
+                                    (click)="removePortFromTradeRoute(rowData)" [disabled]="disableActivity"
+                                    height="23px" width="23px" title="Delete">
+                            </div>
+                            <div *ngSwitchDefault>{{rowData[col.field]}}</div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <app-no-data [displayme]="vesselTradeRoute.length === 0"></app-no-data>
+    </div>
+</div>
