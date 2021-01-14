@@ -2,7 +2,7 @@
         <div class="kx-row kx-row--gutters" [formGroup]="form">
             <h3 *ngIf="config.formTitle" class="u--capitalize">{{config.formTitle}}</h3>
             <hr  *ngIf="config.formTitle" class="kx-my--small" />
-            <div class="kx-col kx-col--4" *ngFor="let formItem of config.formList; let i = index;"
+            <div class="kx-col kx-col--4"  *ngFor="let formItem of config.formList; let i = index;"
                 [ngSwitch]="formItem.type">
                 {{formItem.key.valid}}
                 <div class="kx-col kx-col--12">
@@ -54,8 +54,8 @@
                         <label class="kx-selector kx-selector__switch">
                             <input type="checkbox" [formControlName]="formItem.key" />
                             <div class="kx-selector__indicator"></div>
-                            <span *ngIf="!form.value[formItem.key]" class="label-text">OFF</span>
-                            <span *ngIf="form.value[formItem.key]" class="label-text">ON</span>
+                            <!-- <span *ngIf="!form.value[formItem.key]" class="label-text">OFF</span>
+                            <span *ngIf="form.value[formItem.key]" class="label-text">ON</span> -->
                         </label>
                     </div>
                 </div>
