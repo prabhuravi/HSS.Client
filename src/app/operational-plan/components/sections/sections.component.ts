@@ -24,6 +24,7 @@ export class SectionsComponent implements OnInit {
 
   clonedSections: { [s: string]: Section; } = {};
   sectionStatus = SectionStatus;
+  sectionRow: any;
   sectionStatusSelceted: any = { key: 0,
     name: 'Active'};
   public statusList = [

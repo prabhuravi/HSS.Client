@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ConfirmationService } from 'primeng/api';
-import { FormType } from 'src/app/app.constants';
+import { AppConstants, FormType } from 'src/app/app.constants';
 import { Contact, ContactRole } from 'src/app/models/Contact';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 
@@ -16,6 +16,7 @@ export class CreateContactsComponent implements OnInit {
   formValues: any = null;
   formType = FormType;
   formData: FormGroup;
+  PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   config = {
     formList: []
   };
@@ -30,7 +31,7 @@ export class CreateContactsComponent implements OnInit {
     { field: 'tagTraining', header: 'Tag Training' },
     { field: 'action',  header: 'Actions' }
   ];
-  
+
   contacts: Contact[] = [
     {
       firstName: 'Test1',
