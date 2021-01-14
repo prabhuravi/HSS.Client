@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
+import {CheckboxModule} from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -74,6 +75,7 @@ const routes: Routes = [
     TableModule,
     CalendarModule,
     DropdownModule,
+    CheckboxModule,
     FormsModule,
     ReactiveFormsModule,
     TooltipModule

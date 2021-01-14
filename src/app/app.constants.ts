@@ -14,6 +14,10 @@ export enum FormType {
     autocomplete,
     button
 }
+export enum SectionStatus{
+    Active,
+    Obsolete
+}
 export function getInputTypes() {
     return FormType;
 }

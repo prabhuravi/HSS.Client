@@ -1,1 +1,53 @@
-<p>create-contacts works!</p>
+<div class="kx-pt--small">
+    
+    <div class="kx-col kx-col--12">
+        <app-load *ngIf="isDataLoading"></app-load>
+        <div class="kx-card kx-card--skin-default" *ngIf="config && config.formList && config.formList.length>0">
+          <form [formGroup]="formData" (ngSubmit)="onSubmit()">
+                    <app-dynamic-form [form]="formData" [formValues]="formValues" [config]="config"
+              (formOnchangeEvent)="formOnchangeEvent($event)">
+            </app-dynamic-form>
+                       
+                <div class="kx-col kx-col--4">
+                    <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+                        <span class="kx-btn__inner">
+                            <span class="kx-btn__txt">Add Section</span>
+                        </span>
+                    </button>
+                </div>
+               
+          
+          </form>
+        </div>
+      </div>
+      
+    <p-table   [columns]="cols" [value]="contacts" tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+               
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                  
+                </th>
+            </tr>
+           
+        </ng-template>
+        <ng-template pTemplate="body" let-contactList>
+            <tr>
+                <td>{{contactList.firstName}}</td>
+                <td>{{contactList.surName}}</td>
+                <td>{{contactList.email}}</td>
+                <td>{{contactList.alternativePhone}}</td>
+                <td>{{contactList.phone}}</td>
+                <td>{{contactList.Role.name}}</td>
+                <td><p-checkbox  [(ngModel)]="contactList.tagTraining"></p-checkbox> </td>
+                <td>{{contactList.Date | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{contactList.Port}}</td>
+                <td>{{contactList.ConnectivityStatus}}</td>
+                <td>{{contactList.ETA | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{contactList.ETB | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{contactList.CurrentPosition}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
