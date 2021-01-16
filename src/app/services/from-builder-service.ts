@@ -14,20 +14,8 @@ export class FromBuilderService {
     }
     const group = this.fb.group({});
     config.formList.forEach((control) => {
-      const validatorList = [];
-      control.validators.forEach((validator) => {
-        switch (validator) {
-          case 'required':
-            validatorList.push(Validators.required);
-            break;
-          case 'ipaddress':
-            validatorList.push(Validators.pattern(this.ipAddressPattern));
-            break;
-          default:
-            break;
-        }
-      });
-      group.addControl(control.key, this.fb.control({ value: control.value, disabled: control.disabled }, validatorList));
+
+           group.addControl(control.key, this.fb.control({ value: control.value, disabled: control.disabled }, control.validators));
     });
     return group;
   }

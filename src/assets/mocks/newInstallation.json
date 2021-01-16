@@ -1,0 +1,95 @@
+[
+    {
+      "name": "Talisman",
+      "displayName": "i002290 Talisman",
+      "imoNo": 9191319,
+      "lloydsVesselId": 0,
+      "status": "Active",
+      "createdBy": "admin",
+      "id": 1
+    },
+    {
+      "name": "BergeAPO",
+      "displayName": "Berge APO",
+      "imoNo": 9233337,
+      "lloydsVesselId": 0,
+      "status": "Active",
+      "createdBy": "admin",
+       "id": 2
+    },
+    {
+      "name": "Carpus",
+      "displayName": "Carpus",
+      "imoNo": 1111222,
+      "lloydsVesselId": 0,
+      "status": "Active",
+      "createdBy": "admin",
+      "id": 3
+    },
+    {
+      "name": "Maalfrid",
+      "displayName": "Maalfrid",
+      "imoNo": 1112222,
+      "lloydsVesselId": 0,
+      "status": "Active",
+      "createdBy": "admin",
+      "id": 4
+    },
+    {
+      "name": "Spain",
+      "displayName": "Spain Fixed Location",
+      "imoNo": 0,
+      "lloydsVesselId": 0,
+      "status": "Active",
+      "createdBy": "admin",
+      "id": 5
+    },
+    {
+      "name": "FullPictureLab",
+      "displayName": "Development Lab Bankløkka",
+      "imoNo": 0,
+      "lloydsVesselId": 0,
+      "status": "Active",
+      "createdBy": "admin",
+      "id": 10
+    },
+    {
+      "name": "Robot6",
+      "displayName": "Talisman 829 (robot 6)",
+      "imoNo": 0,
+      "lloydsVesselId": 0,
+      "status": "Active",
+      "createdBy": "admin",
+      "id": 16
+    },
+    {
+      "name": "Talisman",
+      "displayName": "i002290 Talisman",
+      "imoNo": 9191319,
+      "lloydsVesselId": 0,
+      "status": "Inactive",
+      "createdBy": "admin",
+      "id": 18
+    },
+    {
+      "name": "Test",
+      "displayName": "Test",
+      "imoNo": 6516565,
+      "lloydsVesselId": 0,
+      "InstallationId": "",
+      "status": "Active",
+      "Owner": "",
+      "createdBy": "admin",
+      "id": 40
+    },
+    {
+      "name": "Semcon Devotek Onshore",
+      "displayName": "HSS Onshore",
+      "imoNo": 0,
+      "lloydsVesselId": 0,
+      "status": "Active",
+      "Owner": "Harald Auensen",
+      "createdBy": "SSP",
+      "id": 41
+    }
+  ]

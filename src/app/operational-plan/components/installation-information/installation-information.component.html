@@ -18,7 +18,8 @@
             <div class="kx-col kx-col--6" style="float: left;">
                 <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-large">
                     <span class="kx-btn__inner">
-                        <span class="kx-btn__txt">Next</span>
+                        <span *ngIf="PrepareInstallation; else elseBlock" class="kx-btn__txt">Next</span>
+                        <ng-template #elseBlock> <span class="kx-btn__txt">Save</span> </ng-template>
                     </span>
                 </button>
             </div>

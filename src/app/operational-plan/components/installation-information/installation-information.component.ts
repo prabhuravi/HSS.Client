@@ -5,6 +5,7 @@ import { MessageService } from '@kognifai/poseidon-message-service';
 import { ConfirmationService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
+import { Installation } from 'src/app/models/Installation';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
@@ -16,13 +17,14 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
 export class InstallationInformationComponent implements OnInit {
 
   isDataLoading = true;
+  PrepareInstallation: boolean = false;
   formValues: any = null;
   formType = FormType;
   formData: FormGroup;
   config = {
     formList: []
   };
-  vesselList: IVessel[] = [];
+  vesselList: Installation[] = [];
   robotsystemList: IRobotSystemDetails[] = [];
   installationTypes: IInstallationType[] = [];
   foulingStates: IFoulingState[] = [];
@@ -37,13 +39,16 @@ export class InstallationInformationComponent implements OnInit {
   ngOnInit() {
 
     this.operationalPlanService.getOperationalData().pipe(take(1)).subscribe((data) => {
-
+      if (this.router.url === '/operational-plan/prepare-installation') {
+        this.PrepareInstallation = true;
+      }
       this.vesselList = data[0];
       this.robotsystemList = data[1];
       this.isDataLoading = false;
-
+      const ves = this.vesselList[0];
       this. constructForm();
       this.formData = this.formBuliderService.buildForm(this.config);
+    
       //this.formData = this.buildForm();
       console.log(this.formData);
     });
@@ -59,7 +64,7 @@ export class InstallationInformationComponent implements OnInit {
         callBackFnName: 'onchangeVessel()',
         value: '',
         key: 'Vessel',
-        validators: ['required'],
+        validators: [Validators.required],
         optionLabel: 'DisplayName',
         disabled: false
       },
@@ -68,15 +73,15 @@ export class InstallationInformationComponent implements OnInit {
         label: 'IMO Number',
         value: '',
         key: 'ImoNo',
-        validators: ['required'],
+        validators: [Validators.required, Validators.min(1000000), Validators.max(9999999)],
         disabled: false
       },
       {
-        type: FormType.number,
-        label: 'Installation Number',
+        type: FormType.text,
+        label: 'Installation Id',
         value: '',
-        key: 'InstallationNumber',
-        validators: ['required'],
+        key: 'InstallationId',
+        validators: [Validators.required, Validators.maxLength(7)] ,
         disabled: false
       },
       {
@@ -86,7 +91,7 @@ export class InstallationInformationComponent implements OnInit {
         value: '',
         key: 'InstallationType',
         optionLabel: 'Name',
-        validators: ['required'],
+        validators: [Validators.required],
         disabled: false
       },
       {
@@ -94,7 +99,7 @@ export class InstallationInformationComponent implements OnInit {
         label: 'Installation Status',
         value: 'Prepare',
         key: 'InstallationStatus',
-        validators: ['required'],
+        validators: [Validators.required],
         disabled: true
       },
       {
@@ -104,7 +109,7 @@ export class InstallationInformationComponent implements OnInit {
         value: '',
         key: 'FoulingState',
         optionLabel: 'State',
-        validators: ['required'],
+        validators: [Validators.required],
         disabled: false
       },
       {
@@ -112,7 +117,7 @@ export class InstallationInformationComponent implements OnInit {
         label: 'Node Number',
         value: '',
         key: 'NodeNumber',
-        validators: ['required'],
+        validators: [Validators.required, Validators.min(10000), Validators.max(99999)],
         disabled: false
       },
       {
@@ -120,7 +125,7 @@ export class InstallationInformationComponent implements OnInit {
         label: 'IP Address',
         value: '',
         key: 'IPAddress',
-        validators: ['required'],
+        validators: [Validators.required, Validators.pattern(this.formBuliderService.ipAddressPattern)],
         disabled: false
       },
       {
@@ -129,7 +134,7 @@ export class InstallationInformationComponent implements OnInit {
         options: this.robotsystemList,
         value: '',
         key: 'HullSkaterId',
-        validators: ['required'],
+        validators: [Validators.required],
         optionLabel: 'Name',
         disabled: false
       }
@@ -151,7 +156,7 @@ export class InstallationInformationComponent implements OnInit {
   }
 
   onSubmit(): void {
-
+    console.log(this.formData);
     if (this.formData.valid) {
       console.log('form submitted');
     }
