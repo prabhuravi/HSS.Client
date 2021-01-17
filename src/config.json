@@ -111,6 +111,22 @@
           "AddPortToRoute": "AddPortToRoute"
         }
       },
+      "Installation": {
+        "path": "/PoseidonNext/hss-modules/assets/mocks",
+        "endpoints": {
+          "GetInstallations": "/newInstallation.json",
+          "GetInstallationStatus": "/installationStatus.json",
+          "GetInstallationType": "/installationType.json"
+          
+        }
+      },
+      "Fouling": {
+        "path": "/PoseidonNext/hss-modules/assets/mocks",
+        "endpoints": {
+          "GetFoulingStates": "/foulingState.json"
+          
+        }
+      },
       "Vessel": {
         "path": "/Vessel",
         "endpoints": {

@@ -35,9 +35,7 @@ export class HttpService {
     );
   }
   getDataGeneric<T>(requestData: any): Observable<T> {
-    return this.http.get<T>(requestData.endPoint).pipe(map((x) => {
-     return x;
-    }),
+    return this.http.get<T>(requestData.endPoint).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
     );

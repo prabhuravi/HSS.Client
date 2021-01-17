@@ -20,12 +20,12 @@ import { RobotSystemComponent } from './components/robot-system/robot-system.com
 import { SubOperationalPlanComponent } from './components/sub-operational-plan/sub-operational-plan.component';
 import { InstallationOverviewComponent } from './components/installation-overview/installation-overview.component';
 import { PrepareInstallationComponent } from './components/prepare-installation/prepare-installation.component';
-import { InstallationInformationComponent } from './components/installation-information/installation-information.component';
 import { TradeRouteComponent } from './components/trade-route/trade-route.component';
 import { SectionsComponent } from './components/sections/sections.component';
 import { CreateDocumentsComponent } from './components/create-documents/create-documents.component';
 import { CreateContactsComponent } from './components/create-contacts/create-contacts.component';
 import { FoulingStateComponent } from './components/fouling-state/fouling-state.component';
+import { CreateInstallationComponent } from './components/installation-information/create-installation/create-installation.component';
 
 const routes: Routes = [
   {
@@ -33,7 +33,8 @@ const routes: Routes = [
       { path: '', component: InstallationOverviewComponent, pathMatch: 'full' },
       {
         path: 'prepare-installation', component: PrepareInstallationComponent, children: [
-          { path: '', component: InstallationInformationComponent, pathMatch: 'full' },
+          { path: '', component: CreateInstallationComponent, pathMatch: 'full' },
+          { path: 'create-installation', component: CreateInstallationComponent },
           { path: 'trade-route', component: TradeRouteComponent },
           { path: 'sections', component: SectionsComponent },
           { path: 'fouling-state', component: FoulingStateComponent },
@@ -63,12 +64,12 @@ const routes: Routes = [
     SubOperationalPlanComponent,
     InstallationOverviewComponent,
     PrepareInstallationComponent,
-    InstallationInformationComponent,
     TradeRouteComponent,
     SectionsComponent,
     FoulingStateComponent,
     CreateDocumentsComponent,
-    CreateContactsComponent],
+    CreateContactsComponent,
+    CreateInstallationComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

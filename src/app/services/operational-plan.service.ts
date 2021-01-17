@@ -29,12 +29,12 @@ export class OperationalPlanService {
   }
 
   // Operation Plan
-  getOperationPlans(): Observable<IOperationalPlan[]> {
-    const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationPlans}`,
-    };
-    return this.http.getData(requestData);
-  }
+    getOperationPlans(): Observable<IOperationalPlan[]> {
+      const requestData = {
+        endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationPlans}`,
+      };
+      return this.http.getData(requestData);
+    }
 
   getSubOperations(planId: number): Observable<ISubOperations[]> {
     const requestData = {

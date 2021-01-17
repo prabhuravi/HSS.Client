@@ -10,7 +10,7 @@ export class PrepareInstallationComponent implements OnInit {
   prepareInstallationSteps: IRouteList[] = [
     {
       label: 'Installation Information',
-      route: '/operational-plan/prepare-installation'
+      route: '/operational-plan/prepare-installation/create-installation'
     },
     {
       label: 'Trade Route',
@@ -37,7 +37,5 @@ export class PrepareInstallationComponent implements OnInit {
 
   ngOnInit() {
   }
-
-
 
 }
