@@ -26,7 +26,7 @@ export class InstallationInformationComponent implements OnInit {
   robotsystemList: IRobotSystemDetails[] = [];
   installationTypes: IInstallationType[] = [];
   foulingStates: IFoulingState[] = [];
-  ipAddressPattern = '(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)';
+
   constructor(private operationalPlanService: OperationalPlanService,
               private router: Router,
               private confirmationService: ConfirmationService,
@@ -35,14 +35,13 @@ export class InstallationInformationComponent implements OnInit {
               public fb: FormBuilder, public messageService: MessageService) { }
 
   ngOnInit() {
-   
+
     this.operationalPlanService.getOperationalData().pipe(take(1)).subscribe((data) => {
 
       this.vesselList = data[0];
       this.robotsystemList = data[1];
       this.isDataLoading = false;
-      console.log(data);
-      console.log(this.vesselList);
+
       this. constructForm();
       this.formData = this.formBuliderService.buildForm(this.config);
       //this.formData = this.buildForm();

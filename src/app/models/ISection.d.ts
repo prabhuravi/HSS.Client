@@ -1,18 +1,20 @@
 interface ISection {
-    Id: number;
-    VesselId: number;
-    Name: string;
-    Status: string;
-    FoulingId: number,
-    FoulingState: string;
-    JotunFoulingId: number,
-    Subsections: ISubSection[] =[];
+    id: number;
+    vesselId: number;
+    name: string;
+    status: SectionStatus;
+    selected: boolean = false;
+    foulingId: number,
+    foulingState: string;
+    jotunFoulingId: number,
+    subsections: ISubSection[] = [];
     
 }
 
-interface ISubSection {
-    Id: number;
-    SubSectionId: number;
-    Name: string;
-    Status : string;
+export class SubSection {
+    id: number;
+    sectionId: number;
+    name: string;
+    status : SectionStatus;
 }
+
