@@ -6,7 +6,7 @@
                 <label class="kx-label">Section</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="vesselSections" [(ngModel)]="selectedSection"
-                        optionLabel="Name" filter="true" placeholder="Select vessel section"></p-dropdown>
+                        optionLabel="name" filter="true" placeholder="Select vessel section"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
@@ -60,11 +60,11 @@
                 </tr>
                 <tr>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                        <input *ngSwitchCase="'Name'" pInputText type="text"
+                        <input *ngSwitchCase="'name'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small"
                             placeholder="Type to filter Section"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'FoulingState'" pInputText type="text"
+                        <input *ngSwitchCase="'foulingState'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small"
                             placeholder="Type to filter Fouling State"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
@@ -75,7 +75,7 @@
                 <tr>
                     <td *ngFor="let col of columns">
                         <div [ngSwitch]="col.field">
-                            <div *ngSwitchCase="'Id'">
+                            <div *ngSwitchCase="'id'">
                                 <input type="image" src="./assets/pencil.svg" alt="Edit"
                                     (click)="editSectionFoulingState(rowData)" [disabled]="disableActivity"
                                     height="23px" width="23px" title="Edit">

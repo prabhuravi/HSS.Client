@@ -1,14 +1,13 @@
-interface ISection {
+export class Section {
     id: number;
     vesselId: number;
     name: string;
     status: SectionStatus;
     selected: boolean = false;
-    foulingId: number,
+    foulingId: number;
     foulingState: string;
-    jotunFoulingId: number,
-    subsections: ISubSection[] = [];
-    
+    jotunFoulingId: number;
+    subSections: SubSection[] = []; 
 }
 
 export class SubSection {

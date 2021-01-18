@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
+import { Section } from 'src/app/models/ISection';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
@@ -10,20 +11,20 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
 })
 export class FoulingStateComponent implements OnInit {
 
-  vesselSections: ISection[] = [];
-  selectedSection: ISection = null;
+  vesselSections: Section[] = [];
+  selectedSection: Section = null;
   foulingStates: IFoulingState[] = [];
   selectedfoulingState: IFoulingState = null;
-  sectionFoulingStates: ISection[] = [];
+  sectionFoulingStates: Section[] = [];
 
   isDataLoading = false;
   disableActivity: boolean;
   vesselId = 0;
 
   cols = [
-    { field: 'Name', sortfield: 'Name', header: 'Section', filterMatchMode: 'contains' },
-    { field: 'FoulingState', sortfield: 'FoulingState', header: 'Fouling State', filterMatchMode: 'contains' },
-    { field: 'Id', sortfield: '', header: 'Action' }
+    { field: 'name', sortfield: 'name', header: 'Section', filterMatchMode: 'contains' },
+    { field: 'foulingState', sortfield: 'foulingState', header: 'Fouling State', filterMatchMode: 'contains' },
+    { field: 'id', sortfield: '', header: 'Action' }
   ];
 
   constructor(private operationalPlanService: OperationalPlanService,
@@ -74,7 +75,7 @@ export class FoulingStateComponent implements OnInit {
     // if (this.sectionFoulingStates.findIndex(p => p.Id == this.selectedSection.Id) == -1) {
 
       this.isDataLoading = true;
-      this.operationalPlanService.updateFoulingStateToSection({ SectionId: this.selectedSection.Id, FoulingStateId: this.selectedfoulingState.Id, VesselId: this.vesselId }).subscribe((data) => {
+      this.operationalPlanService.updateFoulingStateToSection({ SectionId: this.selectedSection.id, FoulingStateId: this.selectedfoulingState.Id, VesselId: this.vesselId }).subscribe((data) => {
         this.triggerToast('success', 'Success Message', `Fouling state updated for the section`);
         this.isDataLoading = false;
         this.getSectionFoulingStates();
@@ -111,12 +112,12 @@ export class FoulingStateComponent implements OnInit {
   //   });
   // }
 
-  editSectionFoulingState(rowData: ISection) {
+  editSectionFoulingState(rowData: Section) {
     console.log(rowData);
-    this.selectedSection = this.vesselSections.find(v => v.Id == rowData.Id);
+    this.selectedSection = this.vesselSections.find(v => v.id == rowData.id);
     console.log(this.selectedSection);
 
-    this.selectedfoulingState = this.foulingStates.find(v => v.Id == rowData.Id);
+    this.selectedfoulingState = this.foulingStates.find(v => v.Id == rowData.id);
     console.log(this.selectedfoulingState);
 
     // this.isDataLoading = true;

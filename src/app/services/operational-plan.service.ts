@@ -72,8 +72,8 @@ export class OperationalPlanService {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetSectionFoulingStates}/${vesselId}`
     };
-    return of([{ Id: 1, VesselId: 1, Name: 'Top', Status: null, FoulingId: 1, JotunFoulingId: null, FoulingState: 'Good', Subsections: null },
-    { Id: 2, VesselId: 1, Name: 'Bottom', Status: null, FoulingId: 2, JotunFoulingId: null, FoulingState: 'Bad', Subsections: null }]);
+    return of([{ id: 1, vesselId: 1, name: 'Top', status: null, foulingId: 1, jotunFoulingId: null, foulingState: 'Good', subsections: null },
+    { id: 2, vesselId: 1, name: 'Bottom', status: null, foulingId: 2, jotunFoulingId: null, foulingState: 'Bad', subsections: null }]);
     // return this.http.getData(requestData);
   }
 
@@ -81,8 +81,8 @@ export class OperationalPlanService {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetVesselSections}/${vesselId}`
     };
-    return of([{ Id: 1, VesselId: 1, Name: 'Top', Status: null, FoulingId: null, JotunFoulingId: null, FoulingState: null, Subsections: null },
-    { Id: 2, VesselId: 1, Name: 'Bottom', Status: null, FoulingId: null, JotunFoulingId: null, FoulingState: null, Subsections: null }]);
+    return of([{ id: 1, vesselId: 1, name: 'Top', status: null, foulingId: null, jotunFoulingId: null, foulingState: null, subsections: null },
+    { id: 2, vesselId: 1, name: 'Bottom', status: null, foulingId: null, jotunFoulingId: null, foulingState: null, subsections: null }]);
     // return this.http.getData(requestData);
   }
 
