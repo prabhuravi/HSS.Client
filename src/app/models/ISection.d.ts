@@ -1,7 +1,7 @@
 interface ISection {
     Id: number;
     VesselId: number;
-    SectionName: string;
+    Name: string;
     Status: string;
     FoulingId: number,
     FoulingState: string;

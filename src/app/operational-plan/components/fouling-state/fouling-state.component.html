@@ -6,7 +6,7 @@
                 <label class="kx-label">Section</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="vesselSections" [(ngModel)]="selectedSection"
-                        optionLabel="SectionName" filter="true" placeholder="Select vessel section"></p-dropdown>
+                        optionLabel="Name" filter="true" placeholder="Select vessel section"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
@@ -60,7 +60,7 @@
                 </tr>
                 <tr>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field">
-                        <input *ngSwitchCase="'SectionName'" pInputText type="text"
+                        <input *ngSwitchCase="'Name'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small"
                             placeholder="Type to filter Section"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">

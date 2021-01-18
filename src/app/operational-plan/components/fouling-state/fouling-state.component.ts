@@ -21,7 +21,7 @@ export class FoulingStateComponent implements OnInit {
   vesselId = 0;
 
   cols = [
-    { field: 'SectionName', sortfield: 'SectionName', header: 'Section', filterMatchMode: 'contains' },
+    { field: 'Name', sortfield: 'Name', header: 'Section', filterMatchMode: 'contains' },
     { field: 'FoulingState', sortfield: 'FoulingState', header: 'Fouling State', filterMatchMode: 'contains' },
     { field: 'Id', sortfield: '', header: 'Action' }
   ];
