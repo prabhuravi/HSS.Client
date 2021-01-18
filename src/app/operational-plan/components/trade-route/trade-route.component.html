@@ -1,3 +1,4 @@
+<app-load *ngIf="isDataLoading"></app-load>
 <div class="kx-card kx-card--skin-default">
     <div class="kx-p--tiny kx-p--medium@mob-m">
         <div class="kx-row">
@@ -25,7 +26,7 @@
 </div>
 
 <div class="kx-pt--small">
-    <app-load *ngIf="isDataLoading"></app-load>
+    
     <div *ngIf="!isDataLoading">
         <p-table *ngIf="vesselTradeRoute.length > 0" tableStyleClass="kx-table kx-table--outer-border" [value]="vesselTradeRoute" [columns]="cols"
             autoLayout="true" #tt [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20,50,100,200,500]">

@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrepareInstallationComponent implements OnInit {
 
+  activeTab:number = 0;
+
   prepareInstallationSteps: IRouteList[] = [
     {
       label: 'Installation Information',
@@ -36,6 +38,11 @@ export class PrepareInstallationComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  tabCliecked(i): void {
+    console.log(i);
+    this.activeTab = i;
   }
 
 

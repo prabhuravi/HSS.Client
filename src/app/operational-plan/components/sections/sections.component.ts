@@ -63,6 +63,10 @@ export class SectionsComponent implements OnInit {
         id: 1,
         name: 'PortFront',
         status: SectionStatus.Active,
+        foulingState: null,
+        jotunFoulingId: 0,
+        foulingId: 0,
+        vesselId: 1,
         selected: false,
         subSections: [
           {
@@ -91,6 +95,10 @@ export class SectionsComponent implements OnInit {
         name: 'PortMid',
         status: SectionStatus.Active,
         selected: false,
+        foulingState: null,
+        jotunFoulingId: 0,
+        foulingId: 0,
+        vesselId: 1,
         subSections: [
           {
             id: 1,

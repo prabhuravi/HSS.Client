@@ -1,10 +1,13 @@
 export class Section {
     id: number;
+    vesselId: number;
     name: string;
     status: SectionStatus;
     selected: boolean = false;
-    subSections: ISubSection[] =[];
-    
+    foulingId: number;
+    foulingState: string;
+    jotunFoulingId: number;
+    subSections: SubSection[] = []; 
 }
 
 export class SubSection {
