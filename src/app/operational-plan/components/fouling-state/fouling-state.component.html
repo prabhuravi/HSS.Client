@@ -6,14 +6,14 @@
                 <label class="kx-label">Section</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="vesselSections" [(ngModel)]="selectedSection"
-                        optionLabel="Name" filter="true" placeholder="Select vessel section"></p-dropdown>
+                        optionLabel="SectionName" filter="true" placeholder="Select vessel section"></p-dropdown>
                 </div>
             </div>
             <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                 <label class="kx-label">Fouling State</label>
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [options]="foulingStates" [(ngModel)]="selectedfoulingState"
-                        optionLabel="Name" filter="true" placeholder="Select fouling state"></p-dropdown>
+                        optionLabel="State" filter="true" placeholder="Select fouling state"></p-dropdown>
                 </div>
             </div>
 
@@ -29,11 +29,11 @@
             </div> -->
 
             <div class="kx-col kx-col--6 kx-col--3@tab-m kx-col--6@mob-m">
-                <button (click)="addFoulingState()"
+                <button (click)="updateFoulingStateToSection()"
                     class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
                     [disabled]="selectedfoulingState === null || selectedSegment === null">
                     <span class="kx-btn__inner">
-                        <span class="kx-btn__txt">Add Fouling State</span>
+                        <span class="kx-btn__txt">Update Fouling State</span>
                     </span>
                 </button>
             </div>
@@ -44,8 +44,8 @@
 <div class="kx-pt--small">
     <app-load *ngIf="isDataLoading"></app-load>
     <div *ngIf="!isDataLoading">
-        <p-table *ngIf="vesselFoulingStates.length > 0" tableStyleClass="kx-table kx-table--outer-border"
-            [value]="vesselFoulingStates" [columns]="cols" autoLayout="true" #tt [paginator]="true" [rows]="10"
+        <p-table *ngIf="sectionFoulingStates.length > 0" tableStyleClass="kx-table kx-table--outer-border"
+            [value]="sectionFoulingStates" [columns]="cols" autoLayout="true" #tt [paginator]="true" [rows]="10"
             [rowsPerPageOptions]="[5,10,20,50,100,200,500]">
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -77,11 +77,12 @@
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'Id'">
                                 <input type="image" src="./assets/pencil.svg" alt="Edit"
-                                    (click)="editFoulingState(rowData)" [disabled]="disableActivity" height="23px"
-                                    width="23px" title="Edit"> &nbsp;
+                                    (click)="editSectionFoulingState(rowData)" [disabled]="disableActivity"
+                                    height="23px" width="23px" title="Edit">
+                                <!-- &nbsp;
                                 <input type="image" src="./assets/delete1.svg" alt="Remove"
-                                    (click)="deleteFoulingState(rowData)" [disabled]="disableActivity" height="23px"
-                                    width="23px" title="Delete">
+                                    (click)="deleteSection(rowData)" [disabled]="disableActivity" height="23px"
+                                    width="23px" title="Delete"> -->
                             </div>
                             <div *ngSwitchDefault>{{rowData[col.field]}}</div>
                         </div>
@@ -89,6 +90,6 @@
                 </tr>
             </ng-template>
         </p-table>
-        <app-no-data [displayme]="vesselFoulingStates.length === 0"></app-no-data>
+        <app-no-data [displayme]="sectionFoulingStates.length === 0"></app-no-data>
     </div>
 </div>

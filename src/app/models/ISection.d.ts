@@ -1,7 +1,11 @@
 interface ISection {
     Id: number;
-    Name: number;
+    VesselId: number;
+    SectionName: string;
     Status: string;
+    FoulingId: number,
+    FoulingState: string;
+    JotunFoulingId: number,
     Subsections: ISubSection[] =[];
     
 }
