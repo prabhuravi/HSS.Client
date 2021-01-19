@@ -107,8 +107,15 @@
           "UpdateSubOperationPlan": "/SubOperation",
           "CompleteSubOperationPlan": "/SubOperation/Complete",
           "GetOperationPlanById": "",
-          "GetTradeRouteByVesselId": "GetTradeRoute",
-          "AddPortToRoute": "AddPortToRoute"
+          "GetTradeRouteByVesselId": "/GetTradeRoute",
+          "AddPortToRoute": "/AddPortToRoute",
+          "DeletePortFromRoute": "/DeletePortFromRoute",
+          "GetSectionFoulingStates": "/GetSectionFoulingStates",
+          "AssignFoulingStateToSection": "/AssignFoulingStateToSection",
+          "GetVesselSections": "/GetVesselSections",
+          "GetFoulingStates": "/GetFoulingStates",
+          "UpdateSectionFoulingState": "/UpdateSectionFoulingState"
+
         }
       },
       "Installation": {

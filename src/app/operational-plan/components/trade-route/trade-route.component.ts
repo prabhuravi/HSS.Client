@@ -14,9 +14,9 @@ export class TradeRouteComponent implements OnInit {
 
   submitted = false;
 
-  port: any = null;
-  portLocations: any[] = [];
-  vesselTradeRoute: any[];
+  port: IPortLocation = null;
+  portLocations: IPortLocation[] = [];
+  vesselTradeRoute: ITradeRoute[];
   //  = [
   //   { Id: '10788', PortName: 'Savanna-la-Mar(JM SLM)', PortCode: 'JM SLM' },
   //   { Id: '17896', PortName: 'Savannah(US SAV)', PortCode: 'US SAV' }
@@ -32,7 +32,7 @@ export class TradeRouteComponent implements OnInit {
 
   constructor(private operationalPlanService: OperationalPlanService, private router: Router,
     private confirmationService: ConfirmationService,
-    private route: ActivatedRoute, public messageService: MessageService) { }
+    private route: ActivatedRoute, private messageService: MessageService) { }
 
   ngOnInit() {
     this.vesselId = 1;
@@ -41,10 +41,7 @@ export class TradeRouteComponent implements OnInit {
     //   this.vesselId = parseInt(params.vesselId);
     //   if (this.vesselId) {
 
-        this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
-          console.log(data);
-          this.vesselTradeRoute = data;
-        });
+    this.getVesselTradeRoute();
 
     //   }
     // });
@@ -59,24 +56,48 @@ export class TradeRouteComponent implements OnInit {
 
   addNewPort() {
     console.log(this.port);
-    this.operationalPlanService.addPortToRoute({PortId: this.port.Id, VesselId: this.vesselId}).subscribe((data) => {
-      this.triggerToast('success', 'Success Message', `Port added to route successfully`);
-
-      this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
-        console.log(data);
-        this.vesselTradeRoute = data;
+    this.isDataLoading = true;
+    if (this.vesselTradeRoute.findIndex(p => p.PortId == this.port.Id) == -1) {
+      this.operationalPlanService.addPortToRoute({ PortId: this.port.Id, VesselId: this.vesselId }).subscribe((data) => {
+        this.triggerToast('success', 'Success Message', `Port added to route successfully`);
+        this.isDataLoading = false;
+        this.getVesselTradeRoute();
       });
+    }
+    else {
+      this.triggerToast('error', 'Failure Message', `Port already exists in route`);
+    }
+  }
 
+  removePortFromTradeRoute(dataRow: ITradeRoute) {
+    console.log(dataRow);
+
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to remove port ' + dataRow.PortName + ' from the route?',
+      accept: () => {
+        this.isDataLoading = true;
+        this.operationalPlanService.deletePortFromRoute(dataRow.Id).pipe(take(1)).subscribe(() => {
+          this.triggerToast('success', 'Success Message', 'Port removed from the route');
+          this.isDataLoading = false;
+          this.getVesselTradeRoute();
+
+        });
+
+      }
     });
   }
 
-  removePortFromTradeRoute(data: any) {
-    console.log(data);
+  getVesselTradeRoute() {
+    this.isDataLoading = true;
+    this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
+      this.vesselTradeRoute = data;
+      this.isDataLoading = false;
+      console.log(this.vesselTradeRoute);
+    });
   }
 
-  disableAddToRoute(port: any): boolean
-  {
-    return port !== null && typeof port !== 'object' || port === null || port === '' ;
+  disableAddToRoute(port: any): boolean {
+    return port !== null && typeof port !== 'object' || port === null || port === '';
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

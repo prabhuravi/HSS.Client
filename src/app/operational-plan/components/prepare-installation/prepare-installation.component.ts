@@ -8,7 +8,7 @@ import { Installation } from 'src/app/models/Installation';
 })
 export class PrepareInstallationComponent implements OnInit {
 
-  vesselid: number;
+  activeTab: number = 0;
 
   prepareInstallationSteps: IRouteList[] = [
     {
@@ -40,5 +40,12 @@ export class PrepareInstallationComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  tabCliecked(i): void {
+    console.log(i);
+    this.activeTab = i;
+  }
+
+
 
 }
