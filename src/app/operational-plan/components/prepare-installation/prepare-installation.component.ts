@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Installation } from 'src/app/models/Installation';
 
 @Component({
   selector: 'app-prepare-installation',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./prepare-installation.component.scss']
 })
 export class PrepareInstallationComponent implements OnInit {
+
+  vesselid: number;
 
   prepareInstallationSteps: IRouteList[] = [
     {

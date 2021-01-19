@@ -26,6 +26,9 @@ import { CreateDocumentsComponent } from './components/create-documents/create-d
 import { CreateContactsComponent } from './components/create-contacts/create-contacts.component';
 import { FoulingStateComponent } from './components/fouling-state/fouling-state.component';
 import { CreateInstallationComponent } from './components/installation-information/create-installation/create-installation.component';
+import { CreateSectionComponent } from './components/sections/create-section/create-section.component';
+import { CreateSubSectionComponent } from './components/sections/create-sub-section/create-sub-section.component';
+import { ListingSectionComponent } from './components/sections/listing-section/listing-section.component';
 
 const routes: Routes = [
   {
@@ -69,7 +72,10 @@ const routes: Routes = [
     FoulingStateComponent,
     CreateDocumentsComponent,
     CreateContactsComponent,
-    CreateInstallationComponent],
+    CreateInstallationComponent,
+    CreateSectionComponent,
+    CreateSubSectionComponent,
+    ListingSectionComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
