@@ -130,6 +130,40 @@ export class OperationalPlanService {
     // return this.http.deleteData(requestData);
   }
 
+  getDocumentType(): Observable<any>
+  {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetDocumentType}`
+    };
+    return of("test");
+    // return this.http.getData(requestData);
+  }
+
+  getInstallationDocument(vesselId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetInstallationDocument}/${vesselId}`
+    };
+    return of("test");
+    // return this.http.getData(requestData);
+  }
+
+  addDocument(data: any): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.AddDocument}`,
+      data: data
+    };
+    return of(true);
+    // return this.http.postData(requestData);
+  }
+
+  deleteInstallationDocument(id: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.robotApiUrl}${this.operationalPlanConfig.Robot.endpoints.DeleteInstallationDocument}/${id}`,
+    };
+    return of(true);
+    // return this.http.deleteData(requestData);
+  }
+
   addOperationPlan(planData: any): Observable<any> {
     planData.LastUpdatedDate = new Date();
     const requestData = {
