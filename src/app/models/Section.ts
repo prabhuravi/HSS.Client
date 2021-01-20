@@ -1,14 +1,15 @@
 export class Section {
-    id: number;
-    vesselId: number;
-    name: string;
-    status: SectionStatus;
-    selected: boolean = false;
-    foulingId: number;
-    foulingState: string;
-    jotunFoulingId: number;
-    subSections: SubSection[] = [];
-
+    constructor(
+        public id: number,
+        public vesselId: number,
+        public name: string,
+        public sectionStatus: SectionStatus,
+        public selected: boolean = false,
+        public foulingId: number,
+        public foulingState: string,
+        public jotunFoulingId: number,
+        public subSections: SubSection[] = []
+    ) { }
 }
 
 export class SectionStatus {
@@ -19,8 +20,10 @@ export class SectionStatus {
 }
 
 export class SubSection {
-    id: number;
-    sectionId: number;
-    name: string;
-    status: SectionStatus;
+    constructor(
+        public id: number,
+        public sectionId: number,
+        public name: string,
+        public sectionStatus: SectionStatus
+    ) { }
 }

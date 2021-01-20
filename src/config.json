@@ -134,6 +134,14 @@
           
         }
       },
+      "Section": {
+        "path": "/PoseidonNext/hss-modules/assets/mocks",
+        "endpoints": {
+          "GetSections": "/sections.json",
+          "GetSectionStatus": "/sectionStatus.json"
+          
+        }
+      },
       "Vessel": {
         "path": "/Vessel",
         "endpoints": {

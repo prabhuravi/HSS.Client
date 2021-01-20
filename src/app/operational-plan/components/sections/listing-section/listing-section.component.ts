@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ConfirmationService } from 'primeng/api';
+import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
-import { Section } from 'src/app/models/ISection';
+import { Section, SectionStatus, SubSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
+import { SectionService } from 'src/app/services/section.service';
 
 @Component({
   selector: 'app-listing-section',
@@ -12,31 +14,16 @@ import { FromBuilderService } from 'src/app/services/from-builder-service';
 })
 export class ListingSectionComponent implements OnInit {
 
-  constructor(private formBuliderService: FromBuilderService,
-              private confirmationService: ConfirmationService,
+  constructor(public sectionService: SectionService,
               public fb: FormBuilder) { }
 
   @Input() sections: Section[];
-  @Input() section: any;
+  @Input() section: Section;
   @Output() sectionOnEdit: EventEmitter<any> = new EventEmitter<any>();
+  @Output() subSectionOnEdit: EventEmitter<any> = new EventEmitter<any>();
+  @Output() subSectionOnAdd: EventEmitter<any> = new EventEmitter<any>();
+  public subSectionFlag: boolean = false;
   clonedSections: { [s: string]: Section; } = {};
-  sectionRow: any;
-  sectionStatusSelceted: any = {
-    key: 0,
-    name: 'Active'
-  };
-  public statusList = [
-    {
-      key: 0,
-      name: 'Active'
-
-    },
-    {
-      key: 1,
-      name: 'Obsloute'
-    }
-  ];
-
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   cols = [
@@ -48,65 +35,14 @@ export class ListingSectionComponent implements OnInit {
   ];
 
   ngOnInit() {
+    this.sectionService.getSections().pipe(take(1)).subscribe((data) => {
+      this.sections = data;
+    });
 
-    this.sections = [
-      {
-        id: 1,
-        name: 'PortFront',
-        status: 'Active',
-        selected: false,
-        subSections: [
-          {
-            id: 1,
-            sectionId: 1,
-            name: 'A',
-            status: 'Active'
-          },
-          {
-            id: 2,
-            sectionId: 1,
-            name: 'B',
-            status: 'Active'
-          },
-          {
-            id: 3,
-            sectionId: 1,
-            name: 'C',
-            status: 'Active'
-          }
-
-        ]
-      },
-      {
-        id: 2,
-        name: 'PortMid',
-        status: 'Active',
-        selected: false,
-        subSections: [
-          {
-            id: 1,
-            sectionId: 2,
-            name: 'A',
-            status: 'Active'
-          },
-          {
-            id: 2,
-            sectionId: 2,
-            name: 'A',
-            status: 'Active'
-          },
-          {
-            id: 3,
-            sectionId: 2,
-            name: 'A',
-            status: 'Active'
-          }
-        ]
-      }
-    ];
   }
 
-  onRowEditInit(rowData: Section): void {
+  onSectionRowEditInit(rowData: Section): void {
+    this.subSectionFlag = false;
     console.log(rowData);
     this.section = rowData;
     this.sectionOnEdit.emit(rowData);
@@ -114,9 +50,47 @@ export class ListingSectionComponent implements OnInit {
     this.clonedSections[rowData.id] = rowData;
   }
 
-  onRowEdit(sectionData: any): void {
+  onSectionDataUpdated(sectionData: any): void {
     let rowData = this.sections.find( (x) => x.id ===  sectionData.id);
-    rowData = sectionData;
+    if (rowData) {
+      rowData = sectionData;
+    } else {
+      this.sections.push(sectionData);
+    }
+  }
 
+  onSubSectionAddInit(SectionRow: Section): void {
+      this.subSectionOnAdd.emit(SectionRow);
+      this.subSectionFlag = true;
+  }
+
+  onSubSectionEditInit(rowData: SubSection): void {
+  const sectionRow  =   this.sections.find((x) => x.id === rowData.sectionId);
+  this.subSectionOnEdit.emit({sectionRow, rowData});
+  this.subSectionFlag = true;
+
+  }
+
+  onSubSectionDataUpdated(subSection: SubSection): void {
+       const sectionItem  =   this.sections.find((x) => x.id === subSection.sectionId);
+       console.log(sectionItem);
+       if (!sectionItem.subSections) {
+      sectionItem.subSections = [];
+      sectionItem.subSections.push(subSection);
+    } else {
+     let subsectionItem =  sectionItem.subSections.find((x) => x.id === subSection.id);
+     if (subsectionItem) {
+      subsectionItem = subSection;
+     } else {
+      sectionItem.subSections.push(subSection);
+     }
+
+    }
+
+       this.subSectionFlag = false;
+  }
+  
+  onSubSectionCancelled(): void{
+    this.subSectionFlag = false;
   }
 }

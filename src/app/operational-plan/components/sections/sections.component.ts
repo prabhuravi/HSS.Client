@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Section } from 'src/app/models/ISection';
-
+import { Section } from 'src/app/models/Section';
 
 @Component({
   selector: 'app-sections',
@@ -14,5 +13,17 @@ export class SectionsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {}
+
+  onSectionAdded(newSection: Section) {
+    console.log(this.sectionList);
+    this.sectionList.push(newSection);
+
+  }
+
+  onSectionEdited(editedSection: Section) {
+    console.log(this.sectionList);
+    let sectionRow =  this.sectionList.find((x) => x.id === editedSection.id);
+    sectionRow = editedSection;
+  }
 
 }

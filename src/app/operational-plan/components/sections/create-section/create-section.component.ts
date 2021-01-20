@@ -3,9 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService } from '@kognifai/poseidon-message-service';
 import { ConfirmationService } from 'primeng/api';
+import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
+import { SectionAdapter } from 'src/app/models/modelAdapter';
+import { Section, SectionStatus } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
-import { InstallationService } from 'src/app/services/installation.service';
+import { SectionService } from 'src/app/services/section.service';
 
 @Component({
   selector: 'app-create-section',
@@ -13,9 +16,8 @@ import { InstallationService } from 'src/app/services/installation.service';
   styleUrls: ['./create-section.component.scss']
 })
 export class CreateSectionComponent implements OnInit {
-  @Input() section: any;
-  @Output() sectionAdded: EventEmitter<any> = new EventEmitter<any>();
-  @Output() sectionEdited: EventEmitter<any> = new EventEmitter<any>();
+  @Input() section: Section;
+  @Output() sectionUpdated: EventEmitter<any> = new EventEmitter<any>();
   isDataLoading = true;
   editMode: boolean = false;
   PrepareInstallation: boolean = false;
@@ -26,20 +28,11 @@ export class CreateSectionComponent implements OnInit {
     formList: []
   };
 
-  installationList: any  = [
-    {
-       id: 1,
-       name: 'Active'
-  },
-  {
-    id: 2,
-    name: 'Obsloute'
-   }
-
-  ];
+  sectionStatus: SectionStatus[] = [];
 
   constructor(
-    private installationService: InstallationService,
+    private sectionService: SectionService,
+    private sectionAdapter: SectionAdapter,
     private router: Router,
     private confirmationService: ConfirmationService,
     private formBuliderService: FromBuilderService,
@@ -48,9 +41,12 @@ export class CreateSectionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.constructForm();
-    this.formData = this.formBuliderService.buildForm(this.config);
-    this.isDataLoading = false;
+    this.sectionService.getSectionStatus().pipe(take(1)).subscribe((data) => {
+      this.sectionStatus = data;
+      this.constructForm();
+      this.formData = this.formBuliderService.buildForm(this.config);
+      this.isDataLoading = false;
+    });
   }
 
   constructForm(): void {
@@ -59,16 +55,16 @@ export class CreateSectionComponent implements OnInit {
         type: FormType.text,
         label: 'Name',
         value: this.section ? this.section.name : '',
-        key: 'SectionName',
+        key: 'name',
         validators: [Validators.required, Validators.maxLength(20)],
         disabled: false
       },
       {
         type: FormType.dropdown,
         label: 'Status',
-        options: this.installationList,
-        value: '',
-        key: 'SectionStatus',
+        options: this.sectionStatus,
+        value: this.sectionStatus[0],
+        key: 'sectionStatus',
         validators: [Validators.required],
         optionLabel: 'name',
         disabled: false
@@ -80,26 +76,24 @@ export class CreateSectionComponent implements OnInit {
 
     if (this.formData.valid) {
       if (this.editMode) {
-
+        this.saveSection();
       } else {
-       
+
         this.addNewSection();
       }
-     // console.log('form submitted');
+      this.onFormReset();
     }
   }
 
-  updateForm(sectionData: any): void {
+  sectionEditInit(sectionData: any): void {
     this.editMode = true;
-    console.log('updateForm');
-    console.log(sectionData);
-    this.formData.controls.SectionName.setValue(sectionData.name);
-    this.formData.controls.SectionStatus.setValue(sectionData.status);
+    this.section = sectionData;
+    this.formData.controls.name.setValue(sectionData.name);
+    this.formData.controls.sectionStatus.setValue(sectionData.sectionStatus);
   }
 
   formOnchangeEvent(changedItem: any): void {
-    console.log(changedItem.formItem);
-    console.log(changedItem.formValue);
+
   }
   onFormReset(): void {
     this.formData.reset();
@@ -107,10 +101,16 @@ export class CreateSectionComponent implements OnInit {
   }
 
   addNewSection(): void {
-    console.log('adnew');
-    const newSection = this.formData.value;
-    console.log(newSection);
+    const newSection = this.sectionAdapter.adapt(this.formData.value);
+    newSection.id = Math.floor(Math.random() * 999999) + 1;
+    this.sectionUpdated.emit(newSection);
+  }
 
+  saveSection(): void {
+    const formValue = this.formData.value;
+    this.section.name = formValue.name;
+    this.section.sectionStatus = formValue.sectionStatus;
+    this.sectionUpdated.emit(this.section);
   }
 
 }

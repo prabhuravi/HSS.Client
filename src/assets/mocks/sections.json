@@ -1,0 +1,78 @@
+[
+    {
+        "Id": 1,
+        "VesselId": 1,
+        "Name": "PortFront",
+        "sectionStatus" : {
+            "Id": 1,
+            "Name": "Active"
+        },
+        "SubSections" : [
+            {
+                "Id": 1,
+                "SectionId" : 1,
+                "Name": "A",
+                "sectionStatus" : {
+                    "Id": 1,
+                    "Name": "Active"
+                }
+            },
+            {
+                "Id": 2,
+                "SectionId" : 1,
+                "Name": "B",
+                "sectionStatus" : {
+                    "Id": 1,
+                    "Name": "Active"
+                }
+            },
+            {
+                "Id": 3,
+                "SectionId" : 1,
+                "Name": "C",
+                "sectionStatus" : {
+                    "Id": 1,
+                    "Name": "Active"
+                }
+            }
+        ]
+    },
+    {
+        "Id": 2,
+        "VesselId": 1,
+        "Name": "PortMid",
+        "sectionStatus" : {
+            "Id": 1,
+            "Name": "Active"
+        },
+        "SubSections" : [
+            {
+                "Id": 1,
+                "SectionId" : 2,
+                "Name": "A",
+                "sectionStatus" : {
+                    "Id": 1,
+                    "Name": "Active"
+                }
+            },
+            {
+                "Id": 2,
+                "SectionId" : 2,
+                "Name": "B",
+                "sectionStatus" : {
+                    "Id": 1,
+                    "Name": "Active"
+                }
+            },
+            {
+                "Id": 3,
+                "SectionId" : 2,
+                "Name": "C",
+                "SectionStatus" : {
+                    "Id": 1,
+                    "Name": "Active"
+                }
+            }
+        ]
+    }
+]

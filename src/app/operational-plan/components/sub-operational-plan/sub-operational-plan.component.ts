@@ -154,8 +154,7 @@ export class SubOperationalPlanComponent implements OnInit {
           this.router.navigate([`/operational-plan/sub-operational-plan/${this.planId}`]);
         });
       });
-    }
-    else {
+    } else {
       this.operationalPlanService.addSubOperationPlan(formData).subscribe((data) => {
         this.triggerToast('success', 'Success Message', `Sub Operation Plan Added Successfully`);
         // this.formReset = new Boolean(true);
