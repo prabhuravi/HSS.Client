@@ -89,8 +89,21 @@ export class ListingSectionComponent implements OnInit {
 
        this.subSectionFlag = false;
   }
-  
-  onSubSectionCancelled(): void{
+
+  onSubSectionCancelled(): void {
     this.subSectionFlag = false;
+  }
+  onSectionRowDelete(sectionRow: Section) {
+    this.sections = this.sections.filter((x) => x !== sectionRow);
+    this.subSectionFlag = false;
+
+  }
+
+  onSubSectionDelete(subSectionRow: SubSection) {
+   const sectionRow =  this.sections.find((x) => x.id === subSectionRow.sectionId);
+   let subsections = sectionRow.subSections;
+
+   subsections = subsections.filter((x) => x !== subSectionRow);
+   sectionRow.subSections = subsections;
   }
 }
