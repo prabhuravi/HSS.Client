@@ -1,1 +1,197 @@
-<p>create-documents works!</p>
+<div class="kx-card kx-card--skin-default">
+    <div class="kx-p--tiny kx-p--medium@mob-m">
+        <form [formGroup]="form">
+            <div class="kx-row kx-row--gutters">
+                <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
+                    <label class="kx-label">Document Name</label><small class="u--textDanger">*</small>
+                    <div class="kx-mt--tiny">
+                        <input class="kx-field kx-field--size-base" style="width: 90%;" type="text"
+                            [formControlName]="'documentName'" placeholder="Enter document name" />
+                    </div>
+                </div>
+                <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
+                    <label class="kx-label">Document Type</label><small class="u--textDanger">*</small>
+                    <div class="kx-mt--tiny">
+                        <p-dropdown styleClass="kx-p--tiny" [options]="documentTypes" [formControlName]="'documentType'"
+                            optionLabel="TypeName" filter="true" placeholder="Select document type"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
+                    <label class="kx-label">Version</label><small class="u--textDanger">*</small>
+                    <div class="kx-mt--tiny">
+                        <input class="kx-field kx-field--size-base" style="width: 90%;" type="text"
+                            [formControlName]="'version'" placeholder="Enter document version" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="kx-row kx-row--gutters">
+                <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
+                    <label class="kx-label">Date</label><small class="u--textDanger">*</small>
+                    <div class="kx-mt--tiny" style="width: 90%;">
+                        <p-calendar inputStyleClass="kx-field kx-field--size-base" hourFormat="24"
+                            hideOnDateTimeSelect="true" showButtonBar="true" placeholder="mm/dd/yyyy"
+                            [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'documentDate'"
+                            readonlyInput="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050"
+                            selectOtherMonths="true">
+                        </p-calendar>
+                    </div>
+                </div>
+
+                <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
+                    <label class="kx-label">Upload Source</label><small class="u--textDanger">*</small>
+                    <div class="kx-mt--tiny">
+                        <p-dropdown styleClass="kx-p--tiny" [options]="uploadFromOptions"
+                            [formControlName]="'uploadSource'" optionLabel="Option" filter="true"
+                            (onChange)="uploadSourceChanged()" placeholder="Select upload source">
+                        </p-dropdown>
+                    </div>
+                </div>
+
+                <div *ngIf="uploadFrom === 'Local'" class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
+                    <label class="kx-label">Select File</label><small class="u--textDanger">*</small>
+                    <div class="kx-mt--tiny">
+                        <input type="file" style="display: inline-block;" [formControlName]="'localFile'"
+                            (change)="incomingFile($event)" placeholder="Upload file" accept=".xlsx">
+                    </div>
+                </div>
+                <div *ngIf="uploadFrom === 'Cloud'" class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
+                    <div class="kx-mt--tiny">
+                        <button (click)="toggleCloudLibraryModal();  chooseFromCloudLibrary()"
+                            class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
+                            [disabled]="false">
+                            <span class="kx-btn__inner">
+                                <span class="kx-btn__txt">Choose From Cloud</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="kx-col kx-col--6 kx-col--3@tab-m kx-col--6@mob-m">
+                    <button (click)="addDocument()"
+                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
+                        [disabled]="form.valid? (uploadFrom === 'Cloud'? (selectedCloudLibraryItem === null? true: false): false): true ">
+                        <span class="kx-btn__inner">
+                            <span *ngIf="editDocument == null" class="kx-btn__txt">Add Document</span>
+                            <span *ngIf="editDocument !== null" class="kx-btn__txt">Update Document</span>
+                        </span>
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="kx-pt--small">
+    <app-load *ngIf="isDataLoading"></app-load>
+    <div *ngIf="!isDataLoading">
+        <p-table *ngIf="installationDocuments.length > 0" tableStyleClass="kx-table kx-table--outer-border"
+            [value]="installationDocuments" [columns]="cols" autoLayout="true" #tt [paginator]="true" [rows]="10"
+            [rowsPerPageOptions]="[5,10,20,50,100,200,500]">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
+                        [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
+                        title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
+                        {{col.header}}
+                        <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
+                            ariaLabelDesc="Activate to sort in descending order"
+                            ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                    </th>
+                </tr>
+                <tr>
+                    <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                        <input *ngSwitchCase="'DocumentName'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'DocumentType'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'File'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <div [ngSwitch]="col.field">
+                            <div *ngSwitchCase="'Date'">
+                                <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
+                                    {{rowData[col.field] | date:'MM/dd/yyyy'}}</div>
+                            </div>
+                            <div *ngSwitchCase="'Id'">
+                                <input type="image" src="./assets/pencil.svg" alt="Edit"
+                                    (click)="editInstallationDocument(rowData)" [disabled]="disableActivity"
+                                    height="23px" width="23px" title="Edit">
+                                &nbsp;
+                                <input type="image" src="./assets/delete1.svg" alt="Remove"
+                                    (click)="deleteInstallationDocument(rowData)" [disabled]="disableActivity"
+                                    height="23px" width="23px" title="Delete">
+                            </div>
+                            <div *ngSwitchDefault>{{rowData[col.field]}}</div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <app-no-data [displayme]="installationDocuments.length === 0"></app-no-data>
+    </div>
+</div>
+
+<app-modal [displayMe]="showCloudLibraryModal">
+    <div class="modal-header">
+        <div>
+            Select the installation to replicate the document from:
+            <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon u--modalclosebtn"
+                aria-label="close modal" title="close modal" (click)="toggleCloudLibraryModal()">
+                <span class="kx-btn__inner">
+                    <i class="kx-icon kx-icon--size-moderate">
+                        <svg focusable="false">
+                            <use href="./assets/img/icons/sprites/icons.svg#close">
+                            </use>
+                        </svg>
+                    </i>
+                    <span class="kx-btn__txt kx-is-vishidden">close modal</span>
+                </span>
+            </button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="kx-container kx-p--none">
+            <div class="kx-card kx-card--skin-default kx-p--medium">
+                <div class="kx-row">
+                    <app-load *ngIf="isCloudLibraryDataLoading"></app-load>
+                    <ul *ngIf="!isCloudLibraryDataLoading && cloudLibraryData.length > 0" class="kx-select-group">
+                        <li class="kx-select-item" *ngFor="let item of cloudLibraryData; let i = index;">
+                            <label class="kx-selector kx-selector__radio">
+                                <input type="radio" name="selectInstallation" value="item.Id"
+                                    (change)="changeInstallationDocument(item)" />
+                                <div class="kx-selector__indicator"></div>
+                                <span class="label-text">{{item.InstallationName}}</span>
+                            </label>
+                        </li>
+                    </ul>
+                    <app-no-data [displayme]="!isCloudLibraryDataLoading && cloudLibraryData.length === 0">
+                    </app-no-data>
+                </div>
+                <div class="kx-row">
+                    <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
+                        <div class="kx-mt--tiny">
+                            <button (click)="toggleCloudLibraryModal();  useInstallationDocument()"
+                                class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
+                                [disabled]="this.selectedCloudLibraryItem === null">
+                                <span class="kx-btn__inner">
+                                    <span class="kx-btn__txt">Select</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-modal>

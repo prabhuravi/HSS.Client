@@ -114,7 +114,11 @@
           "AssignFoulingStateToSection": "/AssignFoulingStateToSection",
           "GetVesselSections": "/GetVesselSections",
           "GetFoulingStates": "/GetFoulingStates",
-          "UpdateSectionFoulingState": "/UpdateSectionFoulingState"
+          "UpdateSectionFoulingState": "/UpdateSectionFoulingState",
+          "AddDocument": "/AddDocument",
+          "GetInstallationDocument": "/GetInstallationDocument",
+          "GetDocumentType":"/GetDocumentType",
+          "DeleteInstallationDocument":"/DeleteInstallationDocument"
 
         }
       },
