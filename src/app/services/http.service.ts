@@ -5,7 +5,7 @@ import { AuthenticationService } from '@kognifai/poseidon-authenticationservice'
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
 import { User } from 'oidc-client';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map } from 'rxjs/operators';
 import { ConfirmationService } from 'primeng/api';
 
 @Injectable({
@@ -30,6 +30,12 @@ export class HttpService {
 
   getData(requestData: any): Observable<any> {
     return this.http.get(requestData.endPoint).pipe(
+      retry(2),
+      catchError(this.handleError.bind(this))
+    );
+  }
+  getDataGeneric<T>(requestData: any): Observable<T> {
+    return this.http.get<T>(requestData.endPoint).pipe(
       retry(2),
       catchError(this.handleError.bind(this))
     );

@@ -1,0 +1,21 @@
+[
+    {
+        "Id": 1,
+        "Code": "001",
+        "State": "Good",
+        "Category": "Good"
+        
+    },
+    {
+        "Id": 2,
+        "Code": "002",
+        "State": "Average",
+        "Category": "Average"
+    },
+     {
+        "Id": 3,
+        "Code": "003",
+        "State": "Bad",
+        "Category": "Bad"
+    }
+]

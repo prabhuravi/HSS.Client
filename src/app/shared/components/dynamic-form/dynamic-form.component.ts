@@ -4,7 +4,6 @@ import { getInputTypes } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { AppConstants } from 'src/app/app.constants';
 
-
 @Component({
   selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
@@ -26,8 +25,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   constructor(
     public fb: FormBuilder,
-    public operationalPlanService: OperationalPlanService,
-    
+    public operationalPlanService: OperationalPlanService
+
   ) {
   }
 
@@ -55,7 +54,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       this.isFormSubmitted = false;
     }
   }
-  
 
   onchangeEvents(formItem: any) {
 

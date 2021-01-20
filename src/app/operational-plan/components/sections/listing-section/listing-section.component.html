@@ -1,0 +1,107 @@
+<p-table [columns]="cols" [value]="sections" dataKey="id" editMode="row" [paginator]="true"
+  [rows]="PRIMENG_CONSTANTS.rowCount" rowExpandMode="single" tableStyleClass="kx-table kx-table--outer-border"
+  autoLayout="true">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th style="width: 3rem"></th>
+      <th *ngFor="let col of columns">
+        {{ col.header }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-expanded="expanded">
+    <tr>
+      <td class="kx-p--small">
+        <a href="#" [pRowToggler]="rowData">
+          <i [ngClass]="
+                expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+              "></i>
+        </a>
+      </td>
+      <td>{{ rowData.name }}</td>
+      <td></td>
+      <td> {{ rowData.sectionStatus.name  }}</td>
+      <td>
+
+        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit section"
+          title="Edit section" (click)="onSectionRowEditInit(rowData)">
+          <span class="kx-btn__inner">
+            <i class="kx-icon kx-icon--size-moderate">
+              <svg focusable="true">
+                <use href="./assets/img/icons/sprites/icons.svg#pencil"></use>
+              </svg>
+            </i>
+            <span class="kx-btn__txt kx-is-vishidden">Edit section</span>
+          </span>
+        </button>
+
+        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete section"
+          title="Delete section" (click)="onSectionRowDelete(rowData)">
+          <span class="kx-btn__inner">
+            <i class="kx-icon kx-icon--size-moderate">
+              <svg focusable="true">
+                <use href="./assets/img/icons/sprites/icons.svg#trash"></use>
+              </svg>
+            </i>
+            <span class="kx-btn__txt kx-is-vishidden">Delete section</span>
+          </span>
+        </button>
+
+        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Add Sub-section"
+          title="Add Sub-section" (click)="onSubSectionAddInit(rowData)">
+          <span class="kx-btn__inner">
+            <i class="kx-icon kx-icon--size-moderate">
+              <svg focusable="true">
+                <use href="./assets/img/icons/sprites/icons.svg#plus"></use>
+              </svg>
+            </i>
+            <span class="kx-btn__txt kx-is-vishidden">Add Sub-section</span>
+          </span>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+    <tr>
+      <td [attr.colspan]="5">
+        <div class="kx-table--outer-border" style="padding-left: 20rem;">
+          <p-table [value]="rowData.subSections" tableStyleClass="kx-table" autoLayout="true">
+            <ng-template pTemplate="body" let-rowData>
+    <tr class="kx-row">
+   
+      <!-- <td style ="width: 25rem;"></td> -->
+      <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--5@tab-m kx-col--5@ltp-s">{{ rowData.name }}</td>
+      <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s" style="padding-right: 10%;">{{ rowData.sectionStatus.name }}</td>
+      <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">
+
+        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit section"
+          title="Edit section" (click)="onSubSectionEditInit(rowData)">
+          <span class="kx-btn__inner">
+            <i class="kx-icon kx-icon--size-moderate">
+              <svg focusable="true">
+                <use href="./assets/img/icons/sprites/icons.svg#pencil"></use>
+              </svg>
+            </i>
+            <span class="kx-btn__txt kx-is-vishidden">Edit section</span>
+          </span>
+        </button>
+        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete section"
+          title="Delete section" (click)="onSubSectionDelete(rowData)">
+          <span class="kx-btn__inner">
+            <i class="kx-icon kx-icon--size-moderate">
+              <svg focusable="true">
+                <use href="./assets/img/icons/sprites/icons.svg#trash"></use>
+              </svg>
+            </i>
+            <span class="kx-btn__txt kx-is-vishidden">Delete section</span>
+          </span>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>

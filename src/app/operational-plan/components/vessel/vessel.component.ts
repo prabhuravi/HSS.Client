@@ -11,7 +11,7 @@ import { take } from 'rxjs/operators';
 })
 export class VesselComponent implements OnInit {
 
-  vesselList: IVessel[] = [];
+  vesselList: any[] = [];
   formType = FormType;
   config = {
     formTitle: 'Add Vessel',

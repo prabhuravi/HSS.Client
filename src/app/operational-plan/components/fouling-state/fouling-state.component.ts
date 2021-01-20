@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
-import { Section } from 'src/app/models/ISection';
+import { Section } from 'src/app/models/Section';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
