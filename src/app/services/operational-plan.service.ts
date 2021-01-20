@@ -3,6 +3,7 @@ import { HttpService } from './http.service';
 import { Observable, forkJoin, observable, of } from 'rxjs';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
+import { Installation } from '../models/Installation';
 
 @Injectable({
   providedIn: 'root'
@@ -28,12 +29,12 @@ export class OperationalPlanService {
   }
 
   // Operation Plan
-  getOperationPlans(): Observable<IOperationalPlan[]> {
-    const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationPlans}`,
-    };
-    return this.http.getData(requestData);
-  }
+    getOperationPlans(): Observable<IOperationalPlan[]> {
+      const requestData = {
+        endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationPlans}`,
+      };
+      return this.http.getData(requestData);
+    }
 
   getSubOperations(planId: number): Observable<ISubOperations[]> {
     const requestData = {
@@ -313,11 +314,11 @@ export class OperationalPlanService {
   }
 
   // Vessel
-  getVesselList(): Observable<IVessel[]> {
+  getVesselList(): Observable<Installation[]> {
     const requestData = {
       endPoint: `${this.vesselApiUrl}${this.operationalPlanConfig.Vessel.endpoints.GetVesselDetails}`
     };
-    return this.http.getData(requestData);
+    return this.http.getDataGeneric(requestData);
   }
 
   addVessel(vesselData): Observable<any> {
@@ -343,8 +344,8 @@ export class OperationalPlanService {
     return this.http.deleteData(requestData);
   }
 
-
-  getOperationalData(): Observable<any[]> {
+  getOperationalData(): Observable<[Installation[], IRobotSystemDetails[], IOperationTypes[], IOperators[]]> {
+  
     return forkJoin([this.getVesselList(), this.getRobotSystemDetails(), this.getOperationTypes(), this.getOperators()]);
   }
 

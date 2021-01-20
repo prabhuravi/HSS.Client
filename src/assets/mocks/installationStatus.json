@@ -1,0 +1,18 @@
+[
+    {
+        "Id": 1,
+        "Name": "Prepare"
+    },
+    {
+        "Id": 2,
+        "Name": "Active"
+    },
+    {
+        "Id": 3,
+        "Name": "Attention"
+    },
+    {
+        "Id": 4,
+        "Name": "Inactive"
+    }
+]

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService } from 'primeng/api';
 import { AppConstants, FormType } from 'src/app/app.constants';
 import { Contact, ContactRole } from 'src/app/models/Contact';
@@ -102,7 +102,7 @@ export class CreateContactsComponent implements OnInit {
         label: 'First Name',
         value: '',
         key: 'Fname',
-        validators: ['required'],
+        validators: [Validators.required],
         disabled: false
       },
       {
@@ -110,7 +110,7 @@ export class CreateContactsComponent implements OnInit {
         label: 'Surname',
         value: '',
         key: 'SurName',
-        validators: ['required'],
+        validators: [Validators.required],
         disabled: false
       },
       {
@@ -118,7 +118,7 @@ export class CreateContactsComponent implements OnInit {
         label: 'Email',
         value: '',
         key: 'Email',
-        validators: ['required'],
+        validators: [Validators.required],
         disabled: false
       },
       {
@@ -126,7 +126,7 @@ export class CreateContactsComponent implements OnInit {
         label: 'Phone',
         value: '',
         key: 'Phone',
-        validators: ['required'],
+        validators: [Validators.required],
         disabled: false
       },
       {
@@ -134,7 +134,7 @@ export class CreateContactsComponent implements OnInit {
         label: 'Alternative Phone',
         value: '',
         key: 'Aphone',
-        validators: ['required'],
+        validators: [Validators.required],
         disabled: false
       },
       {
@@ -143,7 +143,7 @@ export class CreateContactsComponent implements OnInit {
         options: this.roleList,
         value: '',
         key: 'Vessel',
-        validators: ['required'],
+        validators: [Validators.required],
         optionLabel: 'Name',
         disabled: false
       },
@@ -152,7 +152,7 @@ export class CreateContactsComponent implements OnInit {
         label: 'Tag Training',
         value: false,
         key: 'Aphone',
-        validators: ['required'],
+        validators: [Validators.required],
         disabled: false
       }
 

@@ -1,0 +1,70 @@
+[
+    {
+      "Name": "Talisman",
+      "DisplayName": "i002290 Talisman",
+      "ImoNo": 9191319,
+      "LloydsVesselId": 0,
+      "Status": "Prepare",
+      "CreatedBy": "admin",
+      "id": 1,
+      "Node":{
+        "Id": 14,
+        "NodeNumber": 18847,
+        "GatewayIP": "10.114.3.212",
+        "InstallationId": "i016947"
+      }
+     
+    },
+    {
+      "Name": "BergeAPO",
+      "DisplayName": "Berge APO",
+      "ImoNo": 9233337,
+      "LloydsVesselId": 0,
+      "Status": "Active",
+      "CreatedBy": "admin",
+       "Id": 2,
+       "Node":{
+        "Id": 14,
+        "NodeNumber": 17816,
+        "GateWayIP": "10.113.52.148",
+        "InstallationId": "i046462"
+      }
+    },
+    {
+      "Name": "Carpus",
+      "DisplayName": "Carpus",
+      "ImoNo": 1111222,
+      "LloydsVesselId": 0,
+      "Status": "Active",
+      "CreatedBy": "admin",
+      "Id": 3
+    },
+    {
+      "Name": "Maalfrid",
+      "DisplayName": "Maalfrid",
+      "ImoNo": 1112222,
+      "LloydsVesselId": 0,
+      "Status": "Active",
+      "CreatedBy": "admin",
+      "Id": 4
+    },
+    {
+      "Name": "Spain",
+      "DisplayName": "Spain Fixed Location",
+      "ImoNo": 0,
+      "LloydsVesselId": 0,
+      "Status": "Active",
+      "CreatedBy": "admin",
+      "Id": 5
+    },
+    {
+      "Name": "FullPictureLab",
+      "DisplayName": "Development Lab Bankløkka",
+      "ImoNo": 0,
+      "LloydsVesselId": 0,
+      "Status": "Active",
+      "CreatedBy": "admin",
+      "Id": 10
+    }
+  
+  ]

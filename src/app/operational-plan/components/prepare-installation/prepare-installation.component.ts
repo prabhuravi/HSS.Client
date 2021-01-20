@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Installation } from 'src/app/models/Installation';
 
 @Component({
   selector: 'app-prepare-installation',
@@ -7,12 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrepareInstallationComponent implements OnInit {
 
-  activeTab:number = 0;
+  activeTab: number = 0;
 
   prepareInstallationSteps: IRouteList[] = [
     {
       label: 'Installation Information',
-      route: '/operational-plan/prepare-installation'
+      route: '/operational-plan/prepare-installation/create-installation'
     },
     {
       label: 'Trade Route',
