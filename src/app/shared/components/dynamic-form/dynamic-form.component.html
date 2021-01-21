@@ -2,7 +2,7 @@
         <div class="kx-row kx-row--gutters " [formGroup]="form">
             <h3 *ngIf="config.formTitle" class="u--capitalize">{{config.formTitle}}</h3>
             <hr  *ngIf="config.formTitle" class="kx-my--small" />
-            <div class="kx-col kx-col--4"  *ngFor="let formItem of config.formList; let i = index;"
+            <div [ngClass]="config.className ? config.className : 'kx-col kx-col--4 kx-col--6@mob-m kx-col--4@tab-m kx-col--3@ltp-s'"  *ngFor="let formItem of config.formList; let i = index;"
                 [ngSwitch]="formItem.type">
                 {{formItem.key.valid}}
                 <div class="kx-col kx-col--12">

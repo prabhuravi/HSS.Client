@@ -33,7 +33,7 @@ export class PrepareInstallationComponent implements OnInit {
     },
     {
       label: 'Create Contacts',
-      route: '/operational-plan/prepare-installation/create-contacts'
+      route: '/operational-plan/prepare-installation/contacts'
     }
   ];
   constructor() { }

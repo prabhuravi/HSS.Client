@@ -109,6 +109,30 @@
           "GetOperationPlanById": ""
         }
       },
+      "Installation": {
+        "path": "/PoseidonNext/hss-modules/assets/mocks",
+        "endpoints": {
+          "GetInstallations": "/newInstallation.json",
+          "GetInstallationStatus": "/installationStatus.json",
+          "GetInstallationType": "/installationType.json"
+          
+        }
+      },
+      "Fouling": {
+        "path": "/PoseidonNext/hss-modules/assets/mocks",
+        "endpoints": {
+          "GetFoulingStates": "/foulingState.json"
+          
+        }
+      },
+      "Section": {
+        "path": "/PoseidonNext/hss-modules/assets/mocks",
+        "endpoints": {
+          "GetSections": "/sections.json",
+          "GetSectionStatus": "/sectionStatus.json"
+          
+        }
+      },
       "Vessel": {
         "path": "/Vessel",
         "endpoints": {
