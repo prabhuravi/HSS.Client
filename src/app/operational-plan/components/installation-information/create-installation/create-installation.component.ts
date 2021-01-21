@@ -21,7 +21,8 @@ export class CreateInstallationComponent implements OnInit {
   formType = FormType;
   formData: FormGroup;
   config = {
-    formList: []
+    formList: [],
+    className: 'kx-col kx-col--4 kx-col--6@mob-m kx-col--3@tab-m kx-col--4@ltp-s'
   };
   installationList: Installation[] = [];
   robotsystemList: IRobotSystemDetails[] = [];

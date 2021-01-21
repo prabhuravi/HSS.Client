@@ -1,0 +1,58 @@
+<div class="kx-row" *ngIf="!excludeSearch" style="margin-top: 10px;margin-bottom: 2px;">
+  <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
+    <div class="kx-mt--tiny">
+      <p-autoComplete [(ngModel)]="searchedContact" [suggestions]="contacts" inputStyleClass="kx-field kx-field--size-base"
+        (completeMethod)="filterPortContact($event)" field="firstName" [size]="30"
+        placeholder="Seach contacts" [minLength]="3">
+      </p-autoComplete>
+    </div>
+  </div>
+</div>
+
+<p-table [columns]="cols" [value]="contacts" dataKey="id" editMode="row" [paginator]="true" [rows]="10"
+  tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns">
+        {{ col.header }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-contactList>
+    <tr>
+      <td>{{ contactList.firstName }}</td>
+      <td>{{ contactList.surName }}</td>
+      <td>{{ contactList.email }}</td>
+      <td>{{ contactList.alternativePhone }}</td>
+      <td>{{ contactList.phone }}</td>
+      <td>{{ contactList.role.name }}</td>
+      <td>
+        <p-checkbox [(ngModel)]="contactList.tagTraining"></p-checkbox>
+      </td>
+      <td>
+        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit contact"
+          title="Edit contact" (click)="onContactEditInit(contactList)">
+          <span class="kx-btn__inner">
+            <i class="kx-icon kx-icon--size-moderate">
+              <svg focusable="true">
+                <use href="./assets/img/icons/sprites/icons.svg#pencil"></use>
+              </svg>
+            </i>
+            <span class="kx-btn__txt kx-is-vishidden">Edit contact</span>
+          </span>
+        </button>
+        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete contact"
+          title="Delete contact" (click)="onContactDelete(contactList)">
+          <span class="kx-btn__inner">
+            <i class="kx-icon kx-icon--size-moderate">
+              <svg focusable="true">
+                <use href="./assets/img/icons/sprites/icons.svg#trash"></use>
+              </svg>
+            </i>
+            <span class="kx-btn__txt kx-is-vishidden">Delete contact</span>
+          </span>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
