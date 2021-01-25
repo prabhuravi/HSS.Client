@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { Section } from 'src/app/models/Section';
@@ -27,7 +28,7 @@ export class FoulingStateComponent implements OnInit {
     { field: 'id', sortfield: '', header: 'Action' }
   ];
 
-  constructor(private operationalPlanService: OperationalPlanService,
+  constructor(private operationalPlanService: OperationalPlanService, private router: Router,
     private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
@@ -127,6 +128,16 @@ export class FoulingStateComponent implements OnInit {
     //   this.getSectionFoulingStates();
     // });
 
+  }
+  
+  cancel()
+  {
+    this.selectedSection = null;
+    this.selectedfoulingState = null;
+  }
+
+  next(): void {
+    this.router.navigateByUrl('/operational-plan/prepare-installation/create-documents');
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

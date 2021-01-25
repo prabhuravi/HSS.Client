@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
@@ -43,7 +44,7 @@ export class CreateDocumentsComponent implements OnInit {
     { field: 'Id', sortfield: '', header: 'Action' }
   ];
 
-  constructor(public fb: FormBuilder, private operationalPlanService: OperationalPlanService,
+  constructor(public fb: FormBuilder, private operationalPlanService: OperationalPlanService, private router: Router,
     private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
@@ -215,6 +216,17 @@ export class CreateDocumentsComponent implements OnInit {
         });
       }
     });
+  }
+
+  cancel()
+  {
+    this.editDocument = null;
+    this.uploadFrom = '';
+    this.form.reset();
+  }
+
+  next(): void {
+    this.router.navigateByUrl('/operational-plan/prepare-installation/create-contacts');
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {
