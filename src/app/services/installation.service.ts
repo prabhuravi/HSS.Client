@@ -3,9 +3,9 @@ import { HttpService } from './http.service';
 import { Observable, forkJoin, observable, of } from 'rxjs';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
-import { Installation,  InstallationStatus,  InstallationType} from '../models/Installation';
+import { Installation,  InstallationStatus,  VesselType} from '../models/Installation';
 import { map } from 'rxjs/operators';
-import { InstallationAdapter, InstallationTypeAdapter, InstallationStatusAdapter, FoulingStateAdapter } from '../models/modelAdapter';
+import { InstallationAdapter, VesselTypeAdapter, InstallationStatusAdapter, FoulingStateAdapter } from '../models/modelAdapter';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class InstallationService {
   foulingConfig: any;
   constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>,
               private installationAdapter: InstallationAdapter,
-              private installationTypeAdapter: InstallationTypeAdapter,
+              private vesselTypeAdapter: VesselTypeAdapter,
               private installationStatusAdapter: InstallationStatusAdapter,
               private foulingStateAdapter: FoulingStateAdapter
               ) {
@@ -25,9 +25,9 @@ export class InstallationService {
     this.foulingConfig = this.configurationService.config.apiCollection.OperationalPlan.Fouling;
    }
 
-   getInstallationFormData(): Observable <[Installation[], InstallationType[], InstallationStatus[], IFoulingState[]]> {
+   getInstallationFormData(): Observable <[Installation[], VesselType[], InstallationStatus[], IFoulingState[]]> {
 
-     return forkJoin([this.getinstallations(), this.getinstallationTypes(), this.getinstallationStatus(), this.getFoulingstates()]);
+     return forkJoin([this.getinstallations(), this.getVesselTypes(), this.getinstallationStatus(), this.getFoulingstates()]);
   }
 
    getinstallations(): Observable<Installation[]> {
@@ -37,11 +37,11 @@ export class InstallationService {
     return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.installationAdapter.adapt(item))));
   }
 
-  getinstallationTypes(): Observable<InstallationType[]> {
+  getVesselTypes(): Observable<VesselType[]> {
     const requestData = {
       endPoint: `${this.installationConfig.path}${this.installationConfig.endpoints.GetInstallationType}`
     };
-    return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.installationTypeAdapter.adapt(item))));
+    return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.vesselTypeAdapter.adapt(item))));
   }
   getinstallationStatus(): Observable<InstallationStatus[]> {
     const requestData = {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Installation } from 'src/app/models/Installation';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { FoulingStateComponent } from '../fouling-state/fouling-state.component';
 
 @Component({
@@ -9,38 +10,48 @@ import { FoulingStateComponent } from '../fouling-state/fouling-state.component'
   styleUrls: ['./prepare-installation.component.scss']
 })
 export class PrepareInstallationComponent implements OnInit {
+  constructor( private prepareInstallationService: PrepareInstallationService) {}
 
   activeTab: number = 0;
+  vesselId: number = 0;
 
-  prepareInstallationSteps: IRouteList[] = [
-    {
-      label: 'Installation Information',
-      route: '/operational-plan/prepare-installation/create-installation'
-    },
-    {
-      label: 'Trade Route',
-      route: '/operational-plan/prepare-installation/trade-route'
-    },
-    {
-      label: 'Sections',
-      route: '/operational-plan/prepare-installation/sections'
-    },
-    {
-      label: 'Fouling State',
-      route: '/operational-plan/prepare-installation/fouling-state'
-    },
-    {
-      label: 'Create Documents',
-      route: '/operational-plan/prepare-installation/create-documents'
-    },
-    {
-      label: 'Create Contacts',
-      route: '/operational-plan/prepare-installation/contacts'
-    }
-  ];
-  constructor(private router: Router) { }
+  prepareInstallationSteps: IRouteList[] = [];
 
   ngOnInit() {
+    this.setInstallationSteps();
+    this.prepareInstallationService.installationDetail.subscribe((x) => {
+      this.vesselId = x.id;
+      this.setInstallationSteps();
+    });
+  }
+
+  private setInstallationSteps() {
+    this.prepareInstallationSteps = [
+      {
+        label: 'Installation Information',
+        route: '/operational-plan/prepare-installation/create-installation/' + this.vesselId
+      },
+      {
+        label: 'Trade Route',
+        route: '/operational-plan/prepare-installation/trade-route/' + this.vesselId
+      },
+      {
+        label: 'Sections',
+        route: '/operational-plan/prepare-installation/sections/' + this.vesselId
+      },
+      {
+        label: 'Fouling State',
+        route: '/operational-plan/prepare-installation/fouling-state/' + this.vesselId
+      },
+      {
+        label: 'Create Documents',
+        route: '/operational-plan/prepare-installation/create-documents/' + this.vesselId
+      },
+      {
+        label: 'Create Contacts',
+        route: '/operational-plan/prepare-installation/contacts/' + this.vesselId
+      }
+    ];
   }
 
   tabClicked(i): void {

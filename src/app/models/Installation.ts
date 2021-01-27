@@ -1,4 +1,4 @@
-import { Node } from "./Node";
+import { Node } from './Node';
 
 export class Installation {
     constructor(
@@ -10,10 +10,11 @@ export class Installation {
         public joturnFoulingId: number,
         public installationStatusId: number,
         public installationId: string,
-        public installationTypeId: number,
-        public installationType: InstallationType,
+        public vesselTypeId: number,
+        public vesselType: VesselType,
         public installationStatus: InstallationStatus,
-        public node: Node) { }
+        public node: Node,
+        public foulingState: IFoulingState) { }
 
 }
 
@@ -24,7 +25,7 @@ export class InstallationStatus {
     ) {}
 }
 
-export class InstallationType {
+export class VesselType {
     constructor(
         public id: number,
         public name: string

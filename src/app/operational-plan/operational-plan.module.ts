@@ -39,12 +39,12 @@ const routes: Routes = [
       {
         path: 'prepare-installation', component: PrepareInstallationComponent, children: [
           { path: '', component: CreateInstallationComponent, pathMatch: 'full' },
-          { path: 'create-installation', component: CreateInstallationComponent },
-          { path: 'trade-route', component: TradeRouteComponent },
-          { path: 'sections', component: SectionsComponent },
-          { path: 'fouling-state', component: FoulingStateComponent },
-          { path: 'create-documents', component: CreateDocumentsComponent },
-          { path: 'contacts', component: ContactComponent }
+          { path: 'create-installation/:vesselId', component: CreateInstallationComponent },
+          { path: 'trade-route/:vesselId', component: TradeRouteComponent },
+          { path: 'sections/:vesselId', component: SectionsComponent },
+          { path: 'fouling-state/:vesselId', component: FoulingStateComponent },
+          { path: 'create-documents/:vesselId', component: CreateDocumentsComponent },
+          { path: 'contacts/:vesselId', component: ContactComponent }
         ]
       },
       { path: 'ManagePlans', component: ManagePlansComponent },

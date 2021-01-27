@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import { Section, SectionStatus, SubSection } from 'src/app/models/Section';
@@ -15,8 +15,10 @@ import { SectionService } from 'src/app/services/section.service';
 export class ListingSectionComponent implements OnInit {
 
   constructor(public sectionService: SectionService,
-              public fb: FormBuilder) { }
+              public fb: FormBuilder, private confirmationService: ConfirmationService,
+              private messageService: MessageService) { }
 
+ isDataLoading = false;
   @Input() sections: Section[];
   @Input() section: Section;
   @Output() sectionOnEdit: EventEmitter<any> = new EventEmitter<any>();
@@ -27,15 +29,17 @@ export class ListingSectionComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   cols = [
-    { field: 'Section', header: 'Section' },
-    { field: 'SubSection', header: 'Sub-Section' },
-    { field: 'Status', header: 'Status' },
-    { field: 'Action', header: 'Action' }
+    { field: 'name', header: 'Section', sortfield: 'name', filterMatchMode: 'contains'  },
+    { field: 'subSection', header: 'Sub-Section', sortfield: '', filterMatchMode: '' },
+    { field: 'sectionStatus.name', header: 'Status' , sortfield: 'sectionStatus.name', filterMatchMode: 'contains'},
+    { field: 'action', header: 'Action', sortfield: '', filterMatchMode: '' }
 
   ];
 
   ngOnInit() {
+    this.isDataLoading = true;
     this.sectionService.getSections().pipe(take(1)).subscribe((data) => {
+      this.isDataLoading = false;
       this.sections = data;
     });
 
@@ -94,16 +98,44 @@ export class ListingSectionComponent implements OnInit {
     this.subSectionFlag = false;
   }
   onSectionRowDelete(sectionRow: Section) {
-    this.sections = this.sections.filter((x) => x !== sectionRow);
-    this.subSectionFlag = false;
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this section?',
+      accept: () => {
 
+        this.isDataLoading = true;
+        this.isDataLoading = false;
+
+        this.sections = this.sections.filter((x) => x !== sectionRow);
+        this.subSectionFlag = false;
+        this.triggerToast('success', 'Success Message', `Section deleted successfully`);
+      }
+    });
   }
 
   onSubSectionDelete(subSectionRow: SubSection) {
-   const sectionRow =  this.sections.find((x) => x.id === subSectionRow.sectionId);
-   let subsections = sectionRow.subSections;
 
-   subsections = subsections.filter((x) => x !== subSectionRow);
-   sectionRow.subSections = subsections;
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this sub-section?',
+      accept: () => {
+
+        this.isDataLoading = true;
+        this.isDataLoading = false;
+        const sectionRow =  this.sections.find((x) => x.id === subSectionRow.sectionId);
+        let subsections = sectionRow.subSections;
+        subsections = subsections.filter((x) => x !== subSectionRow);
+        sectionRow.subSections = subsections;
+        this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
+      }
+    });
+
+  }
+
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
   }
 }

@@ -17,6 +17,7 @@ export class CreateContactComponent implements OnInit {
   formType = FormType;
   formData: FormGroup;
   contact: Contact;
+  isFormSubmmited: boolean = false;
   config = {
     formList: [],
     className: 'kx-col kx-col--3 kx-col--6@mob-m kx-col--3@tab-m kx-col--3@ltp-s'
@@ -117,14 +118,14 @@ export class CreateContactComponent implements OnInit {
   }
 
   onSubmit(): void {
-
-      if (this.editMode) {
+    this.isFormSubmmited = true;
+    if (this.editMode) {
         this.saveContact();
       } else {
 
         this.addNewContact();
       }
-      this.onFormReset();
+    this.onFormReset();
 
   }
 
@@ -156,6 +157,8 @@ export class CreateContactComponent implements OnInit {
   }
 
   onFormReset(): void {
+    this.isFormSubmmited = false;
+    console.log('reset');
     this.formData.reset();
     this.formData.controls.tagTraining.disable();
     this.editMode = false;

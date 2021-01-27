@@ -1,15 +1,15 @@
-<div class="kx-card kx-card--skin-default" style="margin-top: -20px;" *ngIf="config && config.formList && config.formList.length > 0">
+<div class="kx-card kx-card--skin-default" *ngIf="config && config.formList && config.formList.length > 0">
     <div class="kx-p--tiny kx-p--medium@mob-m">
         <div class="parent">
             <app-load *ngIf="isDataLoading"></app-load>
             <form [formGroup]="formData" (ngSubmit)="onSubmit()" style="width:100%;">
                 
-                <app-dynamic-form [form]="formData" [formValues]="formValues" [config]="config"
+                <app-dynamic-form class="kx-row kx-row--gutters "  [form]="formData" [isFormSubmitted]="isFormSubmmited" [formValues]="formValues" [config]="config"
                     (formOnchangeEvent)="formOnchangeEvent($event)">
                 </app-dynamic-form>
 
-                <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s" style="margin-top:-88px;margin-left: 78%;">
-                    <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+                <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s" style="margin-top:-108px;margin-left: 78%;">
+                    <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base"  [disabled]="formData.invalid">
                         <span class="kx-btn__inner">
                             <span *ngIf="!editMode; else elseBlock;" class="kx-btn__txt">Add Contact</span>
                             <ng-template #elseBlock>
@@ -22,7 +22,7 @@
                 <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s" style="margin-top: -43px; margin-left: 88%;">
                     <button type="submit" class="kx-btn kx-btn--skin-secondary kx-btn--size-base" (click)="onFormReset()">
                         <span class="kx-btn__inner">
-                            <span class="kx-btn__txt">Cancel</span>
+                            <span class="kx-btn__txt">Clear</span>
                         </span>
                     </button>
                 </div>

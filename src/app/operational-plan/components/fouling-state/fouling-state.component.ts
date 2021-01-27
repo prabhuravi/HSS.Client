@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { Section } from 'src/app/models/Section';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
   selector: 'app-fouling-state',
@@ -30,7 +31,9 @@ export class FoulingStateComponent implements OnInit {
   ];
 
   constructor(private operationalPlanService: OperationalPlanService, private router: Router,
-    private confirmationService: ConfirmationService, private messageService: MessageService) { }
+              private confirmationService: ConfirmationService,
+              private messageService: MessageService,
+              private prepareInstallationService: PrepareInstallationService) { }
 
   ngOnInit() {
 
@@ -76,8 +79,8 @@ export class FoulingStateComponent implements OnInit {
     console.log(this.selectedfoulingState);
     // if (this.sectionFoulingStates.findIndex(p => p.Id == this.selectedSection.Id) == -1) {
 
-      this.isDataLoading = true;
-      this.operationalPlanService.updateFoulingStateToSection({ SectionId: this.selectedSection.id, FoulingStateId: this.selectedfoulingState.Id, VesselId: this.vesselId }).subscribe((data) => {
+    this.isDataLoading = true;
+    this.operationalPlanService.updateFoulingStateToSection({ SectionId: this.selectedSection.id, FoulingStateId: this.selectedfoulingState.Id, VesselId: this.vesselId }).subscribe((data) => {
         this.triggerToast('success', 'Success Message', `Fouling state updated for the section`);
         this.isDataLoading = false;
         this.getSectionFoulingStates();
@@ -88,14 +91,12 @@ export class FoulingStateComponent implements OnInit {
     //   this.triggerToast('error', 'Failure Message', `Section is already assigned a fouling state. Please choose edit option from grid below to update it`);
     // }
 
-
     // this.isDataLoading = true;
     // this.operationalPlanService.updateSectionFoulingState(this.selectedSection.Id, { SectionId: this.selectedSection.Id, FoulingStateId: this.selectedfoulingState.Id, VesselId: this.vesselId }).subscribe((data) => {
     //   this.triggerToast('success', 'Success Message', `Fouling state updated for section `+ rowData.SectionName);
     //   this.isDataLoading = false;
     //   this.getSectionFoulingStates();
     // });
-
 
   }
 
@@ -116,10 +117,10 @@ export class FoulingStateComponent implements OnInit {
 
   editSectionFoulingState(rowData: Section) {
     console.log(rowData);
-    this.selectedSection = this.vesselSections.find(v => v.id == rowData.id);
+    this.selectedSection = this.vesselSections.find((v) => v.id === rowData.id);
     console.log(this.selectedSection);
 
-    this.selectedfoulingState = this.foulingStates.find(v => v.Id == rowData.id);
+    this.selectedfoulingState = this.foulingStates.find((v) => v.Id === rowData.id);
     console.log(this.selectedfoulingState);
 
     // this.isDataLoading = true;
@@ -131,24 +132,22 @@ export class FoulingStateComponent implements OnInit {
 
   }
 
-  clear()
-  {
+  clear() {
     this.selectedSection = null;
     this.selectedfoulingState = null;
   }
-  
-  cancel()
-  {
+
+  cancel() {
     this.router.navigateByUrl('/operational-plan');
   }
 
   next(): void {
     this.nextActiveTab.emit(4);
-    this.router.navigateByUrl('/operational-plan/prepare-installation/create-documents');
+    this.router.navigateByUrl('/operational-plan/prepare-installation/create-documents/' + this.prepareInstallationService.installation.id);
   }
 
-  anyFunction(){
-    console.log('fouling state. called from parent - prepare installation')
+  anyFunction() {
+    console.log('fouling state. called from parent - prepare installation');
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

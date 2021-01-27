@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
   selector: 'app-trade-route',
@@ -33,8 +34,9 @@ export class TradeRouteComponent implements OnInit {
   ];
 
   constructor(private operationalPlanService: OperationalPlanService, private router: Router,
-    private confirmationService: ConfirmationService,
-    private route: ActivatedRoute, private messageService: MessageService) { }
+              private confirmationService: ConfirmationService,
+              private prepareInstallationService: PrepareInstallationService,
+              private route: ActivatedRoute, private messageService: MessageService) { }
 
   ngOnInit() {
     this.username = this.operationalPlanService.getLoggedInUser();
@@ -59,7 +61,7 @@ export class TradeRouteComponent implements OnInit {
 
   addNewPort() {
     console.log(this.port);
-    if (this.vesselTradeRoute.findIndex(p => p.PortId == this.port.Id) == -1) {
+    if (this.vesselTradeRoute.findIndex((p) => p.PortId === this.port.Id) === -1) {
       this.isDataLoading = true;
       this.operationalPlanService.addPortToRoute({ PortId: this.port.Id, Order: 1, VesselId: this.vesselId }).subscribe((data) => {
         this.triggerToast('success', 'Success Message', `Port added to route successfully`);
@@ -67,8 +69,7 @@ export class TradeRouteComponent implements OnInit {
         this.port = null;
         this.getVesselTradeRoute();
       });
-    }
-    else {
+    } else {
       this.port = null;
       this.triggerToast('error', 'Failure Message', `Port already exists in route`);
     }
@@ -104,18 +105,16 @@ export class TradeRouteComponent implements OnInit {
     return port !== null && typeof port !== 'object' || port === null || port === '';
   }
 
-  clear()
-  {
+  clear() {
     this.port = null;
   }
-  cancel()
-  {
+  cancel() {
     this.router.navigateByUrl('/operational-plan');
   }
 
   next(): void {
     this.nextActiveTab.emit(2);
-    this.router.navigateByUrl('/operational-plan/prepare-installation/sections');
+    this.router.navigateByUrl('/operational-plan/prepare-installation/sections/' + this.prepareInstallationService.installation.id);
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {
