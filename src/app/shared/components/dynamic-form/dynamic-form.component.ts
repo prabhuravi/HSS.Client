@@ -18,7 +18,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   @Output() formOnchangeEvent: EventEmitter<any> = new EventEmitter<any>();
   inputTypes: any;
   @Input() form: FormGroup;
-  isFormSubmitted = false;
+  @Input() isFormSubmitted = false;
   ipAddressPattern = '(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)';
   portLocations: any[] = [];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;

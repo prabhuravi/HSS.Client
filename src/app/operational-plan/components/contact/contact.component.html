@@ -1,3 +1,3 @@
-<app-create-contact  #createContact  (contactUpdated)="contactListing.onContactDataUpdated($event)"></app-create-contact>
+<app-create-contact  style="margin-top: -20px;" #createContact  (contactUpdated)="contactListing.onContactDataUpdated($event)"></app-create-contact>
 <app-contact-listing #contactListing (contactOnEdit)="createContact.sectionEditInit($event)"></app-contact-listing>
 

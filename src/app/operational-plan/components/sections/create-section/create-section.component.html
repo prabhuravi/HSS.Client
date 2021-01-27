@@ -4,12 +4,12 @@
             <app-load *ngIf="isDataLoading"></app-load>
             <form [formGroup]="formData" (ngSubmit)="onSubmit()" style="width:100%;">
                 
-                <app-dynamic-form [form]="formData" [formValues]="formValues" [config]="config"
+                <app-dynamic-form  class="kx-row kx-row--gutters " [form]="formData" [formValues]="formValues" [config]="config"
                     (formOnchangeEvent)="formOnchangeEvent($event)">
                 </app-dynamic-form>
 
-                <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s" style="margin-top:-88px;margin-left: 50%;">
-                    <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+                <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s" style="margin-top:-109px;margin-left: 50%;">
+                    <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base" [disabled]="formData.invalid">
                         <span class="kx-btn__inner">
                             <span *ngIf="!editMode; else elseBlock;" class="kx-btn__txt">Add Section</span>
                             <ng-template #elseBlock>
@@ -19,10 +19,10 @@
                     </button>
                 </div>
 
-                <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s" style="margin-top: -43px; margin-left: 60%;">
+                <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s" style="margin-top: -42px; margin-left: 58%;">
                     <button type="submit" class="kx-btn kx-btn--skin-secondary kx-btn--size-base" (click)="onFormReset()">
                         <span class="kx-btn__inner">
-                            <span class="kx-btn__txt">Cancel</span>
+                            <span class="kx-btn__txt">Clear</span>
                         </span>
                     </button>
                 </div>

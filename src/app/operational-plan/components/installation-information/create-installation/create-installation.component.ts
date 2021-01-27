@@ -4,9 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
-import { Installation, InstallationStatus, InstallationType } from 'src/app/models/Installation';
+import { Installation, InstallationStatus, VesselType } from 'src/app/models/Installation';
+import { InstallationAdapter, NodeAdapter } from 'src/app/models/modelAdapter';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { InstallationService } from 'src/app/services/installation.service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
   selector: 'app-create-installation',
@@ -26,7 +28,7 @@ export class CreateInstallationComponent implements OnInit {
   };
   installationList: Installation[] = [];
   robotsystemList: IRobotSystemDetails[] = [];
-  installationTypes: InstallationType[] = [];
+  vesselTypes: VesselType[] = [];
   installationStatus: InstallationStatus[] = [];
   foulingStates: IFoulingState[] = [];
 
@@ -34,20 +36,27 @@ export class CreateInstallationComponent implements OnInit {
               private router: Router,
               private confirmationService: ConfirmationService,
               private formBuliderService: FromBuilderService,
+              private prepareInstallationService: PrepareInstallationService,
               private route: ActivatedRoute,
+              private installationAdapter: InstallationAdapter,
+              private nodeAdapter: NodeAdapter,
               public fb: FormBuilder, public messageService: MessageService) { }
 
   ngOnInit() {
 
-    this.installationService.getInstallationFormData().pipe(take(1)).subscribe((data) => {
+    this.installationService.getInstallationFormData().pipe(take(1)).subscribe(async (data) => {
 
       this.installationList = data[0];
-      this.installationTypes = data[1];
+      console.log(this.installationList);
+      this.vesselTypes = data[1];
       this.installationStatus = data[2];
       this.foulingStates = data[3];
       this.constructForm();
-      this.formData = this.formBuliderService.buildForm(this.config);
+      this.formData = await this.formBuliderService.buildForm(this.config);
       this.isDataLoading = false;
+      if (this.prepareInstallationService.installation) {
+        this.setFormValue(this.prepareInstallationService.installation);
+      }
     });
 
   }
@@ -82,10 +91,10 @@ export class CreateInstallationComponent implements OnInit {
       },
       {
         type: FormType.dropdown,
-        label: 'Installation Type',
-        options: this.installationTypes,
+        label: 'Vessel Type',
+        options: this.vesselTypes,
         value: '',
-        key: 'InstallationType',
+        key: 'VesselType',
         optionLabel: 'name',
         validators: [Validators.required],
         disabled: false
@@ -120,7 +129,7 @@ export class CreateInstallationComponent implements OnInit {
         type: FormType.text,
         label: 'IP Address',
         value: '',
-        key: 'IPAddress',
+        key: 'gatewayIP',
         validators: [Validators.required, Validators.pattern(this.formBuliderService.ipAddressPattern)],
         disabled: false
       }
@@ -154,28 +163,47 @@ export class CreateInstallationComponent implements OnInit {
   onInstallationdropDownChanged(installation: Installation) {
     console.log(installation);
     // console.log(this.config.formList);
-    if (installation.imoNo > 0) {
-      this.formData.controls.ImoNo.setValue(installation.imoNo);
-      this.formData.controls.ImoNo.disable();
-    }
-    if (installation.node && installation.node.installationId !== '' ) {
-      this.formData.controls.InstallationId.setValue(installation.node.installationId);
-      this.formData.controls.InstallationId.disable();
-     }
+    this.setFormValue(installation);
 
-    if (installation.installationStatus && installation.installationStatus.name !== '') {
-      this.formData.controls.InstallationStatus.setValue(installation.installationStatus.name);
-      this.formData.controls.InstallationStatus.disable();
-     }
+  }
 
-    if (installation.node && installation.node.nodeNumber > 0) {
-       this.formData.controls.NodeNumber.setValue(installation.node.nodeNumber);
-       this.formData.controls.NodeNumber.disable();
-     }
+  private setFormValue(installation: Installation) {
+    console.log(installation);
+    if (installation) {
 
-    if (installation.node && installation.node.gatewayIP !== '') {
-      this.formData.controls.IPAddress.setValue(installation.node.gatewayIP);
-      this.formData.controls.IPAddress.disable();
+      if (installation.vesselType) {
+        this.formData.controls.VesselType.setValue(installation.vesselType);
+      }
+
+      if (installation.foulingState) {
+        this.formData.controls.FoulingState.setValue(installation.foulingState);
+      }
+      if (installation.imoNo > 0) {
+        this.formData.controls.ImoNo.setValue(installation.imoNo);
+        this.formData.controls.ImoNo.disable();
+      }
+      if (installation.node && installation.node.installationId !== '') {
+        this.formData.controls.InstallationId.setValue(installation.node.installationId);
+        this.formData.controls.InstallationId.disable();
+      }
+
+      if (installation.installationStatus && installation.installationStatus.name !== '') {
+        this.formData.controls.InstallationStatus.setValue(installation.installationStatus.name);
+        this.formData.controls.InstallationStatus.disable();
+      }
+
+      if (installation.node && installation.node.nodeNumber > 0) {
+        this.formData.controls.NodeNumber.setValue(installation.node.nodeNumber);
+        this.formData.controls.NodeNumber.disable();
+      }
+
+      if (installation.node && installation.node.gatewayIP !== '') {
+        this.formData.controls.gatewayIP.setValue(installation.node.gatewayIP);
+        this.formData.controls.gatewayIP.disable();
+      }
+      const selectedInstallation = this.installationList.find((x) => x.id === installation.id);
+      this.formData.controls.Installation.setValue(selectedInstallation);
+
     }
 
   }
@@ -193,15 +221,25 @@ export class CreateInstallationComponent implements OnInit {
   onSubmit(): void {
     console.log(this.formData);
     if (this.formData.valid) {
-     const installationIformation: Installation = this.formData.controls.Installation.value;
-     console.log(installationIformation);
-     installationIformation.installationTypeId = this.formData.controls.InstallationType.value.id;
-     installationIformation.foulingId = this.formData.controls.FoulingState.value.Id;
-     console.log(installationIformation);
 
-     this.installationService.UpdateInstallationInformation(installationIformation).pipe(take(1)).subscribe(() => {
+     const formValues = this.formData.getRawValue();
+     const installationIformation: Installation = formValues.Installation;
+     installationIformation.foulingState = formValues.FoulingState;
+     installationIformation.vesselType = formValues.VesselType;
+     installationIformation.vesselTypeId = formValues.VesselType.id;
+     installationIformation.foulingId = formValues.FoulingState.Id;
+     installationIformation.node.nodeNumber = formValues.NodeNumber;
+     installationIformation.node.gatewayIP = formValues.gatewayIP;
+     installationIformation.node.installationId = formValues.InstallationId;
+     console.log(this.formData.getRawValue());
+     console.log(installationIformation);
+    //  console.log(installationIformation);
+
+     this.installationService.UpdateInstallationInformation(installationIformation).pipe(take(1)).subscribe(async () => {
       this.triggerToast('success', 'Success Message', `Installation Information updated`);
-      this.router.navigateByUrl('/operational-plan/prepare-installation/trade-route');
+      await this.prepareInstallationService.updateInstallationDetail(installationIformation);
+      this.router.navigateByUrl('/operational-plan/prepare-installation/trade-route/' + installationIformation.id);
+
     });
 
     }
