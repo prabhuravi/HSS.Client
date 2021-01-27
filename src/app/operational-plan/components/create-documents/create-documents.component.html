@@ -54,7 +54,8 @@
                     <label class="kx-label">Select File</label><small class="u--textDanger">*</small>
                     <div class="kx-mt--tiny">
                         <input type="file" style="display: inline-block;" [formControlName]="'localFile'"
-                            (change)="incomingFile($event)" placeholder="Upload file" accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf">
+                            (change)="incomingFile($event)" placeholder="Upload file"
+                            accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf">
                     </div>
                 </div>
                 <div *ngIf="uploadFrom === 'Cloud'" class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
@@ -75,6 +76,13 @@
                         <span class="kx-btn__inner">
                             <span *ngIf="editDocument == null" class="kx-btn__txt">Add Document</span>
                             <span *ngIf="editDocument !== null" class="kx-btn__txt">Update Document</span>
+                        </span>
+                    </button>
+                    <button (click)="clear()"
+                        class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
+                        style="margin-left: 10px;">
+                        <span class="kx-btn__inner">
+                            <span class="kx-btn__txt">Clear</span>
                         </span>
                     </button>
                 </div>

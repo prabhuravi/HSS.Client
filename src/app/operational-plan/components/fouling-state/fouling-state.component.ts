@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
@@ -21,6 +21,7 @@ export class FoulingStateComponent implements OnInit {
   isDataLoading = false;
   disableActivity: boolean;
   vesselId = 0;
+  @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
 
   cols = [
     { field: 'name', sortfield: 'name', header: 'Section', filterMatchMode: 'contains' },
@@ -129,15 +130,25 @@ export class FoulingStateComponent implements OnInit {
     // });
 
   }
-  
-  cancel()
+
+  clear()
   {
     this.selectedSection = null;
     this.selectedfoulingState = null;
   }
+  
+  cancel()
+  {
+    this.router.navigateByUrl('/operational-plan');
+  }
 
   next(): void {
+    this.nextActiveTab.emit(4);
     this.router.navigateByUrl('/operational-plan/prepare-installation/create-documents');
+  }
+
+  anyFunction(){
+    console.log('fouling state. called from parent - prepare installation')
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

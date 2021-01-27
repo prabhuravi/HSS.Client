@@ -8,10 +8,15 @@ import { Component, OnInit, Input } from '@angular/core';
 export class NavigationTabComponent implements OnInit {
 
   @Input() routeList = [];
+  activeTab: number = 0;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  tabClicked(i): void {
+    this.activeTab = i;
   }
 
 }
