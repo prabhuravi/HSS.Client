@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { Section } from 'src/app/models/Section';
@@ -27,7 +28,7 @@ export class FoulingStateComponent implements OnInit {
     { field: 'id', sortfield: '', header: 'Action' }
   ];
 
-  constructor(private operationalPlanService: OperationalPlanService,
+  constructor(private operationalPlanService: OperationalPlanService, private router: Router,
     private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
@@ -36,10 +37,10 @@ export class FoulingStateComponent implements OnInit {
     this.getFoulingStates();
     this.getSectionFoulingStates();
 
-    // this.sectionFoulingStates = [{ Id: 1, VesselId: 1, SectionName: 'Top', Status: null, FoulingId: 1, JotunFoulingId: null, FoulingState: 'Good', Subsections: null }, { Id: 2, VesselId: 1, SectionName: 'Bottom', Status: null, FoulingId: 2, JotunFoulingId: null, FoulingState: 'Bad', Subsections: null }];
+    // this.sectionFoulingStates = [{ Id: 1, VesselId: 1, SectionName: 'Top', Status: null, FoulingId: 1, JotunFoulingId: null, FoulingState: 'Good', Subsections: null }, { Id: 2, VesselId: 1, SectionName: 'Bottom', Status: null, FoulingId: 2, JotunFoulingId: null, FoulingState: 'Poor', Subsections: null }];
     // this.vesselSections = [{ Id: 1, VesselId: 1, SectionName: 'Top', Status: null, FoulingId: null, JotunFoulingId: null, FoulingState: null, Subsections: null },
     // { Id: 2, VesselId: 1, SectionName: 'Bottom', Status: null, FoulingId: null, JotunFoulingId: null, FoulingState: null, Subsections: null }];
-    // this.foulingStates = [{ Id: 1, State: 'Good', Code: '', Category: '', CreatedBy: '' }, { Id: 2, State: 'Bad', Code: '', Category: '', CreatedBy: '' }, { Id: 3, State: 'Fair', Code: '', Category: '', CreatedBy: '' }];
+    // this.foulingStates = [{ Id: 1, State: 'Good', Code: '', Category: '', CreatedBy: '' }, { Id: 2, State: 'Poor', Code: '', Category: '', CreatedBy: '' }, { Id: 3, State: 'Fair', Code: '', Category: '', CreatedBy: '' }];
   }
 
   getSectionFoulingStates() {
@@ -127,6 +128,16 @@ export class FoulingStateComponent implements OnInit {
     //   this.getSectionFoulingStates();
     // });
 
+  }
+  
+  cancel()
+  {
+    this.selectedSection = null;
+    this.selectedfoulingState = null;
+  }
+
+  next(): void {
+    this.router.navigateByUrl('/operational-plan/prepare-installation/create-documents');
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

@@ -76,13 +76,20 @@
                     <td *ngFor="let col of columns">
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'id'">
-                                <input type="image" src="./assets/pencil.svg" alt="Edit"
+                                <!-- <input type="image" src="./assets/img/icons/sprites/icons.svg#pencil" alt="Edit"
                                     (click)="editSectionFoulingState(rowData)" [disabled]="disableActivity"
-                                    height="23px" width="23px" title="Edit">
-                                <!-- &nbsp;
-                                <input type="image" src="./assets/delete1.svg" alt="Remove"
-                                    (click)="deleteSection(rowData)" [disabled]="disableActivity" height="23px"
-                                    width="23px" title="Delete"> -->
+                                    height="23px" width="23px" title="Edit"> -->
+                                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                    aria-label="Edit" title="Edit" (click)="editSectionFoulingState(rowData)">
+                                    <span class="kx-btn__inner">
+                                        <i class="kx-icon kx-icon--size-moderate">
+                                            <svg focusable="true">
+                                                <use href="./assets/img/icons/sprites/icons.svg#pencil"></use>
+                                            </svg>
+                                        </i>
+                                        <span class="kx-btn__txt kx-is-vishidden">Edit</span>
+                                    </span>
+                                </button>
                             </div>
                             <div *ngSwitchDefault>{{rowData[col.field]}}</div>
                         </div>
@@ -92,4 +99,23 @@
         </p-table>
         <app-no-data [displayme]="sectionFoulingStates.length === 0"></app-no-data>
     </div>
+</div>
+
+<div class="kx-row">
+    <div class="kx-col kx-col--6" >
+        <button  class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny" (click)="cancel()" style="float: right; margin-right: 10px;">
+            <span class="kx-btn__inner">
+                <span class="kx-btn__txt">Cancel</span>
+            </span>
+        </button>
+    </div>
+
+    <div class="kx-col kx-col--6" style="float: left;">
+        <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny" (click)="next()">
+            <span class="kx-btn__inner">
+                <span class="kx-btn__txt">Next</span>
+            </span>
+        </button>
+    </div>
+   
 </div>
