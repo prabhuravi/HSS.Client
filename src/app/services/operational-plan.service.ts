@@ -68,11 +68,11 @@ export class OperationalPlanService {
     const requestData = {
       endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.GetTradeRouteByVesselId}/${vesselId}`
     };
-    // return of([
-    //   { Id: '12', VesselId: 1, PortId: 17651, Order: 1, PortName: 'Panama City(US PFN)', PortCode: 'US PFN' },
-    //   { Id: '123', VesselId: 1, PortId: 17896, Order: 2, PortName: 'Savannah(US SAV)', PortCode: 'US SAV' }
-    // ])
-    return this.http.getData(requestData);
+    return of([
+      { Id: '12', VesselId: 1, PortId: 17651, Order: 1, PortName: 'Panama City(US PFN)', PortCode: 'US PFN' },
+      { Id: '123', VesselId: 1, PortId: 17896, Order: 2, PortName: 'Savannah(US SAV)', PortCode: 'US SAV' }
+    ])
+    // return this.http.getData(requestData);
   }
 
   addPortToRoute(data: any): Observable<any> {
@@ -80,16 +80,16 @@ export class OperationalPlanService {
       endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.AddPortToRoute}`,
       data: data
     };
-    // return of(true);
-    return this.http.postData(requestData);
+    return of(true);
+    // return this.http.postData(requestData);
   }
 
   deletePortFromRoute(id: number): Observable<any> {
     const requestData = {
       endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.DeletePortFromRoute}/${id}`,
     };
-    // return of(true);
-    return this.http.deleteData(requestData);
+    return of(true);
+    // return this.http.deleteData(requestData);
   }
 
   getSectionFoulingStates(vesselId: number): Observable<any> {
@@ -97,7 +97,7 @@ export class OperationalPlanService {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetSectionFoulingStates}/${vesselId}`
     };
     return of([{ id: 1, vesselId: 1, name: 'Top', status: null, foulingId: 1, jotunFoulingId: null, foulingState: 'Good', subsections: null },
-    { id: 2, vesselId: 1, name: 'Bottom', status: null, foulingId: 2, jotunFoulingId: null, foulingState: 'Bad', subsections: null }]);
+    { id: 2, vesselId: 1, name: 'Bottom', status: null, foulingId: 2, jotunFoulingId: null, foulingState: 'Poor', subsections: null }]);
     // return this.http.getData(requestData);
   }
 
@@ -114,7 +114,7 @@ export class OperationalPlanService {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetFoulingStates}`
     };
-    return of([{ Id: 1, State: 'Good', Code: '', Category: '', CreatedBy: '' }, { Id: 2, State: 'Bad', Code: '', Category: '', CreatedBy: '' },
+    return of([{ Id: 1, State: 'Good', Code: '', Category: '', CreatedBy: '' }, { Id: 2, State: 'Poor', Code: '', Category: '', CreatedBy: '' },
     { Id: 3, State: 'Fair', Code: '', Category: '', CreatedBy: '' }]);
     // return this.http.getData(requestData);
   }
