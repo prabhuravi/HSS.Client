@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -25,6 +25,7 @@ export class TradeRouteComponent implements OnInit {
   isDataLoading = false;
   disableActivity: boolean;
   vesselId = 0;
+  @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
 
   cols = [
     { field: 'PortName', sortfield: 'PortName', header: 'Port Name', filterMatchMode: 'contains' },
@@ -103,12 +104,17 @@ export class TradeRouteComponent implements OnInit {
     return port !== null && typeof port !== 'object' || port === null || port === '';
   }
 
-  cancel()
+  clear()
   {
     this.port = null;
   }
+  cancel()
+  {
+    this.router.navigateByUrl('/operational-plan');
+  }
 
   next(): void {
+    this.nextActiveTab.emit(2);
     this.router.navigateByUrl('/operational-plan/prepare-installation/sections');
   }
 
