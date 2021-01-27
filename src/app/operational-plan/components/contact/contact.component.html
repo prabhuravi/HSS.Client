@@ -1,3 +1,16 @@
-<app-create-contact  style="margin-top: -20px;" #createContact  (contactUpdated)="contactListing.onContactDataUpdated($event)"></app-create-contact>
-<app-contact-listing #contactListing (contactOnEdit)="createContact.sectionEditInit($event)"></app-contact-listing>
-
+<div class="kx-pt--small">
+    <app-create-contact style="margin-top: -20px;" #createContact
+        (contactUpdated)="contactListing.onContactDataUpdated($event)"></app-create-contact>
+    <app-contact-listing #contactListing (contactOnEdit)="createContact.sectionEditInit($event)"></app-contact-listing>
+    
+    <div class="kx-row">
+        <div class="kx-col kx-col--6">
+            <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny" style="float: right;"
+                (click)="next()">
+                <span class="kx-btn__inner">
+                    <span class="kx-btn__txt">Finish</span>
+                </span>
+            </button>
+        </div>
+    </div>
+</div>

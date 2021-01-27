@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -21,6 +21,7 @@ export class CreateInstallationComponent implements OnInit {
   PrepareInstallation: boolean = false;
   formValues: any = null;
   formType = FormType;
+  @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
   formData: FormGroup;
   config = {
     formList: [],
@@ -219,6 +220,7 @@ export class CreateInstallationComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.nextActiveTab.emit(1);
     console.log(this.formData);
     if (this.formData.valid) {
 

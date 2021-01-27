@@ -5,6 +5,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
   selector: 'app-create-documents',
@@ -46,7 +47,7 @@ export class CreateDocumentsComponent implements OnInit {
   ];
 
   constructor(public fb: FormBuilder, private operationalPlanService: OperationalPlanService, private router: Router,
-    private confirmationService: ConfirmationService, private messageService: MessageService) { }
+    private confirmationService: ConfirmationService,  private prepareInstallationService: PrepareInstallationService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.isCloudLibraryDataLoading = false;
@@ -233,7 +234,7 @@ export class CreateDocumentsComponent implements OnInit {
 
   next(): void {
     this.nextActiveTab.emit(5);
-    this.router.navigateByUrl('/operational-plan/prepare-installation/create-contacts');
+    this.router.navigateByUrl('/operational-plan/prepare-installation/contacts/' +  this.prepareInstallationService.installation.id);
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {
