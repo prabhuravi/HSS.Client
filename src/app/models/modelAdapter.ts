@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Contact, ContactRole } from './Contact';
 import { IModelAdapter } from './IModelAdapter';
 import { Installation, InstallationStatus, InstallationType } from './Installation';
 import { Node } from './Node';
@@ -91,6 +92,7 @@ export class SubSectionAdapter implements IModelAdapter<SubSection> {
     }
 
 }
+
 @Injectable({
     providedIn: 'root'
 })
@@ -111,6 +113,35 @@ export class SectionAdapter implements IModelAdapter<Section> {
         );
     }
 
+}
+
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ContactRoleAdapter implements IModelAdapter<ContactRole> {
+    adapt(item: any): ContactRole {
+       return new ContactRole (item.Id ? item.Id : item.id ? item.id : 0,
+        item.Name ? item.Name : item.name ? item.name : '');
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ContactAdapter implements IModelAdapter<Contact> {
+    constructor(private contactRoleAdapter: ContactRoleAdapter) { }
+    adapt(item: any): Contact {
+        return new Contact(item.Id ? item.Id : item.id ? item.id : 0,
+            item.FirstName ? item.FirstName : item.firstName ? item.firstName : '',
+            item.SurName ? item.SurName : item.surName ? item.surName : '',
+            item.Email ?  item.Email : item.email ? item.email : '',
+            item.Phone ? item.Phone : item.phone ? item.phone : '',
+            item.AlternativePhone ? item.AlternativePhone : item.alternativePhone ? item.alternativePhone : '',
+            item.Role ? this.contactRoleAdapter.adapt(item.Role) : item.role ? this.contactRoleAdapter.adapt(item.role) : null,
+            item.TagTraining ? item.TagTraining : item.tagTraining ? item.tagTraining : false);
+
+    }
 }
 @Injectable({
     providedIn: 'root'

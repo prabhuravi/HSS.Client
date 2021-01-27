@@ -23,12 +23,14 @@ import { PrepareInstallationComponent } from './components/prepare-installation/
 import { TradeRouteComponent } from './components/trade-route/trade-route.component';
 import { SectionsComponent } from './components/sections/sections.component';
 import { CreateDocumentsComponent } from './components/create-documents/create-documents.component';
-import { CreateContactsComponent } from './components/create-contacts/create-contacts.component';
 import { FoulingStateComponent } from './components/fouling-state/fouling-state.component';
 import { CreateInstallationComponent } from './components/installation-information/create-installation/create-installation.component';
 import { CreateSectionComponent } from './components/sections/create-section/create-section.component';
 import { CreateSubSectionComponent } from './components/sections/create-sub-section/create-sub-section.component';
 import { ListingSectionComponent } from './components/sections/listing-section/listing-section.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { CreateContactComponent } from './components/contact/create-contact/create-contact.component';
+import { ContactListingComponent } from './components/contact/contact-listing/contact-listing.component';
 
 const routes: Routes = [
   {
@@ -42,7 +44,7 @@ const routes: Routes = [
           { path: 'sections', component: SectionsComponent },
           { path: 'fouling-state', component: FoulingStateComponent },
           { path: 'create-documents', component: CreateDocumentsComponent },
-          { path: 'create-contacts', component: CreateContactsComponent }
+          { path: 'contacts', component: ContactComponent }
         ]
       },
       { path: 'ManagePlans', component: ManagePlansComponent },
@@ -71,11 +73,13 @@ const routes: Routes = [
     SectionsComponent,
     FoulingStateComponent,
     CreateDocumentsComponent,
-    CreateContactsComponent,
     CreateInstallationComponent,
     CreateSectionComponent,
     CreateSubSectionComponent,
-    ListingSectionComponent],
+    ListingSectionComponent,
+    ContactComponent,
+    CreateContactComponent,
+    ContactListingComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
