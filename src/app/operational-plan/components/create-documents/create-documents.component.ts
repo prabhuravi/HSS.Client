@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
@@ -34,6 +35,7 @@ export class CreateDocumentsComponent implements OnInit {
   isDataLoading = false;
   disableActivity: boolean;
   vesselId = 0;
+  @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
 
   cols = [
     { field: 'Date', sortfield: 'Date', header: 'Date', filterMatchMode: 'contains' },
@@ -43,7 +45,7 @@ export class CreateDocumentsComponent implements OnInit {
     { field: 'Id', sortfield: '', header: 'Action' }
   ];
 
-  constructor(public fb: FormBuilder, private operationalPlanService: OperationalPlanService,
+  constructor(public fb: FormBuilder, private operationalPlanService: OperationalPlanService, private router: Router,
     private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
@@ -215,6 +217,23 @@ export class CreateDocumentsComponent implements OnInit {
         });
       }
     });
+  }
+
+  clear()
+  {
+    this.editDocument = null;
+    this.uploadFrom = '';
+    this.form.reset();
+  }
+
+  cancel()
+  {
+    this.router.navigateByUrl('/operational-plan');
+  }
+
+  next(): void {
+    this.nextActiveTab.emit(5);
+    this.router.navigateByUrl('/operational-plan/prepare-installation/create-contacts');
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

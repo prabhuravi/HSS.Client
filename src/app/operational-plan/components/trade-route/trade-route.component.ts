@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -17,6 +17,7 @@ export class TradeRouteComponent implements OnInit {
   port: IPortLocation = null;
   portLocations: IPortLocation[] = [];
   vesselTradeRoute: ITradeRoute[];
+  username: string = '';
   //  = [
   //   { Id: '10788', PortName: 'Savanna-la-Mar(JM SLM)', PortCode: 'JM SLM' },
   //   { Id: '17896', PortName: 'Savannah(US SAV)', PortCode: 'US SAV' }
@@ -24,6 +25,7 @@ export class TradeRouteComponent implements OnInit {
   isDataLoading = false;
   disableActivity: boolean;
   vesselId = 0;
+  @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
 
   cols = [
     { field: 'PortName', sortfield: 'PortName', header: 'Port Name', filterMatchMode: 'contains' },
@@ -35,6 +37,7 @@ export class TradeRouteComponent implements OnInit {
     private route: ActivatedRoute, private messageService: MessageService) { }
 
   ngOnInit() {
+    this.username = this.operationalPlanService.getLoggedInUser();
     this.vesselId = 1;
 
     // this.route.params.subscribe((params) => {
@@ -56,22 +59,23 @@ export class TradeRouteComponent implements OnInit {
 
   addNewPort() {
     console.log(this.port);
-    this.isDataLoading = true;
     if (this.vesselTradeRoute.findIndex(p => p.PortId == this.port.Id) == -1) {
-      this.operationalPlanService.addPortToRoute({ PortId: this.port.Id, VesselId: this.vesselId }).subscribe((data) => {
+      this.isDataLoading = true;
+      this.operationalPlanService.addPortToRoute({ PortId: this.port.Id, Order: 1, VesselId: this.vesselId }).subscribe((data) => {
         this.triggerToast('success', 'Success Message', `Port added to route successfully`);
         this.isDataLoading = false;
+        this.port = null;
         this.getVesselTradeRoute();
       });
     }
     else {
+      this.port = null;
       this.triggerToast('error', 'Failure Message', `Port already exists in route`);
     }
   }
 
   removePortFromTradeRoute(dataRow: ITradeRoute) {
     console.log(dataRow);
-
     this.confirmationService.confirm({
       message: 'Are you sure you want to remove port ' + dataRow.PortName + ' from the route?',
       accept: () => {
@@ -98,6 +102,20 @@ export class TradeRouteComponent implements OnInit {
 
   disableAddToRoute(port: any): boolean {
     return port !== null && typeof port !== 'object' || port === null || port === '';
+  }
+
+  clear()
+  {
+    this.port = null;
+  }
+  cancel()
+  {
+    this.router.navigateByUrl('/operational-plan');
+  }
+
+  next(): void {
+    this.nextActiveTab.emit(2);
+    this.router.navigateByUrl('/operational-plan/prepare-installation/sections');
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

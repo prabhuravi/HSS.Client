@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Installation } from 'src/app/models/Installation';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
+import { FoulingStateComponent } from '../fouling-state/fouling-state.component';
 
 @Component({
   selector: 'app-prepare-installation',
@@ -52,9 +54,21 @@ export class PrepareInstallationComponent implements OnInit {
     ];
   }
 
-  tabCliecked(i): void {
-    console.log(i);
+  tabClicked(i): void {
     this.activeTab = i;
+  }
+
+  onActivate(componentReference) {
+    if (componentReference instanceof FoulingStateComponent) {
+      componentReference.anyFunction();
+    }
+
+    if (componentReference.nextActiveTab !== undefined) {
+      componentReference.nextActiveTab.subscribe((data) => {
+        this.activeTab = data;
+        console.log(data);
+      });
+    }
   }
 
 }

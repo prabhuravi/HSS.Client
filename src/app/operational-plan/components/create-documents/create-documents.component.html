@@ -54,7 +54,8 @@
                     <label class="kx-label">Select File</label><small class="u--textDanger">*</small>
                     <div class="kx-mt--tiny">
                         <input type="file" style="display: inline-block;" [formControlName]="'localFile'"
-                            (change)="incomingFile($event)" placeholder="Upload file" accept=".xlsx">
+                            (change)="incomingFile($event)" placeholder="Upload file"
+                            accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf">
                     </div>
                 </div>
                 <div *ngIf="uploadFrom === 'Cloud'" class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
@@ -75,6 +76,13 @@
                         <span class="kx-btn__inner">
                             <span *ngIf="editDocument == null" class="kx-btn__txt">Add Document</span>
                             <span *ngIf="editDocument !== null" class="kx-btn__txt">Update Document</span>
+                        </span>
+                    </button>
+                    <button (click)="clear()"
+                        class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
+                        style="margin-left: 10px;">
+                        <span class="kx-btn__inner">
+                            <span class="kx-btn__txt">Clear</span>
                         </span>
                     </button>
                 </div>
@@ -124,13 +132,37 @@
                                     {{rowData[col.field] | date:'MM/dd/yyyy'}}</div>
                             </div>
                             <div *ngSwitchCase="'Id'">
-                                <input type="image" src="./assets/pencil.svg" alt="Edit"
+                                <!-- <input type="image" src="./assets/pencil.svg" alt="Edit"
                                     (click)="editInstallationDocument(rowData)" [disabled]="disableActivity"
                                     height="23px" width="23px" title="Edit">
                                 &nbsp;
                                 <input type="image" src="./assets/delete1.svg" alt="Remove"
                                     (click)="deleteInstallationDocument(rowData)" [disabled]="disableActivity"
-                                    height="23px" width="23px" title="Delete">
+                                    height="23px" width="23px" title="Delete"> -->
+
+                                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                    aria-label="Edit" title="Edit" (click)="editInstallationDocument(rowData)">
+                                    <span class="kx-btn__inner">
+                                        <i class="kx-icon kx-icon--size-moderate">
+                                            <svg focusable="true">
+                                                <use href="./assets/img/icons/sprites/icons.svg#pencil"></use>
+                                            </svg>
+                                        </i>
+                                        <span class="kx-btn__txt kx-is-vishidden">Edit</span>
+                                    </span>
+                                </button> &nbsp;
+                                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                    aria-label="Delete" title="Delete" (click)="deleteInstallationDocument(rowData)">
+                                    <span class="kx-btn__inner">
+                                        <i class="kx-icon kx-icon--size-moderate">
+                                            <svg focusable="true">
+                                                <use href="./assets/img/icons/sprites/icons.svg#trash"></use>
+                                            </svg>
+                                        </i>
+                                        <span class="kx-btn__txt kx-is-vishidden">Delete</span>
+                                    </span>
+                                </button>
+
                             </div>
                             <div *ngSwitchDefault>{{rowData[col.field]}}</div>
                         </div>
@@ -140,6 +172,26 @@
         </p-table>
         <app-no-data [displayme]="installationDocuments.length === 0"></app-no-data>
     </div>
+</div>
+
+<div class="kx-row">
+    <div class="kx-col kx-col--6">
+        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny" (click)="cancel()"
+            style="float: right; margin-right: 10px;">
+            <span class="kx-btn__inner">
+                <span class="kx-btn__txt">Cancel</span>
+            </span>
+        </button>
+    </div>
+
+    <div class="kx-col kx-col--6" style="float: left;">
+        <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny" (click)="next()">
+            <span class="kx-btn__inner">
+                <span class="kx-btn__txt">Next</span>
+            </span>
+        </button>
+    </div>
+
 </div>
 
 <app-modal [displayMe]="showCloudLibraryModal">
