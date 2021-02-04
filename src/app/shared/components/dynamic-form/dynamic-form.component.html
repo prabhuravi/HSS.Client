@@ -18,7 +18,7 @@
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.pattern)) ||
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.email)) ||
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.maxLength)) ||
-                                ((!form.controls[formItem.key].valid && isFormSubmitted))"
+                                ((!form.controls[formItem.key].valid && (form.controls[formItem.key].dirty ||  form.controls[formItem.key].touched)))"
                             class="u--textDanger">  (Invalid {{formItem.label}} )</span>
                         <span *ngIf="form.controls[formItem.key].errors && form.controls[formItem.key].errors.required"
                             class="u--textDanger" style="position: relative;top: 2px;">*</span>

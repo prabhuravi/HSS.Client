@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Configuration } from '../configuration';
-import { FoulingStateAdapter, SectionAdapter, SectionStatusAdapter } from '../models/modelAdapter';
-import { Section, SectionStatus } from '../models/Section';
+import { SectionAdapter, SectionStatusAdapter, VesselSectionAdapter, FoulingStateAdapter } from '../models/modelAdapter';
+import { VesselSection, SectionStatus } from '../models/Section';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -17,19 +17,20 @@ export class SectionService {
   foulingConfig: any;
   constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>,
               private sectionAdapter: SectionAdapter,
-              private sectionStatusAdapter: SectionStatusAdapter,
-              private foulingStateAdapter: FoulingStateAdapter
+              private vesselSectionAdapter: VesselSectionAdapter,
+      private sectionStatusAdapter: SectionStatusAdapter,
+      private foulingStateAdapter: FoulingStateAdapter
               ) {
     this.operationalPlanConfig = this.configurationService.config.apiCollection.OperationalPlan;
     this.sectionconfig = this.configurationService.config.apiCollection.OperationalPlan.Section;
     this.foulingConfig = this.configurationService.config.apiCollection.OperationalPlan.Fouling;
    }
 
-   getSections(): Observable<Section[]> {
+   getSections(): Observable<VesselSection[]> {
     const requestData = {
       endPoint: `${this.sectionconfig.path}${this.sectionconfig.endpoints.GetSections}`
     };
-    return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.sectionAdapter.adapt(item))));
+    return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.vesselSectionAdapter.adapt(item))));
 
    }
    getSectionStatus(): Observable<SectionStatus[]> {
@@ -38,13 +39,15 @@ export class SectionService {
     };
     return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.sectionStatusAdapter.adapt(item))));
 
-   }
+    }
+    getSectionInformations(): Observable<[SectionStatus[], VesselSection[]]> {
 
-   getFoulingStates(): Observable<IFoulingState[]> {
-    const requestData = {
-      endPoint: `${this.foulingConfig.path}${this.foulingConfig.endpoints.GetFoulingStates}`
-    };
-    return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.foulingStateAdapter.adapt(item))));
-   }
-   
+        return forkJoin([this.getSectionStatus(), this.getSections()]);
+    }
+    getFoulingStates(): Observable<IFoulingState[]> {
+        const requestData = {
+            endPoint: `${this.foulingConfig.path}${this.foulingConfig.endpoints.GetFoulingStates}`
+        };
+        return this.http.getData(requestData).pipe(map((data: any[]) => data.map((item) => this.foulingStateAdapter.adapt(item))));
+    }
 }

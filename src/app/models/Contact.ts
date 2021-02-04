@@ -1,6 +1,8 @@
 export class Contact {
     constructor(
         public id: number,
+        public vesselId: number,
+        public vesselContactId: number,
         public firstName: string,
         public surName: string,
         public email: string,

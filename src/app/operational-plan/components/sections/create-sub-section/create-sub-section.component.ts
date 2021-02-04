@@ -7,7 +7,7 @@ import { ConfirmationService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import {  SubSectionAdapter } from 'src/app/models/modelAdapter';
-import {  Section, SectionStatus, SubSection } from 'src/app/models/Section';
+import {  VesselSection, SectionStatus, SubSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { SectionService } from 'src/app/services/section.service';
 
@@ -21,13 +21,14 @@ export class CreateSubSectionComponent implements OnInit {
   @Output() subSectionCancelled: EventEmitter<any> = new EventEmitter<any>();
 
   subSection: SubSection;
-  section: Section;
+  vesselSection: VesselSection;
   isDataLoading = true;
   editMode: boolean = false;
   formValues: any = null;
   formType = FormType;
   formData: FormGroup;
   config = {
+    className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--4@tab-m kx-col--2@ltp-s',
     formList: []
   };
 
@@ -67,8 +68,8 @@ export class CreateSubSectionComponent implements OnInit {
       {
         type: FormType.text,
         label: 'Name',
-        value: this.subSection ? this.subSection.name : '',
-        key: 'subSectionName',
+        value: this.subSection ? this.subSection.subSectionNumber : '',
+        key: 'subSectionNumber',
         validators: [Validators.required, Validators.maxLength(20)],
         disabled: false
       },
@@ -103,7 +104,7 @@ export class CreateSubSectionComponent implements OnInit {
     this.subSection = subSectionData.rowData;
     console.log(this.subSection);
     this.formData.controls.sectionName.setValue(subSectionData.sectionRow.name);
-    this.formData.controls.subSectionName.setValue(this.subSection.name);
+    this.formData.controls.subSectionNumber.setValue(this.subSection.subSectionNumber);
     this.formData.get('subSectionStatus').patchValue(this.subSection.sectionStatus);
   }
 
@@ -117,23 +118,23 @@ export class CreateSubSectionComponent implements OnInit {
   }
 
   addNewSubSection(): void {
-    const newSubSection = new SubSection(0, this.section.id, this.formData.controls.subSectionName.value, this.formData.controls.subSectionStatus.value, null);
+    const newSubSection = new SubSection(0, this.vesselSection.id, this.formData.controls.subSectionName.value, this.formData.controls.subSectionStatus.value, null);
     newSubSection.id = Math.floor(Math.random() * 999999) + 1;
     this.subSectionUpdated.emit(newSubSection);
   }
 
   saveSubSection(): void {
     const formValue = this.formData.value;
-    this.subSection.sectionId = this.subSection.sectionId;
-    this.subSection.name = formValue.subSectionName;
+    this.subSection.vesselSectionId = this.subSection.vesselSectionId;
+    this.subSection.subSectionNumber = formValue.subSectionNumber;
     this.subSection.sectionStatus = formValue.subSectionStatus;
     this.subSectionUpdated.emit(this.subSection);
   }
 
-  onNewSubSectionInit(sectionData: Section) {
-       this.formData.controls.sectionName.setValue(sectionData.name);
+  onNewSubSectionInit(vesselSectionData: VesselSection) {
+       this.formData.controls.sectionName.setValue(vesselSectionData.name);
        this.formData.controls.subSectionStatus.setValue(this.sectionStatus[0]);
-       this.section = sectionData;
+       this.vesselSection = vesselSectionData;
   }
 
 }

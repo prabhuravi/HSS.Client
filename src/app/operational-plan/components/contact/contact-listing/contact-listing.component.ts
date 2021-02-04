@@ -29,6 +29,8 @@ contactSearch: Contact[];
   contacts: Contact[] = [
     {
       id: 1,
+      vesselId: 1,
+      vesselContactId: 1,
       firstName: 'Test1',
       surName: 'a',
       email: 'test@tests.com',
@@ -42,6 +44,8 @@ contactSearch: Contact[];
     },
     {
       id: 2,
+      vesselId: 1,
+      vesselContactId: 1,
       firstName: 'Test2',
       surName: 'b',
       email: 'test2@tests.com',
@@ -55,6 +59,8 @@ contactSearch: Contact[];
     },
     {
       id: 3,
+      vesselId: 1,
+      vesselContactId: 1,
       firstName: 'Test3',
       surName: 'c',
       email: 'test3@tests.com',

@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
-import { Section, SubSection } from 'src/app/models/Section';
+import {  SubSection, VesselSection } from 'src/app/models/Section';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { SectionService } from 'src/app/services/section.service';
 
@@ -15,17 +15,16 @@ import { SectionService } from 'src/app/services/section.service';
 export class ListFoulingStateComponent implements OnInit {
 
   constructor(public sectionService: SectionService,
-    public fb: FormBuilder, private confirmationService: ConfirmationService,
-    private messageService: MessageService) { }
+              public fb: FormBuilder, private confirmationService: ConfirmationService,
+              private messageService: MessageService) { }
 
   isDataLoading = false;
-  @Input() sections: Section[];
-  @Input() section: Section;
+  @Input() sections: VesselSection[];
+  @Input() section: VesselSection;
   // @Output() sectionOnEdit: EventEmitter<any> = new EventEmitter<any>();
   @Output() foulingStateEdited: EventEmitter<any> = new EventEmitter<any>();
   // @Output() subSectionOnAdd: EventEmitter<any> = new EventEmitter<any>();
   public subSectionFlag: boolean = false;
-  clonedSections: { [s: string]: Section; } = {};
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   cols = [
@@ -71,7 +70,7 @@ export class ListFoulingStateComponent implements OnInit {
 
   editSubSectionFoulingState(subSection: SubSection): void {
     console.log(subSection);
-    const section = this.sections.find((x) => x.id === subSection.sectionId);
+    const section = this.sections.find((x) => x.id === subSection.vesselSectionId);
     console.log(section);
     this.foulingStateEdited.emit({ section, subSection });
     this.subSectionFlag = true;
@@ -79,13 +78,13 @@ export class ListFoulingStateComponent implements OnInit {
   
   onSubSectionFoulingStateUpdated(data: SubSection): void {
     console.log(data);
-    const sectionItem = this.sections.find((x) => x.id === data.sectionId);
+    const sectionItem = this.sections.find((x) => x.id === data.vesselSectionId);
 
-    this.sections.forEach(section => {
-      if(section.id === data.sectionId)
+    this.sections.forEach((section) => {
+      if (section.id === data.vesselSectionId)
       {
         console.log(section);
-        section.subSections.forEach(subSection => {
+        section.subSections.forEach((subSection) => {
           if(subSection.id === data.id)
           {
             subSection = data;
@@ -140,7 +139,7 @@ export class ListFoulingStateComponent implements OnInit {
 
   // this.isDataLoading = true;
   // this.isDataLoading = false;
-  // const sectionRow =  this.sections.find((x) => x.id === subSectionRow.sectionId);
+  // const sectionRow =  this.sections.find((x) => x.id === subSectionRow.vesselSectionId);
   // let subsections = sectionRow.subSections;
   // subsections = subsections.filter((x) => x !== subSectionRow);
   // sectionRow.subSections = subsections;

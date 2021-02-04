@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
-import { Section, SectionStatus, SubSection } from 'src/app/models/Section';
+import { Section, SectionStatus, SubSection, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { SectionService } from 'src/app/services/section.service';
 
@@ -19,7 +19,7 @@ export class UpdateFoulingStateComponent implements OnInit {
   subSection: SubSection;
   // section: Section;
 
-  sections: Section[] = [];
+  sections: VesselSection[] = [];
   subSections: SubSection[] = [];
   isDataLoading = true;
   // editMode: boolean = false;
@@ -116,7 +116,7 @@ export class UpdateFoulingStateComponent implements OnInit {
     }
   }
 
-  onSectionChanged(section: Section) {
+  onSectionChanged(section: VesselSection) {
     if (section) {
       if (section.subSections) {
         this.config.formList[1].options = section.subSections;
