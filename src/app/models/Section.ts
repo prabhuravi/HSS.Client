@@ -1,9 +1,11 @@
-export class Section {
+export class VesselSection {
     constructor(
         public id: number,
         public vesselId: number,
+        public sectionId: number,
         public name: string,
         public sectionStatus: SectionStatus,
+        public section: Section,
         public selected: boolean = false,
         public foulingId: number,
         public foulingState: string,
@@ -19,11 +21,17 @@ export class SectionStatus {
     ) { }
 }
 
+export class Section {
+    constructor(
+        public id: number,
+        public name: string
+    ) { }
+}
 export class SubSection {
     constructor(
         public id: number,
-        public sectionId: number,
-        public name: string,
+        public vesselSectionId: number,
+        public subSectionNumber: number,
         public sectionStatus: SectionStatus
     ) { }
 }

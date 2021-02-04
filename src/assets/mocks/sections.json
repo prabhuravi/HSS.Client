@@ -10,7 +10,7 @@
         "SubSections" : [
             {
                 "Id": 1,
-                "SectionId" : 1,
+                "VesselSectionId" : 1,
                 "Name": "A",
                 "sectionStatus" : {
                     "Id": 1,
@@ -19,7 +19,7 @@
             },
             {
                 "Id": 2,
-                "SectionId" : 1,
+                "VesselSectionId" : 1,
                 "Name": "B",
                 "sectionStatus" : {
                     "Id": 1,
@@ -28,7 +28,7 @@
             },
             {
                 "Id": 3,
-                "SectionId" : 1,
+                "VesselSectionId" : 1,
                 "Name": "C",
                 "sectionStatus" : {
                     "Id": 1,
@@ -48,7 +48,7 @@
         "SubSections" : [
             {
                 "Id": 1,
-                "SectionId" : 2,
+                "VesselSectionId" : 2,
                 "Name": "A",
                 "sectionStatus" : {
                     "Id": 1,
@@ -57,7 +57,7 @@
             },
             {
                 "Id": 2,
-                "SectionId" : 2,
+                "VesselSectionId" : 2,
                 "Name": "B",
                 "sectionStatus" : {
                     "Id": 1,
@@ -66,7 +66,7 @@
             },
             {
                 "Id": 3,
-                "SectionId" : 2,
+                "VesselSectionId" : 2,
                 "Name": "C",
                 "SectionStatus" : {
                     "Id": 1,

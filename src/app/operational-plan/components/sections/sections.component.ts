@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from '@kognifai/poseidon-message-service';
 import { ConfirmationService } from 'primeng/api';
-import { Section } from 'src/app/models/Section';
+import { VesselSection } from 'src/app/models/Section';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
@@ -12,8 +12,8 @@ import { PrepareInstallationService } from 'src/app/services/prepare-installatio
 })
 export class SectionsComponent implements OnInit {
 
-  public section: any;
-  public sectionList: Section[];
+  public vesselSection: any;
+  public vesselSectionList: VesselSection[];
   @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
   constructor( private prepareInstallationService: PrepareInstallationService,
                private router: Router,
@@ -23,19 +23,6 @@ export class SectionsComponent implements OnInit {
   ngOnInit() {
     console.log(this.prepareInstallationService.installation);
   }
-
-  onSectionAdded(newSection: Section) {
-    console.log(this.sectionList);
-    this.sectionList.push(newSection);
-
-  }
-
-  onSectionEdited(editedSection: Section) {
-    console.log(this.sectionList);
-    let sectionRow =  this.sectionList.find((x) => x.id === editedSection.id);
-    sectionRow = editedSection;
-  }
-
   cancel() {
     this.router.navigateByUrl('/operational-plan');
   }

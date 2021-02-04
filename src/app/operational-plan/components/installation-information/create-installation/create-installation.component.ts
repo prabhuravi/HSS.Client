@@ -25,13 +25,13 @@ export class CreateInstallationComponent implements OnInit {
   formData: FormGroup;
   config = {
     formList: [],
-    className: 'kx-col kx-col--4 kx-col--6@mob-m kx-col--3@tab-m kx-col--4@ltp-s'
+    className: 'kx-col kx-col--12 kx-col--12@mob-m kx-col--6@tab-m kx-col--4@ltp-s'
   };
   installationList: Installation[] = [];
   robotsystemList: IRobotSystemDetails[] = [];
   vesselTypes: VesselType[] = [];
   installationStatus: InstallationStatus[] = [];
-  foulingStates: IFoulingState[] = [];
+  // foulingStates: IFoulingState[] = [];
 
   constructor(private installationService: InstallationService,
               private router: Router,
@@ -51,7 +51,7 @@ export class CreateInstallationComponent implements OnInit {
       console.log(this.installationList);
       this.vesselTypes = data[1];
       this.installationStatus = data[2];
-      this.foulingStates = data[3];
+      // this.foulingStates = data[3];
       this.constructForm();
       this.formData = await this.formBuliderService.buildForm(this.config);
       this.isDataLoading = false;
@@ -100,21 +100,21 @@ export class CreateInstallationComponent implements OnInit {
         validators: [Validators.required],
         disabled: false
       },
-      {
-        type: FormType.text,
-        label: 'Installation Status',
-        value: 'Prepare',
-        key: 'InstallationStatus',
-        validators: [Validators.required],
-        disabled: true
-      },
+      // {
+      //   type: FormType.text,
+      //   label: 'Installation Status',
+      //   value: 'Prepare',
+      //   key: 'InstallationStatus',
+      //   validators: [Validators.required],
+      //   disabled: true
+      // },
       {
         type: FormType.dropdown,
-        label: 'Fouling State',
-        options: this.foulingStates,
-        value: '',
-        key: 'FoulingState',
-        optionLabel: 'State',
+        label: 'Installation Status',
+        options: this.installationStatus,
+        value: this.installationStatus[0],
+        key: 'InstallationStatus',
+        optionLabel: 'name',
         validators: [Validators.required],
         disabled: false
       },
@@ -169,16 +169,16 @@ export class CreateInstallationComponent implements OnInit {
   }
 
   private setFormValue(installation: Installation) {
-    console.log(installation);
+    this.onFormReset();
     if (installation) {
 
       if (installation.vesselType) {
         this.formData.controls.VesselType.setValue(installation.vesselType);
       }
 
-      if (installation.foulingState) {
-        this.formData.controls.FoulingState.setValue(installation.foulingState);
-      }
+      // if (installation.foulingState) {
+      //   this.formData.controls.FoulingState.setValue(installation.foulingState);
+      // }
       if (installation.imoNo > 0) {
         this.formData.controls.ImoNo.setValue(installation.imoNo);
         this.formData.controls.ImoNo.disable();
@@ -189,7 +189,7 @@ export class CreateInstallationComponent implements OnInit {
       }
 
       if (installation.installationStatus && installation.installationStatus.name !== '') {
-        this.formData.controls.InstallationStatus.setValue(installation.installationStatus.name);
+        this.formData.controls.InstallationStatus.setValue(installation.installationStatus);
         this.formData.controls.InstallationStatus.disable();
       }
 
@@ -211,11 +211,11 @@ export class CreateInstallationComponent implements OnInit {
 
   onFormReset(): void {
     this.formData.reset();
-    this.formData.controls.InstallationStatus.setValue('Prepare');
+    this.formData.controls.InstallationStatus.setValue(this.installationStatus);
     this.formData.controls.ImoNo.enable();
     this.formData.controls.InstallationId.enable();
     this.formData.controls.NodeNumber.enable();
-    this.formData.controls.IPAddress.enable();
+    this.formData.controls.gatewayIP.enable();
 
   }
 
@@ -226,21 +226,24 @@ export class CreateInstallationComponent implements OnInit {
 
      const formValues = this.formData.getRawValue();
      const installationIformation: Installation = formValues.Installation;
-     installationIformation.foulingState = formValues.FoulingState;
+    // installationIformation.foulingState = formValues.FoulingState;
      installationIformation.vesselType = formValues.VesselType;
      installationIformation.vesselTypeId = formValues.VesselType.id;
-     installationIformation.foulingId = formValues.FoulingState.Id;
+    // installationIformation.foulingId = formValues.FoulingState.Id;
      installationIformation.node.nodeNumber = formValues.NodeNumber;
      installationIformation.node.gatewayIP = formValues.gatewayIP;
      installationIformation.node.installationId = formValues.InstallationId;
+     installationIformation.installationStatus = formValues.InstallationStatus;
      console.log(this.formData.getRawValue());
      console.log(installationIformation);
     //  console.log(installationIformation);
 
-     this.installationService.UpdateInstallationInformation(installationIformation).pipe(take(1)).subscribe(async () => {
-      this.triggerToast('success', 'Success Message', `Installation Information updated`);
-      await this.prepareInstallationService.updateInstallationDetail(installationIformation);
-      this.router.navigateByUrl('/operational-plan/prepare-installation/trade-route/' + installationIformation.id);
+     this.installationService.UpdateInstallationInformation(installationIformation).pipe(take(1)).subscribe(async (data) => {
+       if (data) {
+        this.triggerToast('success', 'Success Message', `Installation Information updated`);
+        await this.prepareInstallationService.updateInstallationDetail(installationIformation);
+        this.router.navigateByUrl('/operational-plan/prepare-installation/trade-route/' + installationIformation.id);
+       }
 
     });
 

@@ -6,7 +6,7 @@ import { ConfirmationService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import { SectionAdapter } from 'src/app/models/modelAdapter';
-import { Section, SectionStatus } from 'src/app/models/Section';
+import { VesselSection, SectionStatus } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { SectionService } from 'src/app/services/section.service';
 
@@ -16,8 +16,9 @@ import { SectionService } from 'src/app/services/section.service';
   styleUrls: ['./create-section.component.scss']
 })
 export class CreateSectionComponent implements OnInit {
-  @Input() section: Section;
+  @Input() vesselSection: VesselSection;
   @Output() sectionUpdated: EventEmitter<any> = new EventEmitter<any>();
+  Sections: VesselSection[] = [];
   isDataLoading = true;
   editMode: boolean = false;
   PrepareInstallation: boolean = false;
@@ -25,6 +26,7 @@ export class CreateSectionComponent implements OnInit {
   formType = FormType;
   formData: FormGroup;
   config = {
+    className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--4@tab-m kx-col--3@ltp-s',
     formList: []
   };
 
@@ -41,8 +43,10 @@ export class CreateSectionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.sectionService.getSectionStatus().pipe(take(1)).subscribe((data) => {
-      this.sectionStatus = data;
+    this.sectionService.getSectionInformations().pipe(take(1)).subscribe((data) => {
+      console.log(data);
+      this.sectionStatus = data[0];
+      this.Sections = data[1];
       this.constructForm();
       this.formData = this.formBuliderService.buildForm(this.config);
       this.isDataLoading = false;
@@ -52,11 +56,13 @@ export class CreateSectionComponent implements OnInit {
   constructForm(): void {
     this.config.formList = [
       {
-        type: FormType.text,
+        type: FormType.dropdown,
         label: 'Name',
-        value: this.section ? this.section.name : '',
+        options: this.Sections,
+        value: '',
         key: 'name',
-        validators: [Validators.required, Validators.maxLength(20)],
+        optionLabel: 'name',
+        validators: [Validators.required],
         disabled: false
       },
       {
@@ -87,8 +93,9 @@ export class CreateSectionComponent implements OnInit {
 
   sectionEditInit(sectionData: any): void {
     this.editMode = true;
-    this.section = sectionData;
-    this.formData.controls.name.setValue(sectionData.name);
+    this.vesselSection = sectionData;
+    console.log(this.Sections.find((x) => x.id === sectionData.id));
+    this.formData.controls.name.setValue(this.Sections.find((x) => x.id === sectionData.id));
     this.formData.controls.sectionStatus.setValue(sectionData.sectionStatus);
   }
 
@@ -102,15 +109,17 @@ export class CreateSectionComponent implements OnInit {
 
   addNewSection(): void {
     const newSection = this.sectionAdapter.adapt(this.formData.value);
+    newSection.name = this.formData.controls.name.value.name;
     newSection.id = Math.floor(Math.random() * 999999) + 1;
     this.sectionUpdated.emit(newSection);
   }
 
   saveSection(): void {
     const formValue = this.formData.value;
-    this.section.name = formValue.name;
-    this.section.sectionStatus = formValue.sectionStatus;
-    this.sectionUpdated.emit(this.section);
+    console.log(formValue.name.value);
+    this.vesselSection.name = formValue.name.value.name;
+    this.vesselSection.sectionStatus = formValue.sectionStatus;
+    this.sectionUpdated.emit(this.vesselSection);
   }
 
 }

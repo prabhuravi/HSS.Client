@@ -3,7 +3,7 @@
         <nav class="kx-breadcrumb">
             <ol class="kx-breadcrumb__list">
                 <li class="kx-breadcrumb__item" *ngFor="let routeItem of prepareInstallationSteps; let i = index;" (click)="tabClicked(i)" >
-                    <a [ngClass]="{'u--selectedTab':activeTab===i}" [routerLink]="routeItem.route" class="kx-breadcrumb__label u--fontLarge">{{routeItem.label}}</a>
+                    <a [ngClass]="{'u--selectedTab':activeTab===i}" [routerLink]="routeItem.route"  class="kx-breadcrumb__label u--fontLarge">{{routeItem.label}}</a>
                     <i *ngIf = "!(prepareInstallationSteps.length == i + 1)" class="kx-icon kx-icon--size-tiny">
                         <svg focusable="false">
                             <use href="./assets/img/icons/sprites/icons.svg#chevron-right"></use>

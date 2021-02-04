@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
-import { Section } from 'src/app/models/Section';
+import { VesselSection } from 'src/app/models/Section';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
@@ -13,11 +13,11 @@ import { PrepareInstallationService } from 'src/app/services/prepare-installatio
 })
 export class FoulingStateComponent implements OnInit {
 
-  vesselSections: Section[] = [];
-  selectedSection: Section = null;
+  vesselSections: VesselSection[] = [];
+  selectedSection: VesselSection = null;
   foulingStates: IFoulingState[] = [];
   selectedfoulingState: IFoulingState = null;
-  sectionFoulingStates: Section[] = [];
+  sectionFoulingStates: VesselSection[] = [];
 
   isDataLoading = false;
   disableActivity: boolean;
@@ -115,7 +115,7 @@ export class FoulingStateComponent implements OnInit {
   //   });
   // }
 
-  editSectionFoulingState(rowData: Section) {
+  editSectionFoulingState(rowData: VesselSection) {
     console.log(rowData);
     this.selectedSection = this.vesselSections.find((v) => v.id === rowData.id);
     console.log(this.selectedSection);

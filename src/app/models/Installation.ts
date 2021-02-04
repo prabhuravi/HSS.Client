@@ -3,6 +3,8 @@ import { Node } from './Node';
 export class Installation {
     constructor(
         public id: number,
+        public vesselNodeId: number,
+        public nodeId: number,
         public name: string,
         public displayName: string,
         public imoNo: number,

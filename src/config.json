@@ -93,7 +93,7 @@
       }
     },
     "OperationalPlan": {
-      "domainURL": "https://hsstest.kognif.ai/OperationPlan/api",
+      "domainURL": "https://localhost:5001/api",
       "OperationPlan": {
         "path": "/OperationalPlan",
         "endpoints": {
@@ -120,11 +120,12 @@
         }
       },
       "Installation": {
-        "path": "/PoseidonNext/hss-modules/assets/mocks",
+        "path": "/Installation",
         "endpoints": {
-          "GetInstallations": "/newInstallation.json",
-          "GetInstallationStatus": "/installationStatus.json",
-          "GetInstallationType": "/installationType.json"
+          "GetInstallations": "",
+          "GetInstallationStatus": "/InstallationStatus",
+          "GetInstallationType": "/VesselType",
+          "UpdateInstallation": ""
           
         }
       },

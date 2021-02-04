@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
-import { Section, SectionStatus, SubSection } from 'src/app/models/Section';
+import { VesselSection, SectionStatus, SubSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { SectionService } from 'src/app/services/section.service';
 
@@ -19,13 +19,13 @@ export class ListingSectionComponent implements OnInit {
               private messageService: MessageService) { }
 
  isDataLoading = false;
-  @Input() sections: Section[];
-  @Input() section: Section;
+  @Input() vesselSections: VesselSection[];
+  @Input() vesselSection: VesselSection;
   @Output() sectionOnEdit: EventEmitter<any> = new EventEmitter<any>();
   @Output() subSectionOnEdit: EventEmitter<any> = new EventEmitter<any>();
   @Output() subSectionOnAdd: EventEmitter<any> = new EventEmitter<any>();
   public subSectionFlag: boolean = false;
-  clonedSections: { [s: string]: Section; } = {};
+  clonedSections: { [s: string]: VesselSection; } = {};
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
   cols = [
@@ -40,43 +40,43 @@ export class ListingSectionComponent implements OnInit {
     this.isDataLoading = true;
     this.sectionService.getSections().pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
-      this.sections = data;
+      this.vesselSections = data;
     });
 
   }
 
-  onSectionRowEditInit(rowData: Section): void {
+  onSectionRowEditInit(rowData: VesselSection): void {
     this.subSectionFlag = false;
     console.log(rowData);
-    this.section = rowData;
+    this.vesselSection = rowData;
     this.sectionOnEdit.emit(rowData);
     rowData.selected = true;
     this.clonedSections[rowData.id] = rowData;
   }
 
   onSectionDataUpdated(sectionData: any): void {
-    let rowData = this.sections.find( (x) => x.id ===  sectionData.id);
+    let rowData = this.vesselSections.find( (x) => x.id ===  sectionData.id);
     if (rowData) {
       rowData = sectionData;
     } else {
-      this.sections.push(sectionData);
+      this.vesselSections.push(sectionData);
     }
   }
 
-  onSubSectionAddInit(SectionRow: Section): void {
+  onSubSectionAddInit(SectionRow: VesselSection): void {
       this.subSectionOnAdd.emit(SectionRow);
       this.subSectionFlag = true;
   }
 
   onSubSectionEditInit(rowData: SubSection): void {
-  const sectionRow  =   this.sections.find((x) => x.id === rowData.sectionId);
+  const sectionRow  =   this.vesselSections.find((x) => x.id === rowData.vesselSectionId);
   this.subSectionOnEdit.emit({sectionRow, rowData});
   this.subSectionFlag = true;
 
   }
 
   onSubSectionDataUpdated(subSection: SubSection): void {
-       const sectionItem  =   this.sections.find((x) => x.id === subSection.sectionId);
+       const sectionItem  =   this.vesselSections.find((x) => x.id === subSection.vesselSectionId);
        console.log(sectionItem);
        if (!sectionItem.subSections) {
       sectionItem.subSections = [];
@@ -97,7 +97,7 @@ export class ListingSectionComponent implements OnInit {
   onSubSectionCancelled(): void {
     this.subSectionFlag = false;
   }
-  onSectionRowDelete(sectionRow: Section) {
+  onSectionRowDelete(vesselSectionRow: VesselSection) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this section?',
       accept: () => {
@@ -105,7 +105,7 @@ export class ListingSectionComponent implements OnInit {
         this.isDataLoading = true;
         this.isDataLoading = false;
 
-        this.sections = this.sections.filter((x) => x !== sectionRow);
+        this.vesselSections = this.vesselSections.filter((x) => x !== vesselSectionRow);
         this.subSectionFlag = false;
         this.triggerToast('success', 'Success Message', `Section deleted successfully`);
       }
@@ -120,7 +120,7 @@ export class ListingSectionComponent implements OnInit {
 
         this.isDataLoading = true;
         this.isDataLoading = false;
-        const sectionRow =  this.sections.find((x) => x.id === subSectionRow.sectionId);
+        const sectionRow =  this.vesselSections.find((x) => x.id === subSectionRow.vesselSectionId);
         let subsections = sectionRow.subSections;
         subsections = subsections.filter((x) => x !== subSectionRow);
         sectionRow.subSections = subsections;

@@ -3,7 +3,7 @@ import { Contact, ContactRole } from './Contact';
 import { IModelAdapter } from './IModelAdapter';
 import { Installation, InstallationStatus, VesselType } from './Installation';
 import { Node } from './Node';
-import { Section, SectionStatus, SubSection } from './Section';
+import { VesselSection, SectionStatus, SubSection, Section } from './Section';
 
 @Injectable({
     providedIn: 'root'
@@ -77,6 +77,18 @@ export class SectionStatusAdapter implements IModelAdapter<SectionStatus> {
     }
 
 }
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SectionAdapter implements IModelAdapter<Section> {
+    adapt(item: any): Section {
+        return new Section(item.Id ? item.Id : item.id ? item.id : 0,
+            item.Name ? item.Name : item.name ? item.name : ''
+        );
+    }
+
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -84,8 +96,8 @@ export class SubSectionAdapter implements IModelAdapter<SubSection> {
     constructor(private sectionStatusAdapter: SectionStatusAdapter) { }
     adapt(item: any): SubSection {
         return new SubSection(item.Id ? item.Id : item.id ? item.id : 0,
-            item.SectionId ? item.SectionId : item.sectionId ? item.sectionId : 0,
-            item.Name ? item.Name : item.name ? item.name : '',
+            item.VesselSectionId ? item.VesselSectionId : item.vesselSectionId ? item.vesselSectionId : 0,
+            item.SubSectionNumber ? item.SubSectionNumber : item.subSectionNumber ? item.subSectionNumber : 0,
             item.SectionStatus ? this.sectionStatusAdapter.adapt(item.SectionStatus) : item.sectionStatus ? this.sectionStatusAdapter.adapt(item.sectionStatus) : null
 
         );
@@ -96,14 +108,17 @@ export class SubSectionAdapter implements IModelAdapter<SubSection> {
 @Injectable({
     providedIn: 'root'
 })
-export class SectionAdapter implements IModelAdapter<Section> {
+export class VesselSectionAdapter implements IModelAdapter<VesselSection> {
     constructor(private sectionStatusAdapter: SectionStatusAdapter,
-                private subSectionAdapter: SubSectionAdapter) { }
-    adapt(item: any): Section {
-        return new Section(item.Id ? item.Id : item.id ? item.id : 0,
+                private subSectionAdapter: SubSectionAdapter,
+                private sectionAdapter: SectionAdapter) { }
+    adapt(item: any): VesselSection {
+        return new VesselSection(item.Id ? item.Id : item.id ? item.id : 0,
             item.VesselId ? item.VesselId : item.vesselId ? item.vesselId : 0,
+            item.SectionId ? item.SectionId : item.sectionId ? item.sectionId : 0,
             item.Name ? item.Name : item.name ? item.name : '',
             item.SectionStatus ? this.sectionStatusAdapter.adapt(item.SectionStatus) : item.sectionStatus ? this.sectionStatusAdapter.adapt(item.sectionStatus) : null,
+            item.Section ? this.sectionAdapter.adapt(item.Section) : item.section ? this.sectionAdapter.adapt(item.section) : null,
             false,
             item.FoulingId ? item.FoulingId : item.foulingId ? item.foulingId : 0,
             item.FoulingState ? item.FoulingState : item.foulingState ? item.foulingState : '',
@@ -114,8 +129,6 @@ export class SectionAdapter implements IModelAdapter<Section> {
     }
 
 }
-
-
 @Injectable({
     providedIn: 'root'
 })
@@ -133,6 +146,8 @@ export class ContactAdapter implements IModelAdapter<Contact> {
     constructor(private contactRoleAdapter: ContactRoleAdapter) { }
     adapt(item: any): Contact {
         return new Contact(item.Id ? item.Id : item.id ? item.id : 0,
+            item.VesselId ? item.VesselId : item.vesselId ? item.vesselId : 0,
+            item.VesselContactId ? item.VesselContactId : item.vesselContactId ? item.vesselContactId : 0,
             item.FirstName ? item.FirstName : item.firstName ? item.firstName : '',
             item.SurName ? item.SurName : item.surName ? item.surName : '',
             item.Email ?  item.Email : item.email ? item.email : '',
@@ -160,13 +175,15 @@ export class InstallationAdapter implements IModelAdapter<Installation> {
 
         return new Installation(
             item.Id ? item.Id : item.id ? item.id : 0,
+            item.vesselNodeId ? item.vesselNodeId : item.VesselNodeId ? item.VesselNodeId: 0,
+            item.NodeId ? item.NodeId : item.nodeId ? item.nodeId : 0,
             item.Name ? item.Name : item.name ? item.name : '',
             item.DisplayName ? item.DisplayName : '',
             item.ImoNo ? item.ImoNo : '',
             item.FoulingId ? item.FoulingId : item.foulingId ? item.foulingId : 0,
             item.JoturnFoulingId ? item.JoturnFoulingId : item.joturnFoulingId ? item.joturnFoulingId : 0,
-            item.InstallationId ? item.InstallationId : item.installationId ? item.installationId : 0,
             item.InstallationStatusId ? item.InstallationStatusId : item.installationStatusId ? item.installationStatusId : 0,
+            item.InstallationId ? item.InstallationId : item.installationId ? item.installationId : '',
             item.VesselTypeId ? item.VesselTypeId : item.vesselTypeId ? item.vesselTypeId : 0,
             item.VesselType ? this.vesselTypeAdpater.adapt(item.VesselType) : item.vesselType ? this.vesselTypeAdpater.adapt(item.vesselType) : null,
             item.InstallationStatus ? this.installationStatusAdapter.adapt(item.InstallationStatus) : null,
