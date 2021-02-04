@@ -85,6 +85,14 @@ export class HttpService {
     );
   }
 
+  postDocument(requestData: any): Observable<any> {
+    requestData.data.set('CreatedBy', this.username);
+    return this.http.post(requestData.endPoint, requestData.data).pipe(
+      retry(2),
+      catchError(this.handleError.bind(this))
+    );
+  }
+
   putData(requestData: any): Observable<any> {
     if (requestData.data) {
       requestData.data.EnabledBy = this.username;

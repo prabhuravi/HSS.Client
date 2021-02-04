@@ -9,13 +9,13 @@
     {
         "Id": 2,
         "Code": "002",
-        "State": "Average",
-        "Category": "Average"
+        "State": "Fair",
+        "Category": "Fair"
     },
      {
         "Id": 3,
         "Code": "003",
-        "State": "Bad",
-        "Category": "Bad"
+        "State": "Poor",
+        "Category": "Poor"
     }
 ]

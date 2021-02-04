@@ -106,7 +106,12 @@
           "AddSubOperationPlan": "/SubOperation",
           "UpdateSubOperationPlan": "/SubOperation",
           "CompleteSubOperationPlan": "/SubOperation/Complete",
-          "GetOperationPlanById": ""
+          "GetOperationPlanById": "",
+          "GetSectionFoulingStates": "/GetSectionFoulingStates",
+          "AssignFoulingStateToSection": "/AssignFoulingStateToSection",
+          "GetVesselSections": "/GetVesselSections",
+          "GetFoulingStates": "/GetFoulingStates",
+          "UpdateSectionFoulingState": "/UpdateSectionFoulingState"
         }
       },
       "Installation": {
@@ -176,6 +181,24 @@
         "endpoints": {
           "FilterPortLocations": "/FilterByLocation",
           "GetPortLocationById": "/GetPortById"
+        }
+      },
+      "TradeRoute": {
+        "path": "/TradeRoute",
+        "endpoints": {
+          "GetTradeRouteByVesselId": "",
+          "AddPortToRoute": "",
+          "DeletePortFromRoute": ""
+        }
+      }, 
+      "Document": {
+        "path": "/Document",
+        "endpoints": {
+          "AddDocument": "",
+          "GetInstallationDocuments": "",
+          "GetDocumentTypes": "/GetDocumentTypes",
+          "DeleteInstallationDocument": "",
+          "GetInstallationsByDocumentTypeId": "/GetInstallationsByDocumentTypeId"
         }
       },
       "GetTimeZone": [

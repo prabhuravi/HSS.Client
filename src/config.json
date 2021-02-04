@@ -81,7 +81,7 @@
       }
     },
     "ConnectivityMonitoring": {
-      "domainURL": "https://localhost:5001/api",
+      "domainURL": "https://hss.kognif.ai/ConnectivityMonitoring/api",
       "path": "/ConnectivityMonitoring",
       "endpoints": {
         "GetVesselLinks": "/GetVesselLinks",
@@ -93,7 +93,7 @@
       }
     },
     "OperationalPlan": {
-      "domainURL": "https://hsstest.kognif.ai/OperationPlan/api",
+      "domainURL": "https://localhost:44378/api",
       "OperationPlan": {
         "path": "/OperationalPlan",
         "endpoints": {
@@ -111,12 +111,7 @@
           "AssignFoulingStateToSection": "/AssignFoulingStateToSection",
           "GetVesselSections": "/GetVesselSections",
           "GetFoulingStates": "/GetFoulingStates",
-          "UpdateSectionFoulingState": "/UpdateSectionFoulingState",
-          "AddDocument": "/AddDocument",
-          "GetInstallationDocument": "/GetInstallationDocument",
-          "GetDocumentType":"/GetDocumentType",
-          "DeleteInstallationDocument":"/DeleteInstallationDocument"
-
+          "UpdateSectionFoulingState": "/UpdateSectionFoulingState"
         }
       },
       "Installation": {
@@ -194,6 +189,16 @@
           "GetTradeRouteByVesselId": "",
           "AddPortToRoute": "",
           "DeletePortFromRoute": ""
+        }
+      },
+      "Document": {
+        "path": "/Document",
+        "endpoints": {
+          "AddDocument": "",
+          "GetInstallationDocuments": "",
+          "GetDocumentTypes": "/GetDocumentTypes",
+          "DeleteInstallationDocument": "",
+          "GetInstallationsByDocumentTypeId": "/GetInstallationsByDocumentTypeId"
         }
       },
       "GetTimeZone": [

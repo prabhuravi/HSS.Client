@@ -31,6 +31,8 @@ import { ListingSectionComponent } from './components/sections/listing-section/l
 import { ContactComponent } from './components/contact/contact.component';
 import { CreateContactComponent } from './components/contact/create-contact/create-contact.component';
 import { ContactListingComponent } from './components/contact/contact-listing/contact-listing.component';
+import { UpdateFoulingStateComponent } from './components/fouling-state/update-fouling-state/update-fouling-state.component';
+import { ListFoulingStateComponent } from './components/fouling-state/list-fouling-state/list-fouling-state.component';
 
 const routes: Routes = [
   {
@@ -79,7 +81,9 @@ const routes: Routes = [
     ListingSectionComponent,
     ContactComponent,
     CreateContactComponent,
-    ContactListingComponent],
+    ContactListingComponent,
+    UpdateFoulingStateComponent,
+    ListFoulingStateComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

@@ -1,12 +1,15 @@
 interface IInstallationDocument
 {
     Id: number;
+    VesselId: number;
+    DocumentId: number;
     DocumentTypeId: number;
+    DocumentTypeName: string;
     DocumentName: string;
-    DocumentType: string;
+    FileName: string;
     Version: string;
     DocumentPath: string
     Date: Date;
-    File: string;
     UploadSource: string
+    CopyVesselId: number
 }

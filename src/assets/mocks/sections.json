@@ -7,6 +7,10 @@
             "Id": 1,
             "Name": "Active"
         },
+		"foulingState": {
+			"Id": 1,
+			"State": "Fair"
+        },
         "SubSections" : [
             {
                 "Id": 1,
@@ -15,7 +19,11 @@
                 "sectionStatus" : {
                     "Id": 1,
                     "Name": "Active"
-                }
+                },
+				"foulingState": {
+					"Id": 1,
+					"State": "Good"
+				}
             },
             {
                 "Id": 2,
@@ -24,7 +32,11 @@
                 "sectionStatus" : {
                     "Id": 1,
                     "Name": "Active"
-                }
+                },
+				"foulingState": {
+					"Id": 2,
+					"State": "Fair"
+				}
             },
             {
                 "Id": 3,
@@ -33,7 +45,11 @@
                 "sectionStatus" : {
                     "Id": 1,
                     "Name": "Active"
-                }
+                },
+				"foulingState": {
+					"Id": 1,
+					"State": "Good"
+				}
             }
         ]
     },
@@ -45,6 +61,10 @@
             "Id": 1,
             "Name": "Active"
         },
+		"foulingState": {
+			"Id": 3,
+			"State": "Poor"
+        },
         "SubSections" : [
             {
                 "Id": 1,
@@ -53,7 +73,11 @@
                 "sectionStatus" : {
                     "Id": 1,
                     "Name": "Active"
-                }
+                },
+				"foulingState": {
+					"Id": 3,
+					"State": "Poor"
+				}
             },
             {
                 "Id": 2,
@@ -62,7 +86,11 @@
                 "sectionStatus" : {
                     "Id": 1,
                     "Name": "Active"
-                }
+                },
+				"foulingState": {
+					"Id": 1,
+					"State": "Good"
+				}
             },
             {
                 "Id": 3,
@@ -71,7 +99,11 @@
                 "SectionStatus" : {
                     "Id": 1,
                     "Name": "Active"
-                }
+                },
+				"foulingState": {
+					"Id": 2,
+					"State": "Fair"
+				}
             }
         ]
     }
