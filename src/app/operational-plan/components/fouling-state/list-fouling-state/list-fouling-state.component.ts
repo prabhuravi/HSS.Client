@@ -29,7 +29,7 @@ export class ListFoulingStateComponent implements OnInit {
 
   cols = [
     { field: 'name', header: 'Section', sortfield: 'name', filterMatchMode: 'contains' },
-    { field: 'subSection', header: 'Sub-Section', sortfield: '', filterMatchMode: '' },
+    { field: 'subSections', header: 'Sub-Section', sortfield: '', filterMatchMode: '' },
     { field: 'foulingState.State', header: 'Fouling State', sortfield: 'foulingState.State', filterMatchMode: 'contains' },
     { field: 'action', header: 'Action', sortfield: '', filterMatchMode: '' }
 
