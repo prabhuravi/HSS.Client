@@ -118,7 +118,7 @@ export class CreateSubSectionComponent implements OnInit {
   }
 
   addNewSubSection(): void {
-    const newSubSection = new SubSection(0, this.section.id, this.formData.controls.subSectionName.value, this.formData.controls.subSectionStatus.value, null);
+    const newSubSection = new SubSection(0, this.vesselSection.id, this.formData.controls.subSectionName.value, this.formData.controls.subSectionStatus.value, null);
     newSubSection.id = Math.floor(Math.random() * 999999) + 1;
     this.subSectionUpdated.emit(newSubSection);
   }

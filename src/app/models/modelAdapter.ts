@@ -96,8 +96,8 @@ export class SubSectionAdapter implements IModelAdapter<SubSection> {
     adapt(item: any): SubSection {
         return new SubSection(item.Id ? item.Id : item.id ? item.id : 0,
             item.SectionId ? item.SectionId : item.sectionId ? item.sectionId : 0,
-            item.Name ? item.Name : item.name ? item.name : '',
-            item.SectionStatus ? this.sectionStatusAdapter.adapt(item.SectionStatus) : item.sectionStatus ? this.sectionStatusAdapter.adapt(item.sectionStatus) : null
+            item.subSectionNumber ? item.subSectionNumber : item.SubSectionNumber ? item.SubSectionNumber : 0,
+            item.SectionStatus ? this.sectionStatusAdapter.adapt(item.SectionStatus) : item.sectionStatus ? this.sectionStatusAdapter.adapt(item.sectionStatus) : null,
              item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : null
         );
     }
@@ -109,12 +109,12 @@ export class SubSectionAdapter implements IModelAdapter<SubSection> {
 })
 export class VesselSectionAdapter implements IModelAdapter<VesselSection> {
     constructor(private sectionStatusAdapter: SectionStatusAdapter,
-        private subSectionAdapter: SubSectionAdapter,
-        private sectionAdapter: SectionAdapter,
-        private foulingStateAdapter: FoulingStateAdapter
+                private subSectionAdapter: SubSectionAdapter,
+                private sectionAdapter: SectionAdapter,
+                private foulingStateAdapter: FoulingStateAdapter
     ) { }
-    adapt(item: any): Section {
-        return new Section(item.Id ? item.Id : item.id ? item.id : 0,
+    adapt(item: any): VesselSection {
+        return new VesselSection(item.Id ? item.Id : item.id ? item.id : 0,
             item.VesselId ? item.VesselId : item.vesselId ? item.vesselId : 0,
             item.SectionId ? item.SectionId : item.sectionId ? item.sectionId : 0,
             item.Name ? item.Name : item.name ? item.name : '',
@@ -174,7 +174,7 @@ export class InstallationAdapter implements IModelAdapter<Installation> {
 
         return new Installation(
             item.Id ? item.Id : item.id ? item.id : 0,
-            item.vesselNodeId ? item.vesselNodeId : item.VesselNodeId ? item.VesselNodeId: 0,
+            item.vesselNodeId ? item.vesselNodeId : item.VesselNodeId ? item.VesselNodeId : 0,
             item.NodeId ? item.NodeId : item.nodeId ? item.nodeId : 0,
             item.Name ? item.Name : item.name ? item.name : '',
             item.DisplayName ? item.DisplayName : '',
