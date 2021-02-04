@@ -1,7 +1,38 @@
-<div class="kx-card kx-card--skin-default">
+<div class="kx-pt--small">
+    <app-update-fouling-state #updateFoulingState
+        (foulingStateUpdated)="listFoulingState.onSubSectionFoulingStateUpdated($event)"
+        (foulingStateCancelled)="listFoulingState.onFoulingStateCancelled()"></app-update-fouling-state>
+    <app-list-fouling-state #listFoulingState (foulingStateEdited)="updateFoulingState.onFoulingStateEdited($event)"
+        [section]="section" [sections]="sectionList">
+    </app-list-fouling-state>
+
+    <div class="kx-row">
+        <div class="kx-col kx-col--6">
+            <button class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny" (click)="cancel()"
+                style="float: right; margin-right: 10px;">
+                <span class="kx-btn__inner">
+                    <span class="kx-btn__txt">Cancel</span>
+                </span>
+            </button>
+        </div>
+
+        <div class="kx-col kx-col--6" style="float: left;">
+            <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny" (click)="next()">
+                <span class="kx-btn__inner">
+                    <span class="kx-btn__txt">Next</span>
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- <div class="kx-card kx-card--skin-default">
     <div class="kx-p--tiny kx-p--medium@mob-m">
         <div class="kx-row">
-
             <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                 <label class="kx-label">Section</label>
                 <div class="kx-mt--tiny">
@@ -16,7 +47,6 @@
                         optionLabel="State" filter="true" placeholder="Select fouling state"></p-dropdown>
                 </div>
             </div>
-
             <div class="kx-col kx-col--6 kx-col--3@tab-m kx-col--6@mob-m">
                 <button (click)="updateFoulingStateToSection()"
                     class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
@@ -25,7 +55,6 @@
                         <span class="kx-btn__txt">Update Fouling State</span>
                     </span>
                 </button>
-
                 <button (click)="clear()"
                     class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
                     style="margin-left: 10px;">
@@ -33,9 +62,7 @@
                         <span class="kx-btn__txt">Clear</span>
                     </span>
                 </button>
-
             </div>
-
         </div>
     </div>
 </div>
@@ -75,9 +102,6 @@
                     <td *ngFor="let col of columns">
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'id'">
-                                <!-- <input type="image" src="./assets/img/icons/sprites/icons.svg#pencil" alt="Edit"
-                                    (click)="editSectionFoulingState(rowData)" [disabled]="disableActivity"
-                                    height="23px" width="23px" title="Edit"> -->
                                 <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                     aria-label="Edit" title="Edit" (click)="editSectionFoulingState(rowData)">
                                     <span class="kx-btn__inner">
@@ -118,4 +142,4 @@
         </button>
     </div>
 
-</div>
+</div> -->

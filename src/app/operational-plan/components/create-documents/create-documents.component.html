@@ -3,20 +3,33 @@
         <form [formGroup]="form">
             <div class="kx-row kx-row--gutters">
                 <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
-                    <label class="kx-label">Document Name</label><small class="u--textDanger">*</small>
+                    <label class="kx-label">Upload Source</label><small class="u--textDanger">*</small>
                     <div class="kx-mt--tiny">
-                        <input class="kx-field kx-field--size-base" style="width: 90%;" type="text"
-                            [formControlName]="'documentName'" placeholder="Enter document name" />
+                        <p-dropdown styleClass="kx-p--tiny" [options]="uploadFromOptions"
+                            [formControlName]="'uploadSource'" optionLabel="Option" filter="true"
+                            (onChange)="uploadSourceChanged()" placeholder="Select upload source">
+                        </p-dropdown>
                     </div>
                 </div>
                 <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
                     <label class="kx-label">Document Type</label><small class="u--textDanger">*</small>
                     <div class="kx-mt--tiny">
                         <p-dropdown styleClass="kx-p--tiny" [options]="documentTypes" [formControlName]="'documentType'"
-                            optionLabel="TypeName" filter="true" placeholder="Select document type"></p-dropdown>
+                            optionLabel="TypeName" (onChange)="documentTypeChanged()" filter="true"
+                            placeholder="Select document type"></p-dropdown>
                     </div>
                 </div>
 
+                <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
+                    <label class="kx-label">Document Name</label><small class="u--textDanger">*</small>
+                    <div class="kx-mt--tiny">
+                        <input class="kx-field kx-field--size-base" style="width: 90%;" type="text"
+                            [formControlName]="'documentName'" placeholder="Enter document name" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="kx-row kx-row--gutters">
                 <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
                     <label class="kx-label">Version</label><small class="u--textDanger">*</small>
                     <div class="kx-mt--tiny">
@@ -24,10 +37,6 @@
                             [formControlName]="'version'" placeholder="Enter document version" />
                     </div>
                 </div>
-
-            </div>
-
-            <div class="kx-row kx-row--gutters">
                 <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
                     <label class="kx-label">Date</label><small class="u--textDanger">*</small>
                     <div class="kx-mt--tiny" style="width: 90%;">
@@ -39,17 +48,6 @@
                         </p-calendar>
                     </div>
                 </div>
-
-                <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
-                    <label class="kx-label">Upload Source</label><small class="u--textDanger">*</small>
-                    <div class="kx-mt--tiny">
-                        <p-dropdown styleClass="kx-p--tiny" [options]="uploadFromOptions"
-                            [formControlName]="'uploadSource'" optionLabel="Option" filter="true"
-                            (onChange)="uploadSourceChanged()" placeholder="Select upload source">
-                        </p-dropdown>
-                    </div>
-                </div>
-
                 <div *ngIf="uploadFrom === 'Local'" class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                     <label class="kx-label">Select File</label><small class="u--textDanger">*</small>
                     <div class="kx-mt--tiny">
@@ -58,7 +56,8 @@
                             accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf">
                     </div>
                 </div>
-                <div *ngIf="uploadFrom === 'Cloud'" class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
+                <div *ngIf="uploadFrom === 'Cloud' && documentTypeId !== null"
+                    class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                     <div class="kx-mt--tiny">
                         <button (click)="toggleCloudLibraryModal();  chooseFromCloudLibrary()"
                             class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
@@ -72,10 +71,10 @@
                 <div class="kx-col kx-col--6 kx-col--3@tab-m kx-col--6@mob-m">
                     <button (click)="addDocument()"
                         class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
-                        [disabled]="form.valid? (uploadFrom === 'Cloud'? (selectedCloudLibraryItem === null? true: false): false): true ">
+                        [disabled]="form.valid? (uploadFrom === 'Cloud'? (selectedInstallationByDocType === null? true: false): false): true ">
                         <span class="kx-btn__inner">
-                            <span *ngIf="editDocument == null" class="kx-btn__txt">Add Document</span>
-                            <span *ngIf="editDocument !== null" class="kx-btn__txt">Update Document</span>
+                            <span *ngIf="editDocument == null" class="kx-btn__txt">Add</span>
+                            <span *ngIf="editDocument !== null" class="kx-btn__txt">Save</span>
                         </span>
                     </button>
                     <button (click)="clear()"
@@ -111,13 +110,19 @@
                 </tr>
                 <tr>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                        <input *ngSwitchCase="'Date'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'DocumentName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'DocumentType'" pInputText type="text"
+                        <input *ngSwitchCase="'DocumentTypeName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'File'" pInputText type="text"
+                        <input *ngSwitchCase="'FileName'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'CopyVesselId'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
@@ -130,6 +135,9 @@
                             <div *ngSwitchCase="'Date'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
                                     {{rowData[col.field] | date:'MM/dd/yyyy'}}</div>
+                            </div>
+                            <div *ngSwitchCase="'CopyVesselId'">
+                                {{rowData[col.field] === 0? 'Local': 'Cloud' }}
                             </div>
                             <div *ngSwitchCase="'Id'">
                                 <!-- <input type="image" src="./assets/pencil.svg" alt="Edit"
@@ -217,17 +225,18 @@
             <div class="kx-card kx-card--skin-default kx-p--medium">
                 <div class="kx-row">
                     <app-load *ngIf="isCloudLibraryDataLoading"></app-load>
-                    <ul *ngIf="!isCloudLibraryDataLoading && cloudLibraryData.length > 0" class="kx-select-group">
-                        <li class="kx-select-item" *ngFor="let item of cloudLibraryData; let i = index;">
+                    <ul *ngIf="!isCloudLibraryDataLoading && installationsByDocumentType.length > 0"
+                        class="kx-select-group">
+                        <li class="kx-select-item" *ngFor="let item of installationsByDocumentType; let i = index;">
                             <label class="kx-selector kx-selector__radio">
-                                <input type="radio" name="selectInstallation" value="item.Id"
+                                <input type="radio" name="selectInstallation" value="item.VesselId"
                                     (change)="changeInstallationDocument(item)" />
                                 <div class="kx-selector__indicator"></div>
-                                <span class="label-text">{{item.InstallationName}}</span>
+                                <span class="label-text">{{item.InstallationName}} - {{item.DocumentName}}</span>
                             </label>
                         </li>
                     </ul>
-                    <app-no-data [displayme]="!isCloudLibraryDataLoading && cloudLibraryData.length === 0">
+                    <app-no-data [displayme]="!isCloudLibraryDataLoading && installationsByDocumentType.length === 0">
                     </app-no-data>
                 </div>
                 <div class="kx-row">
@@ -235,7 +244,7 @@
                         <div class="kx-mt--tiny">
                             <button (click)="toggleCloudLibraryModal();  useInstallationDocument()"
                                 class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
-                                [disabled]="this.selectedCloudLibraryItem === null">
+                                [disabled]="this.selectedInstallationByDocType === null">
                                 <span class="kx-btn__inner">
                                     <span class="kx-btn__txt">Select</span>
                                 </span>
