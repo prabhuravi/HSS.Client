@@ -36,7 +36,6 @@ export class InstallationStatusAdapter implements IModelAdapter<InstallationStat
 })
 export class FoulingStateAdapter implements IModelAdapter<IFoulingState> {
     adapt(item: any): IFoulingState {
-        console.log(item);
         const foulingstate: IFoulingState = {
             Id: item.Id ? item.Id : item.id ? item.id : 0,
             Code: item.Code ? item.Code : item.code ? item.code : '',
@@ -93,13 +92,13 @@ export class SectionAdapter implements IModelAdapter<Section> {
     providedIn: 'root'
 })
 export class SubSectionAdapter implements IModelAdapter<SubSection> {
-    constructor(private sectionStatusAdapter: SectionStatusAdapter) { }
+    constructor(private sectionStatusAdapter: SectionStatusAdapter, private foulingStateAdapter: FoulingStateAdapter) { }
     adapt(item: any): SubSection {
         return new SubSection(item.Id ? item.Id : item.id ? item.id : 0,
-            item.VesselSectionId ? item.VesselSectionId : item.vesselSectionId ? item.vesselSectionId : 0,
-            item.SubSectionNumber ? item.SubSectionNumber : item.subSectionNumber ? item.subSectionNumber : 0,
+            item.SectionId ? item.SectionId : item.sectionId ? item.sectionId : 0,
+            item.Name ? item.Name : item.name ? item.name : '',
             item.SectionStatus ? this.sectionStatusAdapter.adapt(item.SectionStatus) : item.sectionStatus ? this.sectionStatusAdapter.adapt(item.sectionStatus) : null
-
+             item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : null
         );
     }
 
@@ -110,19 +109,19 @@ export class SubSectionAdapter implements IModelAdapter<SubSection> {
 })
 export class VesselSectionAdapter implements IModelAdapter<VesselSection> {
     constructor(private sectionStatusAdapter: SectionStatusAdapter,
-                private subSectionAdapter: SubSectionAdapter,
-                private sectionAdapter: SectionAdapter) { }
-    adapt(item: any): VesselSection {
-        return new VesselSection(item.Id ? item.Id : item.id ? item.id : 0,
+        private subSectionAdapter: SubSectionAdapter,
+        private sectionAdapter: SectionAdapter,
+        private foulingStateAdapter: FoulingStateAdapter
+    ) { }
+    adapt(item: any): Section {
+        return new Section(item.Id ? item.Id : item.id ? item.id : 0,
             item.VesselId ? item.VesselId : item.vesselId ? item.vesselId : 0,
             item.SectionId ? item.SectionId : item.sectionId ? item.sectionId : 0,
             item.Name ? item.Name : item.name ? item.name : '',
             item.SectionStatus ? this.sectionStatusAdapter.adapt(item.SectionStatus) : item.sectionStatus ? this.sectionStatusAdapter.adapt(item.sectionStatus) : null,
             item.Section ? this.sectionAdapter.adapt(item.Section) : item.section ? this.sectionAdapter.adapt(item.section) : null,
             false,
-            item.FoulingId ? item.FoulingId : item.foulingId ? item.foulingId : 0,
-            item.FoulingState ? item.FoulingState : item.foulingState ? item.foulingState : '',
-            item.JoturnFoulingId ? item.JoturnFoulingId : item.joturnFoulingId ? item.joturnFoulingId : '',
+            item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : null,
             item.SubSections ? item.SubSections.map((x) => this.subSectionAdapter.adapt(x)) : item.subSections ? item.subSections.map((x) => this.subSectionAdapter.adapt(x)) : []
 
         );

@@ -18,6 +18,7 @@ export class OperationalPlanService {
   operatorApiUrl: string;
   portApiUrl: string;
   tradeRouteApiUrl: string;
+  documentApiUrl: string;
 
   constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>) {
     this.operationalPlanConfig = this.configurationService.config.apiCollection.OperationalPlan;
@@ -28,6 +29,7 @@ export class OperationalPlanService {
     this.operatorApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.Operator.path}`;
     this.portApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.PortLocation.path}`;
     this.tradeRouteApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.TradeRoute.path}`;
+    this.documentApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.Document.path}`;
   }
 
   getLoggedInUser() {
@@ -68,11 +70,11 @@ export class OperationalPlanService {
     const requestData = {
       endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.GetTradeRouteByVesselId}/${vesselId}`
     };
-    return of([
-      { Id: '12', VesselId: 1, PortId: 17651, Order: 1, PortName: 'Panama City(US PFN)', PortCode: 'US PFN' },
-      { Id: '123', VesselId: 1, PortId: 17896, Order: 2, PortName: 'Savannah(US SAV)', PortCode: 'US SAV' }
-    ])
-    // return this.http.getData(requestData);
+    // return of([
+    //   { Id: '12', VesselId: 1, PortId: 17651, Order: 1, PortName: 'Panama City(US PFN)', PortCode: 'US PFN' },
+    //   { Id: '123', VesselId: 1, PortId: 17896, Order: 2, PortName: 'Savannah(US SAV)', PortCode: 'US SAV' }
+    // ])
+    return this.http.getData(requestData);
   }
 
   addPortToRoute(data: any): Observable<any> {
@@ -80,16 +82,56 @@ export class OperationalPlanService {
       endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.AddPortToRoute}`,
       data: data
     };
-    return of(true);
-    // return this.http.postData(requestData);
+    // return of(true);
+    return this.http.postData(requestData);
+  }
+
+  getDocumentTypes(): Observable<any> {
+    const requestData = {
+      endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.GetDocumentTypes}`
+    };
+    // return of("test");
+    return this.http.getData(requestData);
+  }
+
+  getInstallationDocuments(vesselId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.GetInstallationDocuments}/${vesselId}`
+    };
+    // return of("test");
+    return this.http.getData(requestData);
+  }
+
+  AddDocumentAsync(data: any): Observable<any> {
+    const requestData = {
+      endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.AddDocument}`,
+      data: data
+    };
+    // return of(true);
+    return this.http.postDocument(requestData);
+  }
+
+  getInstallationsByDocumentTypeId(documentTypeId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.GetInstallationsByDocumentTypeId}/${documentTypeId}`
+    };
+    return this.http.getData(requestData);
+  }
+
+  deleteInstallationDocument(id: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.DeleteInstallationDocument}/${id}`,
+    };
+    // return of(true);
+    return this.http.deleteData(requestData);
   }
 
   deletePortFromRoute(id: number): Observable<any> {
     const requestData = {
       endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.DeletePortFromRoute}/${id}`,
     };
-    return of(true);
-    // return this.http.deleteData(requestData);
+    // return of(true);
+    return this.http.deleteData(requestData);
   }
 
   getSectionFoulingStates(vesselId: number): Observable<any> {
@@ -135,39 +177,6 @@ export class OperationalPlanService {
     };
     return of(true);
     // return this.http.putData(requestData);
-  }
-
-  getDocumentType(): Observable<any> {
-    const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetDocumentType}`
-    };
-    return of("test");
-    // return this.http.getData(requestData);
-  }
-
-  getInstallationDocument(vesselId: number): Observable<any> {
-    const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetInstallationDocument}/${vesselId}`
-    };
-    return of("test");
-    // return this.http.getData(requestData);
-  }
-
-  addDocument(data: any): Observable<any> {
-    const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.AddDocument}`,
-      data: data
-    };
-    return of(true);
-    // return this.http.postData(requestData);
-  }
-
-  deleteInstallationDocument(id: number): Observable<any> {
-    const requestData = {
-      endPoint: `${this.robotApiUrl}${this.operationalPlanConfig.Robot.endpoints.DeleteInstallationDocument}/${id}`,
-    };
-    return of(true);
-    // return this.http.deleteData(requestData);
   }
 
   addOperationPlan(planData: any): Observable<any> {

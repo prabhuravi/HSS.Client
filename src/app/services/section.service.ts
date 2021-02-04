@@ -3,7 +3,7 @@ import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Configuration } from '../configuration';
-import { SectionAdapter, SectionStatusAdapter, VesselSectionAdapter } from '../models/modelAdapter';
+import { SectionAdapter, SectionStatusAdapter, VesselSectionAdapter, FoulingStateAdapter } from '../models/modelAdapter';
 import { VesselSection, SectionStatus } from '../models/Section';
 import { HttpService } from './http.service';
 
@@ -14,13 +14,16 @@ export class SectionService {
 
   operationalPlanConfig: any;
   sectionconfig: any;
+  foulingConfig: any;
   constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>,
               private sectionAdapter: SectionAdapter,
               private vesselSectionAdapter: VesselSectionAdapter,
-              private sectionStatusAdapter: SectionStatusAdapter
+      private sectionStatusAdapter: SectionStatusAdapter,
+      private foulingStateAdapter: FoulingStateAdapter
               ) {
     this.operationalPlanConfig = this.configurationService.config.apiCollection.OperationalPlan;
     this.sectionconfig = this.configurationService.config.apiCollection.OperationalPlan.Section;
+    this.foulingConfig = this.configurationService.config.apiCollection.OperationalPlan.Fouling;
    }
 
    getSections(): Observable<VesselSection[]> {
@@ -36,9 +39,15 @@ export class SectionService {
     };
     return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.sectionStatusAdapter.adapt(item))));
 
-   }
-   getSectionInformations(): Observable <[SectionStatus[], VesselSection[]]> {
+    }
+    getSectionInformations(): Observable<[SectionStatus[], VesselSection[]]> {
 
-    return forkJoin([this.getSectionStatus(), this.getSections()]);
- }
+        return forkJoin([this.getSectionStatus(), this.getSections()]);
+    }
+    getFoulingStates(): Observable<IFoulingState[]> {
+        const requestData = {
+            endPoint: `${this.foulingConfig.path}${this.foulingConfig.endpoints.GetFoulingStates}`
+        };
+        return this.http.getData(requestData).pipe(map((data: any[]) => data.map((item) => this.foulingStateAdapter.adapt(item))));
+    }
 }

@@ -44,11 +44,11 @@ export class PrepareInstallationComponent implements OnInit {
         route: '/operational-plan/prepare-installation/fouling-state/' + this.vesselId
       },
       {
-        label: 'Create Documents',
+        label: 'Add Documents',
         route: '/operational-plan/prepare-installation/create-documents/' + this.vesselId
       },
       {
-        label: 'Create Contacts',
+        label: 'Add Contacts',
         route: '/operational-plan/prepare-installation/contacts/' + this.vesselId
       }
     ];

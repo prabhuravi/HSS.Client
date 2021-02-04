@@ -47,12 +47,25 @@ export class FoulingStateComponent implements OnInit {
     // this.foulingStates = [{ Id: 1, State: 'Good', Code: '', Category: '', CreatedBy: '' }, { Id: 2, State: 'Poor', Code: '', Category: '', CreatedBy: '' }, { Id: 3, State: 'Fair', Code: '', Category: '', CreatedBy: '' }];
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   getSectionFoulingStates() {
     this.isDataLoading = true;
     this.operationalPlanService.getSectionFoulingStates(this.vesselId).pipe(take(1)).subscribe((data) => {
       this.sectionFoulingStates = data;
       this.isDataLoading = false;
-      console.log(this.sectionFoulingStates);
     });
   }
 
@@ -61,7 +74,6 @@ export class FoulingStateComponent implements OnInit {
     this.operationalPlanService.getVesselSections(this.vesselId).pipe(take(1)).subscribe((data) => {
       this.vesselSections = data;
       this.isDataLoading = false;
-      console.log(this.vesselSections);
     });
   }
 
@@ -70,7 +82,6 @@ export class FoulingStateComponent implements OnInit {
     this.operationalPlanService.getFoulingStates().pipe(take(1)).subscribe((data) => {
       this.foulingStates = data;
       this.isDataLoading = false;
-      console.log(this.foulingStates);
     });
   }
 

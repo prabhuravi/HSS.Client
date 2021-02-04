@@ -23,11 +23,12 @@ export class CreateDocumentsComponent implements OnInit {
   uploadFromOptions = [{ Option: 'Local' }, { Option: 'Cloud' }];
   selectedUploadFrom: any;
   uploadFrom: string;
+  documentTypeId: number = null;
   editDocument: IInstallationDocument = null;
   showCloudLibraryModal: boolean;
   isCloudLibraryDataLoading: boolean = true;
-  cloudLibraryData = [];
-  selectedCloudLibraryItem: any = null;
+  installationsByDocumentType: ICopyInstallationModel[] = [];
+  selectedInstallationByDocType: any = null;
 
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   form: FormGroup;
@@ -39,23 +40,24 @@ export class CreateDocumentsComponent implements OnInit {
   @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
 
   cols = [
-    { field: 'Date', sortfield: 'Date', header: 'Date', filterMatchMode: 'contains' },
-    { field: 'DocumentName', sortfield: 'Name', header: 'Document Name', filterMatchMode: 'contains' },
-    { field: 'DocumentType', sortfield: 'Type', header: 'Document Type', filterMatchMode: 'contains' },
-    { field: 'File', sortfield: 'File', header: 'File', filterMatchMode: 'contains' },
+    { field: 'Date', sortfield: '', header: 'Date', filterMatchMode: 'contains' },
+    { field: 'DocumentName', sortfield: 'DocumentName', header: 'Document Name', filterMatchMode: 'contains' },
+    { field: 'DocumentTypeName', sortfield: 'DocumentTypeName', header: 'Document Type', filterMatchMode: 'contains' },
+    { field: 'CopyVesselId', sortfield: 'CopyVesselId', header: 'Upload Source', filterMatchMode: 'contains' },
+    { field: 'FileName', sortfield: 'FileName', header: 'File', filterMatchMode: 'contains' },
     { field: 'Id', sortfield: '', header: 'Action' }
   ];
 
   constructor(public fb: FormBuilder, private operationalPlanService: OperationalPlanService, private router: Router,
-    private confirmationService: ConfirmationService,  private prepareInstallationService: PrepareInstallationService, private messageService: MessageService) { }
+    private confirmationService: ConfirmationService, private prepareInstallationService: PrepareInstallationService, private messageService: MessageService) { }
 
   ngOnInit() {
+    this.vesselId = this.prepareInstallationService.installation.id;
     this.isCloudLibraryDataLoading = false;
     this.getDocumentType();
-    this.getInstallationDocument();
+    this.getInstallationDocuments();
     this.form = this.buildForm();
-    this.cloudLibraryData = [{ Id: 1, InstallationName: 'Talisman' },
-    { Id: 2, InstallationName: 'Berge Apo' }, { Id: 3, InstallationName: 'Ejnan' }];
+    console.log(this.prepareInstallationService.installation);
   }
 
   buildForm() {
@@ -75,134 +77,195 @@ export class CreateDocumentsComponent implements OnInit {
   }
 
   changeInstallationDocument(item: any) {
-    this.selectedCloudLibraryItem = item;
-    console.log(this.selectedCloudLibraryItem);
+    this.selectedInstallationByDocType = item;
+    console.log(this.selectedInstallationByDocType);
   }
 
   useInstallationDocument() {
-    console.log(this.selectedCloudLibraryItem);
+    console.log(this.selectedInstallationByDocType);
+  }
+
+  documentTypeChanged()
+  {
+    this.documentTypeId = this.form.get('documentType').value.Id;
   }
 
   uploadSourceChanged() {
-    this.selectedCloudLibraryItem = null;
+    this.selectedInstallationByDocType = null;
+    this.editDocument = null;
+    this.form.controls.documentName.reset();
+    this.form.controls.version.reset();
+    this.form.controls.documentDate.reset();
+    this.form.controls.localFile.reset();
+
     if (this.form && this.form.get) {
       this.uploadFrom = this.form.get('uploadSource').value.Option;
       if (this.uploadFrom == 'Local') {
+        this.form.controls.documentName.setValidators([Validators.required]);
+        this.form.controls.version.setValidators([Validators.required]);
+        this.form.controls.documentDate.setValidators([Validators.required]);
+        this.form.controls.documentName.enable();
+        this.form.controls.version.enable();
+        this.form.controls.documentDate.enable();
+
+        // if (this.editDocument !== null) {
+        //   this.form.controls.localFile.clearValidators();
+        // }
+        // else {
+        //   this.form.controls.localFile.setValidators([Validators.required]);
+        // }
+
         this.form.controls.localFile.setValidators([Validators.required]);
-        this.form.controls.localFile.updateValueAndValidity();
         this.form.controls.localFile.setValue('');
-      }
-      else {
-        this.form.controls.localFile.clearValidators();
         this.form.controls.localFile.updateValueAndValidity();
+      }
+      else {  // Cloud
+        this.form.controls.localFile.clearValidators();
+        this.form.controls.documentName.clearValidators();
+        this.form.controls.version.clearValidators();
+        this.form.controls.documentDate.clearValidators();
+        this.form.controls.documentName.disable();
+        this.form.controls.version.disable();
+        this.form.controls.documentDate.disable();
+
+        this.form.controls.localFile.updateValueAndValidity();
+
+        // this.editDocument = null;
+        // this.form.controls.documentName.reset();
+        // this.form.controls.version.reset();
+        // this.form.controls.documentDate.reset();
+        // this.form.controls.localFile.reset();
       }
     }
-    console.log(this.uploadFrom);
-    console.log(this.form);
-    // this.uploadFrom = this.selectedUploadFrom.Option;
   }
 
   chooseFromCloudLibrary() {
-    console.log('chooseFromCloudLibrary');
+    this.isDataLoading = true;
+    this.operationalPlanService.getInstallationsByDocumentTypeId(this.form.value.documentType.Id).pipe(take(1)).subscribe((data) => {
+      console.log(data);
+      this.installationsByDocumentType = data;
+      this.installationsByDocumentType = this.installationsByDocumentType.filter(x => x.VesselId !== this.vesselId);
+      console.log(this.installationsByDocumentType);
+      this.isDataLoading = false;
+    });
   }
 
   incomingFile(event) {
     this.file = event.target.files[0];
-    console.log(this.file);
-    console.log(this.form);
   }
 
   addDocument() {
-    console.log(this.form);
     if (this.form.valid) {
-      const data = {
-        Id: this.editDocument == null ? 0 : this.editDocument.Id, //Id == 0 add mode, otherwise edit mode
-        VesselId: this.vesselId,
-        DocumentTypeId: this.form.value.documentType.value !== undefined ? this.form.value.documentType.value.Id : '',
-        Date: this.form.value.documentDate.value !== undefined ? this.form.value.documentDate.value : '',
-        Version: this.form.value.version.value !== undefined ? this.form.value.version : '',
-        CreatedBy: '',
-        CloudDecumentId: (this.uploadFrom === 'Cloud' && this.selectedCloudLibraryItem !== null)? this.selectedCloudLibraryItem.Id: 0  // If not zero this is an upload from cloud
-      };
-
       let formData: FormData = new FormData();
-      // formData.append('data', data);
-
-      if (this.file != undefined) {
-        formData.append('uploadFile', this.file, this.file.name);
-        console.log(formData);
-
-        this.isDataLoading = true;
-        this.operationalPlanService.getVesselSections(this.vesselId).pipe(take(1)).subscribe((data) => {
-          this.isDataLoading = false;
-          if (this.editDocument == null) {
-            this.triggerToast('success', 'Success Message', `Document added successfully`);
-          }
-          else {
-            this.triggerToast('success', 'Success Message', `Document updated successfully`);
-          }
-          this.editDocument = null;
-          this.uploadFrom = '';
-          this.form.reset();
-
-        });
+      formData.append('Id', (this.editDocument == null ? 0 : this.editDocument.Id).toString());
+      formData.append('VesselId', this.vesselId.toString());
+      formData.append('DocumentTypeId', this.form.value.documentType.Id);
+      formData.append('CreatedBy', '');
+      // formData.append('CopyVesselId', ((this.uploadFrom === 'Cloud' && this.selectedInstallationByDocType !== null) ? this.selectedInstallationByDocType.Id : 0).toString());
+      formData.append('InstallationName', this.prepareInstallationService.installation.displayName);
+      if (this.uploadFrom === 'Cloud' && this.selectedInstallationByDocType !== null) // Upload from Cloud
+      {
+        formData.append('DocumentId', this.selectedInstallationByDocType.DocumentId);
+        formData.append('CopyVesselId', this.selectedInstallationByDocType.VesselId);
+      }
+      else { //Upload from Local 
+        formData.append('DocumentName', this.form.value.documentName);
+        formData.append('Date', this.form.value.documentDate.toJSON());
+        formData.append('Version', this.form.value.version);
+        formData.append('CopyVesselId', "0");
+        if (this.editDocument !== null) {
+          formData.append('DocumentId', this.editDocument.DocumentId.toString());
+        }
+        if (this.file != undefined) {
+          formData.append('File', this.file, this.file.name);
+        }
       }
 
-      if (this.selectedCloudLibraryItem !== null) {
-        console.log(this.selectedCloudLibraryItem);
-        // This is an upload from cloud library
+      this.isDataLoading = true;
+      this.operationalPlanService.AddDocumentAsync(formData).pipe(take(1)).subscribe((data) => {
+        console.log(data);
+        this.isDataLoading = false;
         if (this.editDocument == null) {
           this.triggerToast('success', 'Success Message', `Document added successfully`);
         }
         else {
           this.triggerToast('success', 'Success Message', `Document updated successfully`);
         }
-      }
-
+        this.getInstallationDocuments();
+        this.clear();
+      });
     }
-  } k
+  }
 
-  getInstallationDocument() {
+  getInstallationDocuments() {
+    // this.vesselId = 1;
     this.isDataLoading = true;
-    this.operationalPlanService.getInstallationDocument(this.vesselId).pipe(take(1)).subscribe((data) => {
-      // this.installationDocuments = data;
-      this.installationDocuments = [{ Id: 1, DocumentTypeId: 1, DocumentName: 'Installation Manual', DocumentType: 'Manual', Version: '1.0.0', DocumentPath: '', File: 'TalismanManual.docx', Date: new Date(), UploadSource: 'Local' }];
+    this.operationalPlanService.getInstallationDocuments(this.vesselId).pipe(take(1)).subscribe((data) => {
+      console.log(data);
+      this.installationDocuments = data;
+      console.log(this.installationDocuments);
+      // this.installationDocuments = [{
+      //   Id: 1, VesselId: 1, DocumentId: 23, DocumentTypeId: 1, DocumentName: 'Installation Manual', DocumentTypeName: 'Manual', Version: '1.0.0',
+      //   DocumentPath: '', FileName: 'TalismanManual.docx', Date: new Date(), UploadSource: 'Local', CopyVesselId: 2
+      // }];
       this.isDataLoading = false;
     });
   }
 
   getDocumentType() {
     this.isDataLoading = true;
-    this.operationalPlanService.getDocumentType().pipe(take(1)).subscribe((data) => {
-      // this.documentTypes = data;
-      this.documentTypes = [{ Id: 1, TypeName: 'Manual', CreatedDate: new Date(), ModifiedDate: new Date(), CreatedBy: 'Sandeep' },
-      { Id: 2, TypeName: 'Inspection Path', CreatedDate: new Date(), ModifiedDate: new Date(), CreatedBy: 'Prabhu' }];
+    this.operationalPlanService.getDocumentTypes().pipe(take(1)).subscribe((data) => {
+      this.documentTypes = data;
+      // this.documentTypes = [{ Id: 1, TypeName: 'Manual', CreatedDate: new Date(), ModifiedDate: new Date(), CreatedBy: 'Sandeep' },
+      // { Id: 2, TypeName: 'Inspection Path', CreatedDate: new Date(), ModifiedDate: new Date(), CreatedBy: 'Prabhu' }];
       this.isDataLoading = false;
     });
   }
 
   editInstallationDocument(rowData: IInstallationDocument) {
-    console.log(rowData);
     this.editDocument = rowData;
     this.form.setValue({
       documentName: rowData.DocumentName,
       documentType: this.documentTypes.find(p => p.Id == rowData.DocumentTypeId),
       version: rowData.Version,
-      documentDate: rowData.Date,
-      uploadSource: this.uploadFromOptions.find(p => p.Option == rowData.UploadSource),
+      documentDate:  new Date(rowData.Date).toLocaleDateString(),
+      uploadSource: this.uploadFromOptions.find(p => p.Option == (rowData.CopyVesselId === 0 ? 'Local' : 'Cloud')),
       localFile: ''
     });
-    console.log(this.form);
-    this.uploadFrom = this.uploadFromOptions.find(p => p.Option == rowData.UploadSource).Option;
+    this.uploadFrom = this.uploadFromOptions.find(p => p.Option == (rowData.CopyVesselId === 0 ? 'Local' : 'Cloud')).Option;
+    this.documentTypeId = rowData.DocumentTypeId;
 
     if (this.uploadFrom == 'Local') {
-      this.form.controls.localFile.setValidators([Validators.required]);
+      this.form.controls.documentName.setValidators([Validators.required]);
+      this.form.controls.version.setValidators([Validators.required]);
+      this.form.controls.documentDate.setValidators([Validators.required]);
+      this.form.controls.documentName.enable();
+      this.form.controls.version.enable();
+      this.form.controls.documentDate.enable();
+
+      if (this.editDocument !== null) {
+        this.form.controls.localFile.clearValidators();
+      }
+      else {
+        this.form.controls.localFile.setValidators([Validators.required]);
+      }
+      this.form.controls.localFile.reset();
       this.form.controls.localFile.updateValueAndValidity();
-      this.form.controls.localFile.setValue('');
     }
-    else {
+    else {  // Cloud
       this.form.controls.localFile.clearValidators();
+      this.form.controls.documentName.clearValidators();
+      this.form.controls.version.clearValidators();
+      this.form.controls.documentDate.clearValidators();
+      this.form.controls.documentName.disable();
+      this.form.controls.version.disable();
+      this.form.controls.documentDate.disable();
       this.form.controls.localFile.updateValueAndValidity();
+
+      this.form.controls.documentName.reset();
+      this.form.controls.version.reset();
+      this.form.controls.documentDate.reset();
+      this.form.controls.localFile.reset();
     }
   }
 
@@ -215,26 +278,26 @@ export class CreateDocumentsComponent implements OnInit {
         this.operationalPlanService.deleteInstallationDocument(rowData.Id).pipe(take(1)).subscribe((data) => {
           this.isDataLoading = false;
           this.triggerToast('success', 'Success Message', `Document deleted successfully`);
+          this.getInstallationDocuments();
         });
       }
     });
   }
 
-  clear()
-  {
+  clear() {
     this.editDocument = null;
     this.uploadFrom = '';
+    this.documentTypeId = null;
     this.form.reset();
   }
 
-  cancel()
-  {
+  cancel() {
     this.router.navigateByUrl('/operational-plan');
   }
 
   next(): void {
     this.nextActiveTab.emit(5);
-    this.router.navigateByUrl('/operational-plan/prepare-installation/contacts/' +  this.prepareInstallationService.installation.id);
+    this.router.navigateByUrl('/operational-plan/prepare-installation/contacts/' + this.prepareInstallationService.installation.id);
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

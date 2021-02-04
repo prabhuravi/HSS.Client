@@ -7,9 +7,7 @@ export class VesselSection {
         public sectionStatus: SectionStatus,
         public section: Section,
         public selected: boolean = false,
-        public foulingId: number,
-        public foulingState: string,
-        public jotunFoulingId: number,
+        public foulingState: IFoulingState,
         public subSections: SubSection[] = []
     ) { }
 }
@@ -32,6 +30,7 @@ export class SubSection {
         public id: number,
         public vesselSectionId: number,
         public subSectionNumber: number,
-        public sectionStatus: SectionStatus
+        public sectionStatus: SectionStatus,
+        public foulingState: IFoulingState
     ) { }
 }
