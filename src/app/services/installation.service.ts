@@ -51,7 +51,7 @@ export class InstallationService {
   }
   UpdateInstallationInformation(installationIformation: Installation): Observable<boolean> {
     const requestData = {
-      endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.UpdateInstallation}` + '/' + installationIformation.id.toString(),
+      endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.UpdateInstallation}/${installationIformation.id}`,
       data: installationIformation
     };
     return this.http.putData(requestData);

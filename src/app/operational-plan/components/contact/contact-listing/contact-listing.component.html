@@ -1,9 +1,14 @@
 <div class="kx-row" *ngIf="!excludeSearch" style="margin-top: 10px;margin-bottom: 2px;">
-  <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
+  <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--12@tab-m kx-col--12@ltp-s">
     <div class="kx-mt--tiny">
-      <p-autoComplete [(ngModel)]="searchedContact" [suggestions]="contacts" inputStyleClass="kx-field kx-field--size-base"
-        (completeMethod)="filterPortContact($event)" field="firstName" [size]="30"
+      <p-autoComplete [(ngModel)]="searchedContact" [suggestions]="contactSearch" (onSelect)="onSelectContact($event)" inputStyleClass="kx-field kx-field--size-base"
+        (completeMethod)="searchContact($event)" field="name" [size]="30"
         placeholder="Seach contacts" [minLength]="3">
+        <ng-template let-user pTemplate="item">
+          <div class="ui-helper-clearfix">
+              {{user.name}}, {{user.surName}}, {{user.email}}, {{user.phone}}, {{user.alternativePhone}}
+          </div>
+      </ng-template>
       </p-autoComplete>
     </div>
   </div>
@@ -34,12 +39,12 @@
   </ng-template>
   <ng-template pTemplate="body"  let-rowData>
     <tr *ngIf="rowData">
-      <td>{{ rowData.firstName }}</td>
+      <td>{{ rowData.name }}</td>
       <td>{{ rowData.surName }}</td>
       <td>{{ rowData.email }}</td>
       <td>{{ rowData.alternativePhone }}</td>
       <td>{{ rowData.phone }}</td>
-      <td>{{ rowData.role ? rowData.role.name : ''}}</td>
+      <td>{{ rowData.ContactType ? rowData.ContactType.name : ''}}</td>
       <td>
         <p-checkbox [name]="rowData.id + rowData.firstName" [(ngModel)]="rowData.tagTraining" [disabled]="true" [binary]="true"></p-checkbox>
       </td>
