@@ -24,11 +24,11 @@ export class FoulingStateComponent implements OnInit {
   vesselId = 0;
   @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
 
-  cols = [
-    { field: 'name', sortfield: 'name', header: 'Section', filterMatchMode: 'contains' },
-    { field: 'foulingState', sortfield: 'foulingState', header: 'Fouling State', filterMatchMode: 'contains' },
-    { field: 'id', sortfield: '', header: 'Action' }
-  ];
+  // cols = [
+  //   { field: 'name', sortfield: 'name', header: 'Section', filterMatchMode: 'contains' },
+  //   { field: 'foulingState', sortfield: 'foulingState', header: 'Fouling State', filterMatchMode: 'contains' },
+  //   { field: 'id', sortfield: '', header: 'Action' }
+  // ];
 
   constructor(private operationalPlanService: OperationalPlanService, private router: Router,
               private confirmationService: ConfirmationService,
@@ -36,10 +36,9 @@ export class FoulingStateComponent implements OnInit {
               private prepareInstallationService: PrepareInstallationService) { }
 
   ngOnInit() {
-
-    this.getVesselSections();
-    this.getFoulingStates();
-    this.getSectionFoulingStates();
+    // this.getVesselSections();
+    // this.getFoulingStates();
+    // this.getSectionFoulingStates();
 
     // this.sectionFoulingStates = [{ Id: 1, VesselId: 1, SectionName: 'Top', Status: null, FoulingId: 1, JotunFoulingId: null, FoulingState: 'Good', Subsections: null }, { Id: 2, VesselId: 1, SectionName: 'Bottom', Status: null, FoulingId: 2, JotunFoulingId: null, FoulingState: 'Poor', Subsections: null }];
     // this.vesselSections = [{ Id: 1, VesselId: 1, SectionName: 'Top', Status: null, FoulingId: null, JotunFoulingId: null, FoulingState: null, Subsections: null },
@@ -61,87 +60,47 @@ export class FoulingStateComponent implements OnInit {
 
 
 
-  getSectionFoulingStates() {
-    this.isDataLoading = true;
-    this.operationalPlanService.getSectionFoulingStates(this.vesselId).pipe(take(1)).subscribe((data) => {
-      this.sectionFoulingStates = data;
-      this.isDataLoading = false;
-    });
-  }
-
-  getVesselSections() {
-    this.isDataLoading = true;
-    this.operationalPlanService.getVesselSections(this.vesselId).pipe(take(1)).subscribe((data) => {
-      this.vesselSections = data;
-      this.isDataLoading = false;
-    });
-  }
-
-  getFoulingStates() {
-    this.isDataLoading = true;
-    this.operationalPlanService.getFoulingStates().pipe(take(1)).subscribe((data) => {
-      this.foulingStates = data;
-      this.isDataLoading = false;
-    });
-  }
-
-  updateFoulingStateToSection() {
-    console.log(this.selectedSection);
-    console.log(this.selectedfoulingState);
-    // if (this.sectionFoulingStates.findIndex(p => p.Id == this.selectedSection.Id) == -1) {
-
-    this.isDataLoading = true;
-    this.operationalPlanService.updateFoulingStateToSection({ SectionId: this.selectedSection.id, FoulingStateId: this.selectedfoulingState.Id, VesselId: this.vesselId }).subscribe((data) => {
-        this.triggerToast('success', 'Success Message', `Fouling state updated for the section`);
-        this.isDataLoading = false;
-        this.getSectionFoulingStates();
-      });
-
-    // }
-    // else {
-    //   this.triggerToast('error', 'Failure Message', `Section is already assigned a fouling state. Please choose edit option from grid below to update it`);
-    // }
-
-    // this.isDataLoading = true;
-    // this.operationalPlanService.updateSectionFoulingState(this.selectedSection.Id, { SectionId: this.selectedSection.Id, FoulingStateId: this.selectedfoulingState.Id, VesselId: this.vesselId }).subscribe((data) => {
-    //   this.triggerToast('success', 'Success Message', `Fouling state updated for section `+ rowData.SectionName);
-    //   this.isDataLoading = false;
-    //   this.getSectionFoulingStates();
-    // });
-
-  }
-
-  // deleteSection(rowData: ISection) {
-  //   console.log(rowData);
-  //   this.confirmationService.confirm({
-  //     message: 'Are you sure you want to delete section ' + rowData.SectionName + '?',
-  //     accept: () => {
-  //       this.isDataLoading = true;
-  //       this.operationalPlanService.deleteSection(rowData.Id).pipe(take(1)).subscribe(() => {
-  //         this.triggerToast('success', 'Success Message', 'Section deleted');
-  //         this.isDataLoading = false;
-  //         this.getSectionFoulingStates();
-  //       });
-  //     }
+  // getSectionFoulingStates() {
+  //   this.isDataLoading = true;
+  //   this.operationalPlanService.getSectionFoulingStates(this.vesselId).pipe(take(1)).subscribe((data) => {
+  //     this.sectionFoulingStates = data;
+  //     this.isDataLoading = false;
   //   });
   // }
+  // getVesselSections() {
+  //   this.isDataLoading = true;
+  //   this.operationalPlanService.getVesselSections(this.vesselId).pipe(take(1)).subscribe((data) => {
+  //     this.vesselSections = data;
+  //     this.isDataLoading = false;
+  //   });
+  // }
+  // getFoulingStates() {
+  //   this.isDataLoading = true;
+  //   this.operationalPlanService.getFoulingStates().pipe(take(1)).subscribe((data) => {
+  //     this.foulingStates = data;
+  //     this.isDataLoading = false;
+  //   });
+  // }
+  // updateFoulingStateToSection() {
+  //   console.log(this.selectedSection);
+  //   console.log(this.selectedfoulingState);
+  //   this.isDataLoading = true;
+  //   this.operationalPlanService.updateFoulingStateToSection({ SectionId: this.selectedSection.id, FoulingStateId: this.selectedfoulingState.Id, VesselId: this.vesselId }).subscribe((data) => {
+  //       this.triggerToast('success', 'Success Message', `Fouling state updated for the section`);
+  //       this.isDataLoading = false;
+  //       this.getSectionFoulingStates();
+  //     });
+  // }
+  // editSectionFoulingState(rowData: VesselSection) {
+  //   console.log(rowData);
+  //   this.selectedSection = this.vesselSections.find((v) => v.id === rowData.id);
+  //   console.log(this.selectedSection);
 
-  editSectionFoulingState(rowData: VesselSection) {
-    console.log(rowData);
-    this.selectedSection = this.vesselSections.find((v) => v.id === rowData.id);
-    console.log(this.selectedSection);
+  //   this.selectedfoulingState = this.foulingStates.find((v) => v.Id === rowData.id);
+  //   console.log(this.selectedfoulingState);
+  // }
 
-    this.selectedfoulingState = this.foulingStates.find((v) => v.Id === rowData.id);
-    console.log(this.selectedfoulingState);
 
-    // this.isDataLoading = true;
-    // this.operationalPlanService.updateSectionFoulingState(this.selectedSection.Id, { SectionId: this.selectedSection.Id, FoulingStateId: this.selectedfoulingState.Id, VesselId: this.vesselId }).subscribe((data) => {
-    //   this.triggerToast('success', 'Success Message', `Fouling state updated for section `+ rowData.SectionName);
-    //   this.isDataLoading = false;
-    //   this.getSectionFoulingStates();
-    // });
-
-  }
 
   clear() {
     this.selectedSection = null;

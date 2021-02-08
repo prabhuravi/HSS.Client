@@ -5,6 +5,8 @@ import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import { Section, SectionStatus, SubSection, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
+import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { SectionService } from 'src/app/services/section.service';
 
 @Component({
@@ -22,33 +24,34 @@ export class UpdateFoulingStateComponent implements OnInit {
   sections: VesselSection[] = [];
   subSections: SubSection[] = [];
   isDataLoading = true;
-  // editMode: boolean = false;
   formValues: any = null;
   formType = FormType;
   formData: FormGroup;
   config = {
     formList: []
   };
-
+  vesselId = 0;
   sectionStatus: SectionStatus[] = [];
   foulingStates: IFoulingState[] = [];
 
   constructor(
-    private sectionService: SectionService,
-    private formBuliderService: FromBuilderService,
+    private sectionService: SectionService, private operationalPlanService: OperationalPlanService,
+    private prepareInstallationService: PrepareInstallationService, private formBuliderService: FromBuilderService,
     public fb: FormBuilder, public messageService: MessageService
   ) { }
 
   ngOnInit() {
-
-    this.sectionService.getFoulingStates().pipe(take(1)).subscribe((data) => {
+    this.vesselId = 1;
+    // this.vesselId = this.prepareInstallationService.installation.id;
+    this.operationalPlanService.getFoulingStates().pipe(take(1)).subscribe((data) => {
       console.log(data);
       this.foulingStates = data;
       this.isDataLoading = false;
 
-      this.sectionService.getSections().pipe(take(1)).subscribe((data) => {
+      this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
         console.log(data);
         this.sections = data;
+        console.log(this.sections);
         this.isDataLoading = false;
 
         this.constructForm();
@@ -73,7 +76,7 @@ export class UpdateFoulingStateComponent implements OnInit {
         // value: this.sections[0],
         key: 'sectionName',
         validators: [Validators.required],
-        optionLabel: 'name',
+        optionLabel: 'Name',
         disabled: false
       },
       {
@@ -83,7 +86,7 @@ export class UpdateFoulingStateComponent implements OnInit {
         // value: this.foulingStates[0],
         key: 'subSectionName',
         validators: [Validators.required],
-        optionLabel: 'subSectionNumber',
+        optionLabel: 'SubSectionNumber',
         disabled: false
       },
       {
@@ -118,9 +121,11 @@ export class UpdateFoulingStateComponent implements OnInit {
 
   onSectionChanged(section: VesselSection) {
     console.log(section);
+    console.log(section.subSections);
     if (section) {
       if (section.subSections) {
         this.config.formList[1].options = section.subSections;
+        
       }
     }
 
@@ -152,7 +157,7 @@ export class UpdateFoulingStateComponent implements OnInit {
     this.formData.controls.subSectionName.setValue(data.subSection);
     // this.formData.controls.foulingState.setValue(data.subSection.foulingState);
     this.formData.controls.foulingState.setValue(this.foulingStates.find(x => x.Id == data.subSection.foulingState.Id));
-    
+
     console.log(data.subSection.foulingState);
     // this.formData.controls.subSectionName.setValue(this.subSection.name);
     // this.formData.get('foulingState').patchValue(this.subSection.foulingState);
@@ -166,14 +171,25 @@ export class UpdateFoulingStateComponent implements OnInit {
   updateFoulingState(): void {
     let subSection: SubSection = this.formData.value.subSectionName;
     subSection.foulingState = this.formData.value.foulingState;
-    // const formValue = this.formData.value;
-    // console.log(formValue.subSectionName);
-
-    // this.subSection.sectionId = this.subSection.sectionId;
-    // this.subSection.name = formValue.subSectionName;
-    // this.subSection.foulingState = formValue.foulingState;
     console.log(subSection);
-    this.foulingStateUpdated.emit(subSection);
+
+    this.isDataLoading = true;
+    this.operationalPlanService.updateSubSectionFoulingState(subSection.id, subSection).pipe(take(1)).subscribe((data) => {
+      console.log(data);
+      this.triggerToast('success', 'Success Message', `Sub Section fouling state updated successfully`);
+      this.isDataLoading = false;
+    });
+
+    // this.foulingStateUpdated.emit(subSection);
+  }
+
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
   }
 
 }

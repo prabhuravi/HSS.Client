@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
-import {  SubSection, VesselSection } from 'src/app/models/Section';
+import { SubSection, VesselSection } from 'src/app/models/Section';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { SectionService } from 'src/app/services/section.service';
 
@@ -14,9 +14,9 @@ import { SectionService } from 'src/app/services/section.service';
 })
 export class ListFoulingStateComponent implements OnInit {
 
-  constructor(public sectionService: SectionService,
-              public fb: FormBuilder, private confirmationService: ConfirmationService,
-              private messageService: MessageService) { }
+  constructor(public sectionService: SectionService, private operationalPlanService: OperationalPlanService,
+    public fb: FormBuilder, private confirmationService: ConfirmationService,
+    private messageService: MessageService) { }
 
   isDataLoading = false;
   @Input() sections: VesselSection[];
@@ -32,12 +32,15 @@ export class ListFoulingStateComponent implements OnInit {
     { field: 'subSections', header: 'Sub-Section', sortfield: '', filterMatchMode: '' },
     { field: 'foulingState.State', header: 'Fouling State', sortfield: 'foulingState.State', filterMatchMode: 'contains' },
     { field: 'action', header: 'Action', sortfield: '', filterMatchMode: '' }
-
   ];
 
+  vesselId = 0;
+
   ngOnInit() {
+    this.vesselId = 1;
+    // this.vesselId = this.prepareInstallationService.installation.id;
     this.isDataLoading = true;
-    this.sectionService.getSections().pipe(take(1)).subscribe((data) => {
+    this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       this.sections = data;
       console.log(this.sections);
@@ -75,18 +78,16 @@ export class ListFoulingStateComponent implements OnInit {
     this.foulingStateEdited.emit({ section, subSection });
     this.subSectionFlag = true;
   }
-  
+
   onSubSectionFoulingStateUpdated(data: SubSection): void {
     console.log(data);
     const sectionItem = this.sections.find((x) => x.id === data.vesselSectionId);
 
     this.sections.forEach((section) => {
-      if (section.id === data.vesselSectionId)
-      {
+      if (section.id === data.vesselSectionId) {
         console.log(section);
         section.subSections.forEach((subSection) => {
-          if(subSection.id === data.id)
-          {
+          if (subSection.id === data.id) {
             subSection = data;
             console.log(subSection);
           }
@@ -113,7 +114,7 @@ export class ListFoulingStateComponent implements OnInit {
   }
 
   onFoulingStateCancelled(): void {
-  this.subSectionFlag = false;
+    this.subSectionFlag = false;
   }
 
   // onSectionRowDelete(sectionRow: Section) {
