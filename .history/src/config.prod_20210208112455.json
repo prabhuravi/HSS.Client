@@ -157,7 +157,7 @@
           "DeleteVesselContact": "/VesselContact",
           "SeachContact": "/Search"
         }
-      }, 
+      },
       "Vessel": {
         "path": "/Vessel",
         "endpoints": {
