@@ -35,8 +35,9 @@ export class UpdateFoulingStateComponent implements OnInit {
   foulingStates: IFoulingState[] = [];
 
   constructor(
-    private sectionService: SectionService, private operationalPlanService: OperationalPlanService,
-    private prepareInstallationService: PrepareInstallationService, private formBuliderService: FromBuilderService,
+    private sectionService: SectionService,
+      private prepareInstallationService: PrepareInstallationService, private operationalPlanService: OperationalPlanService,
+    private formBuliderService: FromBuilderService,
     public fb: FormBuilder, public messageService: MessageService
   ) { }
 

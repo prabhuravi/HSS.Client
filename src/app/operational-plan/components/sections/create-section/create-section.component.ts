@@ -5,9 +5,10 @@ import { MessageService } from '@kognifai/poseidon-message-service';
 import { ConfirmationService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
-import { SectionAdapter } from 'src/app/models/modelAdapter';
-import { VesselSection, SectionStatus } from 'src/app/models/Section';
+import { SectionAdapter, VesselSectionAdapter } from 'src/app/models/modelAdapter';
+import { VesselSection, SectionStatus, Section } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { SectionService } from 'src/app/services/section.service';
 
 @Component({
@@ -18,7 +19,7 @@ import { SectionService } from 'src/app/services/section.service';
 export class CreateSectionComponent implements OnInit {
   @Input() vesselSection: VesselSection;
   @Output() sectionUpdated: EventEmitter<any> = new EventEmitter<any>();
-  Sections: VesselSection[] = [];
+  Sections: Section[] = [];
   isDataLoading = true;
   editMode: boolean = false;
   PrepareInstallation: boolean = false;
@@ -35,6 +36,8 @@ export class CreateSectionComponent implements OnInit {
   constructor(
     private sectionService: SectionService,
     private sectionAdapter: SectionAdapter,
+    private vesselSectionAdapter: VesselSectionAdapter,
+    private prepareInstallationService: PrepareInstallationService,
     private router: Router,
     private confirmationService: ConfirmationService,
     private formBuliderService: FromBuilderService,
@@ -91,12 +94,13 @@ export class CreateSectionComponent implements OnInit {
     }
   }
 
-  sectionEditInit(sectionData: any): void {
+  sectionEditInit(sectionData: VesselSection): void {
     this.editMode = true;
     this.vesselSection = sectionData;
-    console.log(this.Sections.find((x) => x.id === sectionData.id));
-    this.formData.controls.name.setValue(this.Sections.find((x) => x.id === sectionData.id));
+    console.log(this.Sections.find((x) => x.id === sectionData.sectionId));
+    this.formData.controls.name.setValue(this.Sections.find((x) => x.id === sectionData.sectionId));
     this.formData.controls.sectionStatus.setValue(sectionData.sectionStatus);
+    this.formData.controls.name.disable();
   }
 
   formOnchangeEvent(changedItem: any): void {
@@ -104,22 +108,33 @@ export class CreateSectionComponent implements OnInit {
   }
   onFormReset(): void {
     this.formData.reset();
+    this.formData.controls.sectionStatus.setValue(this.sectionStatus[0]);
+    this.formData.controls.name.enable();
     this.editMode = false;
   }
 
   addNewSection(): void {
-    const newSection = this.sectionAdapter.adapt(this.formData.value);
+    const newSection = this.vesselSectionAdapter.adapt(this.formData.value);
+    newSection.vesselId =  this.prepareInstallationService.installation.id;
+    newSection.sectionId = this.formData.controls.name.value.id;
+    newSection.sectionStatusId = this.formData.controls.sectionStatus.value.id;
+    console.log(newSection);
     newSection.name = this.formData.controls.name.value.name;
-    newSection.id = Math.floor(Math.random() * 999999) + 1;
-    this.sectionUpdated.emit(newSection);
+    this.sectionService.CreateVesselSection(newSection).pipe(take(1)).subscribe((data) => {
+      newSection.id = data.id;
+      this.sectionUpdated.emit(newSection);
+    });
   }
 
   saveSection(): void {
     const formValue = this.formData.value;
-    console.log(formValue.name.value);
-    this.vesselSection.name = formValue.name.value.name;
     this.vesselSection.sectionStatus = formValue.sectionStatus;
+    this.sectionService.UpdateVesselSection(this.vesselSection).pipe(take(1)).subscribe((data) => {
     this.sectionUpdated.emit(this.vesselSection);
+    this.onFormReset();
+    this.formData.controls.name.enable();
+    this.editMode = false;
+    });
   }
 
 }

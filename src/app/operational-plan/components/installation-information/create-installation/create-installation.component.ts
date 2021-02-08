@@ -171,6 +171,7 @@ export class CreateInstallationComponent implements OnInit {
   private setFormValue(installation: Installation) {
     this.onFormReset();
     if (installation) {
+      console.log(installation);
 
       if (installation.vesselType) {
         this.formData.controls.VesselType.setValue(installation.vesselType);
@@ -188,9 +189,10 @@ export class CreateInstallationComponent implements OnInit {
         this.formData.controls.InstallationId.disable();
       }
 
-      if (installation.installationStatus && installation.installationStatus.name !== '') {
+      if (installation.installationStatus) {
         this.formData.controls.InstallationStatus.setValue(installation.installationStatus);
-        this.formData.controls.InstallationStatus.disable();
+      } else {
+        this.formData.controls.InstallationStatus.setValue(this.installationStatus[0]);
       }
 
       if (installation.node && installation.node.nodeNumber > 0) {
@@ -234,6 +236,7 @@ export class CreateInstallationComponent implements OnInit {
      installationIformation.node.gatewayIP = formValues.gatewayIP;
      installationIformation.node.installationId = formValues.InstallationId;
      installationIformation.installationStatus = formValues.InstallationStatus;
+     installationIformation.installationStatusId = formValues.InstallationStatus.id;
      console.log(this.formData.getRawValue());
      console.log(installationIformation);
     //  console.log(installationIformation);

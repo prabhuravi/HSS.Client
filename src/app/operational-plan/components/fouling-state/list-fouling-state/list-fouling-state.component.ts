@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import { SubSection, VesselSection } from 'src/app/models/Section';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { SectionService } from 'src/app/services/section.service';
 
 @Component({
@@ -14,9 +15,10 @@ import { SectionService } from 'src/app/services/section.service';
 })
 export class ListFoulingStateComponent implements OnInit {
 
-  constructor(public sectionService: SectionService, private operationalPlanService: OperationalPlanService,
-    public fb: FormBuilder, private confirmationService: ConfirmationService,
-    private messageService: MessageService) { }
+  constructor(public sectionService: SectionService,
+      private prepareInstallationService: PrepareInstallationService, private operationalPlanService: OperationalPlanService,
+              public fb: FormBuilder, private confirmationService: ConfirmationService,
+              private messageService: MessageService) { }
 
   isDataLoading = false;
   @Input() sections: VesselSection[];

@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import { Contact } from 'src/app/models/Contact';
+import { ContactService } from 'src/app/services/contact.service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
   selector: 'app-contact-listing',
@@ -16,68 +19,33 @@ export class ContactListingComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   @Output() contactOnEdit: EventEmitter<any> = new EventEmitter<any>();
   cols = [
-    { field: 'firstName',  header: 'First Name', sortfield: 'firstName', filterMatchMode: 'contains' },
+    { field: 'firstName', header: 'First Name', sortfield: 'firstName', filterMatchMode: 'contains' },
     { field: 'surName', header: 'Surname', sortfield: 'surName', filterMatchMode: 'contains' },
-    { field: 'email',  header: 'Email', sortfield: 'email', filterMatchMode: 'contains'},
+    { field: 'email', header: 'Email', sortfield: 'email', filterMatchMode: 'contains' },
     { field: 'alternativePhone', header: 'Alternative Phone', sortfield: 'alternativePhone', filterMatchMode: 'contains' },
-    { field: 'Phone',  header: 'Phone', sortfield: 'Phone', filterMatchMode: 'contains' },
+    { field: 'Phone', header: 'Phone', sortfield: 'Phone', filterMatchMode: 'contains' },
     { field: 'role', header: 'Role', sortfield: 'role.name', filterMatchMode: 'contains' },
     { field: 'tagTraining', header: 'Tag Training', sortfield: '' },
-    { field: 'action',  header: 'Actions',  sortfield: ''  }
+    { field: 'action', header: 'Actions', sortfield: '' }
   ];
-contactSearch: Contact[];
-  contacts: Contact[] = [
-    {
-      id: 1,
-      vesselId: 1,
-      vesselContactId: 1,
-      firstName: 'Test1',
-      surName: 'a',
-      email: 'test@tests.com',
-      alternativePhone: '12234556',
-      phone: '123211',
-      role: {
-        id: 1,
-        name: 'Skate Operator'
-      },
-      tagTraining: true
-    },
-    {
-      id: 2,
-      vesselId: 1,
-      vesselContactId: 1,
-      firstName: 'Test2',
-      surName: 'b',
-      email: 'test2@tests.com',
-      alternativePhone: '1223321',
-      phone: '122211',
-      role: {
-        id: 2,
-        name: 'Crew Mate'
-      },
-      tagTraining: false
-    },
-    {
-      id: 3,
-      vesselId: 1,
-      vesselContactId: 1,
-      firstName: 'Test3',
-      surName: 'c',
-      email: 'test3@tests.com',
-      alternativePhone: '1223321',
-      phone: '122211',
-      role:  {
-        id: 3,
-        name: 'Ship Captain'
-      },
-      tagTraining: false
-    }
-  ];
-  constructor( private confirmationService: ConfirmationService,
-               private messageService: MessageService) { }
+  contactSearch: Contact[];
+  contacts: Contact[] = [];
+  constructor(private confirmationService: ConfirmationService,
+              private messageService: MessageService,
+              private contactService: ContactService,
+              private prepareInstallationService: PrepareInstallationService) { }
 
   ngOnInit() {
-    this.contactSearch = this.contacts;
+    this.loadVesselContacts();
+  }
+
+  private loadVesselContacts() {
+    this.isDataLoading = true;
+    this.contactService.getVesselContacts(this.prepareInstallationService.installation.id).pipe(take(1)).subscribe((data) => {
+      console.log(data);
+      this.isDataLoading = false;
+      this.contacts = data;
+    });
   }
 
   onContactEditInit(rowData: Contact) {
@@ -86,32 +54,56 @@ contactSearch: Contact[];
 
   onContactDelete(rowData: Contact) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this contact?',
+      message: 'Are you sure you want to remove this contact?',
       accept: () => {
 
         this.isDataLoading = true;
-        this.isDataLoading = false;
-        this.contacts = this.contacts.filter((x) => x !== rowData);
-        this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
+        this.contactService.deleteVesselContact(rowData.vesselContactId).pipe(take(1)).subscribe((data) => {
+          this.isDataLoading = false;
+          this.contacts = this.contacts.filter((x) => x !== rowData);
+          this.triggerToast('success', 'Success Message', `contact removed successfully`);
+        });
       }
     });
   }
 
-  onContactDataUpdated(ContactData: any): void {
-    debugger;
+  onContactDataUpdated(ContactData: Contact): void {
     console.log(ContactData);
-    let rowData = this.contacts.find( (x) => x.id ===  ContactData.id);
+    let rowData = this.contacts.find((x) => x.id === ContactData.id);
     if (rowData) {
       rowData = ContactData;
     } else {
       this.contacts.push(ContactData);
     }
-
-    console.log(this.contacts);
   }
-  filterPortContact(event: any) {
-    console.log(event);
-    this.contactSearch = this.contacts.filter((x) => x.firstName.includes(event.query));
+  searchContact(event: any) {
+    console.log(event.query);
+    this.contactService.searchContacts(event.query).subscribe((data) => {
+      this.contactSearch = data;
+      console.log(data);
+    });
+  }
+  onSelectContact(event: Contact) {
+    const selectedContact = event;
+    const existingContact = this.contacts.filter((x) => x.id === selectedContact.id);
+    if (existingContact.length < 0) {
+      this.confirmationService.confirm({
+        message: 'Would you like to add this contact to this installation?',
+        accept: () => {
+          selectedContact.contactId = existingContact[0].id;
+          selectedContact.vesselId = this.prepareInstallationService.installation.id;
+          this.isDataLoading = true;
+          this.contactService.createVesselContact(selectedContact).pipe(take(1)).subscribe((data) => {
+            this.isDataLoading = false;
+            this.triggerToast('success', 'Success Message', `contact added successfully`);
+            this.searchedContact = null;
+          });
+        }
+      });
+    } else {
+      this.triggerToast('warn', 'Warn Message', `contact already exists!`);
+      this.searchedContact = null;
+    }
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

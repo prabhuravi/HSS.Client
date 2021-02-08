@@ -1,11 +1,14 @@
 import { EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import { Contact, ContactRole } from 'src/app/models/Contact';
 import { ContactAdapter } from 'src/app/models/modelAdapter';
+import { ContactService } from 'src/app/services/contact.service';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
   selector: 'app-create-contact',
@@ -28,28 +31,23 @@ export class CreateContactComponent implements OnInit {
   isDataLoading = false;
   editMode: boolean = false;
 
-  roleList: ContactRole[] = [
-    {
-      id: 1,
-      name: 'Skate Operator'
-    },
-    {
-      id: 2,
-      name: 'Crew Mate'
-    },
-    {
-      id: 3,
-      name: 'Ship Captain'
-    }
-  ];
+  roleList: ContactRole[] = [];
   constructor(private formBuliderService: FromBuilderService,
               private contactAdapter: ContactAdapter,
               private confirmationService: ConfirmationService,
+              private contactService: ContactService,
+              private messageService: MessageService,
+              private prepareInstallationService: PrepareInstallationService,
               public fb: FormBuilder) { }
 
   ngOnInit() {
-    this.constructForm();
-    this.formData = this.formBuliderService.buildForm(this.config);
+    this.isDataLoading = true;
+    this.contactService.getContactTypes().pipe(take(1)).subscribe((data) => {
+      this.isDataLoading = false;
+      this.roleList = data;
+      this.constructForm();
+      this.formData = this.formBuliderService.buildForm(this.config);
+    });
   }
 
   constructForm(): void {
@@ -59,7 +57,7 @@ export class CreateContactComponent implements OnInit {
         type: FormType.text,
         label: 'First Name',
         value: '',
-        key: 'firstName',
+        key: 'name',
         validators: [Validators.required, Validators.maxLength(15)],
         disabled: false
       },
@@ -148,7 +146,7 @@ export class CreateContactComponent implements OnInit {
 
   onRoleChanged(roleItem: ContactRole) {
     console.log(roleItem);
-    if (roleItem.id === 1) {
+    if (roleItem.id === 3) {
       this.formData.controls.tagTraining.enable();
     } else {
       this.formData.controls.tagTraining.disable();
@@ -167,14 +165,14 @@ export class CreateContactComponent implements OnInit {
   sectionEditInit(contactData: Contact): void {
     this.editMode = true;
     this.contact = contactData;
-    this.formData.controls.firstName.setValue(contactData.firstName);
+    this.formData.controls.name.setValue(contactData.name);
     this.formData.controls.surName.setValue(contactData.surName);
     this.formData.controls.email.setValue(contactData.email);
     this.formData.controls.phone.setValue(contactData.phone);
     this.formData.controls.alternativePhone.setValue(contactData.alternativePhone);
-    this.formData.controls.role.setValue(contactData.role);
+    this.formData.controls.role.setValue(contactData.ContactType);
     this.formData.controls.tagTraining.setValue(contactData.tagTraining);
-    if (contactData.role.id === 1) {
+    if (contactData.ContactType.id === 3) {
       this.formData.controls.tagTraining.enable();
     } else {
       this.formData.controls.tagTraining.disable();
@@ -185,22 +183,42 @@ export class CreateContactComponent implements OnInit {
     console.log('save');
     console.log(this.formData.value);
 
-    this.contact.firstName =  this.formData.controls.firstName.value;
+    this.contact.name =  this.formData.controls.name.value;
     this.contact.surName = this.formData.controls.surName.value;
     this.contact.email = this.formData.controls.email.value;
     this.contact.phone  = this.formData.controls.phone.value;
     this.contact.alternativePhone = this.formData.controls.alternativePhone.value;
-    this.contact.role = this.formData.controls.role.value;
+    this.contact.ContactType = this.formData.controls.role.value;
+    this.contact.contactTypeId = this.formData.controls.role.value.id;
+    this.contact.vesselId = this.prepareInstallationService.installation.id;
     this.contact.tagTraining = this.formData.controls.tagTraining.value;
-    this.contactUpdated.emit(this.contact);
+    this.contactService.updateVesselContact(this.contact).pipe(take(1)).subscribe((data) => {
+      this.onFormReset();
+      this.editMode = false;
+      this.contactUpdated.emit(this.contact);
+      });
   }
 
   addNewContact(): void {
-    console.log('add');
     const newContact = this.contactAdapter.adapt(this.formData.value);
-    newContact.id = Math.floor(Math.random() * 999999) + 1;
+    newContact.contactTypeId = this.formData.controls.role.value.id;
+    newContact.vesselId = this.prepareInstallationService.installation.id;
     console.log(newContact);
-    this.contactUpdated.emit(newContact);
+    this.contactService.createVesselContact(newContact).pipe(take(1)).subscribe((data) => {
+      newContact.id = data.id;
+      console.log(data);
+      this.triggerToast('success', 'Success Message', `contact added successfully`);
+      this.contactUpdated.emit(newContact);
+    });
+  }
+
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
   }
 
 }

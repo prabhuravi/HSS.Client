@@ -95,7 +95,9 @@ export class SubSectionAdapter implements IModelAdapter<SubSection> {
     constructor(private sectionStatusAdapter: SectionStatusAdapter, private foulingStateAdapter: FoulingStateAdapter) { }
     adapt(item: any): SubSection {
         return new SubSection(item.Id ? item.Id : item.id ? item.id : 0,
-            item.SectionId ? item.SectionId : item.sectionId ? item.sectionId : 0,
+            item.vesselSectionId ? item.vesselSectionId : item.VesselSectionId ? item.VesselSectionId : 0,
+            item.sectionStatusId ? item.sectionStatusId : item.SectionStatusId ? item.SectionStatusId : 0,
+            item.foulingId ? item.foulingId : item.FoulingId ? item.FoulingId : 0,
             item.subSectionNumber ? item.subSectionNumber : item.SubSectionNumber ? item.SubSectionNumber : 0,
             item.SectionStatus ? this.sectionStatusAdapter.adapt(item.SectionStatus) : item.sectionStatus ? this.sectionStatusAdapter.adapt(item.sectionStatus) : null,
              item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : null
@@ -116,6 +118,8 @@ export class VesselSectionAdapter implements IModelAdapter<VesselSection> {
     adapt(item: any): VesselSection {
         return new VesselSection(item.Id ? item.Id : item.id ? item.id : 0,
             item.VesselId ? item.VesselId : item.vesselId ? item.vesselId : 0,
+            item.sectionStatusId ? item.sectionStatusId : item.SectionStatusId ? item.SectionStatusId : 0,
+            item.foulingId ? item.foulingId : item.FoulingId ? item.FoulingId : 0,
             item.SectionId ? item.SectionId : item.sectionId ? item.sectionId : 0,
             item.Name ? item.Name : item.name ? item.name : '',
             item.SectionStatus ? this.sectionStatusAdapter.adapt(item.SectionStatus) : item.sectionStatus ? this.sectionStatusAdapter.adapt(item.sectionStatus) : null,
@@ -146,13 +150,15 @@ export class ContactAdapter implements IModelAdapter<Contact> {
     adapt(item: any): Contact {
         return new Contact(item.Id ? item.Id : item.id ? item.id : 0,
             item.VesselId ? item.VesselId : item.vesselId ? item.vesselId : 0,
+            item.contactId ? item.contactId : item.ContactId ? item.ContactId : 0,
             item.VesselContactId ? item.VesselContactId : item.vesselContactId ? item.vesselContactId : 0,
-            item.FirstName ? item.FirstName : item.firstName ? item.firstName : '',
+            item.ContactTypeId ? item.ContactTypeId : item.contactTypeId ? item.contactTypeId : 0,
+            item.Name ? item.Name : item.name ? item.name : '',
             item.SurName ? item.SurName : item.surName ? item.surName : '',
             item.Email ?  item.Email : item.email ? item.email : '',
             item.Phone ? item.Phone : item.phone ? item.phone : '',
             item.AlternativePhone ? item.AlternativePhone : item.alternativePhone ? item.alternativePhone : '',
-            item.Role ? this.contactRoleAdapter.adapt(item.Role) : item.role ? this.contactRoleAdapter.adapt(item.role) : null,
+            item.ContactType ? this.contactRoleAdapter.adapt(item.ContactType) : item.contactType ? this.contactRoleAdapter.adapt(item.contactType) : null,
             item.TagTraining ? item.TagTraining : item.tagTraining ? item.tagTraining : false);
 
     }

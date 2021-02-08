@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import { VesselSection, SectionStatus, SubSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { SectionService } from 'src/app/services/section.service';
 
 @Component({
@@ -15,6 +16,7 @@ import { SectionService } from 'src/app/services/section.service';
 export class ListingSectionComponent implements OnInit {
 
   constructor(public sectionService: SectionService,
+              private prepareInstallationService: PrepareInstallationService,
               public fb: FormBuilder, private confirmationService: ConfirmationService,
               private messageService: MessageService) { }
 
@@ -37,12 +39,16 @@ export class ListingSectionComponent implements OnInit {
   ];
 
   ngOnInit() {
+    this.loadVesselSections();
+
+  }
+
+  private loadVesselSections() {
     this.isDataLoading = true;
-    this.sectionService.getSections().pipe(take(1)).subscribe((data) => {
+    this.sectionService.getVesselSections(this.prepareInstallationService.installation.id).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       this.vesselSections = data;
     });
-
   }
 
   onSectionRowEditInit(rowData: VesselSection): void {
@@ -76,9 +82,10 @@ export class ListingSectionComponent implements OnInit {
   }
 
   onSubSectionDataUpdated(subSection: SubSection): void {
-       const sectionItem  =   this.vesselSections.find((x) => x.id === subSection.vesselSectionId);
-       console.log(sectionItem);
-       if (!sectionItem.subSections) {
+    console.log(subSection);
+    const sectionItem  =   this.vesselSections.find((x) => x.id === subSection.vesselSectionId);
+    console.log(sectionItem);
+    if (!sectionItem.subSections) {
       sectionItem.subSections = [];
       sectionItem.subSections.push(subSection);
     } else {
@@ -91,7 +98,7 @@ export class ListingSectionComponent implements OnInit {
 
     }
 
-       this.subSectionFlag = false;
+    this.subSectionFlag = false;
   }
 
   onSubSectionCancelled(): void {
@@ -101,13 +108,13 @@ export class ListingSectionComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this section?',
       accept: () => {
-
         this.isDataLoading = true;
-        this.isDataLoading = false;
-
-        this.vesselSections = this.vesselSections.filter((x) => x !== vesselSectionRow);
-        this.subSectionFlag = false;
-        this.triggerToast('success', 'Success Message', `Section deleted successfully`);
+        this.sectionService.deleteVesselSection(vesselSectionRow.id).pipe(take(1)).subscribe((data) => {
+          this.isDataLoading = false;
+          this.vesselSections = this.vesselSections.filter((x) => x !== vesselSectionRow);
+          this.subSectionFlag = false;
+          this.triggerToast('success', 'Success Message', `Section deleted successfully`);
+         });
       }
     });
   }
@@ -117,14 +124,15 @@ export class ListingSectionComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this sub-section?',
       accept: () => {
-
         this.isDataLoading = true;
-        this.isDataLoading = false;
-        const sectionRow =  this.vesselSections.find((x) => x.id === subSectionRow.vesselSectionId);
-        let subsections = sectionRow.subSections;
-        subsections = subsections.filter((x) => x !== subSectionRow);
-        sectionRow.subSections = subsections;
-        this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
+        this.sectionService.deleteSubSection(subSectionRow.id).pipe(take(1)).subscribe((data) => {
+          this.isDataLoading = false;
+          const sectionRow =  this.vesselSections.find((x) => x.id === subSectionRow.vesselSectionId);
+          let subsections = sectionRow.subSections;
+          subsections = subsections.filter((x) => x !== subSectionRow);
+          sectionRow.subSections = subsections;
+          this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
+        });
       }
     });
 
