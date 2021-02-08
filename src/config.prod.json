@@ -115,11 +115,12 @@
         }
       },
       "Installation": {
-        "path": "/PoseidonNext/hss-modules/assets/mocks",
+        "path": "/Installation",
         "endpoints": {
-          "GetInstallations": "/newInstallation.json",
-          "GetInstallationStatus": "/installationStatus.json",
-          "GetInstallationType": "/installationType.json"
+          "GetInstallations": "",
+          "GetInstallationStatus": "/InstallationStatus",
+          "GetInstallationType": "/VesselType",
+          "UpdateInstallation": ""
           
         }
       },
@@ -131,11 +132,30 @@
         }
       },
       "Section": {
-        "path": "/PoseidonNext/hss-modules/assets/mocks",
+        "path": "/Section",
         "endpoints": {
-          "GetSections": "/sections.json",
-          "GetSectionStatus": "/sectionStatus.json"
+          "GetSections": "",
+          "GetSectionStatus": "/SectionStatus",
+          "GetVesselSections": "/VesselSection",
+          "GetSubSections": "/SubSection",
+          "UpdateSubSection": "/SubSection",
+          "UpdateVesselSection": "/VesselSection",
+          "CreateVesselSection": "/VesselSection",
+          "CreateSubSection": "/SubSection",
+          "DeleteVesselSection": "/VesselSection",
+          "DeleteSubSection": "/SubSection"
           
+        }
+      },
+      "Contact": {
+        "path": "/Contact",
+        "endpoints": {
+          "GetVesselContacts": "/VesselContact",
+          "GetContactTypes": "/ContactType",
+          "CreateVesselContact": "/VesselContact",
+          "UpdateContact": "",
+          "DeleteVesselContact": "/VesselContact",
+          "SeachContact": "/Search"
         }
       },
       "Vessel": {
