@@ -85,7 +85,7 @@ export class UpdateFoulingStateComponent implements OnInit {
         // value: this.foulingStates[0],
         key: 'subSectionName',
         validators: [Validators.required],
-        optionLabel: 'name',
+        optionLabel: 'subSectionNumber',
         disabled: false
       },
       {
@@ -119,6 +119,7 @@ export class UpdateFoulingStateComponent implements OnInit {
   }
 
   onSectionChanged(section: VesselSection) {
+    console.log(section);
     if (section) {
       if (section.subSections) {
         this.config.formList[1].options = section.subSections;
