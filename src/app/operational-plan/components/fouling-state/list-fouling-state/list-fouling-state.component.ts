@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import {  SubSection, VesselSection } from 'src/app/models/Section';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { SectionService } from 'src/app/services/section.service';
 
 @Component({
@@ -15,6 +16,7 @@ import { SectionService } from 'src/app/services/section.service';
 export class ListFoulingStateComponent implements OnInit {
 
   constructor(public sectionService: SectionService,
+              private prepareInstallationService: PrepareInstallationService,
               public fb: FormBuilder, private confirmationService: ConfirmationService,
               private messageService: MessageService) { }
 
@@ -37,7 +39,7 @@ export class ListFoulingStateComponent implements OnInit {
 
   ngOnInit() {
     this.isDataLoading = true;
-    this.sectionService.getSections().pipe(take(1)).subscribe((data) => {
+    this.sectionService.getVesselSections(this.prepareInstallationService.installation.id).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       this.sections = data;
       console.log(this.sections);
@@ -75,18 +77,16 @@ export class ListFoulingStateComponent implements OnInit {
     this.foulingStateEdited.emit({ section, subSection });
     this.subSectionFlag = true;
   }
-  
+
   onSubSectionFoulingStateUpdated(data: SubSection): void {
     console.log(data);
     const sectionItem = this.sections.find((x) => x.id === data.vesselSectionId);
 
     this.sections.forEach((section) => {
-      if (section.id === data.vesselSectionId)
-      {
+      if (section.id === data.vesselSectionId) {
         console.log(section);
         section.subSections.forEach((subSection) => {
-          if(subSection.id === data.id)
-          {
+          if (subSection.id === data.id) {
             subSection = data;
             console.log(subSection);
           }

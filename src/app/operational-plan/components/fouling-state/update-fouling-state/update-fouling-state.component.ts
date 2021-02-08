@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import { Section, SectionStatus, SubSection, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
+import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { SectionService } from 'src/app/services/section.service';
 
 @Component({
@@ -35,6 +36,7 @@ export class UpdateFoulingStateComponent implements OnInit {
 
   constructor(
     private sectionService: SectionService,
+    private prepareInstallationService: PrepareInstallationService,
     private formBuliderService: FromBuilderService,
     public fb: FormBuilder, public messageService: MessageService
   ) { }
@@ -46,7 +48,7 @@ export class UpdateFoulingStateComponent implements OnInit {
       this.foulingStates = data;
       this.isDataLoading = false;
 
-      this.sectionService.getSections().pipe(take(1)).subscribe((data) => {
+      this.sectionService.getVesselSections(this.prepareInstallationService.installation.id).pipe(take(1)).subscribe((data) => {
         console.log(data);
         this.sections = data;
         this.isDataLoading = false;

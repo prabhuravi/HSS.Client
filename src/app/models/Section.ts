@@ -2,6 +2,8 @@ export class VesselSection {
     constructor(
         public id: number,
         public vesselId: number,
+        public sectionStatusId: number,
+        public foulingId: number,
         public sectionId: number,
         public name: string,
         public sectionStatus: SectionStatus,
@@ -29,6 +31,8 @@ export class SubSection {
     constructor(
         public id: number,
         public vesselSectionId: number,
+        public sectionStatusId: number,
+        public foulingId: number,
         public subSectionNumber: number,
         public sectionStatus: SectionStatus,
         public foulingState: IFoulingState

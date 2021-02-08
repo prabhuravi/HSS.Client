@@ -66,11 +66,11 @@ export class CreateSubSectionComponent implements OnInit {
         disabled: true
       },
       {
-        type: FormType.text,
-        label: 'Name',
+        type: FormType.number,
+        label: 'Number',
         value: this.subSection ? this.subSection.subSectionNumber : '',
         key: 'subSectionNumber',
-        validators: [Validators.required, Validators.maxLength(20)],
+        validators: [Validators.required, Validators.min(1)],
         disabled: false
       },
       {
@@ -118,9 +118,12 @@ export class CreateSubSectionComponent implements OnInit {
   }
 
   addNewSubSection(): void {
-    const newSubSection = new SubSection(0, this.vesselSection.id, this.formData.controls.subSectionName.value, this.formData.controls.subSectionStatus.value, null);
-    newSubSection.id = Math.floor(Math.random() * 999999) + 1;
-    this.subSectionUpdated.emit(newSubSection);
+    const newSubSection = new SubSection(0, this.vesselSection.id, this.formData.controls.subSectionStatus.value.id, 0,
+                                         this.formData.controls.subSectionNumber.value, this.formData.controls.subSectionStatus.value, null);
+    this.sectionService.CreateVesselSubSection(newSubSection).pipe(take(1)).subscribe((data) => {
+      newSubSection.id = data.id;
+      this.subSectionUpdated.emit(newSubSection);
+    });
   }
 
   saveSubSection(): void {
@@ -128,7 +131,10 @@ export class CreateSubSectionComponent implements OnInit {
     this.subSection.vesselSectionId = this.subSection.vesselSectionId;
     this.subSection.subSectionNumber = formValue.subSectionNumber;
     this.subSection.sectionStatus = formValue.subSectionStatus;
-    this.subSectionUpdated.emit(this.subSection);
+    this.subSection.sectionStatusId = formValue.subSectionStatus.id;
+    this.sectionService.UpdateVesselSubSection(this.subSection).pipe(take(1)).subscribe((data) => {
+        this.subSectionUpdated.emit(this.subSection);
+      });
   }
 
   onNewSubSectionInit(vesselSectionData: VesselSection) {

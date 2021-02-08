@@ -2,13 +2,15 @@ export class Contact {
     constructor(
         public id: number,
         public vesselId: number,
+        public contactId: number,
         public vesselContactId: number,
-        public firstName: string,
+        public contactTypeId: number,
+        public name: string,
         public surName: string,
         public email: string,
         public phone: string,
         public alternativePhone: string,
-        public role: ContactRole,
+        public ContactType: ContactRole,
         public tagTraining: boolean = false
     ) {}
 }
