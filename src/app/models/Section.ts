@@ -33,8 +33,10 @@ export class SubSection {
         public vesselSectionId: number,
         public sectionStatusId: number,
         public foulingId: number,
+        public joturnFoulingId: number,
         public subSectionNumber: number,
         public sectionStatus: SectionStatus,
-        public foulingState: IFoulingState
+        public foulingState: IFoulingState,
+        public joturnFoulingState: IFoulingState
     ) { }
 }

@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { Observable, forkJoin, observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
 import { Installation } from '../models/Installation';
+import { VesselSection } from '../models/Section';
+import { VesselSectionAdapter } from '../models/modelAdapter';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +22,10 @@ export class OperationalPlanService {
   portApiUrl: string;
   tradeRouteApiUrl: string;
   documentApiUrl: string;
+  foulingStateApiUrl: string;
+  sectionApiUrl: string;
 
-  constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>) {
+  constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>, private vesselSectionAdapter: VesselSectionAdapter,) {
     this.operationalPlanConfig = this.configurationService.config.apiCollection.OperationalPlan;
     this.operationPlanApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.OperationPlan.path}`;
     this.vesselApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.Vessel.path}`;
@@ -30,6 +35,8 @@ export class OperationalPlanService {
     this.portApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.PortLocation.path}`;
     this.tradeRouteApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.TradeRoute.path}`;
     this.documentApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.Document.path}`;
+    this.foulingStateApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.FoulingState.path}`;
+    this.sectionApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.Section.path}`;
   }
 
   getLoggedInUser() {
@@ -134,31 +141,43 @@ export class OperationalPlanService {
     return this.http.deleteData(requestData);
   }
 
-  getSectionFoulingStates(vesselId: number): Observable<any> {
-    const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetSectionFoulingStates}/${vesselId}`
-    };
-    return of([{ id: 1, vesselId: 1, name: 'Top', status: null, foulingId: 1, jotunFoulingId: null, foulingState: 'Good', subsections: null },
-    { id: 2, vesselId: 1, name: 'Bottom', status: null, foulingId: 2, jotunFoulingId: null, foulingState: 'Poor', subsections: null }]);
-    // return this.http.getData(requestData);
-  }
+  // getSectionFoulingStates(vesselId: number): Observable<any> {
+  //   const requestData = {
+  //     endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetSectionFoulingStates}/${vesselId}`
+  //   };
+  //   return of([{ id: 1, vesselId: 1, name: 'Top', status: null, foulingId: 1, jotunFoulingId: null, foulingState: 'Good', subsections: null },
+  //   { id: 2, vesselId: 1, name: 'Bottom', status: null, foulingId: 2, jotunFoulingId: null, foulingState: 'Poor', subsections: null }]);
+  //   // return this.http.getData(requestData);
+  // }
 
-  getVesselSections(vesselId: number): Observable<any> {
+  // getSectionFoulingState(vesselId: number): Observable<any> {
+  //   const requestData = {
+  //     endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.GetSectionFoulingState}/${vesselId}`
+  //   };
+  //   // return of([{ id: 1, vesselId: 1, name: 'Top', status: null, foulingId: null, jotunFoulingId: null, foulingState: null, subsections: null },
+  //   // { id: 2, vesselId: 1, name: 'Bottom', status: null, foulingId: null, jotunFoulingId: null, foulingState: null, subsections: null }]);
+  //   return this.http.getData(requestData);
+  // }
+
+  getSectionFoulingState(vesselId: number): Observable<VesselSection[]> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetVesselSections}/${vesselId}`
+      endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.GetSectionFoulingState}/${vesselId}`
     };
-    return of([{ id: 1, vesselId: 1, name: 'Top', status: null, foulingId: null, jotunFoulingId: null, foulingState: null, subsections: null },
-    { id: 2, vesselId: 1, name: 'Bottom', status: null, foulingId: null, jotunFoulingId: null, foulingState: null, subsections: null }]);
-    // return this.http.getData(requestData);
+    return this.http
+      .getData(requestData)
+      .pipe( map((data: any[]) => data.map((item) => this.vesselSectionAdapter.adapt(item))
+        )
+      );
   }
 
   getFoulingStates(): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetFoulingStates}`
+      endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.GetFoulingStates}`
     };
-    return of([{ Id: 1, State: 'Good', Code: '', Category: '', CreatedBy: '' }, { Id: 2, State: 'Poor', Code: '', Category: '', CreatedBy: '' },
-    { Id: 3, State: 'Fair', Code: '', Category: '', CreatedBy: '' }]);
-    // return this.http.getData(requestData);
+    console.log(requestData);
+    // return of([{ Id: 1, State: 'Good', Code: '', Category: '', CreatedBy: '' }, { Id: 2, State: 'Poor', Code: '', Category: '', CreatedBy: '' },
+    // { Id: 3, State: 'Fair', Code: '', Category: '', CreatedBy: '' }]);
+    return this.http.getData(requestData);
   }
 
   updateFoulingStateToSection(data: any): Observable<any> {
@@ -170,13 +189,13 @@ export class OperationalPlanService {
     // return this.http.postData(requestData);
   }
 
-  updateSectionFoulingState(sectionId: number, data: any): Observable<any> {
+  updateSubSectionFoulingState(subSectionId: number, data: any): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.UpdateSectionFoulingState}/${sectionId}`,
+      endPoint: `${this.sectionApiUrl}${this.operationalPlanConfig.Section.endpoints.UpdateSubSection}/${subSectionId}`,
       data: data
     };
-    return of(true);
-    // return this.http.putData(requestData);
+    // return of(true);
+    return this.http.putData(requestData);
   }
 
   addOperationPlan(planData: any): Observable<any> {

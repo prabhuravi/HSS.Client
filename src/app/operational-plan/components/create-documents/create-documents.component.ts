@@ -297,7 +297,7 @@ export class CreateDocumentsComponent implements OnInit {
 
   next(): void {
     this.nextActiveTab.emit(5);
-    this.router.navigateByUrl('/operational-plan/prepare-installation/contacts/' + this.prepareInstallationService.installation.id);
+    this.router.navigateByUrl('/operational-plan/prepare-installation/contacts/' + this.vesselId);
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {
