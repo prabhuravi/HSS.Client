@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { Observable, forkJoin, observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
 import { Installation } from '../models/Installation';
+import { VesselSection } from '../models/Section';
+import { VesselSectionAdapter } from '../models/modelAdapter';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +25,7 @@ export class OperationalPlanService {
   foulingStateApiUrl: string;
   sectionApiUrl: string;
 
-  constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>) {
+  constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>, private vesselSectionAdapter: VesselSectionAdapter,) {
     this.operationalPlanConfig = this.configurationService.config.apiCollection.OperationalPlan;
     this.operationPlanApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.OperationPlan.path}`;
     this.vesselApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.Vessel.path}`;
@@ -147,13 +150,24 @@ export class OperationalPlanService {
   //   // return this.http.getData(requestData);
   // }
 
-  getSectionFoulingState(vesselId: number): Observable<any> {
+  // getSectionFoulingState(vesselId: number): Observable<any> {
+  //   const requestData = {
+  //     endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.GetSectionFoulingState}/${vesselId}`
+  //   };
+  //   // return of([{ id: 1, vesselId: 1, name: 'Top', status: null, foulingId: null, jotunFoulingId: null, foulingState: null, subsections: null },
+  //   // { id: 2, vesselId: 1, name: 'Bottom', status: null, foulingId: null, jotunFoulingId: null, foulingState: null, subsections: null }]);
+  //   return this.http.getData(requestData);
+  // }
+
+  getSectionFoulingState(vesselId: number): Observable<VesselSection[]> {
     const requestData = {
       endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.GetSectionFoulingState}/${vesselId}`
     };
-    // return of([{ id: 1, vesselId: 1, name: 'Top', status: null, foulingId: null, jotunFoulingId: null, foulingState: null, subsections: null },
-    // { id: 2, vesselId: 1, name: 'Bottom', status: null, foulingId: null, jotunFoulingId: null, foulingState: null, subsections: null }]);
-    return this.http.getData(requestData);
+    return this.http
+      .getData(requestData)
+      .pipe( map((data: any[]) => data.map((item) => this.vesselSectionAdapter.adapt(item))
+        )
+      );
   }
 
   getFoulingStates(): Observable<any> {
@@ -177,7 +191,7 @@ export class OperationalPlanService {
 
   updateSubSectionFoulingState(subSectionId: number, data: any): Observable<any> {
     const requestData = {
-      endPoint: `${this.sectionApiUrl}${this.operationalPlanConfig.Section.endpoints.UpdateSubSectionFoulingState}/${subSectionId}`,
+      endPoint: `${this.sectionApiUrl}${this.operationalPlanConfig.Section.endpoints.UpdateSubSection}/${subSectionId}`,
       data: data
     };
     // return of(true);

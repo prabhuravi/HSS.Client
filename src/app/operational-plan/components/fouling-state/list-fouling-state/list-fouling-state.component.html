@@ -24,7 +24,6 @@
                     class="kx-field kx-field--size-base u--field--size-small" placeholder="Filter fouling state"
                     (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
             </th>
-
         </tr>
         <!-- <tr>
       <th style="width: 3rem"></th>
@@ -46,42 +45,6 @@
             <td></td>
             <td> {{ rowData.foulingState.State }}</td>
             <td>
-
-                <!-- <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit section"
-                    title="Edit section" (click)="onSectionRowEditInit(rowData)">
-                    <span class="kx-btn__inner">
-                        <i class="kx-icon kx-icon--size-moderate">
-                            <svg focusable="true">
-                                <use href="./assets/img/icons/sprites/icons.svg#pencil"></use>
-                            </svg>
-                        </i>
-                        <span class="kx-btn__txt kx-is-vishidden">Edit section</span>
-                    </span>
-                </button>
-
-                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete section"
-                    title="Delete section" (click)="onSectionRowDelete(rowData)">
-                    <span class="kx-btn__inner">
-                        <i class="kx-icon kx-icon--size-moderate">
-                            <svg focusable="true">
-                                <use href="./assets/img/icons/sprites/icons.svg#trash"></use>
-                            </svg>
-                        </i>
-                        <span class="kx-btn__txt kx-is-vishidden">Delete section</span>
-                    </span>
-                </button>
-
-                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
-                    aria-label="Add Sub-section" title="Add Sub-section" (click)="onSubSectionAddInit(rowData)">
-                    <span class="kx-btn__inner">
-                        <i class="kx-icon kx-icon--size-moderate">
-                            <svg focusable="true">
-                                <use href="./assets/img/icons/sprites/icons.svg#plus"></use>
-                            </svg>
-                        </i>
-                        <span class="kx-btn__txt kx-is-vishidden">Add Sub-section</span>
-                    </span>
-                </button> -->
             </td>
         </tr>
     </ng-template>
@@ -92,13 +55,11 @@
                     <p-table [value]="rowData.subSections" tableStyleClass="kx-table" autoLayout="true">
                         <ng-template pTemplate="body" let-rowData>
         <tr class="kx-row">
-
-            <!-- <td style ="width: 25rem;"></td> -->
-            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.subSectionNumber }}</td>
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.subSectionNumber }}
+            </td>
             <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--6@tab-m kx-col--6@ltp-s" style="margin-right: 0.8%;">{{
                 rowData.foulingState.State }}</td>
             <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--1@tab-m kx-col--1@ltp-s">
-
                 <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit"
                     title="Edit" (click)="editSubSectionFoulingState(rowData)">
                     <span class="kx-btn__inner">
@@ -110,17 +71,6 @@
                         <span class="kx-btn__txt kx-is-vishidden">Edit</span>
                     </span>
                 </button>
-                <!-- <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete section"
-                    title="Delete section" (click)="onSubSectionDelete(rowData)">
-                    <span class="kx-btn__inner">
-                        <i class="kx-icon kx-icon--size-moderate">
-                            <svg focusable="true">
-                                <use href="./assets/img/icons/sprites/icons.svg#trash"></use>
-                            </svg>
-                        </i>
-                        <span class="kx-btn__txt kx-is-vishidden">Delete section</span>
-                    </span>
-                </button> -->
             </td>
         </tr>
     </ng-template>

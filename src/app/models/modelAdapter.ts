@@ -86,7 +86,7 @@ export class SectionAdapter implements IModelAdapter<Section> {
             item.Name ? item.Name : item.name ? item.name : ''
         );
     }
-
+    
 }
 @Injectable({
     providedIn: 'root'
@@ -98,9 +98,11 @@ export class SubSectionAdapter implements IModelAdapter<SubSection> {
             item.vesselSectionId ? item.vesselSectionId : item.VesselSectionId ? item.VesselSectionId : 0,
             item.sectionStatusId ? item.sectionStatusId : item.SectionStatusId ? item.SectionStatusId : 0,
             item.foulingId ? item.foulingId : item.FoulingId ? item.FoulingId : 0,
+            item.joturnFoulingId ? item.joturnFoulingId : item.JoturnFoulingId ? item.JoturnFoulingId : 0,
             item.subSectionNumber ? item.subSectionNumber : item.SubSectionNumber ? item.SubSectionNumber : 0,
             item.SectionStatus ? this.sectionStatusAdapter.adapt(item.SectionStatus) : item.sectionStatus ? this.sectionStatusAdapter.adapt(item.sectionStatus) : null,
-             item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : null
+            item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : null,
+            item.JoturnFoulingState ? this.foulingStateAdapter.adapt(item.JoturnFoulingState) : item.joturnFoulingState ? this.foulingStateAdapter.adapt(item.joturnFoulingState) : null
         );
     }
 
