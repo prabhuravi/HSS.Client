@@ -73,20 +73,17 @@ export class CreateDocumentsComponent implements OnInit {
 
   toggleCloudLibraryModal(): void {
     this.showCloudLibraryModal = !this.showCloudLibraryModal;
-    console.log(this.showCloudLibraryModal);
   }
 
   changeInstallationDocument(item: any) {
     this.selectedInstallationByDocType = item;
-    console.log(this.selectedInstallationByDocType);
   }
 
   useInstallationDocument() {
     console.log(this.selectedInstallationByDocType);
   }
 
-  documentTypeChanged()
-  {
+  documentTypeChanged() {
     this.documentTypeId = this.form.get('documentType').value.Id;
   }
 
@@ -129,14 +126,24 @@ export class CreateDocumentsComponent implements OnInit {
         this.form.controls.documentDate.disable();
 
         this.form.controls.localFile.updateValueAndValidity();
-
-        // this.editDocument = null;
-        // this.form.controls.documentName.reset();
-        // this.form.controls.version.reset();
-        // this.form.controls.documentDate.reset();
-        // this.form.controls.localFile.reset();
       }
     }
+  }
+
+  getInstallationDocuments() {
+    this.isDataLoading = true;
+    this.operationalPlanService.getInstallationDocuments(this.vesselId).pipe(take(1)).subscribe((data) => {
+      this.installationDocuments = data;
+      this.isDataLoading = false;
+    });
+  }
+
+  getDocumentType() {
+    this.isDataLoading = true;
+    this.operationalPlanService.getDocumentTypes().pipe(take(1)).subscribe((data) => {
+      this.documentTypes = data;
+      this.isDataLoading = false;
+    });
   }
 
   chooseFromCloudLibrary() {
@@ -161,7 +168,6 @@ export class CreateDocumentsComponent implements OnInit {
       formData.append('VesselId', this.vesselId.toString());
       formData.append('DocumentTypeId', this.form.value.documentType.Id);
       formData.append('CreatedBy', '');
-      // formData.append('CopyVesselId', ((this.uploadFrom === 'Cloud' && this.selectedInstallationByDocType !== null) ? this.selectedInstallationByDocType.Id : 0).toString());
       formData.append('InstallationName', this.prepareInstallationService.installation.displayName);
       if (this.uploadFrom === 'Cloud' && this.selectedInstallationByDocType !== null) // Upload from Cloud
       {
@@ -170,7 +176,7 @@ export class CreateDocumentsComponent implements OnInit {
       }
       else { //Upload from Local 
         formData.append('DocumentName', this.form.value.documentName);
-        formData.append('Date', this.form.value.documentDate.toJSON());
+        formData.append('Date', new Date(this.form.value.documentDate).toISOString());
         formData.append('Version', this.form.value.version);
         formData.append('CopyVesselId', "0");
         if (this.editDocument !== null) {
@@ -180,10 +186,8 @@ export class CreateDocumentsComponent implements OnInit {
           formData.append('File', this.file, this.file.name);
         }
       }
-
       this.isDataLoading = true;
       this.operationalPlanService.AddDocumentAsync(formData).pipe(take(1)).subscribe((data) => {
-        console.log(data);
         this.isDataLoading = false;
         if (this.editDocument == null) {
           this.triggerToast('success', 'Success Message', `Document added successfully`);
@@ -197,38 +201,13 @@ export class CreateDocumentsComponent implements OnInit {
     }
   }
 
-  getInstallationDocuments() {
-    // this.vesselId = 1;
-    this.isDataLoading = true;
-    this.operationalPlanService.getInstallationDocuments(this.vesselId).pipe(take(1)).subscribe((data) => {
-      console.log(data);
-      this.installationDocuments = data;
-      console.log(this.installationDocuments);
-      // this.installationDocuments = [{
-      //   Id: 1, VesselId: 1, DocumentId: 23, DocumentTypeId: 1, DocumentName: 'Installation Manual', DocumentTypeName: 'Manual', Version: '1.0.0',
-      //   DocumentPath: '', FileName: 'TalismanManual.docx', Date: new Date(), UploadSource: 'Local', CopyVesselId: 2
-      // }];
-      this.isDataLoading = false;
-    });
-  }
-
-  getDocumentType() {
-    this.isDataLoading = true;
-    this.operationalPlanService.getDocumentTypes().pipe(take(1)).subscribe((data) => {
-      this.documentTypes = data;
-      // this.documentTypes = [{ Id: 1, TypeName: 'Manual', CreatedDate: new Date(), ModifiedDate: new Date(), CreatedBy: 'Sandeep' },
-      // { Id: 2, TypeName: 'Inspection Path', CreatedDate: new Date(), ModifiedDate: new Date(), CreatedBy: 'Prabhu' }];
-      this.isDataLoading = false;
-    });
-  }
-
   editInstallationDocument(rowData: IInstallationDocument) {
     this.editDocument = rowData;
     this.form.setValue({
       documentName: rowData.DocumentName,
       documentType: this.documentTypes.find(p => p.Id == rowData.DocumentTypeId),
       version: rowData.Version,
-      documentDate:  new Date(rowData.Date).toLocaleDateString(),
+      documentDate: new Date(rowData.Date).toLocaleDateString(),
       uploadSource: this.uploadFromOptions.find(p => p.Option == (rowData.CopyVesselId === 0 ? 'Local' : 'Cloud')),
       localFile: ''
     });
@@ -308,5 +287,4 @@ export class CreateDocumentsComponent implements OnInit {
         detail
       });
   }
-
 }
