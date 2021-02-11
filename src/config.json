@@ -226,7 +226,8 @@
         "endpoints": {
           "GetFoulingStates": "",
           "GetSectionFoulingState": "/GetSectionFoulingState",
-          "UpdateSubSectionFoulingState":""
+          "UpdateSubSectionFoulingState":"",
+          "ReCalculateFoulingState": "/ReCalculateFoulingState"
         }
       },
       "GetTimeZone": [

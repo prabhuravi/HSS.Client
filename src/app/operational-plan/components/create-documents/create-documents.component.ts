@@ -43,7 +43,8 @@ export class CreateDocumentsComponent implements OnInit {
     { field: 'Date', sortfield: '', header: 'Date', filterMatchMode: 'contains' },
     { field: 'DocumentName', sortfield: 'DocumentName', header: 'Document Name', filterMatchMode: 'contains' },
     { field: 'DocumentTypeName', sortfield: 'DocumentTypeName', header: 'Document Type', filterMatchMode: 'contains' },
-    { field: 'CopyVesselId', sortfield: 'CopyVesselId', header: 'Upload Source', filterMatchMode: 'contains' },
+    { field: 'UploadSource', sortfield: 'UploadSource', header: 'Upload Source', filterMatchMode: 'contains' },
+    // { field: 'CopyVesselId', sortfield: 'CopyVesselId', header: 'Upload Source', filterMatchMode: 'contains' },
     { field: 'FileName', sortfield: 'FileName', header: 'File', filterMatchMode: 'contains' },
     { field: 'Id', sortfield: '', header: 'Action' }
   ];
@@ -134,6 +135,7 @@ export class CreateDocumentsComponent implements OnInit {
     this.isDataLoading = true;
     this.operationalPlanService.getInstallationDocuments(this.vesselId).pipe(take(1)).subscribe((data) => {
       this.installationDocuments = data;
+      console.log(this.installationDocuments);
       this.isDataLoading = false;
     });
   }
