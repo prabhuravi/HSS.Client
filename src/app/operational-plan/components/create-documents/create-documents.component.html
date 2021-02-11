@@ -122,7 +122,7 @@
                         <input *ngSwitchCase="'FileName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <input *ngSwitchCase="'CopyVesselId'" pInputText type="text"
+                        <input *ngSwitchCase="'UploadSource'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
@@ -136,9 +136,9 @@
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
                                     {{rowData[col.field] | date:'MM/dd/yyyy'}}</div>
                             </div>
-                            <div *ngSwitchCase="'CopyVesselId'">
+                            <!-- <div *ngSwitchCase="'CopyVesselId'">
                                 {{rowData[col.field] === 0? 'Local': 'Cloud' }}
-                            </div>
+                            </div> -->
                             <div *ngSwitchCase="'Id'">
                                 <!-- <input type="image" src="./assets/pencil.svg" alt="Edit"
                                     (click)="editInstallationDocument(rowData)" [disabled]="disableActivity"

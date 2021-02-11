@@ -165,8 +165,8 @@ export class OperationalPlanService {
     };
     return this.http
       .getData(requestData)
-      .pipe( map((data: any[]) => data.map((item) => this.vesselSectionAdapter.adapt(item))
-        )
+      .pipe(map((data: any[]) => data.map((item) => this.vesselSectionAdapter.adapt(item))
+      )
       );
   }
 
@@ -178,6 +178,18 @@ export class OperationalPlanService {
     // return of([{ Id: 1, State: 'Good', Code: '', Category: '', CreatedBy: '' }, { Id: 2, State: 'Poor', Code: '', Category: '', CreatedBy: '' },
     // { Id: 3, State: 'Fair', Code: '', Category: '', CreatedBy: '' }]);
     return this.http.getData(requestData);
+  }
+
+  reCalculateFoulingState(data: any): Observable<VesselSection[]> {
+    const requestData = {
+      endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.ReCalculateFoulingState}`,
+      data: data
+    };
+    return this.http
+      .postData(requestData)
+      .pipe(map((data: any[]) => data.map((item) => this.vesselSectionAdapter.adapt(item))
+      )
+      );
   }
 
   updateFoulingStateToSection(data: any): Observable<any> {
