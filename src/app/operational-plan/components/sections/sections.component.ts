@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@kognifai/poseidon-message-service';
 import { ConfirmationService } from 'primeng/api';
 import { VesselSection } from 'src/app/models/Section';
@@ -17,10 +17,11 @@ export class SectionsComponent implements OnInit {
   @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
   constructor( private prepareInstallationService: PrepareInstallationService,
                private router: Router,
+               private route: ActivatedRoute,
                private confirmationService: ConfirmationService,
                private messageService: MessageService) { }
 
-  ngOnInit() {
+  ngOnInit() {   
     console.log(this.prepareInstallationService.installation);
   }
   cancel() {

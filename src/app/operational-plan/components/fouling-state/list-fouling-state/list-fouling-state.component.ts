@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
@@ -18,7 +19,7 @@ export class ListFoulingStateComponent implements OnInit {
   constructor(public sectionService: SectionService,
               private prepareInstallationService: PrepareInstallationService,
               public fb: FormBuilder, private confirmationService: ConfirmationService,
-              private messageService: MessageService) { }
+              private messageService: MessageService, private route: ActivatedRoute) { }
 
   isDataLoading = false;
   @Input() sections: VesselSection[];
@@ -39,6 +40,17 @@ export class ListFoulingStateComponent implements OnInit {
 
   ngOnInit() {
     this.isDataLoading = true;
+    if (!this.prepareInstallationService.installation) {
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+    }
+    let vesselId = 0;
+    if (this.prepareInstallationService) {
+      vesselId = this.prepareInstallationService.installation.id;
+    } else {
+      this.route.params.subscribe(async (params) => {
+        vesselId = parseInt(params.vesselId, null);
+      });
+    }
     this.sectionService.getVesselSections(this.prepareInstallationService.installation.id).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       this.sections = data;

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { VesselSection } from 'src/app/models/Section';
@@ -33,10 +33,11 @@ export class FoulingStateComponent implements OnInit {
   constructor(private operationalPlanService: OperationalPlanService, private router: Router,
               private confirmationService: ConfirmationService,
               private messageService: MessageService,
+              private route: ActivatedRoute,
               private prepareInstallationService: PrepareInstallationService) { }
 
   ngOnInit() {
-
+    this.prepareInstallationService.setInstallationFromRoute(this.route);
     this.getVesselSections();
     this.getFoulingStates();
     this.getSectionFoulingStates();
@@ -71,6 +72,8 @@ export class FoulingStateComponent implements OnInit {
 
   getVesselSections() {
     this.isDataLoading = true;
+    const params = this.route.snapshot.paramMap.get('vesselId');
+    this.vesselId = parseInt(params, null);
     this.operationalPlanService.getVesselSections(this.vesselId).pipe(take(1)).subscribe((data) => {
       this.vesselSections = data;
       this.isDataLoading = false;

@@ -37,6 +37,13 @@ export class InstallationService {
     return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.installationAdapter.adapt(item))));
   }
 
+  getinstallationsById(vesselId: number): Observable<Installation> {
+    const requestData = {
+      endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.GetInstallations}/${vesselId}`
+    };
+    return this.http.getData(requestData).pipe(map((data: any[]) =>   this.installationAdapter.adapt(data)));
+  }
+
   getVesselTypes(): Observable<VesselType[]> {
     const requestData = {
       endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.GetInstallationType}`

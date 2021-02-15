@@ -39,6 +39,9 @@ export class TradeRouteComponent implements OnInit {
               private route: ActivatedRoute, private messageService: MessageService) { }
 
   ngOnInit() {
+    if (!this.prepareInstallationService.installation) {
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+    }
     this.username = this.operationalPlanService.getLoggedInUser();
     this.vesselId = 1;
 
@@ -94,7 +97,10 @@ export class TradeRouteComponent implements OnInit {
 
   getVesselTradeRoute() {
     this.isDataLoading = true;
-    this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
+    let vesselId = 0;
+    const params = this.route.snapshot.paramMap.get('vesselId');
+    vesselId = parseInt(params, null);
+    this.operationalPlanService.getTradeRouteByVesselId(vesselId).pipe(take(1)).subscribe((data) => {
       this.vesselTradeRoute = data;
       this.isDataLoading = false;
       console.log(this.vesselTradeRoute);

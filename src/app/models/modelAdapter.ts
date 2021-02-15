@@ -184,7 +184,7 @@ export class InstallationAdapter implements IModelAdapter<Installation> {
             item.NodeId ? item.NodeId : item.nodeId ? item.nodeId : 0,
             item.Name ? item.Name : item.name ? item.name : '',
             item.DisplayName ? item.DisplayName : '',
-            item.ImoNo ? item.ImoNo : '',
+            item.ImoNo ? item.ImoNo : 0,
             item.FoulingId ? item.FoulingId : item.foulingId ? item.foulingId : 0,
             item.JoturnFoulingId ? item.JoturnFoulingId : item.joturnFoulingId ? item.joturnFoulingId : 0,
             item.InstallationStatusId ? item.InstallationStatusId : item.installationStatusId ? item.installationStatusId : 0,

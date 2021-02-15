@@ -23,7 +23,7 @@ export class CreateContactComponent implements OnInit {
   isFormSubmmited: boolean = false;
   config = {
     formList: [],
-    className: 'kx-col kx-col--3 kx-col--6@mob-m kx-col--3@tab-m kx-col--3@ltp-s'
+    className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--3@ltp-s'
   };
 
   @Output() contactUpdated: EventEmitter<any> = new EventEmitter<any>();
