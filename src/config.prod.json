@@ -221,6 +221,15 @@
           "GetInstallationsByDocumentTypeId": "/GetInstallationsByDocumentTypeId"
         }
       },
+      "FoulingState": {
+        "path": "/FoulingState",
+        "endpoints": {
+          "GetFoulingStates": "",
+          "GetSectionFoulingState": "/GetSectionFoulingState",
+          "UpdateSubSectionFoulingState":"",
+          "ReCalculateFoulingState": "/ReCalculateFoulingState"
+        }
+      },
       "GetTimeZone": [
         {
           "name": "GMT",

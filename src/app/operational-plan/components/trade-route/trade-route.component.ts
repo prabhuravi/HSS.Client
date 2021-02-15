@@ -12,24 +12,20 @@ import { PrepareInstallationService } from 'src/app/services/prepare-installatio
   styleUrls: ['./trade-route.component.scss']
 })
 export class TradeRouteComponent implements OnInit {
-
-  submitted = false;
-
   port: IPortLocation = null;
+  portOrder: number = 1;
+  maxPortOrder: number = 1
   portLocations: IPortLocation[] = [];
   vesselTradeRoute: ITradeRoute[];
-  username: string = '';
-  //  = [
-  //   { Id: '10788', PortName: 'Savanna-la-Mar(JM SLM)', PortCode: 'JM SLM' },
-  //   { Id: '17896', PortName: 'Savannah(US SAV)', PortCode: 'US SAV' }
-  // ];
+  // username: string = '';
   isDataLoading = false;
-  disableActivity: boolean;
+  // disableActivity: boolean;
   vesselId = 0;
   @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
 
   cols = [
     { field: 'PortName', sortfield: 'PortName', header: 'Port Name', filterMatchMode: 'contains' },
+    { field: 'Order', sortfield: 'Order', header: 'Order', filterMatchMode: 'contains' },
     { field: 'Id', sortfield: '', header: 'Action' }
   ];
 
@@ -39,20 +35,9 @@ export class TradeRouteComponent implements OnInit {
               private route: ActivatedRoute, private messageService: MessageService) { }
 
   ngOnInit() {
-    if (!this.prepareInstallationService.installation) {
-      this.prepareInstallationService.setInstallationFromRoute(this.route);
-    }
-    this.username = this.operationalPlanService.getLoggedInUser();
-    this.vesselId = 1;
-
-    // this.route.params.subscribe((params) => {
-    //   this.vesselId = parseInt(params.vesselId);
-    //   if (this.vesselId) {
-
+    // this.username = this.operationalPlanService.getLoggedInUser();
+    this.vesselId = this.prepareInstallationService.installation.id;
     this.getVesselTradeRoute();
-
-    //   }
-    // });
   }
 
   filterPortLocations(event) {
@@ -64,9 +49,10 @@ export class TradeRouteComponent implements OnInit {
 
   addNewPort() {
     console.log(this.port);
+    console.log(this.portOrder);
     if (this.vesselTradeRoute.findIndex((p) => p.PortId === this.port.Id) === -1) {
       this.isDataLoading = true;
-      this.operationalPlanService.addPortToRoute({ PortId: this.port.Id, Order: 1, VesselId: this.vesselId }).subscribe((data) => {
+      this.operationalPlanService.addPortToRoute({ PortId: this.port.Id, Order: this.portOrder, VesselId: this.vesselId }).subscribe((data) => {
         this.triggerToast('success', 'Success Message', `Port added to route successfully`);
         this.isDataLoading = false;
         this.port = null;
@@ -88,31 +74,37 @@ export class TradeRouteComponent implements OnInit {
           this.triggerToast('success', 'Success Message', 'Port removed from the route');
           this.isDataLoading = false;
           this.getVesselTradeRoute();
-
         });
-
       }
     });
   }
 
   getVesselTradeRoute() {
     this.isDataLoading = true;
-    let vesselId = 0;
-    const params = this.route.snapshot.paramMap.get('vesselId');
-    vesselId = parseInt(params, null);
-    this.operationalPlanService.getTradeRouteByVesselId(vesselId).pipe(take(1)).subscribe((data) => {
+    this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
       this.vesselTradeRoute = data;
+      this.vesselTradeRoute = this.vesselTradeRoute.sort((a, b) => (a.Order > b.Order) ? 1 : -1);
       this.isDataLoading = false;
       console.log(this.vesselTradeRoute);
+      if(this.vesselTradeRoute.length > 0)
+      {
+          this.portOrder = this.vesselTradeRoute[this.vesselTradeRoute.length - 1].Order + 1;
+          this.maxPortOrder = this.vesselTradeRoute[this.vesselTradeRoute.length - 1].Order + 1
+      }
+      else{
+        this.portOrder = 1;
+        this.maxPortOrder = 1;
+      }
     });
   }
 
   disableAddToRoute(port: any): boolean {
-    return port !== null && typeof port !== 'object' || port === null || port === '';
+    return (port !== null && typeof port !== 'object') || port === null || port === '' || this.portOrder === null;
   }
 
   clear() {
     this.port = null;
+    this.portOrder = null;
   }
   cancel() {
     this.router.navigateByUrl('/operational-plan');
@@ -120,7 +112,7 @@ export class TradeRouteComponent implements OnInit {
 
   next(): void {
     this.nextActiveTab.emit(2);
-    this.router.navigateByUrl('/operational-plan/prepare-installation/sections/' + this.prepareInstallationService.installation.id);
+    this.router.navigateByUrl('/operational-plan/prepare-installation/sections/' + this.vesselId);
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {
