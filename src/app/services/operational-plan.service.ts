@@ -93,6 +93,15 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
 
+  reorderTradeRoute(data: any): Observable<any>
+  {
+    const requestData = {
+      endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.ReorderTradeRoute}`,
+      data: data
+    };
+    return this.http.putData(requestData);
+  }
+
   getDocumentTypes(): Observable<any> {
     const requestData = {
       endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.GetDocumentTypes}`
