@@ -118,8 +118,8 @@ export class CreateSubSectionComponent implements OnInit {
   }
 
   addNewSubSection(): void {
-    const newSubSection = new SubSection(0, this.vesselSection.id, this.formData.controls.subSectionStatus.value.id, 0,
-                                         this.formData.controls.subSectionNumber.value, this.formData.controls.subSectionStatus.value, null);
+    const newSubSection = new SubSection(0, this.vesselSection.id, this.formData.controls.subSectionStatus.value.id, 0, 0,
+                                         this.formData.controls.subSectionNumber.value, this.formData.controls.subSectionStatus.value, null, null);
     try {
       this.sectionService.CreateVesselSubSection(newSubSection).pipe(take(1)).subscribe((data) => {
         newSubSection.id = data.id;
