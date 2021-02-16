@@ -46,10 +46,11 @@
 <div class="kx-pt--small">
     <div *ngIf="!isDataLoading">
         <p-table *ngIf="vesselTradeRoute.length > 0" tableStyleClass="kx-table kx-table--outer-border"
-            [value]="vesselTradeRoute" [columns]="cols" autoLayout="true" #tt [paginator]="true" [rows]="10"
+            [value]="vesselTradeRoute" (onRowReorder) = "onRowReorder($event)" [columns]="cols" autoLayout="true" #tt [paginator]="true" [rows]="10"
             [rowsPerPageOptions]="[5,10,20,50,100,200,500]">
-            <ng-template pTemplate="header" let-columns>
+            <ng-template pTemplate="header" let-columns>    
                 <tr>
+                    <th style="width:3rem"></th>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" [ngStyle]="{'width':'100px'}"
                         [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
                         title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
@@ -60,18 +61,22 @@
                     </th>
                 </tr>
                 <tr>
+                    <th></th>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field">
                         <input *ngSwitchCase="'PortName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Port"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'Order'" pInputText type="text"
-                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Port"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Order"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                     </th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr>
+            <ng-template pTemplate="body" let-rowData let-columns="columns" let-index="rowIndex">
+                <tr [pReorderableRow]="index">
+                    <td>
+                        <span class="pi pi-bars" pReorderableRowHandle></span>
+                    </td>
                     <td *ngFor="let col of columns">
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'Id'">
