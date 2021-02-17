@@ -4,7 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
-import {CheckboxModule} from 'primeng/checkbox';
+import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -33,6 +33,8 @@ import { CreateContactComponent } from './components/contact/create-contact/crea
 import { ContactListingComponent } from './components/contact/contact-listing/contact-listing.component';
 import { UpdateFoulingStateComponent } from './components/fouling-state/update-fouling-state/update-fouling-state.component';
 import { ListFoulingStateComponent } from './components/fouling-state/list-fouling-state/list-fouling-state.component';
+import { OperationsOverviewComponent } from './components/operations-overview/operations-overview.component';
+import { InstallationOperationsComponent } from './components/operations-overview/installation-operations/installation-operations.component';
 
 const routes: Routes = [
   {
@@ -49,6 +51,14 @@ const routes: Routes = [
           { path: 'contacts/:vesselId', component: ContactComponent }
         ]
       },
+
+      {
+        path: 'operations-overview', component: OperationsOverviewComponent, children: [
+          { path: '', component: InstallationOperationsComponent, pathMatch: 'full' },
+          { path: 'installation-operations/:vesselId', component: InstallationOperationsComponent }
+        ]
+      },
+
       { path: 'ManagePlans', component: ManagePlansComponent },
       { path: 'sub-operational-plan/:planid', component: SubOperationalPlanComponent },
       { path: 'plan/:type/:id', component: AddPlanComponent },
@@ -83,7 +93,9 @@ const routes: Routes = [
     CreateContactComponent,
     ContactListingComponent,
     UpdateFoulingStateComponent,
-    ListFoulingStateComponent],
+    ListFoulingStateComponent,
+    OperationsOverviewComponent,
+    InstallationOperationsComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

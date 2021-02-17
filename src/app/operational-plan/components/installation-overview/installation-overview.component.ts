@@ -11,15 +11,15 @@ export class InstallationOverviewComponent implements OnInit {
   installationList: IInstallationOverview[] = [];
 
   cols = [
-    { field: 'Name',  header: 'Name'},
+    { field: 'Name', header: 'Name' },
     { field: 'FoulingState', header: 'Fouling State' },
-    { field: 'InstallationStatus',  header: 'Installation Status'},
+    { field: 'InstallationStatus', header: 'Installation Status' },
     { field: 'Status', header: 'Status' },
-    { field: 'Date',  header: 'Date' },
+    { field: 'Date', header: 'Date' },
     { field: 'Port', header: 'Port' },
     { field: 'ConnectivityStatus', header: 'ConnectivityStatus' },
-    { field: 'ETA',  header: 'ETA' },
-    { field: 'ETB',  header: 'ETB' },
+    { field: 'ETA', header: 'ETA' },
+    { field: 'ETB', header: 'ETB' },
     { field: 'CurrentPosition', header: 'CurrentPosition' }
   ];
 
@@ -28,10 +28,10 @@ export class InstallationOverviewComponent implements OnInit {
   ngOnInit() {
     this.installationList = [
       {
-        Name : 'Talsiman',
+        Name: 'Talsiman',
         FoulingState: 'Moderate',
-        InstallationStatus : 'Active',
-        Status : 'Active',
+        InstallationStatus: 'Active',
+        Status: 'Active',
         Date: new Date(),
         Port: 'Oslo',
         ConnectivityStatus: 'UP',
@@ -41,10 +41,10 @@ export class InstallationOverviewComponent implements OnInit {
         Id: 1
       },
       {
-        Name : 'BergeApo',
+        Name: 'BergeApo',
         FoulingState: 'Moderate',
-        InstallationStatus : 'Active',
-        Status : 'Active',
+        InstallationStatus: 'Active',
+        Status: 'Active',
         Date: new Date(),
         Port: 'Oslo',
         ConnectivityStatus: 'UP',
@@ -54,10 +54,10 @@ export class InstallationOverviewComponent implements OnInit {
         Id: 1
       },
       {
-        Name : 'Test',
+        Name: 'Test',
         FoulingState: 'Moderate',
-        InstallationStatus : 'Active',
-        Status : 'Active',
+        InstallationStatus: 'Active',
+        Status: 'Active',
         Date: new Date(),
         Port: 'Oslo',
         ConnectivityStatus: 'UP',
@@ -73,6 +73,12 @@ export class InstallationOverviewComponent implements OnInit {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate(['/operational-plan/prepare-installation'])
     );
+  }
+
+  redirectToOperationsOverview(): void {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+    this.router.navigate(['/operational-plan/operations-overview'])
+  );
   }
 
 }
