@@ -209,7 +209,8 @@
         "endpoints": {
           "GetTradeRouteByVesselId": "",
           "AddPortToRoute": "",
-          "DeletePortFromRoute": ""
+          "DeletePortFromRoute": "",
+          "ReorderTradeRoute": "/ReorderTradeRoute"
         }
       },
       "Document": {
