@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Installation } from 'src/app/models/Installation';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { FoulingStateComponent } from '../fouling-state/fouling-state.component';
@@ -9,8 +9,8 @@ import { FoulingStateComponent } from '../fouling-state/fouling-state.component'
   templateUrl: './prepare-installation.component.html',
   styleUrls: ['./prepare-installation.component.scss']
 })
-export class PrepareInstallationComponent implements OnInit {
-  constructor( private prepareInstallationService: PrepareInstallationService) {}
+export class PrepareInstallationComponent implements OnInit, OnDestroy {
+  constructor( private prepareInstallationService: PrepareInstallationService,  private route: ActivatedRoute) {}
 
   activeTab: number = 0;
   vesselId: number = 0;
@@ -19,8 +19,13 @@ export class PrepareInstallationComponent implements OnInit {
 
   ngOnInit() {
     this.setInstallationSteps();
+    if (!this.prepareInstallationService.installation) {
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+    }
     this.prepareInstallationService.installationDetail.subscribe((x) => {
-      this.vesselId = x.id;
+      if (x) {
+        this.vesselId = x.id;
+      }
       this.setInstallationSteps();
     });
   }
@@ -70,5 +75,8 @@ export class PrepareInstallationComponent implements OnInit {
       });
     }
   }
-
+  ngOnDestroy(): void {
+    console.log('destory');
+    this.prepareInstallationService.updateInstallationDetail(null);
+  }
 }

@@ -1,32 +1,36 @@
 <div class="kx-card kx-card--skin-default" *ngIf="config && config.formList && config.formList.length > 0">
     <div class="kx-p--tiny kx-p--medium@mob-m">
-        <div class="parent">
+        <div class="kx-row kx-row--gutters">
             <app-load *ngIf="isDataLoading"></app-load>
-            <form [formGroup]="formData" (ngSubmit)="onSubmit()" style="width:100%;">
-                
-                <app-dynamic-form class="kx-row kx-row--gutters "  [form]="formData" [isFormSubmitted]="isFormSubmmited" [formValues]="formValues" [config]="config"
+            <form [formGroup]="formData" class="kx-row kx-row--gutters" (ngSubmit)="onSubmit()" style="width: 100%">
+                <app-dynamic-form
+                    class="kx-col kx-col--12 kx-col--12@mob-m kx-col--4@tab-m kx-col--10@ltp-s kx-row kx-row--gutters"
+                    style="display: contents;" [form]="formData" [isFormSubmitted]="isFormSubmmited" [formValues]="formValues" [config]="config"
                     (formOnchangeEvent)="formOnchangeEvent($event)">
                 </app-dynamic-form>
 
-                <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s" style="margin-top:-108px;margin-left: 78%;">
-                    <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base"  [disabled]="formData.invalid">
-                        <span class="kx-btn__inner">
-                            <span *ngIf="!editMode; else elseBlock;" class="kx-btn__txt">Add Contact</span>
-                            <ng-template #elseBlock>
-                                <span class="kx-btn__txt">Save Contact</span>
-                            </ng-template>
-                        </span>
-                    </button>
+                <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--3@ltp-s"
+                style="margin: 21px 0px 0px 0px;"> 
+                    <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--5@ltp-s">
+                        <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
+                            [disabled]="formData.invalid">
+                            <span class="kx-btn__inner">
+                                <span *ngIf="!editMode; else elseBlock" class="kx-btn__txt">Add Contact</span>
+                                <ng-template #elseBlock>
+                                    <span class="kx-btn__txt">Save Contact</span>
+                                </ng-template>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--1@ltp-s">
+                        <button type="submit" class="kx-btn kx-btn--skin-secondary kx-btn--size-base"
+                            (click)="onFormReset()">
+                            <span class="kx-btn__inner">
+                                <span class="kx-btn__txt">Clear</span>
+                            </span>
+                        </button>
+                    </div>
                 </div>
-
-                <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s" style="margin-top: -43px; margin-left: 88%;">
-                    <button type="submit" class="kx-btn kx-btn--skin-secondary kx-btn--size-base" (click)="onFormReset()">
-                        <span class="kx-btn__inner">
-                            <span class="kx-btn__txt">Clear</span>
-                        </span>
-                    </button>
-                </div>
-
             </form>
         </div>
     </div>

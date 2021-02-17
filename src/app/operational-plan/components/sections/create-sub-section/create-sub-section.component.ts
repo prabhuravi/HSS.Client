@@ -70,7 +70,7 @@ export class CreateSubSectionComponent implements OnInit {
         label: 'Number',
         value: this.subSection ? this.subSection.subSectionNumber : '',
         key: 'subSectionNumber',
-        validators: [Validators.required, Validators.min(1)],
+        validators: [Validators.required, Validators.min(1), Validators.max(10000)],
         disabled: false
       },
       {
@@ -87,6 +87,7 @@ export class CreateSubSectionComponent implements OnInit {
   }
 
   onSubmit(): void {
+
     if (this.formData.valid) {
       if (this.editMode) {
         this.saveSubSection();
@@ -119,10 +120,14 @@ export class CreateSubSectionComponent implements OnInit {
   addNewSubSection(): void {
     const newSubSection = new SubSection(0, this.vesselSection.id, this.formData.controls.subSectionStatus.value.id, 0, 0,
                                          this.formData.controls.subSectionNumber.value, this.formData.controls.subSectionStatus.value, null, null);
-    this.sectionService.CreateVesselSubSection(newSubSection).pipe(take(1)).subscribe((data) => {
-      newSubSection.id = data.id;
-      this.subSectionUpdated.emit(newSubSection);
-    });
+    try {
+      this.sectionService.CreateVesselSubSection(newSubSection).pipe(take(1)).subscribe((data) => {
+        newSubSection.id = data.id;
+        this.subSectionUpdated.emit(newSubSection);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   saveSubSection(): void {
