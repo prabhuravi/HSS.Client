@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
-import { Installation, InstallationStatus, VesselType } from 'src/app/models/Installation';
+import { Installation, InstallationStatus, InstallationType, VesselType } from 'src/app/models/Installation';
 import { InstallationAdapter, NodeAdapter } from 'src/app/models/modelAdapter';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { InstallationService } from 'src/app/services/installation.service';
@@ -30,6 +30,7 @@ export class CreateInstallationComponent implements OnInit {
   installationList: Installation[] = [];
   robotsystemList: IRobotSystemDetails[] = [];
   vesselTypes: VesselType[] = [];
+  installationTypes: InstallationType[] =[];
   installationStatus: InstallationStatus[] = [];
   // foulingStates: IFoulingState[] = [];
 
@@ -51,6 +52,7 @@ export class CreateInstallationComponent implements OnInit {
       console.log(this.installationList);
       this.vesselTypes = data[1];
       this.installationStatus = data[2];
+      this.installationTypes = data[3];
       // this.foulingStates = data[3];
       this.constructForm();
       this.formData = this.formBuliderService.buildForm(this.config);
@@ -102,7 +104,7 @@ export class CreateInstallationComponent implements OnInit {
       },
       {
         type: FormType.dropdown,
-        label: 'Vessel Type',
+        label: 'Installation Type',
         options: this.vesselTypes,
         value: '',
         key: 'VesselType',
@@ -110,14 +112,16 @@ export class CreateInstallationComponent implements OnInit {
         validators: [Validators.required],
         disabled: false
       },
-      // {
-      //   type: FormType.text,
-      //   label: 'Installation Status',
-      //   value: 'Prepare',
-      //   key: 'InstallationStatus',
-      //   validators: [Validators.required],
-      //   disabled: true
-      // },
+      {
+        type: FormType.dropdown,
+        label: 'Installation Type General',
+        options: this.installationTypes,
+        value: '',
+        key: 'InstallationType',
+        optionLabel: 'name',
+        validators: [Validators.required],
+        disabled: false
+      },
       {
         type: FormType.dropdown,
         label: 'Installation Status',
@@ -188,9 +192,10 @@ export class CreateInstallationComponent implements OnInit {
         this.formData.controls.VesselType.setValue(installation.vesselType);
       }
 
-      // if (installation.foulingState) {
-      //   this.formData.controls.FoulingState.setValue(installation.foulingState);
-      // }
+      if (installation.installationType) {
+        this.formData.controls.InstallationType.setValue(installation.installationType);
+      }
+
       if (installation.imoNo > 0) {
         this.formData.controls.ImoNo.setValue(installation.imoNo);
         this.formData.controls.ImoNo.disable();
@@ -242,6 +247,7 @@ export class CreateInstallationComponent implements OnInit {
     // installationIformation.foulingState = formValues.FoulingState;
      installationIformation.vesselType = formValues.VesselType;
      installationIformation.vesselTypeId = formValues.VesselType.id;
+     installationIformation.installationTypeId = formValues.InstallationType.id;
      installationIformation.imoNo = formValues.ImoNo;
     // installationIformation.foulingId = formValues.FoulingState.Id;
      installationIformation.node.nodeNumber = formValues.NodeNumber;
