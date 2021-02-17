@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
@@ -22,6 +23,7 @@ export class UpdateFoulingStateComponent implements OnInit {
   isDataLoading = true;
   formData: FormGroup;
   config = {
+    className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--4@tab-m kx-col--2@ltp-s',
     formList: []
   };
   vesselId = 0;
@@ -31,25 +33,31 @@ export class UpdateFoulingStateComponent implements OnInit {
   constructor(
     private sectionService: SectionService,
     private prepareInstallationService: PrepareInstallationService, private operationalPlanService: OperationalPlanService,
-    private formBuliderService: FromBuilderService,
+    private formBuliderService: FromBuilderService, private route: ActivatedRoute,
     public fb: FormBuilder, public messageService: MessageService
   ) { }
 
   ngOnInit() {
-    this.vesselId = this.prepareInstallationService.installation.id;
+    if (!this.prepareInstallationService.installation) {
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+    }
+    this.isDataLoading = true;
     this.operationalPlanService.getFoulingStates().pipe(take(1)).subscribe((data) => {
       this.foulingStates = data;
       this.isDataLoading = false;
-
-      this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
-        this.sections = data;
-        console.log(this.sections);
-        this.isDataLoading = false;
-        this.calculateVesselFoulingState();
-
-        this.constructForm();
-        this.formData = this.formBuliderService.buildForm(this.config);
-      });
+      if (this.route !== undefined && this.route !== null) {
+        const params = this.route.snapshot.paramMap.get('vesselId');
+        this.vesselId = parseInt(params, null);
+        this.isDataLoading = true;
+        this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
+          this.sections = data;
+          console.log(this.sections);
+          this.isDataLoading = false;
+          this.calculateVesselFoulingState();
+          this.constructForm();
+          this.formData = this.formBuliderService.buildForm(this.config);
+        });
+      }
     });
   }
 
@@ -143,7 +151,7 @@ export class UpdateFoulingStateComponent implements OnInit {
       this.isDataLoading = false;
 
       console.log(this.formData.value.sectionName);
-      this.operationalPlanService.reCalculateFoulingState({VesselSectionId: this.formData.value.sectionName.id, VesselId: this.formData.value.sectionName.vesselId}).pipe(take(1)).subscribe((data) => {
+      this.operationalPlanService.reCalculateFoulingState({ VesselSectionId: this.formData.value.sectionName.id, VesselId: this.formData.value.sectionName.vesselId }).pipe(take(1)).subscribe((data) => {
         this.sections = data;
         console.log(this.sections);
         this.config.formList[0].options = this.sections;
@@ -162,22 +170,17 @@ export class UpdateFoulingStateComponent implements OnInit {
     });
   }
 
-  calculateVesselFoulingState()
-  {
-    if(this.sections.some(p => p.foulingState.State === 'Not Rated'))
-    {
+  calculateVesselFoulingState() {
+    if (this.sections.some(p => p.foulingState.State === 'Not Rated')) {
       this.overallFoulingState = 'Not Rated';
     }
-    else if(this.sections.some(p => p.foulingState.State === 'Bad'))
-    {
+    else if (this.sections.some(p => p.foulingState.State === 'Bad')) {
       this.overallFoulingState = 'Bad';
     }
-    else if(this.sections.some(p => p.foulingState.State === 'Fair'))
-    {
+    else if (this.sections.some(p => p.foulingState.State === 'Fair')) {
       this.overallFoulingState = 'Fair';
     }
-    else if(this.sections.some(p => p.foulingState.State === 'Good'))
-    {
+    else if (this.sections.some(p => p.foulingState.State === 'Good')) {
       this.overallFoulingState = 'Good';
     }
   }

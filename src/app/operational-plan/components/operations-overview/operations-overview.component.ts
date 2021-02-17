@@ -11,6 +11,9 @@ export class OperationsOverviewComponent implements OnInit {
   activeTab: number = 0;
   vesselId: number = 0;
   operationsOverviewSteps: IRouteList[] = [];
+  installationsDetail = [];
+  selectedInstallation;
+
   constructor(private prepareInstallationService: PrepareInstallationService) { }
 
   ngOnInit() {

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
@@ -49,11 +49,13 @@ export class CreateDocumentsComponent implements OnInit {
     { field: 'Id', sortfield: '', header: 'Action' }
   ];
 
-  constructor(public fb: FormBuilder, private operationalPlanService: OperationalPlanService, private router: Router,
+  constructor(public fb: FormBuilder, private operationalPlanService: OperationalPlanService, private router: Router, private route: ActivatedRoute,
     private confirmationService: ConfirmationService, private prepareInstallationService: PrepareInstallationService, private messageService: MessageService) { }
 
   ngOnInit() {
-    this.vesselId = this.prepareInstallationService.installation.id;
+    if (!this.prepareInstallationService.installation) {
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+    }
     this.isCloudLibraryDataLoading = false;
     this.getDocumentType();
     this.getInstallationDocuments();
@@ -132,12 +134,16 @@ export class CreateDocumentsComponent implements OnInit {
   }
 
   getInstallationDocuments() {
-    this.isDataLoading = true;
-    this.operationalPlanService.getInstallationDocuments(this.vesselId).pipe(take(1)).subscribe((data) => {
-      this.installationDocuments = data;
-      console.log(this.installationDocuments);
-      this.isDataLoading = false;
-    });
+    if (this.route !== undefined && this.route !== null) {
+      const params = this.route.snapshot.paramMap.get('vesselId');
+      this.vesselId = parseInt(params, null);
+      this.isDataLoading = true;
+      this.operationalPlanService.getInstallationDocuments(this.vesselId).pipe(take(1)).subscribe((data) => {
+        this.installationDocuments = data;
+        console.log(this.installationDocuments);
+        this.isDataLoading = false;
+      });
+    }
   }
 
   getDocumentType() {
@@ -277,7 +283,7 @@ export class CreateDocumentsComponent implements OnInit {
   }
 
   next(): void {
-    this.nextActiveTab.emit(5);
+    // this.nextActiveTab.emit(5);
     this.router.navigateByUrl('/operational-plan/prepare-installation/contacts/' + this.vesselId);
   }
 

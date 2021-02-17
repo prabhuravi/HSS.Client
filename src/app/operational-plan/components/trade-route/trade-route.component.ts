@@ -32,11 +32,14 @@ export class TradeRouteComponent implements OnInit {
   constructor(private operationalPlanService: OperationalPlanService, private router: Router,
     private confirmationService: ConfirmationService,
     private prepareInstallationService: PrepareInstallationService,
-    private route: ActivatedRoute, private messageService: MessageService) { }
+    private route: ActivatedRoute, private messageService: MessageService) { 
+    }
 
   ngOnInit() {
     // this.username = this.operationalPlanService.getLoggedInUser();
-    this.vesselId = this.prepareInstallationService.installation.id;
+    if (!this.prepareInstallationService.installation) {
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+    }
     this.getVesselTradeRoute();
   }
 
@@ -101,12 +104,16 @@ export class TradeRouteComponent implements OnInit {
   }
 
   getVesselTradeRoute() {
-    this.isDataLoading = true;
-    this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
-      this.vesselTradeRoute = data;
-      this.isDataLoading = false;
-      this.reAssignProperties();
-    });
+    if (this.route !== undefined && this.route !== null) {
+      const params = this.route.snapshot.paramMap.get('vesselId');
+      this.vesselId = parseInt(params, null);
+      this.isDataLoading = true;
+      this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
+        this.vesselTradeRoute = data;
+        this.isDataLoading = false;
+        this.reAssignProperties();
+      });
+    }
   }
 
   disableAddToRoute(port: any): boolean {
@@ -122,7 +129,7 @@ export class TradeRouteComponent implements OnInit {
   }
 
   next(): void {
-    this.nextActiveTab.emit(2);
+    // this.nextActiveTab.emit(2);
     this.router.navigateByUrl('/operational-plan/prepare-installation/sections/' + this.vesselId);
   }
 
