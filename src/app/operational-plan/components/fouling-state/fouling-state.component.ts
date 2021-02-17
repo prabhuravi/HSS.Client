@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { timeout } from 'rxjs/operators';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
@@ -12,15 +13,17 @@ import { PrepareInstallationService } from 'src/app/services/prepare-installatio
 export class FoulingStateComponent implements OnInit {
 
   @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
-  vesselId = 0;
 
   constructor(private operationalPlanService: OperationalPlanService, private router: Router,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
+    private messageService: MessageService, private route: ActivatedRoute,
     private prepareInstallationService: PrepareInstallationService) { }
 
   ngOnInit() {
-    this.vesselId = this.prepareInstallationService.installation.id;
+    if (!this.prepareInstallationService.installation) {
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+    }
+    // setTimeout(function(){ this.nextActiveTab.emit(3); }, 5000);
   }
 
   cancel() {
@@ -29,7 +32,7 @@ export class FoulingStateComponent implements OnInit {
 
   next(): void {
     this.nextActiveTab.emit(4);
-    this.router.navigateByUrl('/operational-plan/prepare-installation/create-documents/' + this.vesselId);
+    this.router.navigateByUrl('/operational-plan/prepare-installation/create-documents/' + this.prepareInstallationService.installation.id);
   }
 
   anyFunction() {

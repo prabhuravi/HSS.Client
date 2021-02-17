@@ -36,7 +36,9 @@ export class TradeRouteComponent implements OnInit {
 
   ngOnInit() {
     // this.username = this.operationalPlanService.getLoggedInUser();
-    this.vesselId = this.prepareInstallationService.installation.id;
+    if (!this.prepareInstallationService.installation) {
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+    }
     this.getVesselTradeRoute();
   }
 
@@ -101,12 +103,16 @@ export class TradeRouteComponent implements OnInit {
   }
 
   getVesselTradeRoute() {
-    this.isDataLoading = true;
-    this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
-      this.vesselTradeRoute = data;
-      this.isDataLoading = false;
-      this.reAssignProperties();
-    });
+    if (this.route !== undefined && this.route !== null) {
+      const params = this.route.snapshot.paramMap.get('vesselId');
+      this.vesselId = parseInt(params, null);
+      this.isDataLoading = true;
+      this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
+        this.vesselTradeRoute = data;
+        this.isDataLoading = false;
+        this.reAssignProperties();
+      });
+    }
   }
 
   disableAddToRoute(port: any): boolean {
