@@ -283,7 +283,7 @@ export class CreateDocumentsComponent implements OnInit {
   }
 
   next(): void {
-    this.nextActiveTab.emit(5);
+    // this.nextActiveTab.emit(5);
     this.router.navigateByUrl('/operational-plan/prepare-installation/contacts/' + this.vesselId);
   }
 

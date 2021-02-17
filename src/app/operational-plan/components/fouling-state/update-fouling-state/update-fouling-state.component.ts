@@ -23,6 +23,7 @@ export class UpdateFoulingStateComponent implements OnInit {
   isDataLoading = true;
   formData: FormGroup;
   config = {
+    className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--4@tab-m kx-col--2@ltp-s',
     formList: []
   };
   vesselId = 0;

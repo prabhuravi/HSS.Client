@@ -2,7 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Installation } from 'src/app/models/Installation';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
+import { ContactComponent } from '../contact/contact.component';
+import { CreateDocumentsComponent } from '../create-documents/create-documents.component';
 import { FoulingStateComponent } from '../fouling-state/fouling-state.component';
+import { CreateInstallationComponent } from '../installation-information/create-installation/create-installation.component';
+import { SectionsComponent } from '../sections/sections.component';
+import { TradeRouteComponent } from '../trade-route/trade-route.component';
 
 @Component({
   selector: 'app-prepare-installation',
@@ -10,7 +15,7 @@ import { FoulingStateComponent } from '../fouling-state/fouling-state.component'
   styleUrls: ['./prepare-installation.component.scss']
 })
 export class PrepareInstallationComponent implements OnInit, OnDestroy {
-  constructor( private prepareInstallationService: PrepareInstallationService,  private route: ActivatedRoute) {}
+  constructor(private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute) { }
 
   activeTab: number = 0;
   vesselId: number = 0;
@@ -64,16 +69,27 @@ export class PrepareInstallationComponent implements OnInit, OnDestroy {
   }
 
   onActivate(componentReference) {
-    if (componentReference instanceof FoulingStateComponent) {
-      componentReference.anyFunction();
-    }
+    if (componentReference instanceof CreateInstallationComponent)
+      this.activeTab = 0;
+    else if (componentReference instanceof TradeRouteComponent)
+      this.activeTab = 1;
+    else if (componentReference instanceof SectionsComponent)
+      this.activeTab = 2;
+    else if (componentReference instanceof FoulingStateComponent)
+      this.activeTab = 3;
+    else if (componentReference instanceof CreateDocumentsComponent)
+      this.activeTab = 4;
+    else if (componentReference instanceof ContactComponent)
+      this.activeTab = 5;
 
-    if (componentReference.nextActiveTab !== undefined) {
-      componentReference.nextActiveTab.subscribe((data) => {
-        this.activeTab = data;
-        console.log(data);
-      });
-    }
+    // componentReference.anyFunction();
+
+    // if (componentReference.nextActiveTab !== undefined) {
+    //   componentReference.nextActiveTab.subscribe((data) => {
+    //     this.activeTab = data;
+    //     console.log(data);
+    //   });
+    // }
   }
   ngOnDestroy(): void {
     console.log('destory');

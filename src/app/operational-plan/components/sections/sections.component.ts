@@ -29,7 +29,7 @@ export class SectionsComponent implements OnInit {
   }
 
   next(): void {
-    this.nextActiveTab.emit(3);
+    // this.nextActiveTab.emit(3);
     this.router.navigateByUrl('/operational-plan/prepare-installation/fouling-state/' + this.prepareInstallationService.installation.id);
   }
 

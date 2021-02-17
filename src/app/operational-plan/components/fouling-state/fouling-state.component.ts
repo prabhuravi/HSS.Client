@@ -23,7 +23,6 @@ export class FoulingStateComponent implements OnInit {
     if (!this.prepareInstallationService.installation) {
       this.prepareInstallationService.setInstallationFromRoute(this.route);
     }
-    // setTimeout(function(){ this.nextActiveTab.emit(3); }, 5000);
   }
 
   cancel() {
@@ -31,7 +30,7 @@ export class FoulingStateComponent implements OnInit {
   }
 
   next(): void {
-    this.nextActiveTab.emit(4);
+    // this.nextActiveTab.emit(4);
     this.router.navigateByUrl('/operational-plan/prepare-installation/create-documents/' + this.prepareInstallationService.installation.id);
   }
 

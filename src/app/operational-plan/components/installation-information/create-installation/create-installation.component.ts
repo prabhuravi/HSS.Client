@@ -233,7 +233,7 @@ export class CreateInstallationComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.nextActiveTab.emit(1);
+    // this.nextActiveTab.emit(1);
     console.log(this.formData);
     if (this.formData.valid) {
 

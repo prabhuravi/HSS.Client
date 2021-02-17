@@ -3,7 +3,7 @@
     <div class="kx-p--tiny kx-p--medium@mob-m">
         <div class="kx-row kx-row--gutters">
             <app-load *ngIf="isDataLoading"></app-load>
-            <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="kx-row kx-row--gutters">
+            <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="kx-row kx-row--gutters" style="width: 100%;">
 
                 <app-dynamic-form [form]="formData"
                     class="kx-col kx-col--12 kx-col--12@mob-m kx-col--8@tab-m kx-col--3@ltp-s kx-row kx-row--gutters"
@@ -11,8 +11,7 @@
                     (formOnchangeEvent)="formOnchangeEvent($event)">
                 </app-dynamic-form>
 
-                <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--6@ltp-s"
-                    style="margin: 21px 0px 0px 12px;">
+                <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--6@tab-m kx-col--5@ltp-s" style="margin-top: 20px;">
                     <div class="kx-col kx-col--4 kx-col--6@mob-m kx-col--7@tab-m kx-col--5@ltp-s">
                         <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
                             [disabled]="formData.invalid">
@@ -34,7 +33,7 @@
 
             </form>
         </div>
-        <div class="kx-row" style="margin-top: 15px; margin-left: 25px;">
+        <div class="kx-row" style="margin-top: -25px; margin-left: 15px;">
             <b>Vessel Fouling State:</b> &nbsp;
             {{overallFoulingState}}
         </div>
