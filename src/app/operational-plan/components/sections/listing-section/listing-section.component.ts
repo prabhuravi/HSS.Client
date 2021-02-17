@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
@@ -18,7 +19,7 @@ export class ListingSectionComponent implements OnInit {
   constructor(public sectionService: SectionService,
               private prepareInstallationService: PrepareInstallationService,
               public fb: FormBuilder, private confirmationService: ConfirmationService,
-              private messageService: MessageService) { }
+              private messageService: MessageService, private route: ActivatedRoute) { }
 
  isDataLoading = false;
   @Input() vesselSections: VesselSection[];
@@ -39,16 +40,25 @@ export class ListingSectionComponent implements OnInit {
   ];
 
   ngOnInit() {
+    if (!this.prepareInstallationService.installation) {
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+    }
     this.loadVesselSections();
 
   }
 
   private loadVesselSections() {
     this.isDataLoading = true;
-    this.sectionService.getVesselSections(this.prepareInstallationService.installation.id).pipe(take(1)).subscribe((data) => {
-      this.isDataLoading = false;
-      this.vesselSections = data;
-    });
+    let vesselId = 0;
+    if (this.route !== undefined && this.route !== null) {
+      const params = this.route.snapshot.paramMap.get('vesselId');
+      vesselId = parseInt(params, null);
+      this.sectionService.getVesselSections(vesselId).pipe(take(1)).subscribe((data) => {
+        this.isDataLoading = false;
+        this.vesselSections = data;
+      });
+    }
+
   }
 
   onSectionRowEditInit(rowData: VesselSection): void {
@@ -61,12 +71,15 @@ export class ListingSectionComponent implements OnInit {
   }
 
   onSectionDataUpdated(sectionData: any): void {
-    let rowData = this.vesselSections.find( (x) => x.id ===  sectionData.id);
+    const rowData = this.vesselSections.find( (x) => x.id ===  sectionData.id);
     if (rowData) {
-      rowData = sectionData;
+      // rowData = sectionData;
+      this.triggerToast('success', 'Success Message', `Section added successfully`);
     } else {
-      this.vesselSections.push(sectionData);
+      this.triggerToast('success', 'Success Message', `Section updated successfully`);
+      // this.vesselSections.push(sectionData);
     }
+    this.loadVesselSections();
   }
 
   onSubSectionAddInit(SectionRow: VesselSection): void {
@@ -82,20 +95,23 @@ export class ListingSectionComponent implements OnInit {
   }
 
   onSubSectionDataUpdated(subSection: SubSection): void {
-    console.log(subSection);
+    // console.log(subSection);
     const sectionItem  =   this.vesselSections.find((x) => x.id === subSection.vesselSectionId);
-    console.log(sectionItem);
+    // console.log(sectionItem);
     if (!sectionItem.subSections) {
-      sectionItem.subSections = [];
-      sectionItem.subSections.push(subSection);
+      this.triggerToast('success', 'Success Message', `Sub Section added successfully`);
+      // sectionItem.subSections = [];
+      // sectionItem.subSections.push(subSection);
     } else {
-     let subsectionItem =  sectionItem.subSections.find((x) => x.id === subSection.id);
+     const subsectionItem =  sectionItem.subSections.find((x) => x.id === subSection.id);
      if (subsectionItem) {
-      subsectionItem = subSection;
+      this.triggerToast('success', 'Success Message', `Sub Section added successfully`);
+      // subsectionItem = subSection;
      } else {
-      sectionItem.subSections.push(subSection);
+      this.triggerToast('success', 'Success Message', `Sub Section updated successfully`);
+      // sectionItem.subSections.push(subSection);
      }
-
+     this.loadVesselSections();
     }
 
     this.subSectionFlag = false;
@@ -111,8 +127,9 @@ export class ListingSectionComponent implements OnInit {
         this.isDataLoading = true;
         this.sectionService.deleteVesselSection(vesselSectionRow.id).pipe(take(1)).subscribe((data) => {
           this.isDataLoading = false;
-          this.vesselSections = this.vesselSections.filter((x) => x !== vesselSectionRow);
+         // this.vesselSections = this.vesselSections.filter((x) => x !== vesselSectionRow);
           this.subSectionFlag = false;
+          this.loadVesselSections();
           this.triggerToast('success', 'Success Message', `Section deleted successfully`);
          });
       }
@@ -127,10 +144,11 @@ export class ListingSectionComponent implements OnInit {
         this.isDataLoading = true;
         this.sectionService.deleteSubSection(subSectionRow.id).pipe(take(1)).subscribe((data) => {
           this.isDataLoading = false;
-          const sectionRow =  this.vesselSections.find((x) => x.id === subSectionRow.vesselSectionId);
-          let subsections = sectionRow.subSections;
-          subsections = subsections.filter((x) => x !== subSectionRow);
-          sectionRow.subSections = subsections;
+          // const sectionRow =  this.vesselSections.find((x) => x.id === subSectionRow.vesselSectionId);
+          // let subsections = sectionRow.subSections;
+          // subsections = subsections.filter((x) => x !== subSectionRow);
+          // sectionRow.subSections = subsections;
+          this.loadVesselSections();
           this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
         });
       }

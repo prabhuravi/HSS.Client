@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
@@ -19,12 +20,12 @@ export class ContactListingComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   @Output() contactOnEdit: EventEmitter<any> = new EventEmitter<any>();
   cols = [
-    { field: 'firstName', header: 'First Name', sortfield: 'firstName', filterMatchMode: 'contains' },
+    { field: 'name', header: 'First Name', sortfield: 'name', filterMatchMode: 'contains' },
     { field: 'surName', header: 'Surname', sortfield: 'surName', filterMatchMode: 'contains' },
     { field: 'email', header: 'Email', sortfield: 'email', filterMatchMode: 'contains' },
     { field: 'alternativePhone', header: 'Alternative Phone', sortfield: 'alternativePhone', filterMatchMode: 'contains' },
     { field: 'Phone', header: 'Phone', sortfield: 'Phone', filterMatchMode: 'contains' },
-    { field: 'role', header: 'Role', sortfield: 'role.name', filterMatchMode: 'contains' },
+    { field: 'ContactType.name', header: 'Role', sortfield: 'ContactType.name', filterMatchMode: 'contains' },
     { field: 'tagTraining', header: 'Tag Training', sortfield: '' },
     { field: 'action', header: 'Actions', sortfield: '' }
   ];
@@ -33,15 +34,22 @@ export class ContactListingComponent implements OnInit {
   constructor(private confirmationService: ConfirmationService,
               private messageService: MessageService,
               private contactService: ContactService,
-              private prepareInstallationService: PrepareInstallationService) { }
+              private prepareInstallationService: PrepareInstallationService,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
+    if (!this.prepareInstallationService.installation) {
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+    }
     this.loadVesselContacts();
   }
 
   private loadVesselContacts() {
     this.isDataLoading = true;
-    this.contactService.getVesselContacts(this.prepareInstallationService.installation.id).pipe(take(1)).subscribe((data) => {
+    let vesselId = 0;
+    const params = this.route.snapshot.paramMap.get('vesselId');
+    vesselId = parseInt(params, null);
+    this.contactService.getVesselContacts(vesselId).pipe(take(1)).subscribe((data) => {
       console.log(data);
       this.isDataLoading = false;
       this.contacts = data;
@@ -60,7 +68,8 @@ export class ContactListingComponent implements OnInit {
         this.isDataLoading = true;
         this.contactService.deleteVesselContact(rowData.vesselContactId).pipe(take(1)).subscribe((data) => {
           this.isDataLoading = false;
-          this.contacts = this.contacts.filter((x) => x !== rowData);
+          this.loadVesselContacts();
+          // this.contacts = this.contacts.filter((x) => x !== rowData);
           this.triggerToast('success', 'Success Message', `contact removed successfully`);
         });
       }
@@ -69,12 +78,13 @@ export class ContactListingComponent implements OnInit {
 
   onContactDataUpdated(ContactData: Contact): void {
     console.log(ContactData);
-    let rowData = this.contacts.find((x) => x.id === ContactData.id);
-    if (rowData) {
-      rowData = ContactData;
-    } else {
-      this.contacts.push(ContactData);
-    }
+    this.loadVesselContacts();
+    // let rowData = this.contacts.find((x) => x.id === ContactData.id);
+    // if (rowData) {
+    //   rowData = ContactData;
+    // } else {
+    //   this.contacts.push(ContactData);
+    // }
   }
   searchContact(event: any) {
     console.log(event.query);
@@ -86,14 +96,15 @@ export class ContactListingComponent implements OnInit {
   onSelectContact(event: Contact) {
     const selectedContact = event;
     const existingContact = this.contacts.filter((x) => x.id === selectedContact.id);
-    if (existingContact.length < 0) {
+    if (existingContact.length === 0) {
       this.confirmationService.confirm({
         message: 'Would you like to add this contact to this installation?',
         accept: () => {
-          selectedContact.contactId = existingContact[0].id;
+          selectedContact.contactId = selectedContact.id;
           selectedContact.vesselId = this.prepareInstallationService.installation.id;
           this.isDataLoading = true;
           this.contactService.createVesselContact(selectedContact).pipe(take(1)).subscribe((data) => {
+            this.loadVesselContacts();
             this.isDataLoading = false;
             this.triggerToast('success', 'Success Message', `contact added successfully`);
             this.searchedContact = null;

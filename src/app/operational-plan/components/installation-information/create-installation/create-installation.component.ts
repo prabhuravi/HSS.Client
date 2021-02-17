@@ -53,13 +53,23 @@ export class CreateInstallationComponent implements OnInit {
       this.installationStatus = data[2];
       // this.foulingStates = data[3];
       this.constructForm();
-      this.formData = await this.formBuliderService.buildForm(this.config);
+      this.formData = this.formBuliderService.buildForm(this.config);
       this.isDataLoading = false;
-      if (this.prepareInstallationService.installation) {
-        this.setFormValue(this.prepareInstallationService.installation);
+      this.prepareInstallationService.setInstallationFromRoute(this.route);
+      if (this.route !== undefined && this.route !== null) {
+        let vesselId = 0;
+        const params = this.route.snapshot.paramMap.get('vesselId');
+        vesselId = parseInt(params, null);
+        if(vesselId > 0) {
+          this.prepareInstallationService.getInstallationById(vesselId);
+        }
       }
+      this.prepareInstallationService.installationDetail.subscribe((x) => {
+        if (x) {
+          this.setFormValue(x);
+        }
+      });
     });
-
   }
 
   constructForm(): void {
@@ -165,6 +175,7 @@ export class CreateInstallationComponent implements OnInit {
     console.log(installation);
     // console.log(this.config.formList);
     this.setFormValue(installation);
+    this.prepareInstallationService.updateInstallationDetail(installation);
 
   }
 
@@ -231,6 +242,7 @@ export class CreateInstallationComponent implements OnInit {
     // installationIformation.foulingState = formValues.FoulingState;
      installationIformation.vesselType = formValues.VesselType;
      installationIformation.vesselTypeId = formValues.VesselType.id;
+     installationIformation.imoNo = formValues.ImoNo;
     // installationIformation.foulingId = formValues.FoulingState.Id;
      installationIformation.node.nodeNumber = formValues.NodeNumber;
      installationIformation.node.gatewayIP = formValues.gatewayIP;
@@ -244,7 +256,7 @@ export class CreateInstallationComponent implements OnInit {
      this.installationService.UpdateInstallationInformation(installationIformation).pipe(take(1)).subscribe(async (data) => {
        if (data) {
         this.triggerToast('success', 'Success Message', `Installation Information updated`);
-        await this.prepareInstallationService.updateInstallationDetail(installationIformation);
+        this.prepareInstallationService.updateInstallationDetail(installationIformation);
         this.router.navigateByUrl('/operational-plan/prepare-installation/trade-route/' + installationIformation.id);
        }
 

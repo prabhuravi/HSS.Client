@@ -97,6 +97,7 @@ export class CreateSectionComponent implements OnInit {
   sectionEditInit(sectionData: VesselSection): void {
     this.editMode = true;
     this.vesselSection = sectionData;
+    this.vesselSection.sectionStatusId = this.formData.controls.sectionStatus.value.id;
     console.log(this.Sections.find((x) => x.id === sectionData.sectionId));
     this.formData.controls.name.setValue(this.Sections.find((x) => x.id === sectionData.sectionId));
     this.formData.controls.sectionStatus.setValue(sectionData.sectionStatus);
@@ -129,6 +130,7 @@ export class CreateSectionComponent implements OnInit {
   saveSection(): void {
     const formValue = this.formData.value;
     this.vesselSection.sectionStatus = formValue.sectionStatus;
+    this.vesselSection.sectionStatusId = this.formData.controls.sectionStatus.value.id;
     this.sectionService.UpdateVesselSection(this.vesselSection).pipe(take(1)).subscribe((data) => {
     this.sectionUpdated.emit(this.vesselSection);
     this.onFormReset();
