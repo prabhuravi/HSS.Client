@@ -119,7 +119,8 @@
         "endpoints": {
           "GetInstallations": "",
           "GetInstallationStatus": "/InstallationStatus",
-          "GetInstallationType": "/VesselType",
+          "GetVesselType": "/VesselType",
+          "GetInstallationType": "/InstallationType",
           "UpdateInstallation": ""
           
         }

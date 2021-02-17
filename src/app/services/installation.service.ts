@@ -3,7 +3,7 @@ import { HttpService } from './http.service';
 import { Observable, forkJoin, observable, of } from 'rxjs';
 import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from '../configuration';
-import { Installation,  InstallationStatus,  VesselType} from '../models/Installation';
+import { Installation,  InstallationStatus,  InstallationType,  VesselType} from '../models/Installation';
 import { map } from 'rxjs/operators';
 import { InstallationAdapter, VesselTypeAdapter, InstallationStatusAdapter, FoulingStateAdapter } from '../models/modelAdapter';
 
@@ -17,6 +17,7 @@ export class InstallationService {
   constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>,
               private installationAdapter: InstallationAdapter,
               private vesselTypeAdapter: VesselTypeAdapter,
+              private installationTypeAdapter: VesselTypeAdapter,
               private installationStatusAdapter: InstallationStatusAdapter,
               private foulingStateAdapter: FoulingStateAdapter
               ) {
@@ -25,9 +26,9 @@ export class InstallationService {
     this.foulingConfig = this.configurationService.config.apiCollection.OperationalPlan.Fouling;
    }
 
-   getInstallationFormData(): Observable <[Installation[], VesselType[], InstallationStatus[]]> {
+   getInstallationFormData(): Observable <[Installation[], VesselType[], InstallationStatus[], InstallationType[]]> {
 
-     return forkJoin([this.getinstallations(), this.getVesselTypes(), this.getinstallationStatus()]);
+     return forkJoin([this.getinstallations(), this.getVesselTypes(), this.getinstallationStatus(), this.getInstallationTypes()]);
   }
 
    getinstallations(): Observable<Installation[]> {
@@ -45,6 +46,12 @@ export class InstallationService {
   }
 
   getVesselTypes(): Observable<VesselType[]> {
+    const requestData = {
+      endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.GetVesselType}`
+    };
+    return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.vesselTypeAdapter.adapt(item))));
+  }
+  getInstallationTypes(): Observable<InstallationType[]> {
     const requestData = {
       endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.GetInstallationType}`
     };

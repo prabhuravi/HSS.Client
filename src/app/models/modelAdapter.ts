@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Contact, ContactRole } from './Contact';
 import { IModelAdapter } from './IModelAdapter';
-import { Installation, InstallationStatus, VesselType } from './Installation';
+import { Installation, InstallationStatus, InstallationType, VesselType } from './Installation';
 import { Node } from './Node';
 import { VesselSection, SectionStatus, SubSection, Section } from './Section';
 
@@ -11,6 +11,19 @@ import { VesselSection, SectionStatus, SubSection, Section } from './Section';
 export class VesselTypeAdapter implements IModelAdapter<VesselType> {
     adapt(item: any): VesselType {
         return new VesselType(
+            item.Id ? item.Id : item.id ? item.id : 0,
+            item.Name ? item.Name : item.name ? item.name : ''
+        );
+    }
+
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class InstallationTypeAdapter implements IModelAdapter<InstallationType> {
+    adapt(item: any): InstallationType {
+        return new InstallationType(
             item.Id ? item.Id : item.id ? item.id : 0,
             item.Name ? item.Name : item.name ? item.name : ''
         );
@@ -174,7 +187,8 @@ export class InstallationAdapter implements IModelAdapter<Installation> {
         private vesselTypeAdpater: VesselTypeAdapter,
         private installationStatusAdapter: InstallationStatusAdapter,
         private nodeAdapter: NodeAdapter,
-        private foulingStateAdapter: FoulingStateAdapter
+        private foulingStateAdapter: FoulingStateAdapter,
+        private installationTypeAdapter: InstallationTypeAdapter
     ) {
 
     }
@@ -195,7 +209,9 @@ export class InstallationAdapter implements IModelAdapter<Installation> {
             item.VesselType ? this.vesselTypeAdpater.adapt(item.VesselType) : item.vesselType ? this.vesselTypeAdpater.adapt(item.vesselType) : null,
             item.InstallationStatus ? this.installationStatusAdapter.adapt(item.InstallationStatus) : null,
             item.Node ? this.nodeAdapter.adapt(item.Node) : item.node ? this.nodeAdapter.adapt(item.node) : null,
-            item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : null
+            item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : null,
+            item.installationTypeId ? item.installationTypeId : item.InstallationTypeId ? item.InstallationTypeId : 0,
+            item.installationType ? this.installationTypeAdapter.adapt(item.installationType) : item.InstallationType ? this.installationTypeAdapter.adapt(item.InstallationType) : null
         );
     }
 }

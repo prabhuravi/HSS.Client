@@ -16,7 +16,9 @@ export class Installation {
         public vesselType: VesselType,
         public installationStatus: InstallationStatus,
         public node: Node,
-        public foulingState: IFoulingState) { }
+        public foulingState: IFoulingState,
+        public installationTypeId: number,
+        public installationType: InstallationType) { }
 
 }
 
@@ -28,6 +30,14 @@ export class InstallationStatus {
 }
 
 export class VesselType {
+    constructor(
+        public id: number,
+        public name: string
+    ) {}
+
+}
+
+export class InstallationType {
     constructor(
         public id: number,
         public name: string
