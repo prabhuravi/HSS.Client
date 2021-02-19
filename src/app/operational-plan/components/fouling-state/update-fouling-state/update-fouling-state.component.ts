@@ -174,8 +174,8 @@ export class UpdateFoulingStateComponent implements OnInit {
     if (this.sections.some(p => p.foulingState.State === 'Not Rated')) {
       this.overallFoulingState = 'Not Rated';
     }
-    else if (this.sections.some(p => p.foulingState.State === 'Bad')) {
-      this.overallFoulingState = 'Bad';
+    else if (this.sections.some(p => p.foulingState.State === 'Poor')) {
+      this.overallFoulingState = 'Poor';
     }
     else if (this.sections.some(p => p.foulingState.State === 'Fair')) {
       this.overallFoulingState = 'Fair';
