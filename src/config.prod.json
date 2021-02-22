@@ -228,7 +228,7 @@
         "endpoints": {
           "GetFoulingStates": "",
           "GetSectionFoulingState": "/GetSectionFoulingState",
-          "UpdateSubSectionFoulingState":"",
+          "UpdateSubSectionFoulingState":"/UpdateSubSectionFoulingState",
           "ReCalculateFoulingState": "/ReCalculateFoulingState"
         }
       },

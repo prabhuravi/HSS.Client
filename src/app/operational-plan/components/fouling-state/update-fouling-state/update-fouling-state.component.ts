@@ -150,8 +150,7 @@ export class UpdateFoulingStateComponent implements OnInit {
       this.triggerToast('success', 'Success Message', `Sub Section fouling state updated successfully`);
       this.isDataLoading = false;
 
-      console.log(this.formData.value.sectionName);
-      this.operationalPlanService.reCalculateFoulingState({ VesselSectionId: this.formData.value.sectionName.id, VesselId: this.formData.value.sectionName.vesselId }).pipe(take(1)).subscribe((data) => {
+      this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
         this.sections = data;
         console.log(this.sections);
         this.config.formList[0].options = this.sections;
@@ -161,12 +160,17 @@ export class UpdateFoulingStateComponent implements OnInit {
         this.onFormReset();
       });
 
-      // this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
+      // console.log(this.formData.value.sectionName);
+      // this.operationalPlanService.reCalculateFoulingState({ VesselSectionId: this.formData.value.sectionName.id, VesselId: this.formData.value.sectionName.vesselId }).pipe(take(1)).subscribe((data) => {
       //   this.sections = data;
+      //   console.log(this.sections);
       //   this.config.formList[0].options = this.sections;
       //   this.isDataLoading = false;
+      //   this.calculateVesselFoulingState();
+      //   this.foulingStateUpdated.emit(true);
+      //   this.onFormReset();
       // });
-      // this.foulingStateUpdated.emit(true);
+
     });
   }
 
