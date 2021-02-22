@@ -212,7 +212,7 @@ export class OperationalPlanService {
 
   updateSubSectionFoulingState(subSectionId: number, data: any): Observable<any> {
     const requestData = {
-      endPoint: `${this.sectionApiUrl}${this.operationalPlanConfig.Section.endpoints.UpdateSubSection}/${subSectionId}`,
+      endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.UpdateSubSectionFoulingState}/${subSectionId}`,
       data: data
     };
     // return of(true);
