@@ -32,8 +32,8 @@ export class TradeRouteComponent implements OnInit {
   constructor(private operationalPlanService: OperationalPlanService, private router: Router,
     private confirmationService: ConfirmationService,
     private prepareInstallationService: PrepareInstallationService,
-    private route: ActivatedRoute, private messageService: MessageService) { 
-    }
+    private route: ActivatedRoute, private messageService: MessageService) {
+  }
 
   ngOnInit() {
     // this.username = this.operationalPlanService.getLoggedInUser();
@@ -44,14 +44,28 @@ export class TradeRouteComponent implements OnInit {
   }
 
   onRowReorder(event) {
+    let tradeRouteIds: {}[] = [];
+    this.vesselTradeRoute.forEach(element => {
+      tradeRouteIds.push(element.Id)
+    });
+
     if (event.dragIndex !== event.dropIndex) {
       this.isDataLoading = true;
-      this.operationalPlanService.reorderTradeRoute({ VesselId: this.vesselId, DragId: this.clonedVesselTradeRoute[event.dragIndex].Id, DropId: this.clonedVesselTradeRoute[event.dropIndex].Id }).pipe(take(1)).subscribe((data) => {
+      this.operationalPlanService.reorderTradeRoute({ VesselId: this.vesselId, TradeRouteIds: tradeRouteIds }).pipe(take(1)).subscribe((data) => {
         this.vesselTradeRoute = data;
         this.reAssignProperties();
         this.isDataLoading = false;
       });
     }
+
+    // if (event.dragIndex !== event.dropIndex) {
+    //   this.isDataLoading = true;
+    //   this.operationalPlanService.reorderTradeRoute({ VesselId: this.vesselId, DragId: this.clonedVesselTradeRoute[event.dragIndex].Id, DropId: this.clonedVesselTradeRoute[event.dropIndex].Id }).pipe(take(1)).subscribe((data) => {
+    //     this.vesselTradeRoute = data;
+    //     this.reAssignProperties();
+    //     this.isDataLoading = false;
+    //   });
+    // }
   }
 
   filterPortLocations(event) {
@@ -63,11 +77,22 @@ export class TradeRouteComponent implements OnInit {
   addNewPort() {
     if (this.vesselTradeRoute.findIndex((p) => p.PortId === this.port.Id) === -1) {
       this.isDataLoading = true;
+      console.log(this.port);
       this.operationalPlanService.addPortToRoute({ PortId: this.port.Id, Order: this.portOrder, VesselId: this.vesselId }).subscribe((data) => {
         this.triggerToast('success', 'Success Message', `Port added to route successfully`);
         this.isDataLoading = false;
+
+        // this.vesselTradeRoute.forEach(element => {
+        //   if(element.Order >= this.portOrder)
+        //   {
+        //     element.Order = element.Order + 1;
+        //   }
+        // });
+        // this.vesselTradeRoute.push({Id: null, VesselId: this.vesselId, PortId: this.port.Id, Order: this.portOrder, PortName: this.port.PortName, PortCode: this.port.PortCode.toString()});
+        // this.reAssignProperties()
+
         this.port = null;
-        this.getVesselTradeRoute();
+        this.getVesselTradeRoute();  // for time being
       });
     } else {
       this.port = null;
