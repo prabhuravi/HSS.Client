@@ -2,8 +2,8 @@
   
     <div class="kx-mt--tiny kx-col kx-col--12 kx-col--12@mob-m kx-col--12@tab-m kx-col--6@ltp-s">
       <p-autoComplete [(ngModel)]="searchedContact" [suggestions]="contactSearch" (onSelect)="onSelectContact($event)" inputStyleClass="kx-field kx-field--size-base"
-        (completeMethod)="searchContact($event)" field="name" [size]="30"
-        placeholder="Seach contacts" [minLength]="3">
+        (completeMethod)="searchContact($event)" field="name" [size]="30" emptyMessage="No results found"
+        placeholder="Seach contacts" [minLength]="1">
         <ng-template let-user pTemplate="item">
           <div class="ui-helper-clearfix">
               {{user.name}}, {{user.surName}}, {{user.email}}, {{user.phone}}, {{user.alternativePhone}}
