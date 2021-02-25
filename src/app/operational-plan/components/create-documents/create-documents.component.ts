@@ -171,6 +171,8 @@ export class CreateDocumentsComponent implements OnInit {
 
   addDocument() {
     if (this.form.valid) {
+      console.log(this.form.value.documentDate);
+      console.log(new Date(this.form.value.documentDate).toISOString());
       let formData: FormData = new FormData();
       formData.append('Id', (this.editDocument == null ? 0 : this.editDocument.Id).toString());
       formData.append('VesselId', this.vesselId.toString());
@@ -211,6 +213,8 @@ export class CreateDocumentsComponent implements OnInit {
 
   editInstallationDocument(rowData: IInstallationDocument) {
     this.editDocument = rowData;
+    console.log(rowData.Date);
+    console.log(new Date(rowData.Date).toLocaleDateString());
     this.form.setValue({
       documentName: rowData.DocumentName,
       documentType: this.documentTypes.find(p => p.Id == rowData.DocumentTypeId),
@@ -223,6 +227,7 @@ export class CreateDocumentsComponent implements OnInit {
     this.documentTypeId = rowData.DocumentTypeId;
 
     if (this.uploadFrom == 'Local') {
+      console.log('Local');
       this.form.controls.documentName.setValidators([Validators.required]);
       this.form.controls.version.setValidators([Validators.required]);
       this.form.controls.documentDate.setValidators([Validators.required]);
@@ -236,6 +241,7 @@ export class CreateDocumentsComponent implements OnInit {
       else {
         this.form.controls.localFile.setValidators([Validators.required]);
       }
+      this.file = undefined;
       this.form.controls.localFile.reset();
       this.form.controls.localFile.updateValueAndValidity();
     }
@@ -254,6 +260,7 @@ export class CreateDocumentsComponent implements OnInit {
       this.form.controls.documentDate.reset();
       this.form.controls.localFile.reset();
     }
+    console.log(this.form);
   }
 
   deleteInstallationDocument(rowData: IInstallationDocument) {

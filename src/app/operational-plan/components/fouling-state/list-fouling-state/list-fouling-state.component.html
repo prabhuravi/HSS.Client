@@ -43,7 +43,8 @@
             </td>
             <td>{{ rowData.name }}</td>
             <td></td>
-            <td> {{ rowData.foulingState.State }}</td>
+            <td> {{ rowData.foulingState.State }}</td> 
+            <td> {{ rowData.modifiedDate | date:'MM/dd/yyyy HH:mm' }}</td>
             <td>
             </td>
         </tr>
@@ -56,10 +57,12 @@
                     <p-table [value]="rowData.subSections" tableStyleClass="kx-table" autoLayout="true">
                         <ng-template pTemplate="body" let-rowData>
         <tr class="kx-row">
-            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.subSectionNumber }}
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">{{ rowData.subSectionNumber }}
             </td>
-            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--6@tab-m kx-col--6@ltp-s" style="margin-right: 0.8%;">{{
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--5@ltp-s" style="margin-right: 0.8%;">{{
                 rowData.foulingState.State }}</td>
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.modifiedDate | date:'MM/dd/yyyy HH:mm'}}
+            </td>
             <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--1@tab-m kx-col--1@ltp-s">
                 <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit"
                     title="Edit" (click)="editSubSectionFoulingState(rowData)">

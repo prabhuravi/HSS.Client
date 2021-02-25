@@ -30,6 +30,7 @@ export class ListFoulingStateComponent implements OnInit {
     { field: 'name', header: 'Section', sortfield: 'name', filterMatchMode: 'contains' },
     { field: 'subSections', header: 'Sub-Section', sortfield: '', filterMatchMode: '' },
     { field: 'foulingState.State', header: 'Fouling State', sortfield: 'foulingState.State', filterMatchMode: 'contains' },
+    { field: 'modifiedDate', header: 'Modified Date', sortfield: 'modifiedDate', filterMatchMode: 'contains' },
     { field: 'action', header: 'Action', sortfield: '', filterMatchMode: '' }
   ];
 
@@ -45,6 +46,7 @@ export class ListFoulingStateComponent implements OnInit {
       this.isDataLoading = true;
       this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
         this.isDataLoading = false;
+        console.log(data);
         this.sections = data;
       });
     }
