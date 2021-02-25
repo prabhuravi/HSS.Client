@@ -171,8 +171,6 @@ export class CreateDocumentsComponent implements OnInit {
 
   addDocument() {
     if (this.form.valid) {
-      console.log(this.form.value.documentDate);
-      console.log(new Date(this.form.value.documentDate).toISOString());
       let formData: FormData = new FormData();
       formData.append('Id', (this.editDocument == null ? 0 : this.editDocument.Id).toString());
       formData.append('VesselId', this.vesselId.toString());
@@ -186,7 +184,13 @@ export class CreateDocumentsComponent implements OnInit {
       }
       else { //Upload from Local 
         formData.append('DocumentName', this.form.value.documentName);
-        formData.append('Date', new Date(this.form.value.documentDate).toISOString());
+        console.log(this.form.value.documentDate);
+        this.form.value.documentDate = new Date(this.form.value.documentDate.toString());
+        this.form.value.documentDate = this.form.value.documentDate.toString().slice(0, this.form.value.documentDate.toString().indexOf('GMT')) + 'GMT';
+        console.log(this.form.value.documentDate);
+        this.form.value.documentDate = new Date(this.form.value.documentDate).toISOString();
+        console.log(this.form.value.documentDate);
+        formData.append('Date', this.form.value.documentDate);
         formData.append('Version', this.form.value.version);
         formData.append('CopyVesselId', "0");
         if (this.editDocument !== null) {
