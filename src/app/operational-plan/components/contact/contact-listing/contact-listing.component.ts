@@ -24,7 +24,7 @@ export class ContactListingComponent implements OnInit {
     { field: 'surName', header: 'Surname', sortfield: 'surName', filterMatchMode: 'contains' },
     { field: 'email', header: 'Email', sortfield: 'email', filterMatchMode: 'contains' },
     { field: 'alternativePhone', header: 'Alternative Phone', sortfield: 'alternativePhone', filterMatchMode: 'contains' },
-    { field: 'Phone', header: 'Phone', sortfield: 'Phone', filterMatchMode: 'contains' },
+    { field: 'phone', header: 'Phone', sortfield: 'phone', filterMatchMode: 'contains' },
     { field: 'ContactType.name', header: 'Role', sortfield: 'ContactType.name', filterMatchMode: 'contains' },
     { field: 'tagTraining', header: 'Tag Training', sortfield: '' },
     { field: 'action', header: 'Actions', sortfield: '' }
