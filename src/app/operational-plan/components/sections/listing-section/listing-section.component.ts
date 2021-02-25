@@ -72,11 +72,13 @@ export class ListingSectionComponent implements OnInit {
 
   onSectionDataUpdated(sectionData: any): void {
     const rowData = this.vesselSections.find( (x) => x.id ===  sectionData.id);
-    if (rowData) {
+    if (!rowData) {
       // rowData = sectionData;
       this.triggerToast('success', 'Success Message', `Section added successfully`);
+      console.log('section added');
     } else {
       this.triggerToast('success', 'Success Message', `Section updated successfully`);
+      console.log('section updated');
       // this.vesselSections.push(sectionData);
     }
     this.loadVesselSections();
@@ -104,7 +106,7 @@ export class ListingSectionComponent implements OnInit {
       // sectionItem.subSections.push(subSection);
     } else {
      const subsectionItem =  sectionItem.subSections.find((x) => x.id === subSection.id);
-     if (subsectionItem) {
+     if (!subsectionItem) {
       this.triggerToast('success', 'Success Message', `Sub Section added successfully`);
       // subsectionItem = subSection;
      } else {
