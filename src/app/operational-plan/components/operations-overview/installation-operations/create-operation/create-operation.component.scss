@@ -1,0 +1,11 @@
+// ::ng-deep .ui-tree-container {
+//     color: blue;
+//   }
+  
+  ::ng-deep .fa-caret-right::before {
+     content: "\F067";
+  }
+  
+  ::ng-deep .fa-caret-down::before {
+     content: "\F068";
+  }

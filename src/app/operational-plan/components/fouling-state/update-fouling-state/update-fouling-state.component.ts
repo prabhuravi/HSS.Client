@@ -111,6 +111,7 @@ export class UpdateFoulingStateComponent implements OnInit {
   }
 
   onSectionChanged(section: VesselSection) {
+    this.formData.controls.subSectionName.reset();
     if (section) {
       if (section.subSections) {
         this.config.formList[1].options = section.subSections;

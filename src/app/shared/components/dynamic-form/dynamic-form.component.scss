@@ -3,8 +3,14 @@ small {
 }
 
 .ui-dropdown {
-  
     padding: 0rem !important;
-   
+}
+
+.ui-autocomplete .ui-autocomplete-input {
+    width: 100% !important;
+}
+
+.ui-autocomplete {
+    width: 100% !important;
 }
 

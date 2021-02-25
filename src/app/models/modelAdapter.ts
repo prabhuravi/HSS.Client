@@ -115,7 +115,8 @@ export class SubSectionAdapter implements IModelAdapter<SubSection> {
             item.subSectionNumber ? item.subSectionNumber : item.SubSectionNumber ? item.SubSectionNumber : 0,
             item.SectionStatus ? this.sectionStatusAdapter.adapt(item.SectionStatus) : item.sectionStatus ? this.sectionStatusAdapter.adapt(item.sectionStatus) : null,
             item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : null,
-            item.JoturnFoulingState ? this.foulingStateAdapter.adapt(item.JoturnFoulingState) : item.joturnFoulingState ? this.foulingStateAdapter.adapt(item.joturnFoulingState) : null
+            item.JoturnFoulingState ? this.foulingStateAdapter.adapt(item.JoturnFoulingState) : item.joturnFoulingState ? this.foulingStateAdapter.adapt(item.joturnFoulingState) : null,
+            item.modifiedDate ? item.modifiedDate : item.ModifiedDate ? item.ModifiedDate : null
         );
     }
 
@@ -141,6 +142,7 @@ export class VesselSectionAdapter implements IModelAdapter<VesselSection> {
             item.Section ? this.sectionAdapter.adapt(item.Section) : item.section ? this.sectionAdapter.adapt(item.section) : null,
             false,
             item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : null,
+            item.modifiedDate ? item.modifiedDate : item.ModifiedDate ? item.ModifiedDate : null,
             item.SubSections ? item.SubSections.map((x) => this.subSectionAdapter.adapt(x)) : item.subSections ? item.subSections.map((x) => this.subSectionAdapter.adapt(x)) : []
 
         );
