@@ -1,1 +1,55 @@
-<p>Grid to show operations (from newest to old)</p>
+<!-- <div class="kx-card kx-card--skin-default">
+    <div class="kx-card__body">
+        <div class="kx-row kx-row--gutters">
+            <div class="kx-col kx-col--12 kx-col--6@ltp-s" style="padding: 0;"> -->
+<div class="kx-row">
+    <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
+    </div>
+    <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
+        <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base"
+            (click)="redirectToCreateOperation()">
+            <span class="kx-btn__inner">
+                <span class="kx-btn__txt">Create Operation</span>
+            </span>
+        </button>
+    </div>
+</div>
+<!-- </div>
+        </div>
+    </div>
+</div> -->
+
+<div style="margin-top: 20px;">
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
+</div>
+
+<!-- 
+<div class="kx-col">
+    <p-table [columns]="cols" [value]="installationList" tableStyleClass="kx-table kx-table--outer-border"
+        autoLayout="true">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-installationList>
+            <tr>
+                <td> <a [routerLink]="['/operational-plan/operations-overview']">
+                        <span class="kx-pt--tiny">{{installationList.Name}} </span>
+                    </a> 
+                </td>
+                <td>{{installationList.FoulingState}}</td>
+                <td>{{installationList.InstallationStatus}}</td>
+                <td>{{installationList.Status}}</td>
+                <td>{{installationList.Date | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{installationList.Port}}</td>
+                <td>{{installationList.ConnectivityStatus}}</td>
+                <td>{{installationList.ETA | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{installationList.ETB | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{installationList.CurrentPosition}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div> -->

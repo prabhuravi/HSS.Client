@@ -10,6 +10,7 @@ export class VesselSection {
         public section: Section,
         public selected: boolean = false,
         public foulingState: IFoulingState,
+        public modifiedDate: Date,
         public subSections: SubSection[] = []
     ) { }
 }
@@ -37,6 +38,7 @@ export class SubSection {
         public subSectionNumber: number,
         public sectionStatus: SectionStatus,
         public foulingState: IFoulingState,
-        public joturnFoulingState: IFoulingState
+        public joturnFoulingState: IFoulingState,
+        public modifiedDate: Date,
     ) { }
 }

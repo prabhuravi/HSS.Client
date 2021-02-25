@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
+import {TreeModule} from 'primeng/tree';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -35,6 +36,9 @@ import { UpdateFoulingStateComponent } from './components/fouling-state/update-f
 import { ListFoulingStateComponent } from './components/fouling-state/list-fouling-state/list-fouling-state.component';
 import { OperationsOverviewComponent } from './components/operations-overview/operations-overview.component';
 import { InstallationOperationsComponent } from './components/operations-overview/installation-operations/installation-operations.component';
+import { CreateOperationComponent } from './components/operations-overview/installation-operations/create-operation/create-operation.component';
+import { ListOperationsComponent } from './components/operations-overview/installation-operations/list-operations/list-operations.component';
+
 
 const routes: Routes = [
   {
@@ -53,9 +57,15 @@ const routes: Routes = [
       },
 
       {
-        path: 'operations-overview', component: OperationsOverviewComponent, children: [
+        path: 'operations-overview/:vesselId', component: OperationsOverviewComponent, children: [
           { path: '', component: InstallationOperationsComponent, pathMatch: 'full' },
-          { path: 'installation-operations/:vesselId', component: InstallationOperationsComponent }
+          {
+            path: 'installation-operations/:vesselId', component: InstallationOperationsComponent, children: [
+              { path: '', component: ListOperationsComponent, pathMatch: 'full' },
+              { path: 'list-operations/:vesselId', component: ListOperationsComponent },
+              { path: 'create-operation/:vesselId', component: CreateOperationComponent }
+            ]
+          }
         ]
       },
 
@@ -95,12 +105,15 @@ const routes: Routes = [
     UpdateFoulingStateComponent,
     ListFoulingStateComponent,
     OperationsOverviewComponent,
-    InstallationOperationsComponent],
+    InstallationOperationsComponent,
+    CreateOperationComponent,
+    ListOperationsComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
     SharedModule,
     TableModule,
+    TreeModule,
     CalendarModule,
     DropdownModule,
     CheckboxModule,

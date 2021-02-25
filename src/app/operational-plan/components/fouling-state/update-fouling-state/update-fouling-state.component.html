@@ -1,37 +1,39 @@
 <div class="kx-card kx-card--skin-default" style="margin-top: -20px;"
     *ngIf="config && config.formList && config.formList.length > 0">
     <div class="kx-p--tiny kx-p--medium@mob-m">
-        <div class="kx-row">
+        <div class="kx-row kx-row--gutters">
             <app-load *ngIf="isDataLoading"></app-load>
-            <form [formGroup]="formData" (ngSubmit)="onSubmit()" style="width:65%;">
+            <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="kx-row kx-row--gutters" style="width: 100%;">
 
-                <app-dynamic-form [form]="formData" class="kx-row kx-row--gutters " [formValues]="formValues"
-                    [config]="config" (formOnchangeEvent)="formOnchangeEvent($event)">
+                <app-dynamic-form [form]="formData"
+                    class="kx-col kx-col--12 kx-col--12@mob-m kx-col--8@tab-m kx-col--3@ltp-s kx-row kx-row--gutters"
+                    style="display: contents;" [formValues]="formValues" [config]="config"
+                    (formOnchangeEvent)="formOnchangeEvent($event)">
                 </app-dynamic-form>
 
-                <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s"
-                    style="margin-top:-109px;margin-left: 75%;">
-                    <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
-                        [disabled]="formData.invalid">
-                        <span class="kx-btn__inner">
-                            <span class="kx-btn__txt">Update Fouling State</span>
-                        </span>
-                    </button>
-                </div>
+                <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--6@tab-m kx-col--5@ltp-s" style="margin-top: 20px;">
+                    <div class="kx-col kx-col--4 kx-col--6@mob-m kx-col--7@tab-m kx-col--5@ltp-s">
+                        <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
+                            [disabled]="formData.invalid">
+                            <span class="kx-btn__inner">
+                                <span class="kx-btn__txt">Update Fouling State</span>
+                            </span>
+                        </button>
+                    </div>
 
-                <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s"
-                    style="margin-top: -42px;margin-left: 90%;">
-                    <button type="submit" class="kx-btn kx-btn--skin-secondary kx-btn--size-base"
-                        (click)="onFormReset()">
-                        <span class="kx-btn__inner">
-                            <span class="kx-btn__txt">Clear</span>
-                        </span>
-                    </button>
+                    <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--2@ltp-s">
+                        <button type="submit" class="kx-btn kx-btn--skin-secondary kx-btn--size-base"
+                            (click)="onFormReset()">
+                            <span class="kx-btn__inner">
+                                <span class="kx-btn__txt">Clear</span>
+                            </span>
+                        </button>
+                    </div>
                 </div>
 
             </form>
         </div>
-        <div class="kx-row" style="margin-top: 15px; margin-left: 25px;">
+        <div class="kx-row" style="margin-top: -25px; margin-left: 15px;">
             <b>Vessel Fouling State:</b> &nbsp;
             {{overallFoulingState}}
         </div>

@@ -40,7 +40,10 @@
       </ng-template>
     <ng-template pTemplate="body" let-installationList>
         <tr>
-            <td>{{ installationList.Name }}</td>
+           <td> <a [routerLink]="['/operational-plan/operations-overview/1']">
+                        <span class="kx-pt--tiny">{{installationList.Name}} </span>
+                    </a> 
+                </td>
             <td>{{ installationList.FoulingState }}</td>
             <td>{{ installationList.InstallationStatus }}</td>
             <td>{{ installationList.Status }}</td>

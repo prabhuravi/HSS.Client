@@ -1,5 +1,5 @@
 <app-load *ngIf="isDataLoading"></app-load>
-<p-table [columns]="cols" [value]="sections" dataKey="id" editMode="row" [paginator]="true" #tt
+<p-table *ngIf="sections && sections.length > 0" [columns]="cols" [value]="sections" dataKey="id" editMode="row" [paginator]="true" #tt
     [rows]="PRIMENG_CONSTANTS.rowCount" [rowsPerPageOptions]="[5,10,20,50,100,200,500]" rowExpandMode="single"
     tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
     <ng-template pTemplate="header" let-columns>
@@ -43,7 +43,8 @@
             </td>
             <td>{{ rowData.name }}</td>
             <td></td>
-            <td> {{ rowData.foulingState.State }}</td>
+            <td> {{ rowData.foulingState.State }}</td> 
+            <td> {{ rowData.modifiedDate | date:'MM/dd/yyyy HH:mm' }}</td>
             <td>
             </td>
         </tr>
@@ -51,14 +52,17 @@
     <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
         <tr>
             <td [attr.colspan]="5">
-                <div class="kx-table--outer-border" style="padding-left: 37%;">
+                <div class="kx-table--outer-border" [ngStyle]="rowData.subSections.length > 0 ? {'padding-left': '37%'} : ''">
+                    <app-no-data [displayme]="rowData.subSections && rowData.subSections.length === 0"></app-no-data>
                     <p-table [value]="rowData.subSections" tableStyleClass="kx-table" autoLayout="true">
                         <ng-template pTemplate="body" let-rowData>
         <tr class="kx-row">
-            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.subSectionNumber }}
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">{{ rowData.subSectionNumber }}
             </td>
-            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--6@tab-m kx-col--6@ltp-s" style="margin-right: 0.8%;">{{
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--5@ltp-s" style="margin-right: 0.8%;">{{
                 rowData.foulingState.State }}</td>
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.modifiedDate | date:'MM/dd/yyyy HH:mm'}}
+            </td>
             <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--1@tab-m kx-col--1@ltp-s">
                 <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit"
                     title="Edit" (click)="editSubSectionFoulingState(rowData)">
@@ -80,3 +84,5 @@
 </tr>
 </ng-template>
 </p-table>
+
+<app-no-data [displayme]="sections && sections.length === 0"></app-no-data>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
@@ -11,21 +12,28 @@ export class OperationsOverviewComponent implements OnInit {
   activeTab: number = 0;
   vesselId: number = 0;
   operationsOverviewSteps: IRouteList[] = [];
-  constructor(private prepareInstallationService: PrepareInstallationService) { }
+  installationsDetail = [];
+  selectedInstallation;
+
+  constructor(private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    const params = this.route.snapshot.paramMap.get('vesselId');
+    this.vesselId = parseInt(params, null);
     this.setInstallationSteps();
-    this.prepareInstallationService.installationDetail.subscribe((x) => {
-      this.vesselId = x.id;
-      this.setInstallationSteps();
-    });
+
+    // this.prepareInstallationService.installationDetail.subscribe((x) => {
+    //   this.vesselId = x.id;
+    //   this.setInstallationSteps();
+    // });
   }
 
   private setInstallationSteps() {
     this.operationsOverviewSteps = [
       {
         label: 'Operations',
-        route: '/operational-plan/operations-overview/installation-operations/' + this.vesselId
+        route: '/operational-plan/operations-overview/'+ this.vesselId+'/installation-operations/' + this.vesselId
       }
     ];
   }
