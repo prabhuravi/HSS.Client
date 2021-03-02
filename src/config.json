@@ -93,25 +93,15 @@
       }
     },
     "OperationalPlan": {
-      "domainURL": "https://localhost:5001/api",
+      "domainURL": "https://localhost:44378/api",
       "OperationPlan": {
-        "path": "/OperationalPlan",
+        "path": "/Operation",
         "endpoints": {
-          "GetOperationPlans": "",
-          "GetSubOperations": "/GetSubOperationsByPlan",
-          "SearchOperationPlan": "/ByFiliters",
-          "AddOperationPlan": "",
-          "UpdateOperationPlan": "",
-          "CompleteOperationPlan": "/Complete",
-          "AddSubOperationPlan": "/SubOperation",
-          "UpdateSubOperationPlan": "/SubOperation",
-          "CompleteSubOperationPlan": "/SubOperation/Complete",
-          "GetOperationPlanById": "",
-          "GetSectionFoulingStates": "/GetSectionFoulingStates",
-          "AssignFoulingStateToSection": "/AssignFoulingStateToSection",
-          "GetVesselSections": "/GetVesselSections",
-          "GetFoulingStates": "/GetFoulingStates",
-          "UpdateSectionFoulingState": "/UpdateSectionFoulingState"
+          "GetOperationStatuses": "/GetOperationStatuses",
+          "GetRequestedBy": "/GetRequestedBy",
+          "GetOperations": "/GetOperations",
+          "CreateOperation": "/CreateOperation",
+          "CreateSecondaryOperation": "/CreateSecondaryOperation"
         }
       },
       "Installation": {
@@ -122,7 +112,6 @@
           "GetVesselType": "/VesselType",
           "GetInstallationType": "/InstallationType",
           "UpdateInstallation": ""
-          
         }
       },
       "Fouling": {
