@@ -5,7 +5,7 @@
             <div class="kx-col kx-col--4 kx-col--2@tab-m kx-col--6@mob-m">
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [(ngModel)]="selectedInstallation"
-                        [options]="installationsDetail" optionLabel="Option" filter="true"
+                        [options]="installationsDetail" optionLabel="displayName" filter="true"
                         (onChange)="installationChanged()" placeholder="Select installation">
                     </p-dropdown>
                 </div>

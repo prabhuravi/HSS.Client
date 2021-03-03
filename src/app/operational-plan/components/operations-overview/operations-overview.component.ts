@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { Installation } from 'src/app/models/Installation';
+import { InstallationService } from 'src/app/services/installation.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
@@ -12,13 +15,13 @@ export class OperationsOverviewComponent implements OnInit {
   activeTab: number = 0;
   vesselId: number = 0;
   operationsOverviewSteps: IRouteList[] = [];
-  installationsDetail = [];
-  selectedInstallation;
+  installationsDetail: Installation[] = [];
+  selectedInstallation: Installation;
+  installationOverview: Installation;
 
-  constructor(private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute) { }
+  constructor(private installationService: InstallationService, private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
     this.setInstallationSteps();
@@ -27,6 +30,21 @@ export class OperationsOverviewComponent implements OnInit {
     //   this.vesselId = x.id;
     //   this.setInstallationSteps();
     // });
+
+    this.installationService.getinstallations().pipe(take(1)).subscribe(async (data) => {
+      this.installationsDetail = data;
+      console.log(this.installationsDetail);
+    });
+
+    this.installationService.getInstallationOverview(this.vesselId).pipe(take(1)).subscribe(async (data) => {
+      this.installationOverview = data;
+      console.log(this.installationOverview);
+    });
+  }
+
+  installationChanged()
+  {
+    console.log(this.selectedInstallation);
   }
 
   private setInstallationSteps() {
