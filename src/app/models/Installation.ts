@@ -18,7 +18,8 @@ export class Installation {
         public node: Node,
         public foulingState: IFoulingState,
         public installationTypeId: number,
-        public installationType: InstallationType) { }
+        public installationType: InstallationType,
+        public aisData: InstallationAISData) { }
 
 }
 
@@ -43,4 +44,15 @@ export class InstallationType {
         public name: string
     ) {}
 
+}
+
+export class InstallationAISData {
+    constructor(
+     public destination: string,
+     public eta: Date,
+     public latitude: string,
+     public longitude: string,
+     public speed: string,
+     public draft: string
+    ) {}
 }

@@ -31,7 +31,7 @@ export class SectionService {
   ) {
     this.operationalPlanConfig = this.configurationService.config.apiCollection.OperationalPlan;
     this.sectionconfig = this.configurationService.config.apiCollection.OperationalPlan.Section;
-    this.foulingConfig = this.configurationService.config.apiCollection.OperationalPlan.Fouling;
+    this.foulingConfig = this.configurationService.config.apiCollection.OperationalPlan.FoulingState;
   }
 
   getSectionInformations(): Observable<[SectionStatus[], Section[]]> {
@@ -64,7 +64,7 @@ export class SectionService {
   }
   getFoulingStates(): Observable<IFoulingState[]> {
     const requestData = {
-      endPoint: `${this.foulingConfig.path}${this.foulingConfig.endpoints.GetFoulingStates}`
+      endPoint: `${this.operationalPlanConfig.domainURL}${this.foulingConfig.path}${this.foulingConfig.endpoints.GetFoulingStates}`
     };
     return this.http
       .getData(requestData)

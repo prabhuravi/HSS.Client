@@ -3,7 +3,8 @@ export class Node {
       public id: number,
       public nodeNumber: number,
       public gatewayIP: string,
-      public installationId: string
+      public installationId: string,
+      public status: string
 
     ){}
 }
