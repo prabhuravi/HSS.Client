@@ -1,26 +1,67 @@
 <div style="margin-top: 5px;" class="kx-card kx-card--skin-default">
     <div class="kx-card__body">
 
-        <!-- <div class="kx-card kx-card--skin-default">
-            <div class="kx-p--tiny kx-p--medium@mob-m"> -->
-                <div class="kx-row">
-                    <div class="kx-col kx-col--4 kx-col--2@tab-m kx-col--6@mob-m">
-                        <div class="kx-mt--tiny">
-                            <p-dropdown styleClass="kx-p--tiny" [(ngModel)]="selectedInstallation"
-                                [options]="installationsDetail" optionLabel="Option" filter="true"
-                                (onChange)="installationChanged()" placeholder="Select installation">
-                            </p-dropdown>
-                        </div>
-                    </div>
-                    <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m">
-                        <label class="kx-label">IMO</label>
-                        <div class="kx-mt--tiny">
-                            9191319
-                        </div>
-                    </div>
+        <div class="kx-row">
+            <div class="kx-col kx-col--4 kx-col--2@tab-m kx-col--6@mob-m">
+                <div class="kx-mt--tiny">
+                    <p-dropdown styleClass="kx-p--tiny" [(ngModel)]="selectedInstallation"
+                        [options]="installationsDetail" optionLabel="Option" filter="true"
+                        (onChange)="installationChanged()" placeholder="Select installation">
+                    </p-dropdown>
                 </div>
-            <!-- </div>
-        </div> -->
+            </div>
+            <div class="vl"></div>
+            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;">
+                <label class="kx-label">IMO</label>
+                <div class="kx-mt--tiny">
+                    9191319
+                </div>
+            </div>
+            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;">
+                <label class="kx-label">Installation No.</label>
+                <div class="kx-mt--tiny">
+                    i30
+                </div>
+            </div>
+            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;">
+                <label class="kx-label">Vessel Type</label>
+                <div class="kx-mt--tiny">
+                    RoRo
+                </div>
+            </div>
+            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;">
+                <label class="kx-label">Node</label>
+                <div class="kx-mt--tiny">
+                    18522
+                </div>
+            </div>
+            <div class="vl"></div>
+            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;">
+                <label class="kx-label">icon</label>
+                <div class="kx-mt--tiny">
+                    Tacoma
+                </div>
+            </div>
+            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;">
+                <label class="kx-label">ETA</label>
+                <div class="kx-mt--tiny">
+                    03-04-2021 10:30
+                </div>
+            </div>
+            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--2@ltp-s" style="text-align: center;">
+                <label class="kx-label">Current Position</label>
+                <div class="kx-mt--tiny">
+                    icon
+                </div>
+            </div>
+            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--1@ltp-s">
+                <button (click)="clear()" class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m">
+                <span class="kx-btn__inner">
+                    <span class="kx-btn__txt">View Whitelist</span>
+                </span>
+            </button>
+            </div>
+        </div>
 
     </div>
 </div>
