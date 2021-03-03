@@ -111,6 +111,7 @@
           "GetInstallationStatus": "/InstallationStatus",
           "GetVesselType": "/VesselType",
           "GetInstallationType": "/InstallationType",
+          "GetInstallationOverview": "/Overview",
           "UpdateInstallation": ""
         }
       },

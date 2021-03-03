@@ -55,7 +55,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     }
   }
 
-  onchangeEvents(formItem: any) {
+  onchangeEvents(event: any, formItem: any) {
+    console.log(event);
 
     this.formOnchangeEvent.emit({ formItem, formValue: this.form.controls[formItem.key].value });
   }

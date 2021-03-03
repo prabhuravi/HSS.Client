@@ -38,6 +38,7 @@ export function initConfig(config: ConfigurationService<IConfiguration>) {
 
 import { ConfirmationService, MessageService as PrimengMessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {TableModule} from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import {CheckboxModule} from 'primeng/checkbox';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
@@ -69,6 +70,7 @@ const GALORE_PROVIDER = [
     GoogleChartsModule.forRoot(),
     ConfirmDialogModule,
     ToastModule,
+    TableModule,
     CheckboxModule
   ],
   declarations: [
