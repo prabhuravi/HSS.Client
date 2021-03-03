@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
-import { AppConstants } from 'src/app/app.constants';
+import { take } from 'rxjs/operators';
 
+import { AppConstants } from 'src/app/app.constants';
+import { Installation, InstallationStatus } from 'src/app/models/Installation';
+import { FromBuilderService } from 'src/app/services/from-builder-service';
+import { InstallationService } from 'src/app/services/installation.service';
 
 @Component({
   selector: 'app-installation-overview',
@@ -11,65 +16,42 @@ import { AppConstants } from 'src/app/app.constants';
 })
 export class InstallationOverviewComponent implements OnInit {
 
-  installationList: IInstallationOverview[] = [];
+  installationList: Installation[] = [];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
-
-  cols = [
-    { field: 'Name', header: 'Name' , sortfield: 'Name', filterMatchMode: 'contains'  },
-    { field: 'FoulingState', header: 'Fouling State' ,  sortfield: 'FoulingState', filterMatchMode: 'contains'},
-    { field: 'InstallationStatus', header: 'Installation Status',  sortfield: 'InstallationStatus', filterMatchMode: 'contains' },
-    { field: 'Status', header: 'Status',  sortfield: 'Status', filterMatchMode: 'contains' },
-    { field: 'Date', header: 'Date' , sortfield: 'Date'},
-    { field: 'Port', header: 'Port',  sortfield: 'Port', filterMatchMode: 'contains' },
-    { field: 'ConnectivityStatus', header: 'ConnectivityStatus', sortfield: 'ConnectivityStatus', filterMatchMode: 'contains' },
-    { field: 'ETA', header: 'ETA', sortfield: 'ETA' },
-    { field: 'ETB', header: 'ETB',  sortfield: 'ETB'},
-    { field: 'CurrentPosition', header: 'CurrentPosition' }
+ installationStatus: InstallationStatus[] = [];
+ foulingStatus = [];
+ currentInstallation: Installation;
+ showAISCard: boolean = false;
+  statuses = [
+    {label: 'Up', value: 'Up'},
+    {label: 'Down', value: 'Down'}
   ];
-  constructor(private router: Router) { }
+  cols = [];
+  constructor(private installationService: InstallationService,
+              private router: Router,
+              private confirmationService: ConfirmationService,
+              private formBuliderService: FromBuilderService) { }
 
   ngOnInit() {
-    this.installationList = [
-      {
-        Name: 'Talsiman',
-        FoulingState: 'Moderate',
-        InstallationStatus: 'Active',
-        Status: 'Active',
-        Date: new Date(),
-        Port: 'Oslo',
-        ConnectivityStatus: 'UP',
-        ETA: new Date(),
-        ETB: new Date(),
-        CurrentPosition: null,
-        Id: 1
-      },
-      {
-        Name: 'BergeApo',
-        FoulingState: 'Moderate',
-        InstallationStatus: 'Active',
-        Status: 'Active',
-        Date: new Date(),
-        Port: 'Oslo',
-        ConnectivityStatus: 'UP',
-        ETA: new Date(),
-        ETB: new Date(),
-        CurrentPosition: null,
-        Id: 1
-      },
-      {
-        Name: 'Test',
-        FoulingState: 'Moderate',
-        InstallationStatus: 'Active',
-        Status: 'Active',
-        Date: new Date(),
-        Port: 'Oslo',
-        ConnectivityStatus: 'UP',
-        ETA: new Date(),
-        ETB: new Date(),
-        CurrentPosition: null,
-        Id: 1
-      }
-    ]
+
+    this.installationService.getInstallationOverviewData().pipe(take(1)).subscribe(async (data) => {
+      console.log(data);
+      this.installationList = data[0];
+      this.installationStatus = data[1];
+      this.foulingStatus = data[2];
+      console.log(this.installationList);
+
+      this.cols = [ { field: 'displayName', header: 'Name' , sortfield: 'displayName', filterMatchMode: 'contains'  },
+      { field: 'foulingState.State', header: 'Fouling State' ,  sortfield: 'foulingState.State', filterMatchMode: 'equals', options: this.foulingStatus, optionLabel: 'State'},
+      { field: 'installationStatus.name', header: 'Installation Status',  sortfield: 'installationStatus.name', filterMatchMode: 'equals', options: this.installationStatus,  optionLabel: 'name' },
+      { field: 'Status', header: 'Status',  sortfield: 'Status', filterMatchMode: 'contains' },
+      { field: 'Date', header: 'Date' , sortfield: 'Date'},
+      { field: 'aisData.destination', header: 'Port',  sortfield: 'aisData.destination', filterMatchMode: 'contains' },
+      { field: 'node.status', header: 'Connectivity Status', sortfield: 'node.status', filterMatchMode: 'equals', options: this.statuses,  optionLabel: 'value' },
+      { field: 'aisData.eta', header: 'ETA', sortfield: 'aisData.eta' },
+      { field: 'CurrentPosition', header: 'Current Position' },
+      { field: '', header: '' }];
+    });
   }
 
   redirectToPrepareInstallation(): void {
@@ -82,6 +64,18 @@ export class InstallationOverviewComponent implements OnInit {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
     this.router.navigate(['/operational-plan/operations-overview'])
   );
+  }
+
+  viewAISCard(e: any,installtion: Installation)
+  {
+    e.preventDefault();
+    this. toggleShowAISCard();
+    this.currentInstallation = installtion;
+  }
+
+  toggleShowAISCard()
+  {
+    this.showAISCard = !this.showAISCard;
   }
 
 }

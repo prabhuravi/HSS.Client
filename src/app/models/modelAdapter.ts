@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Contact, ContactRole } from './Contact';
 import { IModelAdapter } from './IModelAdapter';
-import { Installation, InstallationStatus, InstallationType, VesselType } from './Installation';
+import { Installation, InstallationAISData, InstallationStatus, InstallationType, VesselType } from './Installation';
 import { Node } from './Node';
 import { VesselSection, SectionStatus, SubSection, Section } from './Section';
 
@@ -26,6 +26,23 @@ export class InstallationTypeAdapter implements IModelAdapter<InstallationType> 
         return new InstallationType(
             item.Id ? item.Id : item.id ? item.id : 0,
             item.Name ? item.Name : item.name ? item.name : ''
+        );
+    }
+
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class InstallationAISDataAdapter implements IModelAdapter<InstallationAISData> {
+    adapt(item: any): InstallationAISData {
+        return new InstallationAISData(
+            item.destination ? item.destination : item.Destination ? item.Destination : '',
+            item.Eta ? item.Eta : item.eta ? item.eta : '',
+            item.Latitude ? item.Latitude : item.latitude ? item.latitude : '',
+            item.longitude ? item.longitude : item.Longitude ? item.Longitude : '',
+            item.speed ? item.speed : item.Speed ? item.Speed : '',
+            item.draft ? item.draft : item.Draft ? item.Draft : ''
         );
     }
 
@@ -71,7 +88,8 @@ export class NodeAdapter implements IModelAdapter<Node> {
             item.Id ? item.Id : item.id ? item.id : 0,
             item.NodeNumber ? item.NodeNumber : item.nodeNumber ? item.nodeNumber : 0,
             item.GatewayIP ? item.GatewayIP : item.gatewayIP ? item.gatewayIP : '',
-            item.InstallationId ? item.InstallationId : item.installationId ? item.installationId : ''
+            item.InstallationId ? item.InstallationId : item.installationId ? item.installationId : '',
+            item.Status ? item.Status : item.status ? item.status : ''
         );
 
     }
@@ -190,8 +208,8 @@ export class InstallationAdapter implements IModelAdapter<Installation> {
         private installationStatusAdapter: InstallationStatusAdapter,
         private nodeAdapter: NodeAdapter,
         private foulingStateAdapter: FoulingStateAdapter,
-        private installationTypeAdapter: InstallationTypeAdapter
-    ) {
+        private installationTypeAdapter: InstallationTypeAdapter,
+        private aisDataAdapter: InstallationAISDataAdapter    ) {
 
     }
     adapt(item: any): Installation {
@@ -213,7 +231,8 @@ export class InstallationAdapter implements IModelAdapter<Installation> {
             item.Node ? this.nodeAdapter.adapt(item.Node) : item.node ? this.nodeAdapter.adapt(item.node) : null,
             item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : null,
             item.installationTypeId ? item.installationTypeId : item.InstallationTypeId ? item.InstallationTypeId : 0,
-            item.installationType ? this.installationTypeAdapter.adapt(item.installationType) : item.InstallationType ? this.installationTypeAdapter.adapt(item.InstallationType) : null
+            item.installationType ? this.installationTypeAdapter.adapt(item.installationType) : item.InstallationType ? this.installationTypeAdapter.adapt(item.InstallationType) : null,
+            item.AISData ? this.aisDataAdapter.adapt(item.AISData) : item.aisData ? this.aisDataAdapter.adapt(item.aisData) : null
         );
     }
 }

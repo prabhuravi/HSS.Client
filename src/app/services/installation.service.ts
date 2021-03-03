@@ -6,6 +6,7 @@ import { Configuration } from '../configuration';
 import { Installation,  InstallationStatus,  InstallationType,  VesselType} from '../models/Installation';
 import { map } from 'rxjs/operators';
 import { InstallationAdapter, VesselTypeAdapter, InstallationStatusAdapter, FoulingStateAdapter } from '../models/modelAdapter';
+import { SectionService } from './section.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +20,22 @@ export class InstallationService {
               private vesselTypeAdapter: VesselTypeAdapter,
               private installationTypeAdapter: VesselTypeAdapter,
               private installationStatusAdapter: InstallationStatusAdapter,
-              private foulingStateAdapter: FoulingStateAdapter
+              private foulingStateAdapter: FoulingStateAdapter,
+              private sectionService: SectionService
               ) {
     this.operationalPlanConfig = this.configurationService.config.apiCollection.OperationalPlan;
     this.installationConfig = this.configurationService.config.apiCollection.OperationalPlan.Installation;
     this.foulingConfig = this.configurationService.config.apiCollection.OperationalPlan.Fouling;
    }
 
-   getInstallationFormData(): Observable <[Installation[], VesselType[], InstallationStatus[], InstallationType[]]> {
+   getInstallationOverviewData(): Observable <[Installation[], InstallationStatus[], IFoulingState[]]> {
 
-     return forkJoin([this.getinstallations(), this.getVesselTypes(), this.getinstallationStatus(), this.getInstallationTypes()]);
+     return forkJoin([this.getinstallationsForoverview(), this.getinstallationStatus(), this.sectionService.getFoulingStates()]);
   }
+  getInstallationFormData(): Observable <[Installation[], VesselType[], InstallationStatus[], InstallationType[]]> {
+
+    return forkJoin([this.getinstallations(), this.getVesselTypes(), this.getinstallationStatus(), this.getInstallationTypes()]);
+ }
 
    getinstallations(): Observable<Installation[]> {
     const requestData = {
@@ -69,6 +75,12 @@ export class InstallationService {
       data: installationIformation
     };
     return this.http.putData(requestData);
+}
+getinstallationsForoverview(): Observable<Installation[]> {
+  const requestData = {
+    endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.GetInstallationOverview}`
+  };
+  return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.installationAdapter.adapt(item))));
 }
 
 }
