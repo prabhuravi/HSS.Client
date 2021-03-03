@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { Tree } from 'primeng/tree';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
+import { Operation } from 'src/app/models/Operation';
 import { Section, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
@@ -20,20 +21,22 @@ export class CreateOperationComponent implements OnInit {
   formValues: any = null;
   formType = FormType;
   formData: FormGroup;
-  // contact: Contact;
+  operationTypes: IOperationTypes[] = [];
+  operationStatus: IOperationStatus[] = [];
+  requestedBy: IRequestedBy[] = [];
   isFormSubmmited: boolean = false;
+  vesselId: number = 0;
+  operations: Operation[] = [];
   config = {
     formList: [],
     className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
   };
 
   isDataLoading = false;
-  editMode: boolean = false;
-
-  operationTypes = [{ Id: 1, Name: 'Inspection' }, { Id: 2, Name: 'Cleaning' }];
+  // operationTypes = [{ Id: 1, Name: 'Inspection' }, { Id: 2, Name: 'Cleaning' }];
   operators = [{ Id: 1, Name: 'Fredrik' }, { Id: 2, Name: 'Daniel' }];
-  operationStatus = [{ Id: 1, Status: 'Requested' }, { Id: 2, Status: 'Completed' }];
-  requestedBy = [{ Id: 1, Name: 'Customer' }, { Id: 2, Name: 'Operator' }];
+  // operationStatus = [{ Id: 1, Status: 'Requested' }, { Id: 2, Status: 'Completed' }];
+  // requestedBy = [{ Id: 1, Name: 'Customer' }, { Id: 2, Name: 'Operator' }];
   // roleList: ContactRole[] = [];
 
   treeData: TreeNode[] = [];
@@ -45,34 +48,30 @@ export class CreateOperationComponent implements OnInit {
     public fb: FormBuilder) { }
 
   ngOnInit() {
-    this.operationalPlanService.getSectionFoulingState(1).pipe(take(1)).subscribe((data) => {
+    this.vesselId = 1;
+    this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
       this.sections = data;
       console.log(this.sections);
-
-      let treeData: {}[] = [];
-      this.sections.forEach(section => {
-        let childs: {}[] = [];
-        section.subSections.forEach(subSection => {
-          var child = {
-            "label": subSection.subSectionNumber,
-            "data": subSection.id,
-          };
-          childs.push(child);
-        });
-        var parent =
-        {
-          "label": section.name,
-          "data": section.id,
-          "children": childs
-        };
-        treeData.push(parent);
-      });
-      this.treeData = treeData;
-      console.log(treeData);
+      this.formatResponseForTree();
     });
 
-    this.constructForm();
-    this.formData = this.formBuliderService.buildForm(this.config);
+    this.operationalPlanService.getOperations(1).pipe(take(1)).subscribe((data) => {
+      console.log(data);
+      this.operations = data;
+      console.log(this.operations);
+    });
+
+    this.isDataLoading = true;
+    this.operationalPlanService.getOperationMasterData().pipe(take(1)).subscribe((data) => {
+      this.isDataLoading = false;
+      this.operationTypes = data[0];
+      this.operationStatus = data[1];
+      this.requestedBy = data[2];
+
+      this.constructForm();
+      this.formData = this.formBuliderService.buildForm(this.config);
+    });
+
   }
 
   constructForm(): void {
@@ -84,7 +83,7 @@ export class CreateOperationComponent implements OnInit {
         value: '',
         key: 'operationType',
         validators: [Validators.required],
-        optionLabel: 'Name',
+        optionLabel: 'OperationTypeName',
         disabled: false
       },
       {
@@ -102,7 +101,8 @@ export class CreateOperationComponent implements OnInit {
         value: '',
         key: 'operationDate',
         validators: [Validators.required],
-        disabled: false
+        disabled: false,
+        format: 'mm/dd/yy'
       },
       {
         type: FormType.datepicker,
@@ -110,7 +110,8 @@ export class CreateOperationComponent implements OnInit {
         value: '',
         key: 'vesselETB',
         validators: [Validators.maxLength(15)],
-        disabled: false
+        disabled: false,
+        format: 'mm/dd/yy'
       },
       {
         type: FormType.dropdown,
@@ -126,11 +127,11 @@ export class CreateOperationComponent implements OnInit {
         type: FormType.dropdown,
         label: 'Status',
         options: this.operationStatus,
-        value: '',
+        value: this.operationStatus[0],
         key: 'operationStatus',
         validators: [Validators.required],
-        optionLabel: 'Status',
-        disabled: false
+        optionLabel: 'Name',
+        disabled: true
       },
       {
         type: FormType.dropdown,
@@ -150,7 +151,6 @@ export class CreateOperationComponent implements OnInit {
         validators: [Validators.required],
         disabled: false
       }
-
     ];
   }
 
@@ -158,7 +158,74 @@ export class CreateOperationComponent implements OnInit {
     this.isFormSubmmited = true;
     console.log(this.formData);
     console.log(this.selectedTreeData);
+    var operation = {
+      vesselId: this.vesselId,
+      operationName: 'test operation',
+      operationTypeId: this.formData.controls.operationType.value.Id,
+      date: this.formData.controls.operationDate.value,
+      statusId: this.formData.controls.operationStatus.value.Id,
+      portId: this.formData.controls.port.value.Id,
+      operatorId: this.formData.controls.operator.value.Id,
+      // hullSkaterId: 1,
+      requestedById: this.formData.controls.requestedBy.value.Id,
+      description: this.formData.controls.description.value,
+      etb: this.formData.controls.vesselETB.value,
+      createdBy: 'sandek',
+      SubSectionIds: [9, 11, 12]
+    };
+    console.log(operation);
+    this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
+      console.log(data);
+      this.triggerToast('success', 'Success Message', `Operation added successfully`);
+      this.createSecondaryOperation();
+    });
     // this.onFormReset();
+  }
+
+  createSecondaryOperation()
+  {
+    var secOperation = {
+      OperationId: 5,
+      OperationTypeId: 1,
+      StatusId: 1,
+      SubSectionIds: [9, 11, 12]
+    };
+    console.log(secOperation);
+    this.operationalPlanService.createSecondaryOperation(secOperation).pipe(take(1)).subscribe((data) => {
+      console.log(data);
+      this.triggerToast('success', 'Success Message', `Secondary operation added successfully`);
+    });
+  }
+
+  getOperationTypes(): void {
+    this.isDataLoading = true;
+    this.operationalPlanService.getOperationTypes().pipe(take(1)).subscribe((operationtypeData) => {
+      this.isDataLoading = false;
+      this.operationTypes = operationtypeData;
+    });
+  }
+
+  formatResponseForTree() {
+    let treeData: {}[] = [];
+    this.sections.forEach(section => {
+      let childs: {}[] = [];
+      section.subSections.forEach(subSection => {
+        var child = {
+          "label": subSection.subSectionNumber,
+          "data": subSection.id,
+        };
+        childs.push(child);
+      });
+      var parent =
+      {
+        "label": section.name,
+        "data": section.id,
+        "children": childs
+      };
+      treeData.push(parent);
+    });
+    this.treeData = treeData;
+    console.log(treeData);
   }
 
   formOnchangeEvent(changedItem: any): void {

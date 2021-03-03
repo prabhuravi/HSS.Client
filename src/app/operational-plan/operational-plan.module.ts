@@ -14,13 +14,13 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
-import { ManagePlansComponent } from './components/manage-plans/manage-plans.component';
-import { AddPlanComponent } from './components/add-plan/add-plan.component';
+// import { ManagePlansComponent } from './components/manage-plans/manage-plans.component';
+// import { AddPlanComponent } from './components/add-plan/add-plan.component';
 import { OperatorComponent } from './components/operator/operator.component';
 import { OperationTypeComponent } from './components/operation-type/operation-type.component';
 import { VesselComponent } from './components/vessel/vessel.component';
 import { RobotSystemComponent } from './components/robot-system/robot-system.component';
-import { SubOperationalPlanComponent } from './components/sub-operational-plan/sub-operational-plan.component';
+// import { SubOperationalPlanComponent } from './components/sub-operational-plan/sub-operational-plan.component';
 import { InstallationOverviewComponent } from './components/installation-overview/installation-overview.component';
 import { PrepareInstallationComponent } from './components/prepare-installation/prepare-installation.component';
 import { TradeRouteComponent } from './components/trade-route/trade-route.component';
@@ -71,9 +71,9 @@ const routes: Routes = [
         ]
       },
 
-      { path: 'ManagePlans', component: ManagePlansComponent },
-      { path: 'sub-operational-plan/:planid', component: SubOperationalPlanComponent },
-      { path: 'plan/:type/:id', component: AddPlanComponent },
+      // { path: 'ManagePlans', component: ManagePlansComponent },
+      // { path: 'sub-operational-plan/:planid', component: SubOperationalPlanComponent },
+      // { path: 'plan/:type/:id', component: AddPlanComponent },
       { path: 'operator', component: OperatorComponent },
       { path: 'operation-type', component: OperationTypeComponent },
       { path: 'vessel', component: VesselComponent },
@@ -84,13 +84,13 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [DashboardComponent,
-    ManagePlansComponent,
-    AddPlanComponent,
+    // ManagePlansComponent,
+    // AddPlanComponent,
     OperatorComponent,
     OperationTypeComponent,
     VesselComponent,
     RobotSystemComponent,
-    SubOperationalPlanComponent,
+    // SubOperationalPlanComponent,
     InstallationOverviewComponent,
     PrepareInstallationComponent,
     TradeRouteComponent,

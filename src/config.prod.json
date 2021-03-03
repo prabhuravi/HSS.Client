@@ -95,23 +95,13 @@
     "OperationalPlan": {
       "domainURL": "https://hss.kognif.ai/OperationPlan/api",
       "OperationPlan": {
-        "path": "/OperationalPlan",
+        "path": "/Operation",
         "endpoints": {
-          "GetOperationPlans": "",
-          "GetSubOperations": "/GetSubOperationsByPlan",
-          "SearchOperationPlan": "/ByFiliters",
-          "AddOperationPlan": "",
-          "UpdateOperationPlan": "",
-          "CompleteOperationPlan": "/Complete",
-          "AddSubOperationPlan": "/SubOperation",
-          "UpdateSubOperationPlan": "/SubOperation",
-          "CompleteSubOperationPlan": "/SubOperation/Complete",
-          "GetOperationPlanById": "",
-          "GetSectionFoulingStates": "/GetSectionFoulingStates",
-          "AssignFoulingStateToSection": "/AssignFoulingStateToSection",
-          "GetVesselSections": "/GetVesselSections",
-          "GetFoulingStates": "/GetFoulingStates",
-          "UpdateSectionFoulingState": "/UpdateSectionFoulingState"
+          "GetOperationStatuses": "/GetOperationStatuses",
+          "GetRequestedBy": "/GetRequestedBy",
+          "GetOperations": "/GetOperations",
+          "CreateOperation": "/CreateOperation",
+          "CreateSecondaryOperation": "/CreateSecondaryOperation"
         }
       },
       "Installation": {
