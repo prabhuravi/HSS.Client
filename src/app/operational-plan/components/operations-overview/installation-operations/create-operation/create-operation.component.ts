@@ -27,6 +27,7 @@ export class CreateOperationComponent implements OnInit {
   isFormSubmmited: boolean = false;
   vesselId: number = 0;
   operations: Operation[] = [];
+  editOperation = false;
   config = {
     formList: [],
     className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
@@ -109,7 +110,7 @@ export class CreateOperationComponent implements OnInit {
         label: 'ETB',
         value: '',
         key: 'vesselETB',
-        validators: [Validators.maxLength(15)],
+        validators: [Validators.required],
         disabled: false,
         format: 'mm/dd/yy'
       },
@@ -155,6 +156,7 @@ export class CreateOperationComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('on submit');
     this.isFormSubmmited = true;
     console.log(this.formData);
     console.log(this.selectedTreeData);
@@ -245,22 +247,17 @@ export class CreateOperationComponent implements OnInit {
     }
   }
 
-  // onRoleChanged(roleItem: ContactRole) {
-  //   console.log(roleItem);
-  //   if (roleItem.id === 3) {
-  //     this.formData.controls.tagTraining.enable();
-  //   } else {
-  //     this.formData.controls.tagTraining.disable();
-  //     this.formData.controls.tagTraining.setValue(false);
-  //   }
-  // }
-
   onFormReset(): void {
     this.isFormSubmmited = false;
     console.log('reset');
     this.formData.reset();
-    // this.formData.controls.tagTraining.disable();
-    // this.editMode = false;
+
+    if(!this.editOperation)
+    {
+      console.log('set to requested');
+      this.config.formList[5].value = this.operationStatus[0];
+    }
+    
   }
 
   // sectionEditInit(contactData: Contact): void {

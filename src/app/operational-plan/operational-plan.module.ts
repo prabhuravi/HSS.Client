@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
 import {TreeModule} from 'primeng/tree';
-
-
+import {DialogModule} from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -116,6 +116,8 @@ const routes: Routes = [
     SharedModule,
     TableModule,
     TreeModule,
+    DialogModule,
+    ButtonModule,
     CalendarModule,
     DropdownModule,
     CheckboxModule,

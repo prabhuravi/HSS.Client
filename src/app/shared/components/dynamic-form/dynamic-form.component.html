@@ -42,7 +42,7 @@
                     </div>
                     <div *ngSwitchCase="inputTypes.datepicker" class="kx-col   kx-col--12">
                         <div class="kx-mt--tiny">
-                            <p-calendar [appendTo]="pcalendarRef" hideOnDateTimeSelect="true"
+                            <p-calendar hideOnDateTimeSelect="true"
                                 [formControlName]="formItem.key" inputStyleClass="kx-field kx-field--size-small"
                                 showTime="true" hourFormat="24" [minDate]="formItem.mindate" showButtonBar="true"
                                 [placeholder]="formItem.format? formItem.format: PRIMENG_CONSTANTS.datepickerFormat"
