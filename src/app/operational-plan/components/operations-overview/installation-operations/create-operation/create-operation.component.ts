@@ -5,8 +5,8 @@ import { MessageService } from 'primeng/api';
 import { Tree } from 'primeng/tree';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
-import { Operation } from 'src/app/models/Operation';
-import { Section, VesselSection } from 'src/app/models/Section';
+import { Operation, VesselContact } from 'src/app/models/Operation';
+import { Section, SubSection, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
@@ -28,6 +28,12 @@ export class CreateOperationComponent implements OnInit {
   vesselId: number = 0;
   operations: Operation[] = [];
   editOperation = false;
+  showOperatorModal = false;
+  selectedOperator: any = null;
+
+  operatorList = [{ Id: 1, FName: 'Fredrik', LName: 'Thoresen', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' },
+  { Id: 2, FName: 'Sarva', LName: 'Nanda', IsAvailable: false, InstallationName: '', Status: 'Not Confirmed', Date: '03.03.2021', VesselETA: '02.03.2021' },
+  { Id: 3, FName: 'Prabhu', LName: 'Ravi', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' }];
   config = {
     formList: [],
     className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
@@ -42,7 +48,9 @@ export class CreateOperationComponent implements OnInit {
 
   treeData: TreeNode[] = [];
   selectedTreeData: TreeNode;
-  sections: VesselSection[]
+  sections: VesselSection[] = [];
+  subsections: SubSection[] = [];
+  selectedSections = [];
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
     private prepareInstallationService: PrepareInstallationService,
@@ -50,11 +58,11 @@ export class CreateOperationComponent implements OnInit {
 
   ngOnInit() {
     this.vesselId = 1;
-    this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
-      this.sections = data;
-      console.log(this.sections);
-      this.formatResponseForTree();
-    });
+    // this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
+    //   this.sections = data;
+    //   console.log(this.sections);
+    //   this.formatResponseForTree();
+    // });
 
     this.operationalPlanService.getOperations(1).pipe(take(1)).subscribe((data) => {
       console.log(data);
@@ -69,8 +77,18 @@ export class CreateOperationComponent implements OnInit {
       this.operationStatus = data[1];
       this.requestedBy = data[2];
 
-      this.constructForm();
-      this.formData = this.formBuliderService.buildForm(this.config);
+      this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
+        this.sections = data;
+        console.log(this.sections);
+        this.formatResponseForTree();
+
+        this.constructForm();
+        this.formData = this.formBuliderService.buildForm(this.config);
+
+      });
+
+      // this.constructForm();
+      // this.formData = this.formBuliderService.buildForm(this.config);
     });
 
   }
@@ -114,16 +132,36 @@ export class CreateOperationComponent implements OnInit {
         disabled: false,
         format: 'mm/dd/yy'
       },
-      {
-        type: FormType.dropdown,
-        label: 'Operator',
-        options: this.operators,
-        value: '',
-        key: 'operator',
-        validators: [Validators.required],
-        optionLabel: 'Name',
-        disabled: false
-      },
+      // {
+      //   type: FormType.dropdown,
+      //   label: 'Section',
+      //   options: this.sections,
+      //   value: '',
+      //   key: 'section',
+      //   validators: [Validators.required],
+      //   optionLabel: 'name',
+      //   disabled: false
+      // },
+      // {
+      //   type: FormType.multiSelect,
+      //   label: 'Sub Section',
+      //   options: this.subsections,
+      //   value: '',
+      //   key: 'subSection',
+      //   validators: [Validators.required],
+      //   optionLabel: 'subSectionNumber',
+      //   disabled: false
+      // },
+      // {
+      //   type: FormType.dropdown,
+      //   label: 'Operator',
+      //   options: this.operators,
+      //   value: '',
+      //   key: 'operator',
+      //   validators: [Validators.required],
+      //   optionLabel: 'Name',
+      //   disabled: false
+      // },
       {
         type: FormType.dropdown,
         label: 'Status',
@@ -156,36 +194,36 @@ export class CreateOperationComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('on submit');
-    this.isFormSubmmited = true;
     console.log(this.formData);
-    console.log(this.selectedTreeData);
-    var operation = {
-      vesselId: this.vesselId,
-      operationName: 'test operation',
-      operationTypeId: this.formData.controls.operationType.value.Id,
-      date: this.formData.controls.operationDate.value,
-      statusId: this.formData.controls.operationStatus.value.Id,
-      portId: this.formData.controls.port.value.Id,
-      operatorId: this.formData.controls.operator.value.Id,
-      // hullSkaterId: 1,
-      requestedById: this.formData.controls.requestedBy.value.Id,
-      description: this.formData.controls.description.value,
-      etb: this.formData.controls.vesselETB.value,
-      createdBy: 'sandek',
-      SubSectionIds: [9, 11, 12]
-    };
-    console.log(operation);
-    this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
-      console.log(data);
-      this.triggerToast('success', 'Success Message', `Operation added successfully`);
-      this.createSecondaryOperation();
-    });
+
+    // this.isFormSubmmited = true;
+    // console.log(this.selectedTreeData);
+    // var operation = {
+    //   vesselId: this.vesselId,
+    //   operationName: 'test operation',
+    //   operationTypeId: this.formData.controls.operationType.value.Id,
+    //   date: this.formData.controls.operationDate.value,
+    //   statusId: this.formData.controls.operationStatus.value.Id,
+    //   portId: this.formData.controls.port.value.Id,
+    //   operatorId: this.formData.controls.operator.value.Id,
+    //   // hullSkaterId: 1,
+    //   requestedById: this.formData.controls.requestedBy.value.Id,
+    //   description: this.formData.controls.description.value,
+    //   etb: this.formData.controls.vesselETB.value,
+    //   createdBy: 'sandek',
+    //   SubSectionIds: [9, 11, 12]
+    // };
+    // console.log(operation);
+    // this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
+    //   console.log(data);
+    //   this.triggerToast('success', 'Success Message', `Operation added successfully`);
+    //   this.createSecondaryOperation();
+    // });
+
     // this.onFormReset();
   }
 
-  createSecondaryOperation()
-  {
+  createSecondaryOperation() {
     var secOperation = {
       OperationId: 5,
       OperationTypeId: 1,
@@ -235,8 +273,8 @@ export class CreateOperationComponent implements OnInit {
     const key = changedItem.formItem.key;
     console.log(key);
     switch (key) {
-      case 'role': {
-        // this.onRoleChanged(changedItem.formValue);
+      case 'section': {
+        this.onSectionChanged(changedItem.formValue);
         break;
       }
 
@@ -247,17 +285,111 @@ export class CreateOperationComponent implements OnInit {
     }
   }
 
+  onSectionChanged(section: VesselSection) {
+    this.formData.controls.subSection.reset();
+    if (section) {
+      if (section.subSections) {
+        this.config.formList[5].options = section.subSections;
+        console.log(section.subSections);
+      }
+    }
+  }
+
+  nodeSelect(event) {
+    console.log(event.node);
+    if (event.node.parent == undefined) // Section
+    {
+      const sectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.data);
+      if (sectionIndex > -1) {  // if section already exists
+        event.node.children.forEach(element => {
+          if (this.selectedSections[sectionIndex].subSections.findIndex(p => p.id == element.data) == -1) { // add sub section if does not exist
+            this.selectedSections[sectionIndex].subSections.push({ id: element.data, subSectionNumber: element.label })
+          }
+        });
+      }
+      else {
+        var section = { id: event.node.data, name: event.node.label, subSections: [] };
+        event.node.children.forEach(element => {
+          section.subSections.push({ id: element.data, subSectionNumber: element.label })
+        });
+        this.selectedSections.push(section);
+      }
+
+    }
+    else {  // Sub Section
+      const parentSectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.parent.data);
+      console.log(parentSectionIndex);
+      if (parentSectionIndex > -1) // section already exists
+      {
+        this.selectedSections[parentSectionIndex].subSections.push({ id: event.node.data, subSectionNumber: event.node.label });
+      }
+      else {
+        this.selectedSections.push({ id: event.node.parent.data, name: event.node.parent.label, subSections: [{ id: event.node.data, subSectionNumber: event.node.label }] });
+      }
+    }
+    console.log(this.selectedSections);
+    // this.messageService.add({severity: 'info', summary: 'Node Selected', detail: event.node.label});
+  }
+
+  nodeUnselect(event) {
+    console.log(event.node);
+
+    if (event.node.parent == undefined) // remove Section
+    {
+      const sectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.data);
+      if (sectionIndex > -1) {
+        this.selectedSections.splice(sectionIndex, 1);
+      }
+    }
+    else {  // remove Sub Section
+      const parentSectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.parent.data);
+      console.log(parentSectionIndex);
+      if (parentSectionIndex > -1) // check of section already exists
+      {
+        const subSectionIndex: number = this.selectedSections[parentSectionIndex].subSections.findIndex(p => p.id == event.node.data);
+        if (subSectionIndex > -1) {
+          this.selectedSections[parentSectionIndex].subSections.splice(subSectionIndex, 1);
+          if (this.selectedSections[parentSectionIndex].subSections.length == 0) // remove section as well when no subsections left selected
+          {
+            this.selectedSections.splice(parentSectionIndex, 1);
+          }
+        }
+      }
+    }
+    console.log(this.selectedSections);
+  }
+
   onFormReset(): void {
     this.isFormSubmmited = false;
-    console.log('reset');
     this.formData.reset();
 
-    if(!this.editOperation)
-    {
-      console.log('set to requested');
-      this.config.formList[5].value = this.operationStatus[0];
+    if (this.editOperation) {
+      console.log('reset');
+      this.formData.controls.operationStatus.enable();
+      this.formData.controls.operationStatus.updateValueAndValidity();
     }
-    
+    else (!this.editOperation)
+    {
+      this.formData.controls.operationStatus.setValue(this.operationStatus[0]);
+      this.formData.controls.operationStatus.disable();
+      this.formData.controls.operationStatus.updateValueAndValidity();
+    }
+
+  }
+
+  showAvailableOperators(e: any) {
+    e.preventDefault();
+    this.showOperatorModal = !this.showOperatorModal;
+    console.log("showAvailableOperators");
+  }
+
+  changeOperator(operator: any) {
+    console.log(operator);
+    this.selectedOperator = operator;
+  }
+
+  selectOperator() {
+    console.log('selectOperator');
   }
 
   // sectionEditInit(contactData: Contact): void {

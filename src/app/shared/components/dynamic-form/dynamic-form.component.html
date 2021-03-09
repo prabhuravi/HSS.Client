@@ -1,93 +1,101 @@
-
-       
-            <h3 *ngIf="config.formTitle" class="u--capitalize">{{config.formTitle}}</h3>
-            <hr  *ngIf="config.formTitle" class="kx-my--small" />
-            <div  [formGroup]="form"  [ngClass]="config.className ? config.className : 'kx-col kx-col--4 kx-col--6@mob-m kx-col--4@tab-m kx-col--3@ltp-s'"  *ngFor="let formItem of config.formList; let i = index;"
-                [ngSwitch]="formItem.type">
-                {{formItem.key.valid}}
-                <div class="kx-col kx-col--12">
-                    <label class="kx-label" [for]="formItem.key" style="margin-left: 13px;">
-                        {{formItem.label}}
-                        <small *ngIf="formItem.labelSmall" class="u--textDanger">{{formItem.labelSmall}}</small>
-                        <span
-                            *ngIf="(form.controls[formItem.key].errors && form.controls[formItem.key].errors.required) && isFormSubmitted"
-                            class="u--textDanger">Required</span>
-                            <span
-                            *ngIf="((form.controls[formItem.key].errors && form.controls[formItem.key].errors.max)) ||
+<h3 *ngIf="config.formTitle" class="u--capitalize">{{config.formTitle}}</h3>
+<hr *ngIf="config.formTitle" class="kx-my--small" />
+<div [formGroup]="form"
+    [ngClass]="config.className ? config.className : 'kx-col kx-col--4 kx-col--6@mob-m kx-col--4@tab-m kx-col--3@ltp-s'"
+    *ngFor="let formItem of config.formList; let i = index;" [ngSwitch]="formItem.type">
+    {{formItem.key.valid}}
+    <div class="kx-col kx-col--12">
+        <label class="kx-label" [for]="formItem.key" style="margin-left: 13px;">
+            {{formItem.label}}
+            <small *ngIf="formItem.labelSmall" class="u--textDanger">{{formItem.labelSmall}}</small>
+            <span
+                *ngIf="(form.controls[formItem.key].errors && form.controls[formItem.key].errors.required) && isFormSubmitted"
+                class="u--textDanger">Required</span>
+            <span
+                *ngIf="((form.controls[formItem.key].errors && form.controls[formItem.key].errors.max)) ||
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.min)) ||
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.pattern)) ||
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.email)) ||
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.maxLength)) ||
                                 ((!form.controls[formItem.key].valid && (form.controls[formItem.key].dirty ||  form.controls[formItem.key].touched)))"
-                            class="u--textDanger">  (Invalid {{formItem.label}} )</span>
-                        <span *ngIf="form.controls[formItem.key].errors && form.controls[formItem.key].errors.required"
-                            class="u--textDanger" style="position: relative;top: 2px;">*</span>
-                    </label>
+                class="u--textDanger"> (Invalid {{formItem.label}} )</span>
+            <span *ngIf="form.controls[formItem.key].errors && form.controls[formItem.key].errors.required"
+                class="u--textDanger" style="position: relative;top: 2px;">*</span>
+        </label>
 
-                    <div *ngSwitchCase="inputTypes.dropdown" class="kx-col  kx-col--12">
-                        <div class="kx-mt--tiny">
-                            <p-dropdown styleClass="u--fullWidth" placeholder="Select {{formItem.label}}"
-                                [formControlName]="formItem.key" [options]="formItem.options"
-                                [optionLabel]="formItem.optionLabel" (onChange)= "onchangeEvents($event,formItem)"filter="true"></p-dropdown>
-                        </div>
-                    </div>
-                    <div *ngSwitchCase="inputTypes.button" class="kx-col   kx-col--12">
-                        <div class="kx-mt--tiny">
-                            <button  class="kx-btn kx-btn--skin-primary kx-btn--size-small">
-                                <span class="kx-btn__inner">
-                                    <span class="kx-btn__txt">{{formItem.label}}</span>
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                    <div *ngSwitchCase="inputTypes.datepicker" class="kx-col   kx-col--12">
-                        <div class="kx-mt--tiny">
-                            <p-calendar hideOnDateTimeSelect="true"
-                                [formControlName]="formItem.key" inputStyleClass="kx-field kx-field--size-small"
-                                showTime="true" hourFormat="24" [minDate]="formItem.mindate" showButtonBar="true"
-                                [placeholder]="formItem.format? formItem.format: PRIMENG_CONSTANTS.datepickerFormat"
-                                [dateFormat]="formItem.format? formItem.format: PRIMENG_CONSTANTS.datepickerFormat" [monthNavigator]="true"
-                                [yearNavigator]="true" yearRange="1950:2050" selectOtherMonths="true" readonlyInput="true">
-                            </p-calendar>
-                        </div>
-                    </div>
-                    <div *ngSwitchCase="inputTypes.text" class="kx-col   kx-col--12">
-                        <div class="kx-form__element">
-                            <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
-                                type="text" placeholder="Enter {{formItem.label}}" />
-                        </div>
-                    </div>
-                    <div *ngSwitchCase="inputTypes.checkbox" class="kx-col   kx-col--12">
-                        <div class="kx-form__element">
-                            <label class="kx-selector kx-selector__switch">
-                                <input type="checkbox" [formControlName]="formItem.key" />
-                                <div class="kx-selector__indicator"></div>
-                                <!-- <span *ngIf="!form.value[formItem.key]" class="label-text">OFF</span>
-                                <span *ngIf="form.value[formItem.key]" class="label-text">ON</span> -->
-                            </label>
-                        </div>
-                    </div>
-                    <div *ngSwitchCase="inputTypes.number" class="kx-col   kx-col--12">
-                        <div class="kx-form__element u--positionRelative">
-                            <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
-                                type="number" placeholder="Select {{formItem.label}}" />
-                        </div>
-                    </div>
-                    <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col   kx-col--12">
-                        <div class="kx-mt--tiny">
-                            <p-autoComplete [formControlName]="formItem.key" [suggestions]="portLocations"
-                                inputStyleClass="kx-field kx-field--size-base"
-                                (completeMethod)="filterPortLocations($event)" field="PortName"
-                                placeholder="Type for suggestions..." [minLength]="1"></p-autoComplete>
-                        </div>
-                    </div>
-                    <div *ngSwitchDefault class="kx-col kx-col--5">
-                        {{formItem.type}} : input type is not handled
-                    </div>
-                </div>
-               
+        <div *ngSwitchCase="inputTypes.dropdown" class="kx-col  kx-col--12">
+            <div class="kx-mt--tiny">
+                <p-dropdown styleClass="u--fullWidth" placeholder="Select {{formItem.label}}"
+                    [formControlName]="formItem.key" [options]="formItem.options" [optionLabel]="formItem.optionLabel"
+                    (onChange)="onchangeEvents($event,formItem)" filter="true"></p-dropdown>
             </div>
-            <!-- <div class="kx-row">
+        </div>
+
+        <div *ngSwitchCase="inputTypes.multiSelect" class="kx-col  kx-col--12">
+            <div class="kx-mt--tiny">
+                <p-multiSelect [formControlName]="formItem.key" [options]="formItem.options"
+                    [optionLabel]="formItem.optionLabel" filter="true">
+                </p-multiSelect>
+            </div>
+        </div>
+
+        <div *ngSwitchCase="inputTypes.button" class="kx-col   kx-col--12">
+            <div class="kx-mt--tiny">
+                <button class="kx-btn kx-btn--skin-primary kx-btn--size-small">
+                    <span class="kx-btn__inner">
+                        <span class="kx-btn__txt">{{formItem.label}}</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div *ngSwitchCase="inputTypes.datepicker" class="kx-col   kx-col--12">
+            <div class="kx-mt--tiny">
+                <p-calendar hideOnDateTimeSelect="true" [formControlName]="formItem.key"
+                    inputStyleClass="kx-field kx-field--size-small" showTime="true" hourFormat="24"
+                    [minDate]="formItem.mindate" showButtonBar="true"
+                    [placeholder]="formItem.format? formItem.format: PRIMENG_CONSTANTS.datepickerFormat"
+                    [dateFormat]="formItem.format? formItem.format: PRIMENG_CONSTANTS.datepickerFormat"
+                    [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050" selectOtherMonths="true"
+                    readonlyInput="true">
+                </p-calendar>
+            </div>
+        </div>
+        <div *ngSwitchCase="inputTypes.text" class="kx-col   kx-col--12">
+            <div class="kx-form__element">
+                <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
+                    type="text" placeholder="Enter {{formItem.label}}" />
+            </div>
+        </div>
+        <div *ngSwitchCase="inputTypes.checkbox" class="kx-col   kx-col--12">
+            <div class="kx-form__element">
+                <label class="kx-selector kx-selector__switch">
+                    <input type="checkbox" [formControlName]="formItem.key" />
+                    <div class="kx-selector__indicator"></div>
+                    <!-- <span *ngIf="!form.value[formItem.key]" class="label-text">OFF</span>
+                                <span *ngIf="form.value[formItem.key]" class="label-text">ON</span> -->
+                </label>
+            </div>
+        </div>
+        <div *ngSwitchCase="inputTypes.number" class="kx-col   kx-col--12">
+            <div class="kx-form__element u--positionRelative">
+                <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
+                    type="number" placeholder="Select {{formItem.label}}" />
+            </div>
+        </div>
+        <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col   kx-col--12">
+            <div class="kx-mt--tiny">
+                <p-autoComplete [formControlName]="formItem.key" [suggestions]="portLocations"
+                    inputStyleClass="kx-field kx-field--size-base" (completeMethod)="filterPortLocations($event)"
+                    field="PortName" placeholder="Type for suggestions..." [minLength]="1"></p-autoComplete>
+            </div>
+        </div>
+        <div *ngSwitchDefault class="kx-col kx-col--5">
+            {{formItem.type}} : input type is not handled
+        </div>
+    </div>
+
+</div>
+<!-- <div class="kx-row">
                 <div class="kx-col kx-col--5">
                     <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-large">
                         <span class="kx-btn__inner">
@@ -96,6 +104,6 @@
                     </button>
                 </div>
             </div> -->
-        
-  
+
+
 <div style="position: absolute;top: 20px;" #pcalendarRef></div>

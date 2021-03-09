@@ -74,8 +74,7 @@ export class OperationsOverviewComponent implements OnInit {
   }
 
   showWhitelistDialog() {
-    this.showWhitelist = !this.showWhitelist;
-
+    // this.showWhitelist = !this.showWhitelist;
     this.isDataLoading = true;
     this.connectivityControlService.getWhiteListedCountries(this.installationOverview.id).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
