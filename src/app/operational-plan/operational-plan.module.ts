@@ -62,11 +62,12 @@ const routes: Routes = [
         path: 'operations-overview/:vesselId', component: OperationsOverviewComponent, children: [
           { path: '', component: InstallationOperationsComponent, pathMatch: 'full' },
           {
-            path: 'installation-operations/:vesselId', component: InstallationOperationsComponent, children: [
-              { path: '', component: ListOperationsComponent, pathMatch: 'full' },
-              { path: 'list-operations/:vesselId', component: ListOperationsComponent },
-              { path: 'create-operation/:vesselId', component: CreateOperationComponent }
-            ]
+            path: 'installation-operations/:vesselId', component: InstallationOperationsComponent
+            // , children: [
+            //   { path: '', component: ListOperationsComponent, pathMatch: 'full' },
+            //   { path: 'list-operations/:vesselId', component: ListOperationsComponent },
+            //   { path: 'create-operation/:vesselId', component: CreateOperationComponent }
+            // ]
           }
         ]
       },
