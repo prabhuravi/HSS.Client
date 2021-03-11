@@ -60,13 +60,15 @@ export class InstallationOverviewComponent implements OnInit {
     );
   }
 
-  redirectToOperationsOverview(): void {
+  redirectToOperationsOverview(e: any, installtion: Installation): void {
+    e.preventDefault();
+    console.log(installtion);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-    this.router.navigate(['/operational-plan/operations-overview'])
+    this.router.navigate(['/operational-plan/operations-overview/1'])
   );
   }
 
-  viewAISCard(e: any,installtion: Installation)
+  viewAISCard(e: any, installtion: Installation)
   {
     e.preventDefault();
     this. toggleShowAISCard();

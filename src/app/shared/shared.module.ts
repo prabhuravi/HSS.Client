@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { NavigationTabComponent } from './components/navigation-tab/navigation-tab.component';
 import { ModalComponent } from './components/modal/modal.component';
@@ -22,7 +23,8 @@ import { NoDataComponent } from './components/no-data/no-data.component';
     CalendarModule,
     DropdownModule,
     ReactiveFormsModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    MultiSelectModule
   ],
   exports: [
     NavigationTabComponent,

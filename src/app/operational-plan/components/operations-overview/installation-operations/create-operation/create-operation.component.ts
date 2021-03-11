@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { TreeNode } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { Tree } from 'primeng/tree';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
-import { Operation } from 'src/app/models/Operation';
-import { Section, VesselSection } from 'src/app/models/Section';
+import { Operation, VesselContact } from 'src/app/models/Operation';
+import { Section, SubSection, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
@@ -17,7 +18,6 @@ import { PrepareInstallationService } from 'src/app/services/prepare-installatio
   styleUrls: ['./create-operation.component.scss']
 })
 export class CreateOperationComponent implements OnInit {
-
   formValues: any = null;
   formType = FormType;
   formData: FormGroup;
@@ -27,49 +27,61 @@ export class CreateOperationComponent implements OnInit {
   isFormSubmmited: boolean = false;
   vesselId: number = 0;
   operations: Operation[] = [];
+  operationToEdit: Operation;
+  editOperation = false;
+  showOperatorModal = false;
+  selectedOperator: any = null;
+
+  @Output() operationUpdated: EventEmitter<any> = new EventEmitter<any>();
+
+  operatorList = [{ Id: 1, FName: 'Fredrik', LName: 'Thoresen', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' },
+  { Id: 2, FName: 'Sarva', LName: 'Nanda', IsAvailable: false, InstallationName: '', Status: 'Not Confirmed', Date: '03.03.2021', VesselETA: '02.03.2021' },
+  { Id: 3, FName: 'Prabhu', LName: 'Ravi', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' }];
+  
   config = {
     formList: [],
     className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
   };
 
   isDataLoading = false;
-  // operationTypes = [{ Id: 1, Name: 'Inspection' }, { Id: 2, Name: 'Cleaning' }];
   operators = [{ Id: 1, Name: 'Fredrik' }, { Id: 2, Name: 'Daniel' }];
-  // operationStatus = [{ Id: 1, Status: 'Requested' }, { Id: 2, Status: 'Completed' }];
-  // requestedBy = [{ Id: 1, Name: 'Customer' }, { Id: 2, Name: 'Operator' }];
-  // roleList: ContactRole[] = [];
 
   treeData: TreeNode[] = [];
-  selectedTreeData: TreeNode;
-  sections: VesselSection[]
+  selectedTreeData: any;
+  sections: VesselSection[] = [];
+  subsections: SubSection[] = [];
+  selectedSections = [];
+  @Output() showListOperation = new EventEmitter<boolean>();
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
-    private prepareInstallationService: PrepareInstallationService,
+    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute,
     public fb: FormBuilder) { }
 
   ngOnInit() {
-    this.vesselId = 1;
-    this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
-      this.sections = data;
-      console.log(this.sections);
-      this.formatResponseForTree();
-    });
-
-    this.operationalPlanService.getOperations(1).pipe(take(1)).subscribe((data) => {
-      console.log(data);
-      this.operations = data;
-      console.log(this.operations);
-    });
-
+    const params = this.route.snapshot.paramMap.get('vesselId');
+    this.vesselId = parseInt(params, null);
+    console.log('create op VesselId: ' + this.vesselId);
     this.isDataLoading = true;
     this.operationalPlanService.getOperationMasterData().pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       this.operationTypes = data[0];
+      // console.log(this.operationTypes);
       this.operationStatus = data[1];
+      // console.log(this.operationStatus);
       this.requestedBy = data[2];
+      // console.log(this.requestedBy);
 
-      this.constructForm();
-      this.formData = this.formBuliderService.buildForm(this.config);
+      this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
+        this.sections = data;
+        console.log(this.sections);
+        this.formatResponseForTree();
+
+        this.constructForm();
+        this.formData = this.formBuliderService.buildForm(this.config);
+      });
+
+      // this.constructForm();
+      // this.formData = this.formBuliderService.buildForm(this.config);
     });
 
   }
@@ -109,20 +121,40 @@ export class CreateOperationComponent implements OnInit {
         label: 'ETB',
         value: '',
         key: 'vesselETB',
-        validators: [Validators.maxLength(15)],
+        validators: [Validators.required],
         disabled: false,
         format: 'mm/dd/yy'
       },
-      {
-        type: FormType.dropdown,
-        label: 'Operator',
-        options: this.operators,
-        value: '',
-        key: 'operator',
-        validators: [Validators.required],
-        optionLabel: 'Name',
-        disabled: false
-      },
+      // {
+      //   type: FormType.dropdown,
+      //   label: 'Section',
+      //   options: this.sections,
+      //   value: '',
+      //   key: 'section',
+      //   validators: [Validators.required],
+      //   optionLabel: 'name',
+      //   disabled: false
+      // },
+      // {
+      //   type: FormType.multiSelect,
+      //   label: 'Sub Section',
+      //   options: this.subsections,
+      //   value: '',
+      //   key: 'subSection',
+      //   validators: [Validators.required],
+      //   optionLabel: 'subSectionNumber',
+      //   disabled: false
+      // },
+      // {
+      //   type: FormType.dropdown,
+      //   label: 'Operator',
+      //   options: this.operators,
+      //   value: '',
+      //   key: 'operator',
+      //   validators: [Validators.required],
+      //   optionLabel: 'Name',
+      //   disabled: false
+      // },
       {
         type: FormType.dropdown,
         label: 'Status',
@@ -154,36 +186,88 @@ export class CreateOperationComponent implements OnInit {
     ];
   }
 
+  goToListOperations() {
+    this.showListOperation.emit(false);
+  }
+
+  createOperation(event) {
+    this.editOperation = false;
+    this.formData.reset();
+    this.formData.controls.operationStatus.setValue(this.operationStatus[0]);
+    this.formData.controls.operationStatus.disable();
+    this.formData.controls.operationStatus.updateValueAndValidity();
+  }
+
+  onOperationEdited(operation: Operation): void {
+    this.editOperation = true;
+    this.operationToEdit = operation;
+    // this.selectedOperator = operation.VesselContact; // uncomment later
+    this.formData.setValue({
+      operationType: this.operationTypes.find(p => p.Id == operation.OperationType.Id),
+      operationDate: new Date(),
+      // operationDate:  operation.Date,
+      description: operation.Description,
+      port: operation.PortLocation,
+      vesselETB: new Date(),
+      // vesselETB: operation.ETB,
+      operationStatus: this.operationStatus.find(p => p.Id == operation.OperationStatus.Id),
+      requestedBy: this.requestedBy.find(p => p.Id == operation.RequestedBy.Id),
+    });
+
+    this.formData.controls.operationStatus.enable();
+    this.formData.controls.operationStatus.updateValueAndValidity();
+
+    // console.log(this.selectedTreeData);
+    // this.selectedTreeData = [{ "label": "Port Forward", "data": 3, "children": [{ "label": 1, "data": 9 }, { "label": 2, "data": 11 }, { "label": 3, "data": 12 }] }, { "label": "Port Mid", "data": 4, "children": [{ "label": 1, "data": 10 }] }, { "label": "Port Aft", "data": 5, "children": [{ "label": 1, "data": 13 }] }, { "label": "Startboard Forward", "data": 6, "children": [{ "label": 1, "data": 14 }] }, { "label": "Startboard Mid", "data": 7, "children": [{ "label": 1, "data": 15 }] }, { "label": "Startboard Aft", "data": 8, "children": [] }];
+    // this.selectedTreeData = [{ "label": "Port Forward", "data": 3, "children": [{ "label": 1, "data": 9, "partialSelected": false }, { "label": 2, "data": 11, "partialSelected": false }, { "label": 3, "data": 12, "partialSelected": false }], "partialSelected": false }];
+    // this.selectedTreeData = [{ "label": "Port Forward", "data": 3, "children": [{ "label": 1, "data": 9, "partialSelected": false }, { "label": 2, "data": 11, "partialSelected": false }, { "label": 3, "data": 12, "partialSelected": false }], "partialSelected": false }, { "label": 1, "data": 9, "partialSelected": false }, { "label": 2, "data": 11, "partialSelected": false }, { "label": 3, "data": 12, "partialSelected": false }];
+  }
+
   onSubmit(): void {
-    this.isFormSubmmited = true;
     console.log(this.formData);
+    this.isFormSubmmited = true;
     console.log(this.selectedTreeData);
     var operation = {
       vesselId: this.vesselId,
-      operationName: 'test operation',
+      operationName: this.formData.controls.description.value,
       operationTypeId: this.formData.controls.operationType.value.Id,
       date: this.formData.controls.operationDate.value,
       statusId: this.formData.controls.operationStatus.value.Id,
       portId: this.formData.controls.port.value.Id,
-      operatorId: this.formData.controls.operator.value.Id,
+      // operatorId: this.selectedOperator.Id,
+      operatorId: 1,
       // hullSkaterId: 1,
       requestedById: this.formData.controls.requestedBy.value.Id,
       description: this.formData.controls.description.value,
       etb: this.formData.controls.vesselETB.value,
-      createdBy: 'sandek',
+      createdBy: '',
       SubSectionIds: [9, 11, 12]
     };
+
     console.log(operation);
-    this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
-      console.log(data);
-      this.triggerToast('success', 'Success Message', `Operation added successfully`);
-      this.createSecondaryOperation();
-    });
-    // this.onFormReset();
+    if (this.editOperation) {
+      operation.createdBy = this.operationToEdit.CreatedBy;
+      this.operationalPlanService.updateOperation(this.operationToEdit.Id, operation).pipe(take(1)).subscribe((data) => {
+        console.log(data);
+        this.triggerToast('success', 'Success Message', `Operation updated successfully`);
+        // this.onFormReset();
+        // this.operationUpdated.emit(operation);
+        // this.createSecondaryOperation();
+      });
+    }
+    else {
+      this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
+        console.log(data);
+        this.triggerToast('success', 'Success Message', `Operation added successfully`);
+        // this.onFormReset();
+        // this.operationUpdated.emit(operation);
+        // this.createSecondaryOperation();
+      });
+    }
+    
   }
 
-  createSecondaryOperation()
-  {
+  createSecondaryOperation() {
     var secOperation = {
       OperationId: 5,
       OperationTypeId: 1,
@@ -226,6 +310,8 @@ export class CreateOperationComponent implements OnInit {
     });
     this.treeData = treeData;
     console.log(treeData);
+    console.log(JSON.stringify(treeData));
+
   }
 
   formOnchangeEvent(changedItem: any): void {
@@ -233,11 +319,10 @@ export class CreateOperationComponent implements OnInit {
     const key = changedItem.formItem.key;
     console.log(key);
     switch (key) {
-      case 'role': {
-        // this.onRoleChanged(changedItem.formValue);
+      case 'section': {
+        this.onSectionChanged(changedItem.formValue);
         break;
       }
-
       default: {
         console.log('form Item not found');
         break;
@@ -245,73 +330,107 @@ export class CreateOperationComponent implements OnInit {
     }
   }
 
-  // onRoleChanged(roleItem: ContactRole) {
-  //   console.log(roleItem);
-  //   if (roleItem.id === 3) {
-  //     this.formData.controls.tagTraining.enable();
-  //   } else {
-  //     this.formData.controls.tagTraining.disable();
-  //     this.formData.controls.tagTraining.setValue(false);
-  //   }
-  // }
+  onSectionChanged(section: VesselSection) {
+    this.formData.controls.subSection.reset();
+    if (section) {
+      if (section.subSections) {
+        this.config.formList[5].options = section.subSections;
+        console.log(section.subSections);
+      }
+    }
+  }
+
+  nodeSelect(event) {
+    console.log(this.selectedTreeData);
+    console.log(JSON.stringify(this.selectedTreeData));
+    console.log(event.node);
+    if (event.node.parent == undefined) // Section
+    {
+      const sectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.data);
+      if (sectionIndex > -1) {  // if section already exists
+        event.node.children.forEach(element => {
+          if (this.selectedSections[sectionIndex].subSections.findIndex(p => p.id == element.data) == -1) { // add sub section if does not exist
+            this.selectedSections[sectionIndex].subSections.push({ id: element.data, subSectionNumber: element.label })
+          }
+        });
+      }
+      else {
+        var section = { id: event.node.data, name: event.node.label, subSections: [] };
+        event.node.children.forEach(element => {
+          section.subSections.push({ id: element.data, subSectionNumber: element.label })
+        });
+        this.selectedSections.push(section);
+      }
+
+    }
+    else {  // Sub Section
+      const parentSectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.parent.data);
+      console.log(parentSectionIndex);
+      if (parentSectionIndex > -1) // section already exists
+      {
+        this.selectedSections[parentSectionIndex].subSections.push({ id: event.node.data, subSectionNumber: event.node.label });
+      }
+      else {
+        this.selectedSections.push({ id: event.node.parent.data, name: event.node.parent.label, subSections: [{ id: event.node.data, subSectionNumber: event.node.label }] });
+      }
+    }
+    console.log(this.selectedSections);
+    // this.messageService.add({severity: 'info', summary: 'Node Selected', detail: event.node.label});
+  }
+
+  nodeUnselect(event) {
+    console.log(this.selectedTreeData);
+    console.log(event.node);
+
+    if (event.node.parent == undefined) // remove Section
+    {
+      const sectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.data);
+      if (sectionIndex > -1) {
+        this.selectedSections.splice(sectionIndex, 1);
+      }
+    }
+    else {  // remove Sub Section
+      const parentSectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.parent.data);
+      console.log(parentSectionIndex);
+      if (parentSectionIndex > -1) // check of section already exists
+      {
+        const subSectionIndex: number = this.selectedSections[parentSectionIndex].subSections.findIndex(p => p.id == event.node.data);
+        if (subSectionIndex > -1) {
+          this.selectedSections[parentSectionIndex].subSections.splice(subSectionIndex, 1);
+          if (this.selectedSections[parentSectionIndex].subSections.length == 0) // remove section as well when no subsections left selected
+          {
+            this.selectedSections.splice(parentSectionIndex, 1);
+          }
+        }
+      }
+    }
+    console.log(this.selectedSections);
+  }
 
   onFormReset(): void {
     this.isFormSubmmited = false;
-    console.log('reset');
     this.formData.reset();
-    // this.formData.controls.tagTraining.disable();
-    // this.editMode = false;
+    this.editOperation = false;
+    this.formData.controls.operationStatus.setValue(this.operationStatus[0]);
+    this.formData.controls.operationStatus.disable();
+    this.formData.controls.operationStatus.updateValueAndValidity();
   }
 
-  // sectionEditInit(contactData: Contact): void {
-  //   this.editMode = true;
-  //   this.contact = contactData;
-  //   this.formData.controls.name.setValue(contactData.name);
-  //   this.formData.controls.surName.setValue(contactData.surName);
-  //   this.formData.controls.email.setValue(contactData.email);
-  //   this.formData.controls.phone.setValue(contactData.phone);
-  //   this.formData.controls.alternativePhone.setValue(contactData.alternativePhone);
-  //   this.formData.controls.role.setValue(contactData.ContactType);
-  //   this.formData.controls.tagTraining.setValue(contactData.tagTraining);
-  //   if (contactData.ContactType.id === 3) {
-  //     this.formData.controls.tagTraining.enable();
-  //   } else {
-  //     this.formData.controls.tagTraining.disable();
-  //   }
-  // }
+  showAvailableOperators(e: any) {
+    e.preventDefault();
+    this.showOperatorModal = !this.showOperatorModal;
+    // console.log("showAvailableOperators");
+  }
 
-  // saveContact(): void {
-  //   console.log('save');
-  //   console.log(this.formData.value);
-  //   this.contact.name =  this.formData.controls.name.value;
-  //   this.contact.surName = this.formData.controls.surName.value;
-  //   this.contact.email = this.formData.controls.email.value;
-  //   this.contact.phone  = this.formData.controls.phone.value;
-  //   this.contact.alternativePhone = this.formData.controls.alternativePhone.value;
-  //   this.contact.ContactType = this.formData.controls.role.value;
-  //   this.contact.contactTypeId = this.formData.controls.role.value.id;
-  //   this.contact.vesselId = this.prepareInstallationService.installation.id;
-  //   this.contact.tagTraining = this.formData.controls.tagTraining.value;
-  //   this.contactService.updateVesselContact(this.contact).pipe(take(1)).subscribe((data) => {
-  //     this.onFormReset();
-  //     this.editMode = false;
-  //     this.contactUpdated.emit(this.contact);
-  //     });
-  // }
+  changeOperator(operator: any) {
+    console.log(operator);
+    this.selectedOperator = operator;
+    // this.formData.controls.operator.setValue(operator);
+  }
 
-  // addNewContact(): void {
-  //   const newContact = this.contactAdapter.adapt(this.formData.value);
-  //   newContact.contactTypeId = this.formData.controls.role.value.id;
-  //   newContact.vesselId = this.prepareInstallationService.installation.id;
-  //   console.log(newContact);
-  //   this.contactService.createVesselContact(newContact).pipe(take(1)).subscribe((data) => {
-  //     newContact.id = data.id;
-  //     console.log(data);
-  //     this.triggerToast('success', 'Success Message', `contact added successfully`);
-  //     this.contactUpdated.emit(newContact);
-  //   });
-  // }
-
+  selectOperator() {
+    console.log('selectOperator');
+  }
   triggerToast(severity: string, summary: string, detail: string): void {
     this.messageService.add(
       {

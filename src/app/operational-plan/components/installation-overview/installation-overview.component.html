@@ -1,14 +1,13 @@
 <div class="kx-card kx-card--skin-default">
-  <p-table #dt [columns]="cols" [value]="installationList"
-    styleClass="p-datatable-customers p-datatable-gridlines" [rowsPerPageOptions]="[5,10,20,50,100,200,500]"
-    [rows]="PRIMENG_CONSTANTS.rowCount" [paginator]="true"
+  <p-table #dt [columns]="cols" [value]="installationList" styleClass="p-datatable-customers p-datatable-gridlines"
+    [rowsPerPageOptions]="[5,10,20,50,100,200,500]" [rows]="PRIMENG_CONSTANTS.rowCount" [paginator]="true"
     [globalFilterFields]="['displayName','foulingState.State','installationStatus.name','Status','Date','aisData.destination','node.status','aisData.eta']"
     [autoLayout]="true" [responsive]="true">
     <ng-template pTemplate="caption">
       <div class="p-d-flex" style='text-align: left !important;'>
         <span class="p-input-icon-left p-ml-auto">
           <i class="pi pi-search"></i>
-          <input  pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+          <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
             placeholder="Search keyword" />
         </span>
         <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base"
@@ -48,9 +47,12 @@
     </ng-template>
     <ng-template pTemplate="body" let-installationList>
       <tr>
-        <td> <a [routerLink]="['/operational-plan/operations-overview/1']">
+        <td>
+          <!-- <a [routerLink]="['/operational-plan/operations-overview/1']">
             <span class="kx-pt--tiny">{{installationList.displayName}} </span>
-          </a>
+          </a> -->
+          <a href="#" (click)="redirectToOperationsOverview($event, installationList)"> <span
+              class="kx-pt--tiny">{{installationList.displayName}} </span> </a>
         </td>
         <td>{{ installationList.foulingState ? installationList.foulingState.State : 'NA' }}</td>
         <td>{{ installationList.installationStatus ? installationList.installationStatus.name : 'NA' }}</td>
@@ -71,7 +73,7 @@
             </a>
           </div>
         </td>
-        <td>{{ installationList.aisData  ? (installationList.aisData.eta | date: "dd/MM/yyyy") : ''}}</td>
+        <td>{{ installationList.aisData ? (installationList.aisData.eta | date: "dd/MM/yyyy") : ''}}</td>
         <td>
           <div class="kx-icon kx-icon--size-base" style="width: 25px; margin-left: 54px; cursor: pointer;"
             (click)="viewAISCard($event, installationList)">
@@ -81,8 +83,8 @@
           </div>
         </td>
         <td><a [routerLink]="['/operational-plan/prepare-installation/create-installation/' + installationList.id]">
-            <span class="kx-pt--tiny">Edit</span>            
-        </a> </td>
+            <span class="kx-pt--tiny">Edit</span>
+          </a> </td>
       </tr>
     </ng-template>
   </p-table>
@@ -155,8 +157,8 @@
               <div class="kx-col kx-col--4">
                 <strong>Position:</strong>
                 <div *ngIf="currentInstallation.aisData && currentInstallation.aisData.latitude " class="kx-mt--tiny">
-                  ({{currentInstallation.aisData.latitude  ? currentInstallation.aisData.latitude : 0}},
-                  {{currentInstallation.aisData.longitude  ? currentInstallation.aisData.longitude : 0}})
+                  ({{currentInstallation.aisData.latitude ? currentInstallation.aisData.latitude : 0}},
+                  {{currentInstallation.aisData.longitude ? currentInstallation.aisData.longitude : 0}})
                   <a href="https://maps.google.com/?q={{currentInstallation.aisData.latitude  ? currentInstallation.aisData.latitude : 0}},{{currentInstallation.aisData.longitude  ? currentInstallation.aisData.longitude : 0}}"
                     target="_blank"> View </a>
                 </div>

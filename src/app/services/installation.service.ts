@@ -76,11 +76,22 @@ export class InstallationService {
     };
     return this.http.putData(requestData);
 }
+
 getinstallationsForoverview(): Observable<Installation[]> {
   const requestData = {
     endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.GetInstallationOverview}`
   };
   return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.installationAdapter.adapt(item))));
+}
+
+getInstallationOverview(vesselId: number): Observable<Installation> {
+  const requestData = {
+    endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.GetInstallationOverview}/${vesselId}`
+  };
+  return this.http.getData(requestData).pipe(
+    map((data: any) =>
+    this.installationAdapter.adapt(data))
+    );
 }
 
 }

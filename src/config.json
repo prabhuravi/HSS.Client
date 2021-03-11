@@ -101,6 +101,7 @@
           "GetRequestedBy": "/GetRequestedBy",
           "GetOperations": "/GetOperations",
           "CreateOperation": "/CreateOperation",
+          "UpdateOperation": "/UpdateOperation",
           "CreateSecondaryOperation": "/CreateSecondaryOperation"
         }
       },
