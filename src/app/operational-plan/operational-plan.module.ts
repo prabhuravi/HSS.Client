@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
-import {TreeModule} from 'primeng/tree';
-
-
+import { TreeModule } from 'primeng/tree';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -62,11 +62,12 @@ const routes: Routes = [
         path: 'operations-overview/:vesselId', component: OperationsOverviewComponent, children: [
           { path: '', component: InstallationOperationsComponent, pathMatch: 'full' },
           {
-            path: 'installation-operations/:vesselId', component: InstallationOperationsComponent, children: [
-              { path: '', component: ListOperationsComponent, pathMatch: 'full' },
-              { path: 'list-operations/:vesselId', component: ListOperationsComponent },
-              { path: 'create-operation/:vesselId', component: CreateOperationComponent }
-            ]
+            path: 'installation-operations/:vesselId', component: InstallationOperationsComponent
+            // , children: [
+            //   { path: '', component: ListOperationsComponent, pathMatch: 'full' },
+            //   { path: 'list-operations/:vesselId', component: ListOperationsComponent },
+            //   { path: 'create-operation/:vesselId', component: CreateOperationComponent }
+            // ]
           }
         ]
       },
@@ -116,6 +117,8 @@ const routes: Routes = [
     SharedModule,
     TableModule,
     TreeModule,
+    DialogModule,
+    ButtonModule,
     CalendarModule,
     DropdownModule,
     CheckboxModule,

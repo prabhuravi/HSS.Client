@@ -99,6 +99,14 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
 
+  updateOperation(operationId: number, data: any): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.UpdateOperation}/${operationId}`,
+      data: data
+    };
+    return this.http.putData(requestData);
+  }
+
   createSecondaryOperation(data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.CreateSecondaryOperation}`,

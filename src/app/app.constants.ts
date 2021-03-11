@@ -8,6 +8,7 @@ export class AppConstants {
 export enum FormType {
     text,
     dropdown,
+    multiSelect,
     datepicker,
     checkbox,
     number,
