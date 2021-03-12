@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Contact, ContactRole } from './Contact';
+import { Contact, ContactRole, OperatorBooking } from './Contact';
 import { IModelAdapter } from './IModelAdapter';
 import { Installation, InstallationAISData, InstallationStatus, InstallationType, VesselType } from './Installation';
 import { Node } from './Node';
@@ -176,12 +176,24 @@ export class ContactRoleAdapter implements IModelAdapter<ContactRole> {
         item.Name ? item.Name : item.name ? item.name : '');
     }
 }
-
+@Injectable({
+    providedIn: 'root'
+})
+export class OperatorBookingAdapter implements IModelAdapter<OperatorBooking> {
+    adapt(item: any): OperatorBooking {
+        return new OperatorBooking(item.OperationBookingId ? item.OperationBookingId : item.operationBookingId ? item.operationBookingId : 0,
+            item.OperationId ? item.OperationId : item.operationId ? item.operationId : 0,
+            item.date ? item.date : item.Date ? item.Date : null,
+            item.status ? item.status : item.Status ? item.Status : null,
+            item.installationName ? item.installationName : item.InstallationName ? item.InstallationName : '');
+    }
+}
 @Injectable({
     providedIn: 'root'
 })
 export class ContactAdapter implements IModelAdapter<Contact> {
-    constructor(private contactRoleAdapter: ContactRoleAdapter) { }
+    constructor(private contactRoleAdapter: ContactRoleAdapter,
+                private operatorBookingAdapter: OperatorBookingAdapter) { }
     adapt(item: any): Contact {
         return new Contact(item.Id ? item.Id : item.id ? item.id : 0,
             item.VesselId ? item.VesselId : item.vesselId ? item.vesselId : 0,
@@ -194,7 +206,10 @@ export class ContactAdapter implements IModelAdapter<Contact> {
             item.Phone ? item.Phone : item.phone ? item.phone : '',
             item.AlternativePhone ? item.AlternativePhone : item.alternativePhone ? item.alternativePhone : '',
             item.ContactType ? this.contactRoleAdapter.adapt(item.ContactType) : item.contactType ? this.contactRoleAdapter.adapt(item.contactType) : null,
-            item.TagTraining ? item.TagTraining : item.tagTraining ? item.tagTraining : false);
+            item.TagTraining ? item.TagTraining : item.tagTraining ? item.tagTraining : false,
+            item.availability ? item.availability : item.Availability ? item.Availability : false,
+            item.operatorBooking ? this.operatorBookingAdapter.adapt(item.operatorBooking) : item.OperatorBooking ? this.operatorBookingAdapter.adapt(item.OperatorBooking) : null
+            );
 
     }
 }

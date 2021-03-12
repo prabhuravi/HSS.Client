@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="vl"></div>
-            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;">
+            <div class="kx-col kx-col--4 kx-col--2@tab-m kx-col--6@mob-m kx-col--2@ltp-s" style="text-align: center;">
                 <label class="kx-label">
                     Destination
                     <!-- <div class="kx-mt--tiny kx-icon kx-icon--size-base"
@@ -51,17 +51,17 @@
                     ''}}
                 </div>
             </div>
-            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;">
+            <div class="kx-col kx-col--4 kx-col--1@tab-m kx-col--6@mob-m kx-col--@ltp-s" style="text-align: center; margin-right: 50px;">
                 <label class="kx-label">ETA</label>
                 <div class="kx-mt--tiny">
                     {{(installationOverview && installationOverview.aisData)? (installationOverview.aisData.eta |
                     date:'dd/MM/yyyy HH:mm') : ''}}
                 </div>
             </div>
-            <div class="kx-col kx-col--4 kx-col--3@tab-m kx-col--6@mob-m kx-col--2@ltp-s" style="text-align: center;">
-                <label class="kx-label">Current Position</label>
-                <div class="kx-mt--tiny kx-icon kx-icon--size-base"
-                    style="width: 25px; margin-left: 54px; cursor: pointer;" (click)="viewAISCard($event)">
+            <div class="kx-col kx-col--4 kx-col--1@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;margin-top: 4px;">
+                <label class="kx-label kx-row">Current Position</label>
+                <div class="kx-row kx-mt--tiny kx-icon kx-icon--size-base"
+                    style="cursor: pointer;" (click)="viewAISCard($event)">
                     <svg focusable="false">
                         <use href="./assets/img/icons/sprites/icons.svg#map"></use>
                     </svg>
