@@ -22,7 +22,7 @@
                 <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--2@ltp-s" style="margin-left: 1%;">
                     <label class="kx-label">Operator</label><small class="u--textDanger">*</small>
                     <i class="kx-icon kx-icon--size-base" title="Select operator">
-                        <a href="#" (click)="showAvailableOperators($event)">
+                        <a href="#"  (click)="showAvailableOperators($event)" >
                             <svg focusable="false">
                                 <use href="./assets/img/icons/sprites/icons.svg#person"></use>
                             </svg>
@@ -34,7 +34,7 @@
                             optionLabel="FName" filter="true" placeholder="Click person icon">
                         </p-dropdown> -->
 
-                        <input class="kx-field kx-field--size-base" type="text" value="{{selectedOperator?.FName}}"
+                        <input class="kx-field kx-field--size-base" type="text" value="{{selectedOperator ? selectedOperator.name : '' }}"
                             placeholder="Click person icon" disabled />
                     </div>
                 </div>
@@ -119,26 +119,25 @@
                                     <th style="text-align: center;">Installation</th>
                                     <th style="text-align: center;">Status</th>
                                     <th style="text-align: center;">Date</th>
-                                    <th style="text-align: center;">ETA</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let operator of operatorList; let i = index;">
                                     <td style="text-align: center;">
                                         <!-- <label class="kx-selector kx-selector__radio"> -->
-                                        <input type="radio" name="selectOperator" value="operator.Id"
+                                        <input type="radio" [disabled] = "!operator.availability" name="selectOperator" value="operator.Id"
                                             (change)="changeOperator(operator)" />
                                         <!-- <div class="kx-selector__indicator"></div> -->
                                         <!-- <span class="label-text">{{item.InstallationName}} - {{item.DocumentName}} - {{item.FileName}}</span> -->
                                         <!-- </label> -->
                                     </td>
-                                    <td style="text-align: center;">{{operator.FName}}</td>
-                                    <td style="text-align: center;">{{operator.LName}}</td>
-                                    <td style="text-align: center;">{{operator.IsAvailable}}</td>
-                                    <td style="text-align: center;">{{operator.InstallationName}}</td>
-                                    <td style="text-align: center;">{{operator.Status}}</td>
-                                    <td style="text-align: center;">{{operator.Date}}</td>
-                                    <td style="text-align: center;">{{operator.VesselETA}}</td>
+                                    <td style="text-align: center;">{{operator.name}}</td>
+                                    <td style="text-align: center;">{{operator.surName}}</td>
+                                    <td style="text-align: center;">{{operator.availability ?'Availalbe': 'Booked'}}</td>
+                                    <td style="text-align: center;">{{operator.operatorBooking ? operator.operatorBooking.installationName : ''}}</td>
+                                    <td style="text-align: center;">{{operator.operatorBooking ? operator.operatorBooking.status : ''}}</td>
+                                    <td style="text-align: center;">{{operator.operatorBooking ? operator.operatorBooking.date: null}}</td>                                    
                                 </tr>
                             </tbody>
                         </table>

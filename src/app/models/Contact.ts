@@ -11,13 +11,26 @@ export class Contact {
         public phone: string,
         public alternativePhone: string,
         public ContactType: ContactRole,
-        public tagTraining: boolean = false
-    ) {}
+        public tagTraining: boolean = false,
+        public availability: boolean = true,
+        public operatorBooking: OperatorBooking
+    ) { }
 }
 export class ContactRole {
     constructor(
         public id: number,
         public name: string
-    ) {}
+    ) { }
+
+}
+
+export class OperatorBooking {
+    constructor(
+        public operationBookingId: number,
+        public operationId: number,
+        public date: Date,
+        public status: string,
+        public installationName: string
+    ) { }
 
 }

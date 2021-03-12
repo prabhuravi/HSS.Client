@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
 import { TreeModule } from 'primeng/tree';
@@ -127,6 +127,6 @@ const routes: Routes = [
     TooltipModule,
     AutoCompleteModule
   ],
-  providers: []
+  providers: [DatePipe]
 })
 export class OperationalPlanModule { }
