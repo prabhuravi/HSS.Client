@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { Tree } from 'primeng/tree';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
-import { Operation, VesselContact } from 'src/app/models/Operation';
+import { Operation, SecondaryOperation, VesselContact } from 'src/app/models/Operation';
 import { Section, SubSection, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
@@ -28,11 +28,13 @@ export class CreateOperationComponent implements OnInit {
   vesselId: number = 0;
   operations: Operation[] = [];
   operationToEdit: Operation;
+  secondayOperationToEdit: SecondaryOperation;
   editOperation = false;
   showOperatorModal = false;
   selectedOperator: any = null;
 
   @Output() operationUpdated: EventEmitter<any> = new EventEmitter<any>();
+  @Output() secondaryOperationUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   operatorList = [{ Id: 1, FName: 'Fredrik', LName: 'Thoresen', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' },
   { Id: 2, FName: 'Sarva', LName: 'Nanda', IsAvailable: false, InstallationName: '', Status: 'Not Confirmed', Date: '03.03.2021', VesselETA: '02.03.2021' },
@@ -223,6 +225,12 @@ export class CreateOperationComponent implements OnInit {
     // this.selectedTreeData = [{ "label": "Port Forward", "data": 3, "children": [{ "label": 1, "data": 9, "partialSelected": false }, { "label": 2, "data": 11, "partialSelected": false }, { "label": 3, "data": 12, "partialSelected": false }], "partialSelected": false }, { "label": 1, "data": 9, "partialSelected": false }, { "label": 2, "data": 11, "partialSelected": false }, { "label": 3, "data": 12, "partialSelected": false }];
   }
 
+  onSecondaryOperationEdited(secOperation: SecondaryOperation): void {
+    this.editOperation = true;
+    this.secondayOperationToEdit = secOperation;
+    console.log(this.secondayOperationToEdit);
+  }
+
   onSubmit(): void {
     console.log(this.formData);
     this.isFormSubmmited = true;
@@ -251,7 +259,8 @@ export class CreateOperationComponent implements OnInit {
         console.log(data);
         this.triggerToast('success', 'Success Message', `Operation updated successfully`);
         // this.onFormReset();
-        // this.operationUpdated.emit(operation);
+        this.operationUpdated.emit(operation);
+
         // this.createSecondaryOperation();
       });
     }
@@ -260,7 +269,8 @@ export class CreateOperationComponent implements OnInit {
         console.log(data);
         this.triggerToast('success', 'Success Message', `Operation added successfully`);
         // this.onFormReset();
-        // this.operationUpdated.emit(operation);
+        this.operationUpdated.emit(operation);
+
         // this.createSecondaryOperation();
       });
     }
@@ -278,6 +288,8 @@ export class CreateOperationComponent implements OnInit {
     this.operationalPlanService.createSecondaryOperation(secOperation).pipe(take(1)).subscribe((data) => {
       console.log(data);
       this.triggerToast('success', 'Success Message', `Secondary operation added successfully`);
+      
+      this.secondaryOperationUpdated.emit(secOperation);
     });
   }
 
