@@ -119,6 +119,13 @@
           
         }
       },
+      "OperatorBooking": {
+        "path": "/OperatorBooking",
+        "endpoints": {
+          "GetOperatorForVessel": "GetOperatorForVessel",
+          "GetOperatorBookings": ""
+        }
+      },
       "Fouling": {
         "path": "/PoseidonNext/hss-modules/assets/mocks",
         "endpoints": {

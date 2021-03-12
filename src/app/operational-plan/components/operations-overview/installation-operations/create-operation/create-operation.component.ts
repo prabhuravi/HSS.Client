@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -7,9 +8,11 @@ import { Tree } from 'primeng/tree';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import { Operation, SecondaryOperation, VesselContact } from 'src/app/models/Operation';
+import { Contact } from 'src/app/models/Contact';
 import { Section, SubSection, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { OperatorBookingService } from 'src/app/services/operator-booking.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
@@ -31,14 +34,15 @@ export class CreateOperationComponent implements OnInit {
   secondayOperationToEdit: SecondaryOperation;
   editOperation = false;
   showOperatorModal = false;
-  selectedOperator: any = null;
+  selectedOperator: Contact = null;
+  operatorList: Contact[] = [];
 
   @Output() operationUpdated: EventEmitter<any> = new EventEmitter<any>();
   @Output() secondaryOperationUpdated: EventEmitter<any> = new EventEmitter<any>();
 
-  operatorList = [{ Id: 1, FName: 'Fredrik', LName: 'Thoresen', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' },
-  { Id: 2, FName: 'Sarva', LName: 'Nanda', IsAvailable: false, InstallationName: '', Status: 'Not Confirmed', Date: '03.03.2021', VesselETA: '02.03.2021' },
-  { Id: 3, FName: 'Prabhu', LName: 'Ravi', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' }];
+  // operatorList = [{ Id: 1, FName: 'Fredrik', LName: 'Thoresen', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' },
+  // { Id: 2, FName: 'Sarva', LName: 'Nanda', IsAvailable: false, InstallationName: '', Status: 'Not Confirmed', Date: '03.03.2021', VesselETA: '02.03.2021' },
+  // { Id: 3, FName: 'Prabhu', LName: 'Ravi', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' }];
   
   config = {
     formList: [],
@@ -56,8 +60,8 @@ export class CreateOperationComponent implements OnInit {
   @Output() showListOperation = new EventEmitter<boolean>();
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
-    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute,
-    public fb: FormBuilder) { }
+    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService,
+    public fb: FormBuilder, public datepipe: DatePipe) { }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
@@ -242,8 +246,7 @@ export class CreateOperationComponent implements OnInit {
       date: this.formData.controls.operationDate.value,
       statusId: this.formData.controls.operationStatus.value.Id,
       portId: this.formData.controls.port.value.Id,
-      // operatorId: this.selectedOperator.Id,
-      operatorId: 1,
+       operatorId: this.selectedOperator.contactId,
       // hullSkaterId: 1,
       requestedById: this.formData.controls.requestedBy.value.Id,
       description: this.formData.controls.description.value,
@@ -430,11 +433,14 @@ export class CreateOperationComponent implements OnInit {
 
   showAvailableOperators(e: any) {
     e.preventDefault();
-    this.showOperatorModal = !this.showOperatorModal;
-    // console.log("showAvailableOperators");
+    const bookingDate =  this. datepipe.transform(this.formData.controls.operationDate.value, 'yyyy-MM-dd');
+    this.operatorBookingService.getOperatorForVessel(this.vesselId, bookingDate).pipe(take(1)).subscribe((data) => {
+      this.operatorList = data;
+      this.showOperatorModal = !this.showOperatorModal;
+    });
   }
 
-  changeOperator(operator: any) {
+  changeOperator(operator: Contact) {
     console.log(operator);
     this.selectedOperator = operator;
     // this.formData.controls.operator.setValue(operator);

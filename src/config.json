@@ -93,7 +93,7 @@
       }
     },
     "OperationalPlan": {
-      "domainURL": "https://localhost:44378/api",
+      "domainURL": "https://localhost:5001/api",
       "OperationPlan": {
         "path": "/Operation",
         "endpoints": {
@@ -116,6 +116,13 @@
           "GetInstallationType": "/InstallationType",
           "GetInstallationOverview": "/Overview",
           "UpdateInstallation": ""
+        }
+      },
+      "OperatorBooking": {
+        "path": "/OperatorBooking",
+        "endpoints": {
+          "GetOperatorForVessel": "GetOperatorForVessel",
+          "GetOperatorBookings": ""
         }
       },
       "Fouling": {
