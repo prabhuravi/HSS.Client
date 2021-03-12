@@ -13,10 +13,11 @@
 
 
 <div class="kx-pt--small">
-    <app-create-operation (showListOperation)="showListOperation($event)" [hidden]="!viewCreateOperation" #createOperation (operationUpdated)="listOperations.onOperationUpdated($event)">
+    <app-create-operation (showListOperation)="showListOperation($event)" [hidden]="!viewCreateOperation" #createOperation (operationUpdated)="listOperations.onOperationUpdated($event)"
+    (secondaryOperationUpdated)="listOperations.onSecondaryOperationUpdated($event)">
     </app-create-operation>
     <app-list-operations (showCreateOperation)="showCreateOperation($event)" [hidden]="viewCreateOperation" #listOperations (operationEdited)="createOperation.onOperationEdited($event)"
-    (createOperation)=" createOperation.createOperation($event)">
+    (createOperation)=" createOperation.createOperation($event)" (secondaryOperationEdited) = "createOperation.onSecondaryOperationEdited($event)">
     </app-list-operations>
 
     <!-- <div class="kx-row">

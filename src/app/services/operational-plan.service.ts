@@ -119,14 +119,23 @@ export class OperationalPlanService {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperations}/${vesselId}`
     };
-    // return of([
-    //   { Id: '12', VesselId: 1, PortId: 17651, Order: 1, PortName: 'Panama City(US PFN)', PortCode: 'US PFN' },
-    //   { Id: '123', VesselId: 1, PortId: 17896, Order: 2, PortName: 'Savannah(US SAV)', PortCode: 'US SAV' }
-    // ])
     return this.http.getData(requestData);
   }
 
-
+  deleteOperation(id: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperation}/${id}`,
+    };
+    return this.http.deleteData(requestData);
+  }
+  deleteSecondaryOperation(id: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteSecondaryOperation}/${id}`,
+    };
+    console.log(requestData);
+    return this.http.deleteData(requestData);
+  }
+  
   getTradeRouteByVesselId(vesselId: number): Observable<any> {
     const requestData = {
       endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.GetTradeRouteByVesselId}/${vesselId}`
