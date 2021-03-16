@@ -252,7 +252,8 @@ export class CreateOperationComponent implements OnInit {
       description: this.formData.controls.description.value,
       etb: this.formData.controls.vesselETB.value,
       createdBy: '',
-      SubSectionIds: [9, 11, 12]
+      // SubSectionIds: [9, 11, 12],
+      VesselSectionModel: this.selectedSections
     };
 
     console.log(operation);
@@ -285,7 +286,8 @@ export class CreateOperationComponent implements OnInit {
       OperationId: 5,
       OperationTypeId: 1,
       StatusId: 1,
-      SubSectionIds: [9, 11, 12]
+      // SubSectionIds: [9, 11, 12],
+      VesselSectionModel: this.selectedSections
     };
     console.log(secOperation);
     this.operationalPlanService.createSecondaryOperation(secOperation).pipe(take(1)).subscribe((data) => {
@@ -426,6 +428,8 @@ export class CreateOperationComponent implements OnInit {
     this.isFormSubmmited = false;
     this.formData.reset();
     this.editOperation = false;
+    this.selectedOperator = null;
+    this.selectedSections = [];
     this.formData.controls.operationStatus.setValue(this.operationStatus[0]);
     this.formData.controls.operationStatus.disable();
     this.formData.controls.operationStatus.updateValueAndValidity();
