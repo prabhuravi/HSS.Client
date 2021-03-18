@@ -4,12 +4,10 @@
             <div *ngIf="selectedSections.length > 0" style="margin-left: 25px; margin-bottom: 10px;"> <b>Selected
                     Sections:</b>
                 <span *ngFor="let section of selectedSections; let i = index;">
-                    {{section.name}}
-                    (<span *ngFor="let subSection of section.subSections; let i = index;">
-                        {{subSection.subSectionNumber}} <span *ngIf="i != section.subSections.length - 1">, </span>
-                    </span>)
-                    <span *ngIf="i != selectedSections.length - 1">, </span>
-                </span>
+                    {{section.name}}(<span
+                        *ngFor="let subSection of section.subSections; let i = index;">{{subSection.subSectionNumber}}<span
+                            *ngIf="i != section.subSections.length - 1">,</span>
+                    </span>)<span *ngIf="i != selectedSections.length - 1">,</span></span>
             </div>
             <app-load *ngIf="isDataLoading"></app-load>
             <form [formGroup]="formData" class="kx-row kx-row--gutters" style="width: 100%">
@@ -20,9 +18,10 @@
                 </app-dynamic-form>
 
                 <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--2@ltp-s" style="margin-left: 1%;">
-                    <label class="kx-label">Operator</label><small class="u--textDanger">*</small>
+                    <label class="kx-label">Operator</label><small *ngIf="!selectedOperator"
+                        class="u--textDanger">*</small>
                     <i class="kx-icon kx-icon--size-base" title="Select operator">
-                        <a href="#"  (click)="showAvailableOperators($event)" >
+                        <a href="#" (click)="showAvailableOperators($event)">
                             <svg focusable="false">
                                 <use href="./assets/img/icons/sprites/icons.svg#person"></use>
                             </svg>
@@ -34,13 +33,15 @@
                             optionLabel="FName" filter="true" placeholder="Click person icon">
                         </p-dropdown> -->
 
-                        <input class="kx-field kx-field--size-base" type="text" value="{{selectedOperator ? selectedOperator.name : '' }}"
-                            placeholder="Click person icon" disabled />
+                        <input class="kx-field kx-field--size-base" type="text"
+                            value="{{selectedOperator ? selectedOperator.name : '' }}" placeholder="Click person icon"
+                            disabled />
                     </div>
                 </div>
 
                 <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--3@ltp-s">
-                    <label class="kx-label">Select Section & Sub-Section</label><small class="u--textDanger">*</small>
+                    <label class="kx-label">Select Section & Sub-Section</label><small
+                        *ngIf="selectedSections.length == 0" class="u--textDanger">*</small>
                     <div class="kx-mt--tiny"
                         style="border: thin solid #c3c3c4f0; border-radius: 3px; height: 150px;overflow-y: auto;">
                         <p-tree [value]="treeData" selectionMode="checkbox" [(selection)]="selectedTreeData"
@@ -51,7 +52,7 @@
                     style="margin: 21px 0px 0px 0px;">
                     <div class="kx-col kx-col--7 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
                         <button (click)="onSubmit()" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
-                            [disabled]="formData.invalid">
+                            [disabled]=" (formData.valid && selectedOperator != null && selectedSections.length > 0)? false: true">
                             <span class="kx-btn__inner">
                                 <span *ngIf="!editOperation; else elseBlock" class="kx-btn__txt">Add</span>
                                 <ng-template #elseBlock>
@@ -119,14 +120,16 @@
                                     <th style="text-align: center;">Installation</th>
                                     <th style="text-align: center;">Status</th>
                                     <th style="text-align: center;">Date</th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let operator of operatorList; let i = index;">
                                     <td style="text-align: center;">
                                         <!-- <label class="kx-selector kx-selector__radio"> -->
-                                        <input type="radio" [disabled] = "!operator.availability" name="selectOperator" value="operator.Id"
+                                        <input type="radio" [disabled]="!operator.availability" name="selectOperator"
+                                            value="operator.Id"
+                                            [checked]="operator.contactId === selectedOperator?.contactId"
                                             (change)="changeOperator(operator)" />
                                         <!-- <div class="kx-selector__indicator"></div> -->
                                         <!-- <span class="label-text">{{item.InstallationName}} - {{item.DocumentName}} - {{item.FileName}}</span> -->
@@ -134,10 +137,14 @@
                                     </td>
                                     <td style="text-align: center;">{{operator.name}}</td>
                                     <td style="text-align: center;">{{operator.surName}}</td>
-                                    <td style="text-align: center;">{{operator.availability ?'Availalbe': 'Booked'}}</td>
-                                    <td style="text-align: center;">{{operator.operatorBooking ? operator.operatorBooking.installationName : ''}}</td>
-                                    <td style="text-align: center;">{{operator.operatorBooking ? operator.operatorBooking.status : ''}}</td>
-                                    <td style="text-align: center;">{{operator.operatorBooking ? operator.operatorBooking.date: null}}</td>                                    
+                                    <td style="text-align: center;">{{operator.availability ?'Availalbe': 'Booked'}}
+                                    </td>
+                                    <td style="text-align: center;">{{operator.operatorBooking ?
+                                        operator.operatorBooking.installationName : ''}}</td>
+                                    <td style="text-align: center;">{{operator.operatorBooking ?
+                                        operator.operatorBooking.status : ''}}</td>
+                                    <td style="text-align: center;">{{operator.operatorBooking ?
+                                        operator.operatorBooking.date: null}}</td>
                                 </tr>
                             </tbody>
                         </table>

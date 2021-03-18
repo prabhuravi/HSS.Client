@@ -14,6 +14,7 @@ import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { OperatorBookingService } from 'src/app/services/operator-booking.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
+import { ContactAdapter } from 'src/app/models/modelAdapter';
 
 @Component({
   selector: 'app-create-operation',
@@ -60,7 +61,7 @@ export class CreateOperationComponent implements OnInit {
   @Output() showListOperation = new EventEmitter<boolean>();
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
-    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService,
+    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
     public fb: FormBuilder, public datepipe: DatePipe) { }
 
   ngOnInit() {
@@ -127,7 +128,7 @@ export class CreateOperationComponent implements OnInit {
         label: 'ETB',
         value: '',
         key: 'vesselETB',
-        validators: [Validators.required],
+        // validators: [Validators.required],
         disabled: false,
         format: 'mm/dd/yy'
       },
@@ -199,23 +200,40 @@ export class CreateOperationComponent implements OnInit {
   createOperation(event) {
     this.editOperation = false;
     this.formData.reset();
+    this.selectedOperator = null;
+    this.selectedTreeData = null;
+    this.selectedSections = [];
     this.formData.controls.operationStatus.setValue(this.operationStatus[0]);
     this.formData.controls.operationStatus.disable();
     this.formData.controls.operationStatus.updateValueAndValidity();
   }
 
   onOperationEdited(operation: Operation): void {
+    console.log(operation);
+    console.log(operation.Date);
+    console.log(new Date(operation.Date).toLocaleDateString());
+    console.log(this.datepipe.transform(operation.Date, 'mm/dd/yy'));
     this.editOperation = true;
+    this.selectedOperator = null;
+    this.selectedTreeData = null;
+    this.selectedSections = [];
     this.operationToEdit = operation;
-    // this.selectedOperator = operation.VesselContact; // uncomment later
+    this.selectedOperator = this.contactAdapter.adapt(operation.Operator);
+    // this.selectedOperator = operation.Operator;
+    console.log(this.selectedOperator);
+    this.operationalPlanService.getOperationSections(operation.Id).pipe(take(1)).subscribe((data) => {
+      console.log(data);
+    });
+    
     this.formData.setValue({
       operationType: this.operationTypes.find(p => p.Id == operation.OperationType.Id),
       operationDate: new Date(),
-      // operationDate:  operation.Date,
+      // operationDate: this.datepipe.transform(operation.Date, 'mm/dd/yy'),
+      // operationDate: new Date(operation.Date).toLocaleDateString(),
       description: operation.Description,
       port: operation.PortLocation,
-      vesselETB: new Date(),
-      // vesselETB: operation.ETB,
+      vesselETB: operation.ETB? new Date(): null,
+      // vesselETB: new Date(operation.ETB).toLocaleDateString(),
       operationStatus: this.operationStatus.find(p => p.Id == operation.OperationStatus.Id),
       requestedBy: this.requestedBy.find(p => p.Id == operation.RequestedBy.Id),
     });
@@ -243,16 +261,17 @@ export class CreateOperationComponent implements OnInit {
       vesselId: this.vesselId,
       operationName: this.formData.controls.description.value,
       operationTypeId: this.formData.controls.operationType.value.Id,
-      date: this.formData.controls.operationDate.value,
+      // date: this.formData.controls.operationDate.value,
+      date: this.converDateToISOString(this.formData.controls.operationDate.value),
       statusId: this.formData.controls.operationStatus.value.Id,
       portId: this.formData.controls.port.value.Id,
-       operatorId: this.selectedOperator.contactId,
+      operatorId: this.selectedOperator.contactId,
       // hullSkaterId: 1,
       requestedById: this.formData.controls.requestedBy.value.Id,
       description: this.formData.controls.description.value,
-      etb: this.formData.controls.vesselETB.value,
+      // etb: this.formData.controls.vesselETB.value,
+      etb: this.formData.controls.vesselETB.value? this.converDateToISOString(this.formData.controls.vesselETB.value): null,
       createdBy: '',
-      // SubSectionIds: [9, 11, 12],
       VesselSectionModel: this.selectedSections
     };
 
@@ -286,7 +305,6 @@ export class CreateOperationComponent implements OnInit {
       OperationId: 5,
       OperationTypeId: 1,
       StatusId: 1,
-      // SubSectionIds: [9, 11, 12],
       VesselSectionModel: this.selectedSections
     };
     console.log(secOperation);
@@ -429,6 +447,7 @@ export class CreateOperationComponent implements OnInit {
     this.formData.reset();
     this.editOperation = false;
     this.selectedOperator = null;
+    this.selectedTreeData = null;
     this.selectedSections = [];
     this.formData.controls.operationStatus.setValue(this.operationStatus[0]);
     this.formData.controls.operationStatus.disable();
@@ -437,11 +456,20 @@ export class CreateOperationComponent implements OnInit {
 
   showAvailableOperators(e: any) {
     e.preventDefault();
-    const bookingDate =  this. datepipe.transform(this.formData.controls.operationDate.value, 'yyyy-MM-dd');
-    this.operatorBookingService.getOperatorForVessel(this.vesselId, bookingDate).pipe(take(1)).subscribe((data) => {
-      this.operatorList = data;
+    if(this.formData.controls.operationDate.value)
+    {
       this.showOperatorModal = !this.showOperatorModal;
-    });
+      const bookingDate =  this.datepipe.transform(this.formData.controls.operationDate.value, 'yyyy-MM-dd');
+      this.isDataLoading = true;
+      this.operatorBookingService.getOperatorForVessel(this.vesselId, bookingDate).pipe(take(1)).subscribe((data) => {
+        this.operatorList = data;
+        this.isDataLoading = false;
+        console.log(this.operatorList);
+      });
+    }
+    else{
+      this.triggerToast('error', 'Message', `Please select date field first`);
+    }
   }
 
   changeOperator(operator: Contact) {
@@ -460,6 +488,12 @@ export class CreateOperationComponent implements OnInit {
         summary,
         detail
       });
+  }
+  converDateToISOString(date: any): string
+  {
+    date = new Date(date.toString());
+    date = new Date(date.toString().slice(0, date.toString().indexOf('GMT')) + 'GMT').toISOString();
+    return date;
   }
 
 }
