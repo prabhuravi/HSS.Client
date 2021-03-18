@@ -135,6 +135,12 @@ export class OperationalPlanService {
     console.log(requestData);
     return this.http.deleteData(requestData);
   }
+  getOperationSections(operationId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationSections}/${operationId}`
+    };
+    return this.http.getData(requestData);
+  }
   
   getTradeRouteByVesselId(vesselId: number): Observable<any> {
     const requestData = {

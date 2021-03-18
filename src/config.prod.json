@@ -104,7 +104,8 @@
           "UpdateOperation": "/UpdateOperation",
           "CreateSecondaryOperation": "/CreateSecondaryOperation",
           "DeleteOperation": "/DeleteOperation",
-          "DeleteSecondaryOperation": "/DeleteSecondaryOperation"
+          "DeleteSecondaryOperation": "/DeleteSecondaryOperation",
+          "GetOperationSections": "/GetOperationSections"
         }
       },
       "Installation": {
