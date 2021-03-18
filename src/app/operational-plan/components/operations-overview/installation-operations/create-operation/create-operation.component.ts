@@ -7,7 +7,7 @@ import { MessageService } from 'primeng/api';
 import { Tree } from 'primeng/tree';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
-import { Operation, SecondaryOperation, VesselContact } from 'src/app/models/Operation';
+import { Operation, SecondaryOperation } from 'src/app/models/Operation';
 import { Contact } from 'src/app/models/Contact';
 import { Section, SubSection, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
