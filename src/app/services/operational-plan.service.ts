@@ -141,6 +141,12 @@ export class OperationalPlanService {
     };
     return this.http.getData(requestData);
   }
+  getSecondaryOperationSections(secondaryOperationId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetSecondaryOperationSections}/${secondaryOperationId}`
+    };
+    return this.http.getData(requestData);
+  }
   
   getTradeRouteByVesselId(vesselId: number): Observable<any> {
     const requestData = {
