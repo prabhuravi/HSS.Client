@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TreeNode } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { Tree } from 'primeng/tree';
+import * as moment from 'moment';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
@@ -37,22 +37,13 @@ export class CreateOperationComponent implements OnInit {
   showOperatorModal = false;
   selectedOperator: Contact = null;
   operatorList: Contact[] = [];
-
   @Output() operationUpdated: EventEmitter<any> = new EventEmitter<any>();
   @Output() secondaryOperationUpdated: EventEmitter<any> = new EventEmitter<any>();
-
-  // operatorList = [{ Id: 1, FName: 'Fredrik', LName: 'Thoresen', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' },
-  // { Id: 2, FName: 'Sarva', LName: 'Nanda', IsAvailable: false, InstallationName: '', Status: 'Not Confirmed', Date: '03.03.2021', VesselETA: '02.03.2021' },
-  // { Id: 3, FName: 'Prabhu', LName: 'Ravi', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' }];
-  
   config = {
     formList: [],
     className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
   };
-
   isDataLoading = false;
-  operators = [{ Id: 1, Name: 'Fredrik' }, { Id: 2, Name: 'Daniel' }];
-
   treeData: TreeNode[] = [];
   selectedTreeData: any;
   sections: VesselSection[] = [];
@@ -67,7 +58,6 @@ export class CreateOperationComponent implements OnInit {
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
-    console.log('create op VesselId: ' + this.vesselId);
     this.isDataLoading = true;
     this.operationalPlanService.getOperationMasterData().pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
@@ -82,15 +72,10 @@ export class CreateOperationComponent implements OnInit {
         this.sections = data;
         console.log(this.sections);
         this.formatResponseForTree();
-
         this.constructForm();
         this.formData = this.formBuliderService.buildForm(this.config);
       });
-
-      // this.constructForm();
-      // this.formData = this.formBuliderService.buildForm(this.config);
     });
-
   }
 
   constructForm(): void {
@@ -182,11 +167,20 @@ export class CreateOperationComponent implements OnInit {
         optionLabel: 'Name',
         disabled: false
       },
+      // {
+      //   type: FormType.text,
+      //   label: 'Description',
+      //   value: '',
+      //   key: 'description',
+      //   validators: [Validators.required],
+      //   disabled: false
+      // },
       {
-        type: FormType.text,
+        type: FormType.textarea,
         label: 'Description',
         value: '',
         key: 'description',
+        rows: 3,
         validators: [Validators.required],
         disabled: false
       }
@@ -210,34 +204,24 @@ export class CreateOperationComponent implements OnInit {
 
   onOperationEdited(operation: Operation): void {
     console.log(operation);
-    console.log(operation.Date);
-    console.log(new Date(operation.Date).toLocaleDateString());
-    console.log(this.datepipe.transform(operation.Date, 'mm/dd/yy'));
     this.editOperation = true;
     this.selectedOperator = null;
     this.selectedTreeData = null;
     this.selectedSections = [];
     this.operationToEdit = operation;
     this.selectedOperator = this.contactAdapter.adapt(operation.Operator);
-    // this.selectedOperator = operation.Operator;
-    console.log(this.selectedOperator);
     this.operationalPlanService.getOperationSections(operation.Id).pipe(take(1)).subscribe((data) => {
       console.log(data);
     });
-    
     this.formData.setValue({
       operationType: this.operationTypes.find(p => p.Id == operation.OperationType.Id),
-      operationDate: new Date(),
-      // operationDate: this.datepipe.transform(operation.Date, 'mm/dd/yy'),
-      // operationDate: new Date(operation.Date).toLocaleDateString(),
+      operationDate: moment(operation.Date).toDate(),
       description: operation.Description,
       port: operation.PortLocation,
-      vesselETB: operation.ETB? new Date(): null,
-      // vesselETB: new Date(operation.ETB).toLocaleDateString(),
+      vesselETB: operation.ETB? moment(operation.ETB).toDate(): null,
       operationStatus: this.operationStatus.find(p => p.Id == operation.OperationStatus.Id),
       requestedBy: this.requestedBy.find(p => p.Id == operation.RequestedBy.Id),
     });
-
     this.formData.controls.operationStatus.enable();
     this.formData.controls.operationStatus.updateValueAndValidity();
 
@@ -261,7 +245,6 @@ export class CreateOperationComponent implements OnInit {
       vesselId: this.vesselId,
       operationName: this.formData.controls.description.value,
       operationTypeId: this.formData.controls.operationType.value.Id,
-      // date: this.formData.controls.operationDate.value,
       date: this.converDateToISOString(this.formData.controls.operationDate.value),
       statusId: this.formData.controls.operationStatus.value.Id,
       portId: this.formData.controls.port.value.Id,
@@ -269,7 +252,6 @@ export class CreateOperationComponent implements OnInit {
       // hullSkaterId: 1,
       requestedById: this.formData.controls.requestedBy.value.Id,
       description: this.formData.controls.description.value,
-      // etb: this.formData.controls.vesselETB.value,
       etb: this.formData.controls.vesselETB.value? this.converDateToISOString(this.formData.controls.vesselETB.value): null,
       createdBy: '',
       VesselSectionModel: this.selectedSections
@@ -283,8 +265,6 @@ export class CreateOperationComponent implements OnInit {
         this.triggerToast('success', 'Success Message', `Operation updated successfully`);
         // this.onFormReset();
         this.operationUpdated.emit(operation);
-
-        // this.createSecondaryOperation();
       });
     }
     else {
@@ -293,11 +273,8 @@ export class CreateOperationComponent implements OnInit {
         this.triggerToast('success', 'Success Message', `Operation added successfully`);
         // this.onFormReset();
         this.operationUpdated.emit(operation);
-
-        // this.createSecondaryOperation();
       });
     }
-    
   }
 
   createSecondaryOperation() {
@@ -311,7 +288,6 @@ export class CreateOperationComponent implements OnInit {
     this.operationalPlanService.createSecondaryOperation(secOperation).pipe(take(1)).subscribe((data) => {
       console.log(data);
       this.triggerToast('success', 'Success Message', `Secondary operation added successfully`);
-      
       this.secondaryOperationUpdated.emit(secOperation);
     });
   }
@@ -345,8 +321,7 @@ export class CreateOperationComponent implements OnInit {
     });
     this.treeData = treeData;
     console.log(treeData);
-    console.log(JSON.stringify(treeData));
-
+    // console.log(JSON.stringify(treeData));
   }
 
   formOnchangeEvent(changedItem: any): void {
@@ -377,7 +352,7 @@ export class CreateOperationComponent implements OnInit {
 
   nodeSelect(event) {
     console.log(this.selectedTreeData);
-    console.log(JSON.stringify(this.selectedTreeData));
+    // console.log(JSON.stringify(this.selectedTreeData));
     console.log(event.node);
     if (event.node.parent == undefined) // Section
     {
@@ -396,7 +371,6 @@ export class CreateOperationComponent implements OnInit {
         });
         this.selectedSections.push(section);
       }
-
     }
     else {  // Sub Section
       const parentSectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.parent.data);
@@ -416,7 +390,6 @@ export class CreateOperationComponent implements OnInit {
   nodeUnselect(event) {
     console.log(this.selectedTreeData);
     console.log(event.node);
-
     if (event.node.parent == undefined) // remove Section
     {
       const sectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.data);
@@ -475,12 +448,11 @@ export class CreateOperationComponent implements OnInit {
   changeOperator(operator: Contact) {
     console.log(operator);
     this.selectedOperator = operator;
-    // this.formData.controls.operator.setValue(operator);
   }
 
   selectOperator() {
-    console.log('selectOperator');
   }
+
   triggerToast(severity: string, summary: string, detail: string): void {
     this.messageService.add(
       {
@@ -489,11 +461,11 @@ export class CreateOperationComponent implements OnInit {
         detail
       });
   }
+
   converDateToISOString(date: any): string
   {
     date = new Date(date.toString());
     date = new Date(date.toString().slice(0, date.toString().indexOf('GMT')) + 'GMT').toISOString();
     return date;
   }
-
 }

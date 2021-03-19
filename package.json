@@ -79,7 +79,7 @@
     "leaflet-rotatedmarker": "^0.2.0",
     "leaflet.markercluster": "^1.4.1",
     "lodash": "^4.17.4",
-    "moment": "^2.26.0",
+    "moment": "^2.29.1",
     "oidc-client": "1.5.2",
     "primeicons": "^2.0.0",
     "primeng": "8.0.0",
