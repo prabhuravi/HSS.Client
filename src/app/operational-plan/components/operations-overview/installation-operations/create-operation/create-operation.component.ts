@@ -235,6 +235,9 @@ export class CreateOperationComponent implements OnInit {
     this.editOperation = true;
     this.secondayOperationToEdit = secOperation;
     console.log(this.secondayOperationToEdit);
+    this.operationalPlanService.getSecondaryOperationSections(secOperation.Id).pipe(take(1)).subscribe((data) => {
+      console.log(data);
+    });
   }
 
   onSubmit(): void {
