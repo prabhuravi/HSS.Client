@@ -4,6 +4,8 @@ import { SharedModule } from '../shared/shared.module';
 import { TableModule } from 'primeng/table';
 import { TreeModule } from 'primeng/tree';
 import { DialogModule } from 'primeng/dialog';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
+import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -118,6 +120,8 @@ const routes: Routes = [
     TableModule,
     TreeModule,
     DialogModule,
+    OverlayPanelModule,
+    ToastModule,
     ButtonModule,
     CalendarModule,
     DropdownModule,

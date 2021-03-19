@@ -6,6 +6,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MultiSelectModule } from 'primeng/multiselect';
+import {InputTextareaModule} from 'primeng/inputtextarea'
 
 import { NavigationTabComponent } from './components/navigation-tab/navigation-tab.component';
 import { ModalComponent } from './components/modal/modal.component';
@@ -24,7 +25,8 @@ import { NoDataComponent } from './components/no-data/no-data.component';
     DropdownModule,
     ReactiveFormsModule,
     AutoCompleteModule,
-    MultiSelectModule
+    MultiSelectModule,
+    InputTextareaModule
   ],
   exports: [
     NavigationTabComponent,

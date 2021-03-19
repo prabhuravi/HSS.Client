@@ -28,11 +28,6 @@
                         </a>
                     </i>
                     <div class="kx-mt--tiny">
-
-                        <!-- <p-dropdown styleClass="kx-p--tiny" [options]="operatorList" [ngModel]="selectedOperator"
-                            optionLabel="FName" filter="true" placeholder="Click person icon">
-                        </p-dropdown> -->
-
                         <input class="kx-field kx-field--size-base" type="text"
                             value="{{selectedOperator ? selectedOperator.name : '' }}" placeholder="Click person icon"
                             disabled />
@@ -40,13 +35,25 @@
                 </div>
 
                 <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--3@ltp-s">
-                    <label class="kx-label">Select Section & Sub-Section</label><small
-                        *ngIf="selectedSections.length == 0" class="u--textDanger">*</small>
-                    <div class="kx-mt--tiny"
+                    <label class="kx-label">Section & Sub-Section</label><small *ngIf="selectedSections.length == 0"
+                        class="u--textDanger">*</small>
+
+                    <div class="kx-mt--tiny">
+                        <button (click)="op.toggle($event)" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+                            <span class="kx-btn__inner">
+                                <span class="kx-btn__txt">Select</span>
+                            </span>
+                        </button>
+                        <p-overlayPanel #op [showCloseIcon]="true">
+                            <p-tree [value]="treeData" selectionMode="checkbox" [(selection)]="selectedTreeData"
+                                (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+                        </p-overlayPanel>
+                    </div>
+                    <!-- <div class="kx-mt--tiny"
                         style="border: thin solid #c3c3c4f0; border-radius: 3px; height: 150px;overflow-y: auto;">
                         <p-tree [value]="treeData" selectionMode="checkbox" [(selection)]="selectedTreeData"
                             (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s"
                     style="margin: 21px 0px 0px 0px;">
@@ -120,20 +127,15 @@
                                     <th style="text-align: center;">Installation</th>
                                     <th style="text-align: center;">Status</th>
                                     <th style="text-align: center;">Date</th>
-
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let operator of operatorList; let i = index;">
                                     <td style="text-align: center;">
-                                        <!-- <label class="kx-selector kx-selector__radio"> -->
                                         <input type="radio" [disabled]="!operator.availability" name="selectOperator"
                                             value="operator.Id"
                                             [checked]="operator.contactId === selectedOperator?.contactId"
                                             (change)="changeOperator(operator)" />
-                                        <!-- <div class="kx-selector__indicator"></div> -->
-                                        <!-- <span class="label-text">{{item.InstallationName}} - {{item.DocumentName}} - {{item.FileName}}</span> -->
-                                        <!-- </label> -->
                                     </td>
                                     <td style="text-align: center;">{{operator.name}}</td>
                                     <td style="text-align: center;">{{operator.surName}}</td>
@@ -151,23 +153,6 @@
                     </div>
                 </div>
 
-                <!-- <div class="kx-row">
-                    <app-load *ngIf="isCloudLibraryDataLoading"></app-load>
-                    <ul *ngIf="!isCloudLibraryDataLoading && installationsByDocumentType.length > 0"
-                        class="kx-select-group">
-                        <li class="kx-select-item" *ngFor="let item of installationsByDocumentType; let i = index;">
-                            <label class="kx-selector kx-selector__radio">
-                                <input type="radio" name="selectInstallation" value="item.VesselId"
-                                    (change)="changeInstallationDocument(item)" />
-                                <div class="kx-selector__indicator"></div>
-                                <span class="label-text">{{item.InstallationName}} - {{item.DocumentName}} - {{item.FileName}}</span>
-                            </label>
-                        </li>
-                    </ul>
-                    <app-no-data [displayme]="!isCloudLibraryDataLoading && installationsByDocumentType.length === 0">
-                    </app-no-data>
-                </div> -->
-
                 <div class="kx-row">
                     <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                         <div class="kx-mt--tiny">
@@ -181,39 +166,6 @@
                         </div>
                     </div>
                 </div>
-
-
-                <!-- <div class="kx-row">
-                    <div class="kx-col  kx-col--4">
-                        <strong>Installation</strong> : {{installationOverview? installationOverview.displayName: ''}}
-                    </div>
-                    <div class="kx-col  kx-col--4">
-                        <strong>IMO</strong> : {{installationOverview? installationOverview.imoNo: ''}}
-                    </div>
-                </div> -->
-                <!-- <div class="kx-row kx-mt--tiny kx-mt--medium@mob-m">
-                    <div class="kx-col kx-col--12">
-                        <app-load *ngIf="isDataLoading"></app-load>
-                        <div *ngIf="whiteListedCountries.length == 0" class="kx-card kx-card--skin-default kx-p--small">
-                            No country whitelisted
-                        </div>
-                        <table *ngIf="!isDataLoading && whiteListedCountries.length > 0"
-                            class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
-                            <thead>
-                                <tr>
-                                    <th>Country</th>
-                                    <th>MCCs </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let country of whiteListedCountries; let i = index;">
-                                    <td>{{country.Name}}</td>
-                                    <td>{{country.MCCs}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div> -->
 
             </div>
         </div>
