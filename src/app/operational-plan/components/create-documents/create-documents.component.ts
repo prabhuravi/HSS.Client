@@ -184,12 +184,7 @@ export class CreateDocumentsComponent implements OnInit {
       }
       else { //Upload from Local 
         formData.append('DocumentName', this.form.value.documentName);
-        console.log(this.form.value.documentDate);
-        this.form.value.documentDate = new Date(this.form.value.documentDate.toString());
-        this.form.value.documentDate = this.form.value.documentDate.toString().slice(0, this.form.value.documentDate.toString().indexOf('GMT')) + 'GMT';
-        console.log(this.form.value.documentDate);
-        this.form.value.documentDate = new Date(this.form.value.documentDate).toISOString();
-        console.log(this.form.value.documentDate);
+        this.form.value.documentDate = this.converDateToISOString(this.form.value.documentDate),
         formData.append('Date', this.form.value.documentDate);
         formData.append('Version', this.form.value.version);
         formData.append('CopyVesselId', "0");
@@ -305,5 +300,11 @@ export class CreateDocumentsComponent implements OnInit {
         summary,
         detail
       });
+  }
+  converDateToISOString(date: any): string
+  {
+    date = new Date(date.toString());
+    date = new Date(date.toString().slice(0, date.toString().indexOf('GMT')) + 'GMT').toISOString();
+    return date;
   }
 }

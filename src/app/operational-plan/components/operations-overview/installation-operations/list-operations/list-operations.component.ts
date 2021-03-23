@@ -1,6 +1,7 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
@@ -17,6 +18,7 @@ export class ListOperationsComponent implements OnInit {
   @Output() showCreateOperation = new EventEmitter<boolean>();
   @Output() operationEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() createOperation: EventEmitter<any> = new EventEmitter<any>();
+  @Output() secondaryOperationEdited: EventEmitter<any> = new EventEmitter<any>();
   
   operations: Operation[] = [];
 
@@ -34,16 +36,22 @@ export class ListOperationsComponent implements OnInit {
     { field: 'Id', header: 'Action', sortfield: '' }
   ];
 
-  constructor(private operationalPlanService: OperationalPlanService, private route: ActivatedRoute) { }
+  constructor(private operationalPlanService: OperationalPlanService,private confirmationService: ConfirmationService, private route: ActivatedRoute,
+  private messageService: MessageService) { }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
     console.log('list op VesselId: ' + this.vesselId);
 
+    this.loadOperations();
+  }
+
+  loadOperations()
+  {
     this.isDataLoading = true;
     this.operationalPlanService.getOperations(this.vesselId).pipe(take(1)).subscribe((data) => {
-      // console.log(data);
+      console.log(data);
       this.operations = data;
       console.log(this.operations);
       this.isDataLoading = false;
@@ -60,29 +68,67 @@ export class ListOperationsComponent implements OnInit {
   editSecondaryOperation(secondaryOperation: SecondaryOperation)
   {
     console.log(secondaryOperation);
-    // this.secondaryOperationEdited.emit(secondaryOperation);
-    // this.showCreateOperation.emit(true);
+    this.secondaryOperationEdited.emit(secondaryOperation);
+    this.showCreateOperation.emit(true);
   }
 
   onOperationUpdated(operation: Operation)
   {
-    console.log(operation);  // added for updated operation. Updade grid with updated operation
+    console.log(operation); 
+    this.loadOperations();
+    // added for updated operation. Updade grid with updated operation
+  }
+  
+  onSecondaryOperationUpdated(secOperation: SecondaryOperation)
+  {
+    console.log(secOperation); 
+    this.loadOperations();
   }
 
   deleteOperation(operation: Operation)
   {
     console.log(operation);
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the operation?',
+      accept: () => {
+        this.isDataLoading = true;
+        this.operationalPlanService.deleteOperation(operation.Id).pipe(take(1)).subscribe((data) => {
+          this.isDataLoading = false;
+          this.triggerToast('success', 'Success Message', `Operation deleted successfully`);
+          this.loadOperations();
+        });
+      }
+    });
   }
 
   deleteSecondaryOperation(secondaryOperation: SecondaryOperation)
   {
     console.log(secondaryOperation);
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the secondary operation?',
+      accept: () => {
+        this.isDataLoading = true;
+        this.operationalPlanService.deleteSecondaryOperation(secondaryOperation.Id).pipe(take(1)).subscribe((data) => {
+          this.isDataLoading = false;
+          this.triggerToast('success', 'Success Message', `Secondary operation deleted successfully`);
+          this.loadOperations();
+        });
+      }
+    });
   }
 
   goToCreateOperation()
   {
     this.showCreateOperation.emit(true);
     this.createOperation.emit(true);
+  }
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
   }
 
 }

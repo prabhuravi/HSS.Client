@@ -102,7 +102,11 @@
           "GetOperations": "/GetOperations",
           "CreateOperation": "/CreateOperation",
           "UpdateOperation": "/UpdateOperation",
-          "CreateSecondaryOperation": "/CreateSecondaryOperation"
+          "CreateSecondaryOperation": "/CreateSecondaryOperation",
+          "DeleteOperation": "/DeleteOperation",
+          "DeleteSecondaryOperation": "/DeleteSecondaryOperation",
+          "GetOperationSections": "/GetOperationSections",
+          "GetSecondaryOperationSections": "/GetSecondaryOperationSections"
         }
       },
       "Installation": {

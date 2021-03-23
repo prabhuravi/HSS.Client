@@ -1,3 +1,5 @@
+import { Contact } from "./Contact";
+
 export class Operation {
     constructor(
         public Id: number,
@@ -19,7 +21,7 @@ export class Operation {
         public OperationType: OperationType,
         public OperationStatus: OperationStatus,
         public PortLocation: PortLocation,
-        public VesselContact: VesselContact,
+        public Operator: Contact,
         public RequestedBy: RequestedBy,
         public SecondaryOperations: SecondaryOperation[] = []
     ) { }
@@ -74,16 +76,22 @@ export class PortLocation {
         public PortCode: string,
     ) { }
 }
-export class VesselContact {
-    constructor(
-        public Id: number,
-        public ContactId: number,
-        public VesselId: number,
-    ) { }
-}
 export class RequestedBy {
     constructor(
         public Id: number,
         public Name: string,
+    ) { }
+}
+
+export class Operator {
+    constructor(
+        public ContactId: number,
+        public Name: string,
+        public SurName: string,
+        public Email: string,
+        public TagTraining: boolean,
+        public Phone: string,
+        public AlternativePhone: string,
+        public Availability: boolean,
     ) { }
 }

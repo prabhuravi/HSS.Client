@@ -54,8 +54,8 @@
                     <td>{{ rowData.Description }}</td>
                     <td>{{ rowData.Sections }}</td>
                     <td>{{ rowData.OperationType?.OperationTypeName}}</td>
-                    <td>{{ rowData.BookingStatus }}</td>
-                    <td>{{ rowData.Operator }}</td>
+                    <td>{{ rowData.Operator.Availability ?'Availalbe': 'Booked' }}</td>
+                    <td>{{ rowData.Operator.Name }}</td>
                     <td>{{ rowData.OperationStatus?.Name}}</td>
                     <td>{{ rowData.PortLocation?.PortName}}</td>
                     <td>{{ rowData.ETB | date:'MM/dd/yyyy HH:mm'}}</td>

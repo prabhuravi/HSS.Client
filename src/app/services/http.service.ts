@@ -30,13 +30,13 @@ export class HttpService {
 
   getData(requestData: any): Observable<any> {
     return this.http.get(requestData.endPoint).pipe(
-      retry(2),
+      retry(0),
       catchError(this.handleError.bind(this))
     );
   }
   getDataGeneric<T>(requestData: any): Observable<T> {
     return this.http.get<T>(requestData.endPoint).pipe(
-      retry(2),
+      retry(0),
       catchError(this.handleError.bind(this))
     );
   }
@@ -48,7 +48,7 @@ export class HttpService {
       })
     }
     ).pipe(
-      retry(2),
+      retry(0),
       catchError(this.handleError.bind(this))
     );
   }
@@ -80,7 +80,7 @@ export class HttpService {
       requestData.data.LastUpdatedDate = new Date();
     }
     return this.http.post(requestData.endPoint, requestData.data).pipe(
-      retry(2),
+      retry(0),
       catchError(this.handleError.bind(this))
     );
   }
@@ -88,7 +88,7 @@ export class HttpService {
   postDocument(requestData: any): Observable<any> {
     requestData.data.set('CreatedBy', this.username);
     return this.http.post(requestData.endPoint, requestData.data).pipe(
-      retry(2),
+      retry(0),
       catchError(this.handleError.bind(this))
     );
   }
@@ -99,14 +99,14 @@ export class HttpService {
       requestData.data.LastUpdatedBy = this.username;
     }
     return this.http.put(requestData.endPoint, requestData.data).pipe(
-      retry(2),
+      retry(0),
       catchError(this.handleError.bind(this))
     );
   }
 
   deleteData(requestData: any): Observable<any> {
     return this.http.delete(requestData.endPoint).pipe(
-      retry(2),
+      retry(0),
       catchError(this.handleError.bind(this))
     );
   }
@@ -128,7 +128,7 @@ export class HttpService {
     });
     const url = this.configurationService.config.userInfoApiUrl + user.profile.sub;
     return this.http.get(url, { headers: reqHeader }).pipe(
-      retry(2),
+      retry(0),
       catchError(this.handleError.bind(this))
     );
   }
