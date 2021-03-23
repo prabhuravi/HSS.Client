@@ -22,7 +22,7 @@
                 <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--2@ltp-s" style="margin-left: 1%;">
                     <label class="kx-label">Operator</label><small class="u--textDanger">*</small>
                     <i class="kx-icon kx-icon--size-base" title="Select operator">
-                        <a href="#"  (click)="showAvailableOperators($event)" >
+                        <a href="#" (click)="showAvailableOperators($event)">
                             <svg focusable="false">
                                 <use href="./assets/img/icons/sprites/icons.svg#person"></use>
                             </svg>
@@ -34,8 +34,9 @@
                             optionLabel="FName" filter="true" placeholder="Click person icon">
                         </p-dropdown> -->
 
-                        <input class="kx-field kx-field--size-base" type="text" value="{{selectedOperator ? selectedOperator.name : '' }}"
-                            placeholder="Click person icon" disabled />
+                        <input class="kx-field kx-field--size-base" type="text"
+                            value="{{selectedOperator ? selectedOperator.name : '' }}" placeholder="Click person icon"
+                            disabled />
                     </div>
                 </div>
 
@@ -47,10 +48,19 @@
                             (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
                     </div>
                 </div>
+                <div class="kx-card kx-card--skin-default" style="width: 100%;">
+                    <app-create-secondry-operation [sections]="sections" style="width: 100%;
+                margin-left: 25px;" *ngIf="formData.valid" (secondaryUpdated)="updateSecondaryOperationList($event)"
+                        #createSecondaryOperation>
+                    </app-create-secondry-operation>
+                    <app-secondry-operation-listing [sections]="sections" #secondaryListing [secondaryoperations]="secondaryOperationList" style="width: 100%;
+                    margin-left: 25px;">
+                    </app-secondry-operation-listing>
+                </div>
                 <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s"
-                    style="margin: 21px 0px 0px 0px;">
+                    style="margin: 21px 0px 0px 656px;">
                     <div class="kx-col kx-col--7 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
-                        <button (click)="onSubmit()" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
+                        <button (click)="onSubmit(secondaryListing)" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
                             [disabled]="formData.invalid">
                             <span class="kx-btn__inner">
                                 <span *ngIf="!editOperation; else elseBlock" class="kx-btn__txt">Add</span>
@@ -76,9 +86,13 @@
                     </div>
                 </div>
             </form>
+
+
         </div>
     </div>
 </div>
+
+
 
 <app-modal [displayMe]="showOperatorModal">
     <div class="modal-header">
@@ -119,25 +133,29 @@
                                     <th style="text-align: center;">Installation</th>
                                     <th style="text-align: center;">Status</th>
                                     <th style="text-align: center;">Date</th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let operator of operatorList; let i = index;">
                                     <td style="text-align: center;">
                                         <!-- <label class="kx-selector kx-selector__radio"> -->
-                                        <input type="radio" [disabled] = "!operator.availability" name="selectOperator" value="operator.Id"
-                                            (change)="changeOperator(operator)" />
+                                        <input type="radio" [disabled]="!operator.availability" name="selectOperator"
+                                            value="operator.Id" (change)="changeOperator(operator)" />
                                         <!-- <div class="kx-selector__indicator"></div> -->
                                         <!-- <span class="label-text">{{item.InstallationName}} - {{item.DocumentName}} - {{item.FileName}}</span> -->
                                         <!-- </label> -->
                                     </td>
                                     <td style="text-align: center;">{{operator.name}}</td>
                                     <td style="text-align: center;">{{operator.surName}}</td>
-                                    <td style="text-align: center;">{{operator.availability ?'Availalbe': 'Booked'}}</td>
-                                    <td style="text-align: center;">{{operator.operatorBooking ? operator.operatorBooking.installationName : ''}}</td>
-                                    <td style="text-align: center;">{{operator.operatorBooking ? operator.operatorBooking.status : ''}}</td>
-                                    <td style="text-align: center;">{{operator.operatorBooking ? operator.operatorBooking.date: null}}</td>                                    
+                                    <td style="text-align: center;">{{operator.availability ?'Availalbe': 'Booked'}}
+                                    </td>
+                                    <td style="text-align: center;">{{operator.operatorBooking ?
+                                        operator.operatorBooking.installationName : ''}}</td>
+                                    <td style="text-align: center;">{{operator.operatorBooking ?
+                                        operator.operatorBooking.status : ''}}</td>
+                                    <td style="text-align: center;">{{operator.operatorBooking ?
+                                        operator.operatorBooking.date: null}}</td>
                                 </tr>
                             </tbody>
                         </table>

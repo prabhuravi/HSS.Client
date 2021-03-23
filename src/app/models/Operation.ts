@@ -35,6 +35,7 @@ export class SecondaryOperation {
         public Operation:  Operation,
         public OperationType: OperationType,
         public OperationStatus: OperationStatus,
+        public SubsectionIds: number[] = []
     ) { }
 }
 

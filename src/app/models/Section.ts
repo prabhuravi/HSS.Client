@@ -40,5 +40,6 @@ export class SubSection {
         public foulingState: IFoulingState,
         public joturnFoulingState: IFoulingState,
         public modifiedDate: Date,
+        public selected: boolean = false
     ) { }
 }

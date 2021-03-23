@@ -8,7 +8,7 @@ import { Tree } from 'primeng/tree';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import { Contact } from 'src/app/models/Contact';
-import { Operation, VesselContact } from 'src/app/models/Operation';
+import { Operation, OperationType, SecondaryOperation, VesselContact } from 'src/app/models/Operation';
 import { Section, SubSection, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
@@ -35,13 +35,36 @@ export class CreateOperationComponent implements OnInit {
   showOperatorModal = false;
   selectedOperator: Contact = null;
   operatorList: Contact[] = [];
+  secondaryOperationList: SecondaryOperation[] = [
+    new SecondaryOperation(
+       0,
+       0,
+       1,
+       1,
+       '',
+       null,
+       null,
+       null
+    ),
+    new SecondaryOperation(
+      1,
+      0,
+      1,
+      1,
+      '',
+      null,
+      null,
+      null
+   )
+
+  ];
 
   @Output() operationUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   // operatorList = [{ Id: 1, FName: 'Fredrik', LName: 'Thoresen', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' },
   // { Id: 2, FName: 'Sarva', LName: 'Nanda', IsAvailable: false, InstallationName: '', Status: 'Not Confirmed', Date: '03.03.2021', VesselETA: '02.03.2021' },
   // { Id: 3, FName: 'Prabhu', LName: 'Ravi', IsAvailable: true, InstallationName: '', Status: '', Date: '', VesselETA: '' }];
-  
+
   config = {
     formList: [],
     className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
@@ -51,20 +74,21 @@ export class CreateOperationComponent implements OnInit {
   operators = [{ Id: 1, Name: 'Fredrik' }, { Id: 2, Name: 'Daniel' }];
 
   treeData: TreeNode[] = [];
-  selectedTreeData: any;
+  selectedTreeData = [];
   sections: VesselSection[] = [];
   subsections: SubSection[] = [];
   selectedSections = [];
   @Output() showListOperation = new EventEmitter<boolean>();
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
-    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService,
-    public fb: FormBuilder, public datepipe: DatePipe) { }
+              private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService,
+              public fb: FormBuilder, public datepipe: DatePipe) { }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
     console.log('create op VesselId: ' + this.vesselId);
+
     this.isDataLoading = true;
     this.operationalPlanService.getOperationMasterData().pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
@@ -79,7 +103,7 @@ export class CreateOperationComponent implements OnInit {
         this.sections = data;
         console.log(this.sections);
         this.formatResponseForTree();
-
+        // this.selectedTreeData = [{ label: 100, data: 10, parent: {label: 'Port Forward', data: 29} }];
         this.constructForm();
         this.formData = this.formBuliderService.buildForm(this.config);
       });
@@ -207,31 +231,34 @@ export class CreateOperationComponent implements OnInit {
     this.operationToEdit = operation;
     // this.selectedOperator = operation.VesselContact; // uncomment later
     this.formData.setValue({
-      operationType: this.operationTypes.find(p => p.Id == operation.OperationType.Id),
+      operationType: this.operationTypes.find((p) => p.Id === operation.OperationType.Id),
       operationDate: new Date(),
       // operationDate:  operation.Date,
       description: operation.Description,
       port: operation.PortLocation,
       vesselETB: new Date(),
       // vesselETB: operation.ETB,
-      operationStatus: this.operationStatus.find(p => p.Id == operation.OperationStatus.Id),
-      requestedBy: this.requestedBy.find(p => p.Id == operation.RequestedBy.Id),
+      operationStatus: this.operationStatus.find((p) => p.Id === operation.OperationStatus.Id),
+      requestedBy: this.requestedBy.find((p) => p.Id === operation.RequestedBy.Id)
     });
 
     this.formData.controls.operationStatus.enable();
     this.formData.controls.operationStatus.updateValueAndValidity();
 
     // console.log(this.selectedTreeData);
-    // this.selectedTreeData = [{ "label": "Port Forward", "data": 3, "children": [{ "label": 1, "data": 9 }, { "label": 2, "data": 11 }, { "label": 3, "data": 12 }] }, { "label": "Port Mid", "data": 4, "children": [{ "label": 1, "data": 10 }] }, { "label": "Port Aft", "data": 5, "children": [{ "label": 1, "data": 13 }] }, { "label": "Startboard Forward", "data": 6, "children": [{ "label": 1, "data": 14 }] }, { "label": "Startboard Mid", "data": 7, "children": [{ "label": 1, "data": 15 }] }, { "label": "Startboard Aft", "data": 8, "children": [] }];
+   // this.selectedTreeData = [{ label: 'Port Forward', data: 29, children: [{ label: 1, data: 10 }]}];
+
     // this.selectedTreeData = [{ "label": "Port Forward", "data": 3, "children": [{ "label": 1, "data": 9, "partialSelected": false }, { "label": 2, "data": 11, "partialSelected": false }, { "label": 3, "data": 12, "partialSelected": false }], "partialSelected": false }];
     // this.selectedTreeData = [{ "label": "Port Forward", "data": 3, "children": [{ "label": 1, "data": 9, "partialSelected": false }, { "label": 2, "data": 11, "partialSelected": false }, { "label": 3, "data": 12, "partialSelected": false }], "partialSelected": false }, { "label": 1, "data": 9, "partialSelected": false }, { "label": 2, "data": 11, "partialSelected": false }, { "label": 3, "data": 12, "partialSelected": false }];
   }
 
-  onSubmit(): void {
+  onSubmit(secondaryItems: any): void {
+    const secondryOperations =  secondaryItems.updatedSecondaryOperations;
+    console.log(secondryOperations);
     console.log(this.formData);
     this.isFormSubmmited = true;
     console.log(this.selectedTreeData);
-    var operation = {
+    const operation = {
       vesselId: this.vesselId,
       operationName: this.formData.controls.description.value,
       operationTypeId: this.formData.controls.operationType.value.Id,
@@ -257,8 +284,7 @@ export class CreateOperationComponent implements OnInit {
         // this.operationUpdated.emit(operation);
         // this.createSecondaryOperation();
       });
-    }
-    else {
+    } else {
       this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
         console.log(data);
         this.triggerToast('success', 'Success Message', `Operation added successfully`);
@@ -267,11 +293,14 @@ export class CreateOperationComponent implements OnInit {
         // this.createSecondaryOperation();
       });
     }
-    
+  }
+
+  updateSecondaryOperationList(event: any) {
+
   }
 
   createSecondaryOperation() {
-    var secOperation = {
+    const secOperation = {
       OperationId: 5,
       OperationTypeId: 1,
       StatusId: 1,
@@ -293,22 +322,31 @@ export class CreateOperationComponent implements OnInit {
   }
 
   formatResponseForTree() {
-    let treeData: {}[] = [];
-    this.sections.forEach(section => {
-      let childs: {}[] = [];
-      section.subSections.forEach(subSection => {
-        var child = {
-          "label": subSection.subSectionNumber,
-          "data": subSection.id,
+    const treeData: Array<{}> = [];
+    this.sections.forEach((section) => {
+      const childs: Array<{}> = [];
+      const partialSelect = false;
+      section.subSections.forEach((subSection) => {
+        const child = {
+          label: subSection.subSectionNumber,
+          data: subSection.id
         };
         childs.push(child);
+        if (section.id === 29) {
+         this.selectedTreeData.push(child);
+          // partialSelect = true;
+         console.log(this.selectedTreeData);
+        }
       });
-      var parent =
-      {
-        "label": section.name,
-        "data": section.id,
-        "children": childs
+      const parent = {
+        label: section.name,
+        data: section.id,
+        children: childs,
+        partialSelected: partialSelect
       };
+      if (section.id === 29) {
+      this.selectedTreeData.push(parent);
+      }
       treeData.push(parent);
     });
     this.treeData = treeData;
@@ -347,33 +385,28 @@ export class CreateOperationComponent implements OnInit {
     console.log(this.selectedTreeData);
     console.log(JSON.stringify(this.selectedTreeData));
     console.log(event.node);
-    if (event.node.parent == undefined) // Section
-    {
-      const sectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.data);
+    if (event.node.parent === undefined) {
+      const sectionIndex: number = this.selectedSections.findIndex((p) => p.id === event.node.data);
       if (sectionIndex > -1) {  // if section already exists
-        event.node.children.forEach(element => {
-          if (this.selectedSections[sectionIndex].subSections.findIndex(p => p.id == element.data) == -1) { // add sub section if does not exist
-            this.selectedSections[sectionIndex].subSections.push({ id: element.data, subSectionNumber: element.label })
+        event.node.children.forEach((element) => {
+          if (this.selectedSections[sectionIndex].subSections.findIndex((p) => p.id === element.data) === -1) { // add sub section if does not exist
+            this.selectedSections[sectionIndex].subSections.push({ id: element.data, subSectionNumber: element.label });
           }
         });
-      }
-      else {
-        var section = { id: event.node.data, name: event.node.label, subSections: [] };
-        event.node.children.forEach(element => {
-          section.subSections.push({ id: element.data, subSectionNumber: element.label })
+      } else {
+        const section = { id: event.node.data, name: event.node.label, subSections: [] };
+        event.node.children.forEach((element) => {
+          section.subSections.push({ id: element.data, subSectionNumber: element.label });
         });
         this.selectedSections.push(section);
       }
 
-    }
-    else {  // Sub Section
-      const parentSectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.parent.data);
+    } else {  // Sub Section
+      const parentSectionIndex: number = this.selectedSections.findIndex((p) => p.id === event.node.parent.data);
       console.log(parentSectionIndex);
-      if (parentSectionIndex > -1) // section already exists
-      {
+      if (parentSectionIndex > -1) {
         this.selectedSections[parentSectionIndex].subSections.push({ id: event.node.data, subSectionNumber: event.node.label });
-      }
-      else {
+      } else {
         this.selectedSections.push({ id: event.node.parent.data, name: event.node.parent.label, subSections: [{ id: event.node.data, subSectionNumber: event.node.label }] });
       }
     }
@@ -385,23 +418,19 @@ export class CreateOperationComponent implements OnInit {
     console.log(this.selectedTreeData);
     console.log(event.node);
 
-    if (event.node.parent == undefined) // remove Section
-    {
-      const sectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.data);
+    if (event.node.parent === undefined) {
+      const sectionIndex: number = this.selectedSections.findIndex((p) => p.id === event.node.data);
       if (sectionIndex > -1) {
         this.selectedSections.splice(sectionIndex, 1);
       }
-    }
-    else {  // remove Sub Section
-      const parentSectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.parent.data);
+    } else {  // remove Sub Section
+      const parentSectionIndex: number = this.selectedSections.findIndex((p) => p.id === event.node.parent.data);
       console.log(parentSectionIndex);
-      if (parentSectionIndex > -1) // check of section already exists
-      {
-        const subSectionIndex: number = this.selectedSections[parentSectionIndex].subSections.findIndex(p => p.id == event.node.data);
+      if (parentSectionIndex > -1) {
+        const subSectionIndex: number = this.selectedSections[parentSectionIndex].subSections.findIndex((p) => p.id === event.node.data);
         if (subSectionIndex > -1) {
           this.selectedSections[parentSectionIndex].subSections.splice(subSectionIndex, 1);
-          if (this.selectedSections[parentSectionIndex].subSections.length == 0) // remove section as well when no subsections left selected
-          {
+          if (this.selectedSections[parentSectionIndex].subSections.length === 0) {
             this.selectedSections.splice(parentSectionIndex, 1);
           }
         }

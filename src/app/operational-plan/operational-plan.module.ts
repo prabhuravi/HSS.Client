@@ -11,6 +11,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ToastModule } from 'primeng/toast';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
@@ -40,6 +41,10 @@ import { OperationsOverviewComponent } from './components/operations-overview/op
 import { InstallationOperationsComponent } from './components/operations-overview/installation-operations/installation-operations.component';
 import { CreateOperationComponent } from './components/operations-overview/installation-operations/create-operation/create-operation.component';
 import { ListOperationsComponent } from './components/operations-overview/installation-operations/list-operations/list-operations.component';
+import { CreateSecondryOperationComponent } from './components/operations-overview/installation-operations/create-secondry-operation/create-secondry-operation.component';
+import { SecondryOperationListingComponent } from './components/operations-overview/installation-operations/secondry-operation-listing/secondry-operation-listing.component';
+import { OverlayPanelModule } from 'primeng/components/overlaypanel/overlaypanel';
+
 
 
 const routes: Routes = [
@@ -110,7 +115,9 @@ const routes: Routes = [
     OperationsOverviewComponent,
     InstallationOperationsComponent,
     CreateOperationComponent,
-    ListOperationsComponent],
+    ListOperationsComponent,
+    CreateSecondryOperationComponent,
+    SecondryOperationListingComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
@@ -125,7 +132,9 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     TooltipModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    OverlayPanelModule,
+    ToastModule
   ],
   providers: [DatePipe]
 })
