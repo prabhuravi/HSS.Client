@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
@@ -7,6 +7,7 @@ import { FormType } from 'src/app/app.constants';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { SubSection, VesselSection } from 'src/app/models/Section';
+import { Operation, SecondaryOperation } from 'src/app/models/Operation';
 
 @Component({
   selector: 'app-create-secondry-operation',
@@ -23,19 +24,21 @@ export class CreateSecondryOperationComponent implements OnInit {
   formValues: any = null;
   editSecondaryOperation: boolean = false;
   displayMaximizable: boolean;
-
+  secondaryOperation: SecondaryOperation;
   isDataLoading = false;
   secondaryconfig = {
     formList: [],
     className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
   };
   @Input() sections: VesselSection[] = [];
+  @Input() operation: Operation;
+  @Input() gobalSelectedSubSectionId: number[] = [];
   @Output() secondaryUpdated: EventEmitter<any> = new EventEmitter<any>();
   constructor(private formBuliderService: FromBuilderService,
               private operationalPlanService: OperationalPlanService,
               public fb: FormBuilder
 
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.isDataLoading = true;
@@ -55,38 +58,100 @@ export class CreateSecondryOperationComponent implements OnInit {
   formOnchangeEvent(changedItem: any): void {
   }
   onSubmit(): void {
+    const operatontype = this.secodaryformData.controls.operationType.value;
+    const operationStatus = this.secodaryformData.controls.operationStatus.value;
+    this.secondaryOperation = new SecondaryOperation(
+      0,
+      this.operation ? this.operation.Id : 0,
+      operatontype.Id,
+      operationStatus.Id,
+      '',
+      null,
+      operatontype,
+      operationStatus
+    );
+    // this.sections.forEach((sections) => {
+    //   const selectedSubsections = sections.subSections.filter((x) => x.selected === true);
+    //   if (selectedSubsections) {
+    //     const ids = selectedSubsections.map(({ id }) => id);
+    //     Array.prototype.push.apply(this.secondaryOperation.SubsectionIds, ids);
+    //   }
+    // });
 
+    this.secondaryUpdated.emit(this.secondaryOperation);
+    this.clearForm();
   }
   showMaximizableDialog() {
     this.displayMaximizable = true;
-}
-onSectionSelected(section: VesselSection) {
-  if (section.selected) {
-    section.selected = false;
-    section.subSections.forEach((subSection) => {
-      subSection.selected = false;
+  }
+  onSectionSelected(section: VesselSection) {
+    if (section.selected) {
+      section.selected = false;
+      section.subSections.forEach((subSection) => {
+        subSection.selected = false;
+      });
+    } else {
+      section.selected = true;
+      section.subSections.forEach((subSection) => {
+        subSection.selected = true;
+      });
+    }
+  }
+
+  isBookedSubsection(rowsubSection: SubSection) {
+    return this.gobalSelectedSubSectionId.find((x) => x === rowsubSection.id);
+  }
+
+  isBookingSectionsValid() {
+    let vaild = false;
+    this.sections.forEach((section) => {
+      section.subSections.forEach((sub) => {
+        if (sub.selected) {
+          vaild = true;
+        }
+      });
     });
-  } else {
-    section.selected = true;
-    section.subSections.forEach((subSection) => {
-      subSection.selected = true;
+    return vaild;
+  }
+
+  isBookedSection(rowsection: VesselSection) {
+    if (!rowsection || !rowsection.subSections) {
+      return false;
+    }
+    let booked = true;
+    rowsection.subSections.forEach((element) => {
+      const subSectionid = this.gobalSelectedSubSectionId.find((x) => x === element.id);
+      if (!subSectionid) {
+        booked = false;
+      }
+    });
+    return booked;
+  }
+  clearForm() {
+    this.secodaryformData.reset();
+    this.secodaryformData.controls.operationStatus.setValue(this.operationStatus[0]);
+    this.secodaryformData.controls.name.setValue('Secondary');
+    this.sections.forEach((sections) => {
+      sections.selected = false;
+      sections.subSections.forEach((subSection) => {
+        subSection.selected = false;
+      });
     });
   }
-}
 
-onSubSectionSelected(rowsection: VesselSection, rowsubSection: SubSection) {
- if (rowsubSection.selected) {
-  rowsubSection.selected = false;
-  rowsection.selected = false;
-} else {
-  rowsubSection.selected = true;
+  onSubSectionSelected(rowsection: VesselSection, rowsubSection: SubSection) {
+    if (rowsubSection.selected) {
+      rowsubSection.selected = false;
+      rowsection.selected = false;
+    } else {
+      rowsubSection.selected = true;
 
-  const unSelectednode =  rowsection.subSections.find((x) => x.selected === false);
-  if (!unSelectednode) {
-    rowsection.selected = true;
+      const unSelectednode = rowsection.subSections.find((x) => x.selected === false);
+      if (!unSelectednode) {
+        rowsection.selected = true;
+      }
+    }
   }
-}
-}
   constructForm(): void {
     this.secondaryconfig.formList = [
 

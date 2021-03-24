@@ -32,6 +32,7 @@ export class SecondryOperationListingComponent implements OnInit {
   secondaryconfigs: any[] = [];
   selectedVesselSection: VesselSection[] = [];
   @Input() sections: VesselSection[] = [];
+  @Input() gobalSelectedSubSectionId: number [] = [];
 
   constructor(private formBuliderService: FromBuilderService,
               private operationalPlanService: OperationalPlanService,
@@ -51,18 +52,82 @@ export class SecondryOperationListingComponent implements OnInit {
       });
 
       this.secondaryoperations.forEach((element) => {
-        const secondaryconfig = {
-          formList: [],
-          className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s',
-          isMaximizeDialog: false
-        };
-        this.constructForm(secondaryconfig, element);
-        this.secondaryItems.push(this.formBuliderService.buildForm(secondaryconfig));
-        this.secondaryconfigs.push(secondaryconfig);
-        this.secondaryVesselSections.push(JSON.parse(JSON.stringify(this.sections)));
+        this.attachToSecondaryList(element);
       });
     });
 
+  }
+  get secondaryItems() {
+    return this.secodaryformData.get('secondaryItems') as FormArray;
+  }
+
+  get updatedSecondaryOperations() {
+
+    this.secondaryItems.controls.forEach((element, index) => {
+      console.log(element);
+      const ele = element as any;
+      this.secondaryoperations[index].StatusId = ele.controls.operationStatus.value.Id;
+      this.secondaryoperations[index].OperationStatus =  ele.controls.operationStatus.value;
+      this.secondaryoperations[index].OperationTypeId =  ele.controls.operationType.value.Id;
+      this.secondaryoperations[index].OperationType =  ele.controls.operationType.value;
+      const vesselSection =   this.secondaryVesselSections[index] as VesselSection[];
+      const vesselSectionArray = [];
+      vesselSection.forEach((sections) => {
+       const selectedSubsections =    sections.subSections.filter((x) => x.selected === true);
+       if (selectedSubsections.length > 0) {
+         const section = JSON.parse(JSON.stringify(sections));
+         section.subSections = selectedSubsections;
+       // const ids = selectedSubsections.map(({ id }) => id);
+         vesselSectionArray.push(section);
+         this.secondaryoperations[index].VesselSectionModel = vesselSectionArray;
+         //Array.prototype.push.apply(this.secondaryoperations[index].VesselSectionModel, section);
+      }
+      });
+    });
+    return this.secondaryoperations;
+  }
+
+  private attachToSecondaryList(element: SecondaryOperation) {
+    const secondaryconfig = {
+      formList: [],
+      className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
+    };
+    this.constructForm(secondaryconfig, element);
+    this.secondaryItems.push(this.formBuliderService.buildForm(secondaryconfig));
+    this.secondaryconfigs.push(secondaryconfig);
+    this.sections.forEach((sec) => {
+      sec.subSections.forEach((sub) => {
+        if (sub.selected){
+          this.gobalSelectedSubSectionId.push(sub.id);
+        }
+      });
+    });
+    this.secondaryVesselSections.push(JSON.parse(JSON.stringify(this.sections)));
+  }
+
+  updateSecondaryOperationList(event: SecondaryOperation) {
+    this.secondaryoperations.push(event);
+    this.attachToSecondaryList(event);
+  }
+  deleteSecondary(index: number){
+    this.secondaryoperations.splice(index, 1);
+    this.secondaryItems.removeAt(index);
+    this.secondaryconfigs.splice(index, 1);
+    const sectionForSecondary = this.secondaryVesselSections[index];
+    sectionForSecondary.forEach((sec) => {
+      sec.subSections.forEach((sub) => {
+        if (sub.selected){
+         const globalIndex = this.gobalSelectedSubSectionId.findIndex((x) => x === sub.id);
+         this.gobalSelectedSubSectionId.splice(globalIndex, 1);
+        }
+      });
+    });
+  }
+  clearSecondaryListing(){
+    this.secondaryoperations = [];
+    this.secondaryItems.clear();
+    this.secondaryconfigs = [];
+    this.secondaryVesselSections = [];    
   }
 
   constructForm(config: any, secondaryOperation: SecondaryOperation): void {
@@ -101,29 +166,7 @@ export class SecondryOperationListingComponent implements OnInit {
     ];
   }
 
-  get secondaryItems() {
-    return this.secodaryformData.get('secondaryItems') as FormArray;
-  }
 
-  get updatedSecondaryOperations() {
-
-    this.secondaryItems.controls.forEach((element, index) => {
-      console.log(element);
-      this.secondaryoperations[index].StatusId = element.value.operationStatus.Id;
-      this.secondaryoperations[index].OperationStatus = element.value.operationStatus;
-      this.secondaryoperations[index].OperationTypeId = element.value.operationType.Id;
-      this.secondaryoperations[index].OperationType = element.value.operationType;
-      const vesselSection =   this.secondaryVesselSections[index] as VesselSection[];
-      vesselSection.forEach((sections) => {
-       const selectedSubsections =    sections.subSections.filter((x) => x.selected === true);
-       if (selectedSubsections) {
-        const ids = selectedSubsections.map(({ id }) => id);
-        Array.prototype.push.apply(this.secondaryoperations[index].SubsectionIds, ids);
-      }
-      });
-    });
-    return this.secondaryoperations;
-  }
 
   showMaximizableDialog(index: number) {
     this.displayMaximizable = true;
@@ -156,6 +199,37 @@ onSubSectionSelected(rowsection: VesselSection, rowsubSection: SubSection) {
     rowsection.selected = true;
   }
 }
+}
+
+
+isBookedSubsection(rowsubSection: SubSection) {
+  return this.gobalSelectedSubSectionId.find((x) => x === rowsubSection.id);
+}
+
+isBookingSectionsValid() {
+  let vaild = false;
+  this.sections.forEach((section) => {
+    section.subSections.forEach((sub) => {
+      if (sub.selected) {
+        vaild = true;
+      }
+    });
+  });
+  return vaild;
+}
+
+isBookedSection(rowsection: VesselSection) {
+  if (!rowsection || !rowsection.subSections) {
+    return false;
+  }
+  let booked = true;
+  rowsection.subSections.forEach((element) => {
+    const subSectionid = this.gobalSelectedSubSectionId.find((x) => x === element.id);
+    if (!subSectionid) {
+      booked = false;
+    }
+  });
+  return booked;
 }
 
 }

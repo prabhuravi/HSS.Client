@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TreeNode } from 'primeng/api';
@@ -15,6 +15,8 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
 import { OperatorBookingService } from 'src/app/services/operator-booking.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { ContactAdapter } from 'src/app/models/modelAdapter';
+import { SecondryOperationListingComponent } from '../secondry-operation-listing/secondry-operation-listing.component';
+import { CreateSecondryOperationComponent } from '../create-secondry-operation/create-secondry-operation.component';
 
 @Component({
   selector: 'app-create-operation',
@@ -37,32 +39,12 @@ export class CreateOperationComponent implements OnInit {
   showOperatorModal = false;
   selectedOperator: Contact = null;
   operatorList: Contact[] = [];
-  secondaryOperationList: SecondaryOperation[] = [
-    new SecondaryOperation(
-       0,
-       0,
-       1,
-       1,
-       '',
-       null,
-       null,
-       null
-    ),
-    new SecondaryOperation(
-      1,
-      0,
-      1,
-      1,
-      '',
-      null,
-      null,
-      null
-   )
-
-  ];
+  secondaryOperationList: SecondaryOperation[] = [];
 
   @Output() operationUpdated: EventEmitter<any> = new EventEmitter<any>();
   @Output() secondaryOperationUpdated: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild(SecondryOperationListingComponent, { static: false }) secondaryListingComponent: SecondryOperationListingComponent;
+  @ViewChild(CreateSecondryOperationComponent, { static: false }) secondaryComponent: CreateSecondryOperationComponent;
   config = {
     formList: [],
     className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
@@ -71,13 +53,14 @@ export class CreateOperationComponent implements OnInit {
   treeData: TreeNode[] = [];
   selectedTreeData = [];
   sections: VesselSection[] = [];
+  gobalSelectedSubSectionId: number [] = [];
   subsections: SubSection[] = [];
   selectedSections = [];
   @Output() showListOperation = new EventEmitter<boolean>();
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
-    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
-    public fb: FormBuilder, public datepipe: DatePipe) { }
+              private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
+              public fb: FormBuilder, public datepipe: DatePipe) { }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
@@ -212,6 +195,7 @@ export class CreateOperationComponent implements OnInit {
   }
 
   goToListOperations() {
+    this.onFormReset();    
     this.showListOperation.emit(false);
   }
 
@@ -266,8 +250,10 @@ export class CreateOperationComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  onSubmit(secondaryListing: any): void {
     console.log(this.formData);
+    const secondaryOpearations = this.secondaryListingComponent.updatedSecondaryOperations;
+    console.log(secondaryOpearations);
     this.isFormSubmmited = true;
     console.log(this.selectedTreeData);
     const operation = {
@@ -281,9 +267,10 @@ export class CreateOperationComponent implements OnInit {
       // hullSkaterId: 1,
       requestedById: this.formData.controls.requestedBy.value.Id,
       description: this.formData.controls.description.value,
-      etb: this.formData.controls.vesselETB.value? this.converDateToISOString(this.formData.controls.vesselETB.value): null,
+      etb: this.formData.controls.vesselETB.value ? this.converDateToISOString(this.formData.controls.vesselETB.value) : null,
       createdBy: '',
-      VesselSectionModel: this.selectedSections
+      VesselSectionModel: this.selectedSections,
+      SecondaryOperations: secondaryOpearations
     };
 
     console.log(operation);
@@ -305,10 +292,6 @@ export class CreateOperationComponent implements OnInit {
     }
   }
 
-  updateSecondaryOperationList(event: any) {
-
-  }
-
   createSecondaryOperation() {
     const secOperation = {
       OperationId: 5,
@@ -319,6 +302,7 @@ export class CreateOperationComponent implements OnInit {
     console.log(secOperation);
     this.operationalPlanService.createSecondaryOperation(secOperation).pipe(take(1)).subscribe((data) => {
       console.log(data);
+      this.onFormReset();
       this.triggerToast('success', 'Success Message', `Secondary operation added successfully`);
       this.secondaryOperationUpdated.emit(secOperation);
     });
@@ -401,21 +385,23 @@ export class CreateOperationComponent implements OnInit {
         event.node.children.forEach((element) => {
           if (this.selectedSections[sectionIndex].subSections.findIndex((p) => p.id === element.data) === -1) { // add sub section if does not exist
             this.selectedSections[sectionIndex].subSections.push({ id: element.data, subSectionNumber: element.label });
+            this.gobalSelectedSubSectionId.push(element.data);
           }
         });
       } else {
         const section = { id: event.node.data, name: event.node.label, subSections: [] };
         event.node.children.forEach((element) => {
           section.subSections.push({ id: element.data, subSectionNumber: element.label });
+          this.gobalSelectedSubSectionId.push(element.data);
         });
         this.selectedSections.push(section);
       }
-    }
-    else {  // Sub Section
-      const parentSectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.parent.data);
+    } else {  // Sub Section
+      const parentSectionIndex: number = this.selectedSections.findIndex((p) => p.id === event.node.parent.data);
       console.log(parentSectionIndex);
       if (parentSectionIndex > -1) {
         this.selectedSections[parentSectionIndex].subSections.push({ id: event.node.data, subSectionNumber: event.node.label });
+        this.gobalSelectedSubSectionId.push(event.node.data);
       } else {
         this.selectedSections.push({ id: event.node.parent.data, name: event.node.parent.label, subSections: [{ id: event.node.data, subSectionNumber: event.node.label }] });
       }
@@ -427,10 +413,14 @@ export class CreateOperationComponent implements OnInit {
   nodeUnselect(event) {
     console.log(this.selectedTreeData);
     console.log(event.node);
-    if (event.node.parent == undefined) // remove Section
-    {
-      const sectionIndex: number = this.selectedSections.findIndex(p => p.id == event.node.data);
+    if (event.node.parent === undefined) {
+      const sectionIndex: number = this.selectedSections.findIndex((p) => p.id === event.node.data);
       if (sectionIndex > -1) {
+        const sectionSelected =  this.selectedSections[sectionIndex];
+        sectionSelected.subSections.forEach((sec) => {
+         const index = this.gobalSelectedSubSectionId.findIndex((x) => x === event.node.data);
+         this.gobalSelectedSubSectionId.splice(index, 1);
+        });
         this.selectedSections.splice(sectionIndex, 1);
       }
     } else {  // remove Sub Section
@@ -440,6 +430,8 @@ export class CreateOperationComponent implements OnInit {
         const subSectionIndex: number = this.selectedSections[parentSectionIndex].subSections.findIndex((p) => p.id === event.node.data);
         if (subSectionIndex > -1) {
           this.selectedSections[parentSectionIndex].subSections.splice(subSectionIndex, 1);
+          const index = this.gobalSelectedSubSectionId.findIndex((x) => x === event.node.data);
+          this.gobalSelectedSubSectionId.splice(index, 1);
           if (this.selectedSections[parentSectionIndex].subSections.length === 0) {
             this.selectedSections.splice(parentSectionIndex, 1);
           }
@@ -459,12 +451,14 @@ export class CreateOperationComponent implements OnInit {
     this.formData.controls.operationStatus.setValue(this.operationStatus[0]);
     this.formData.controls.operationStatus.disable();
     this.formData.controls.operationStatus.updateValueAndValidity();
+    this.gobalSelectedSubSectionId = [];
+    this.secondaryListingComponent.clearSecondaryListing();
+    this.secondaryComponent.clearForm();
   }
 
   showAvailableOperators(e: any) {
     e.preventDefault();
-    if(this.formData.controls.operationDate.value)
-    {
+    if (this.formData.controls.operationDate.value) {
       this.showOperatorModal = !this.showOperatorModal;
       const bookingDate =  this.datepipe.transform(this.formData.controls.operationDate.value, 'yyyy-MM-dd');
       this.isDataLoading = true;
@@ -473,8 +467,7 @@ export class CreateOperationComponent implements OnInit {
         this.isDataLoading = false;
         console.log(this.operatorList);
       });
-    }
-    else{
+    } else {
       this.triggerToast('error', 'Message', `Please select date field first`);
     }
   }
@@ -496,8 +489,7 @@ export class CreateOperationComponent implements OnInit {
       });
   }
 
-  converDateToISOString(date: any): string
-  {
+  converDateToISOString(date: any): string {
     date = new Date(date.toString());
     date = new Date(date.toString().slice(0, date.toString().indexOf('GMT')) + 'GMT').toISOString();
     return date;

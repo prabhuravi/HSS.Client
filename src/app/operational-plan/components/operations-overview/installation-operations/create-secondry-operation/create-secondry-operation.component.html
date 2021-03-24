@@ -20,14 +20,20 @@
                             <th>Sections</th>
                             <th colspan="90%">Subsections</th>
                             <tr *ngFor="let row of sections; let i=index;" style="margin-top: 16px">
-
-                                <button *ngIf="!row.selected"
+                                <button *ngIf="!row.selected && isBookedSection(row)" [disabled]="true" style="color: white;"
+                                    class="u--bgDanger kx-btn kx-btn--size-base section">
+                                    <span class="kx-btn__inner">
+                                        <span class="kx-btn__txt">{{row.name}}</span>
+                                    </span>
+                                </button>
+                                <button *ngIf="!row.selected && !isBookedSection(row)"
                                     class="kx-btn kx-btn--skin-secondary kx-btn--size-base section"
                                     (click)="onSectionSelected(row)">
                                     <span class="kx-btn__inner">
                                         <span class="kx-btn__txt">{{row.name}}</span>
                                     </span>
-                                </button>                                
+                                </button>
+
                                 <button *ngIf="row.selected" class="u--bgSuccess kx-btn kx-btn--size-base section"
                                     (click)="onSectionSelected(row)">
                                     <span class="kx-btn__inner">
@@ -35,7 +41,13 @@
                                     </span>
                                 </button>
                                 <td *ngFor="let col of row.subSections; let j=index">
-                                    <button *ngIf="!col.selected"
+                                    <button *ngIf="!col.selected && isBookedSubsection(col)" [disabled]="true" style="color: white;"
+                                    class="u--bgDanger kx-btn kx-btn--size-base  subsection">
+                                    <span class="kx-btn__inner">
+                                        <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
+                                    </span>
+                                </button>
+                                    <button *ngIf="!col.selected && !isBookedSubsection(col)"
                                         class="kx-btn kx-btn--skin-secondary kx-btn--size-base  subsection"
                                         (click)="onSubSectionSelected(row, col)">
                                         <span class="kx-btn__inner">
@@ -48,12 +60,12 @@
                                         <span class="kx-btn__inner">
                                             <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
                                         </span>
-                                    </button>                            
+                                    </button>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    
+
                 </div>
             </div>
             <ng-template pTemplate="footer">
@@ -66,7 +78,7 @@
             style="margin: 21px 0px 0px 0px">
             <div class="kx-col kx-col--7 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
                 <button (click)="onSubmit()" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
-                    [disabled]="secodaryformData.invalid">
+                    [disabled]="secodaryformData.invalid || !isBookingSectionsValid()">
                     <span class="kx-btn__inner">
                         <span *ngIf="!editSecondaryOperation; else elseBlock" class="kx-btn__txt">Add</span>
                         <ng-template #elseBlock>

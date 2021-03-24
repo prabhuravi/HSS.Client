@@ -55,12 +55,12 @@
                             (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
                     </div> -->
                 </div>
-                <div class="kx-card kx-card--skin-default" style="width: 100%;">
-                    <app-create-secondry-operation [sections]="sections" style="width: 100%;
-                margin-left: 25px;" *ngIf="formData.valid" (secondaryUpdated)="updateSecondaryOperationList($event)"
+                <div class="kx-card kx-card--skin-default" style="width: 100%; margin-left: 20px;">
+                    <app-create-secondry-operation [sections]="sections" [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" style="width: 100%;
+                margin-left: 25px;" *ngIf="formData.valid" (secondaryUpdated)="secondaryListing.updateSecondaryOperationList($event)"
                         #createSecondaryOperation>
                     </app-create-secondry-operation>
-                    <app-secondry-operation-listing [sections]="sections" #secondaryListing [secondaryoperations]="secondaryOperationList" style="width: 100%;
+                    <app-secondry-operation-listing [sections]="sections" [gobalSelectedSubSectionId]="gobalSelectedSubSectionId"  #secondaryListing [secondaryoperations]="secondaryOperationList" style="width: 100%;
                     margin-left: 25px;">
                     </app-secondry-operation-listing>
                 </div>

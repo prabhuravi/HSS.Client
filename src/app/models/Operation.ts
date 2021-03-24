@@ -1,4 +1,5 @@
 import { Contact } from "./Contact";
+import { VesselSection } from "./Section";
 
 export class Operation {
     constructor(
@@ -37,7 +38,7 @@ export class SecondaryOperation {
         public Operation:  Operation,
         public OperationType: OperationType,
         public OperationStatus: OperationStatus,
-        public SubsectionIds: number[] = []
+        public VesselSectionModel: VesselSection[] = []
     ) { }
 }
 
