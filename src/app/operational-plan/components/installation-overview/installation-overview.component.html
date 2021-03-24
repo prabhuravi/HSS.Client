@@ -30,7 +30,7 @@
         </th>
       </tr>
       <tr>
-        <th *ngFor="let col of columns">
+        <th *ngFor="let col of columns"  style="overflow:visible">
           <input pInputText type="text"
             *ngIf="col.filterMatchMode && col.filterMatchMode !== '' && col.filterMatchMode === 'contains'"
             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
@@ -54,10 +54,10 @@
           <a href="#" (click)="redirectToOperationsOverview($event, installationList)"> <span
               class="kx-pt--tiny">{{installationList.displayName}} </span> </a>
         </td>
-        <td>{{ installationList.foulingState ? installationList.foulingState.State : 'NA' }}</td>
-        <td>{{ installationList.installationStatus ? installationList.installationStatus.name : 'NA' }}</td>
-        <td> NA </td>
-        <td>NA</td>
+        <td>{{ installationList.foulingState ? installationList.foulingState.State : '' }}</td>
+        <td>{{ installationList.installationStatus ? installationList.installationStatus.name : '' }}</td>
+        <td>  </td>
+        <td>  </td>
         <td>{{ installationList.aisData ? installationList.aisData.destination : ''}}</td>
         <td>
           <div *ngIf="installationList.node && installationList.node.status === 'Down'"

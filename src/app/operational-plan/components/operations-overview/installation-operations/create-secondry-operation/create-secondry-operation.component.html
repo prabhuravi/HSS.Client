@@ -1,0 +1,92 @@
+<div class="kx-row kx-row--gutters"
+    *ngIf="secondaryconfig && secondaryconfig.formList && secondaryconfig.formList.length > 0">
+    <app-load *ngIf="isDataLoading"></app-load>
+
+    <form [formGroup]="secodaryformData" class="kx-row kx-row--gutters"
+        style="width: 100%; margin-top: 21px; margin-bottom: -44px;">
+        <app-dynamic-form
+            class="kx-col kx-col--12 kx-col--12@mob-m kx-col--4@tab-m kx-col--@ltp-s kx-row kx-row--gutters"
+            style="display: contents" [form]="secodaryformData" [isFormSubmitted]="isFormSubmmited"
+            [formValues]="formValues" [config]="secondaryconfig" (formOnchangeEvent)="formOnchangeEvent($event)">
+        </app-dynamic-form>
+        <p-button (click)="showMaximizableDialog()" icon="pi pi-external-link" style="margin-top: 27px;"
+            label="Section & SubSection"></p-button>
+        <p-dialog header="" [(visible)]="displayMaximizable" [modal]="true" [style]="{width: '50vw'}"
+            [maximizable]="true" [baseZIndex]="10000" [draggable]="true" [resizable]="true">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table>
+                            <th>Sections</th>
+                            <th colspan="90%">Subsections</th>
+                            <tr *ngFor="let row of sections; let i=index;" style="margin-top: 16px">
+                                <button *ngIf="!row.selected && isBookedSection(row)" [disabled]="true" style="color: white;"
+                                    class="u--bgDanger kx-btn kx-btn--size-base section">
+                                    <span class="kx-btn__inner">
+                                        <span class="kx-btn__txt">{{row.name}}</span>
+                                    </span>
+                                </button>
+                                <button *ngIf="!row.selected && !isBookedSection(row)"
+                                    class="kx-btn kx-btn--skin-secondary kx-btn--size-base section"
+                                    (click)="onSectionSelected(row)">
+                                    <span class="kx-btn__inner">
+                                        <span class="kx-btn__txt">{{row.name}}</span>
+                                    </span>
+                                </button>
+
+                                <button *ngIf="row.selected" class="u--bgSuccess kx-btn kx-btn--size-base section"
+                                    (click)="onSectionSelected(row)">
+                                    <span class="kx-btn__inner">
+                                        <span class="kx-btn__txt">{{row.name}}</span>
+                                    </span>
+                                </button>
+                                <td *ngFor="let col of row.subSections; let j=index">
+                                    <button *ngIf="!col.selected && isBookedSubsection(col)" [disabled]="true" style="color: white;"
+                                    class="u--bgDanger kx-btn kx-btn--size-base  subsection">
+                                    <span class="kx-btn__inner">
+                                        <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
+                                    </span>
+                                </button>
+                                    <button *ngIf="!col.selected && !isBookedSubsection(col)"
+                                        class="kx-btn kx-btn--skin-secondary kx-btn--size-base  subsection"
+                                        (click)="onSubSectionSelected(row, col)">
+                                        <span class="kx-btn__inner">
+                                            <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
+                                        </span>
+                                    </button>
+                                    <button *ngIf="col.selected"
+                                        class="u--bgSuccess kx-btn kx-btn--size-base subsection"
+                                        (click)="onSubSectionSelected(row, col)">
+                                        <span class="kx-btn__inner">
+                                            <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <ng-template pTemplate="footer">
+                <p-button icon="pi pi-check" (click)="displayMaximizable=false" label="Ok" styleClass="p-button-text">
+                </p-button>
+            </ng-template>
+        </p-dialog>
+
+        <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s"
+            style="margin: 21px 0px 0px 0px">
+            <div class="kx-col kx-col--7 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
+                <button (click)="onSubmit()" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
+                    [disabled]="secodaryformData.invalid || !isBookingSectionsValid()">
+                    <span class="kx-btn__inner">
+                        <span *ngIf="!editSecondaryOperation; else elseBlock" class="kx-btn__txt">Add</span>
+                        <ng-template #elseBlock>
+                            <span class="kx-btn__txt">Save</span>
+                        </ng-template>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
