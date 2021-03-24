@@ -209,7 +209,6 @@ export class CreateOperationComponent implements OnInit {
     this.formData.controls.operationStatus.disable();
     this.formData.controls.operationStatus.updateValueAndValidity();
   }
-
   onOperationEdited(operation: Operation): void {
     console.log(operation);
     this.editOperation = true;
@@ -222,15 +221,13 @@ export class CreateOperationComponent implements OnInit {
       console.log(data);
     });
     this.formData.setValue({
-      operationType: this.operationTypes.find((p) => p.Id === operation.OperationType.Id),
-      operationDate: new Date(),
-      // operationDate:  operation.Date,
+      operationType: this.operationTypes.find(p => p.Id == operation.OperationType.Id),
+      operationDate: moment(operation.Date).toDate(),
       description: operation.Description,
       port: operation.PortLocation,
-      vesselETB: new Date(),
-      // vesselETB: operation.ETB,
-      operationStatus: this.operationStatus.find((p) => p.Id === operation.OperationStatus.Id),
-      requestedBy: this.requestedBy.find((p) => p.Id === operation.RequestedBy.Id)
+      vesselETB: operation.ETB? moment(operation.ETB).toDate(): null,
+      operationStatus: this.operationStatus.find(p => p.Id == operation.OperationStatus.Id),
+      requestedBy: this.requestedBy.find(p => p.Id == operation.RequestedBy.Id),
     });
     this.formData.controls.operationStatus.enable();
     this.formData.controls.operationStatus.updateValueAndValidity();
@@ -317,31 +314,22 @@ export class CreateOperationComponent implements OnInit {
   }
 
   formatResponseForTree() {
-    const treeData: Array<{}> = [];
-    this.sections.forEach((section) => {
-      const childs: Array<{}> = [];
-      const partialSelect = false;
-      section.subSections.forEach((subSection) => {
-        const child = {
-          label: subSection.subSectionNumber,
-          data: subSection.id
+    let treeData: {}[] = [];
+    this.sections.forEach(section => {
+      let childs: {}[] = [];
+      section.subSections.forEach(subSection => {
+        var child = {
+          "label": subSection.subSectionNumber,
+          "data": subSection.id,
         };
         childs.push(child);
-        if (section.id === 29) {
-         this.selectedTreeData.push(child);
-          // partialSelect = true;
-         console.log(this.selectedTreeData);
-        }
       });
-      const parent = {
-        label: section.name,
-        data: section.id,
-        children: childs,
-        partialSelected: partialSelect
+      var parent =
+      {
+        "label": section.name,
+        "data": section.id,
+        "children": childs
       };
-      if (section.id === 29) {
-      this.selectedTreeData.push(parent);
-      }
       treeData.push(parent);
     });
     this.treeData = treeData;
@@ -404,6 +392,7 @@ export class CreateOperationComponent implements OnInit {
         this.gobalSelectedSubSectionId.push(event.node.data);
       } else {
         this.selectedSections.push({ id: event.node.parent.data, name: event.node.parent.label, subSections: [{ id: event.node.data, subSectionNumber: event.node.label }] });
+        this.gobalSelectedSubSectionId.push(event.node.data);
       }
     }
     console.log(this.selectedSections);
@@ -452,9 +441,13 @@ export class CreateOperationComponent implements OnInit {
     this.formData.controls.operationStatus.disable();
     this.formData.controls.operationStatus.updateValueAndValidity();
     this.gobalSelectedSubSectionId = [];
-    this.secondaryListingComponent.clearSecondaryListing();
-    this.secondaryComponent.clearForm();
-  }
+    if(this.secondaryListingComponent){
+      this.secondaryListingComponent.clearSecondaryListing();
+    }
+    if(this.secondaryComponent){
+      this.secondaryComponent.clearForm();
+    }
+ }
 
   showAvailableOperators(e: any) {
     e.preventDefault();

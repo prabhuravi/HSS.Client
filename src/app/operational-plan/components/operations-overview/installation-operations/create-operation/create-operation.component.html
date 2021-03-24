@@ -68,7 +68,7 @@
                     style="margin: 21px 0px 0px 656px;">
                     <div class="kx-col kx-col--7 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
                         <button (click)="onSubmit(secondaryListing)" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
-                            [disabled]="formData.invalid">
+                        [disabled]="(formData.valid && selectedOperator != null && selectedSections.length > 0)? false: true">
                             <span class="kx-btn__inner">
                                 <span *ngIf="!editOperation; else elseBlock" class="kx-btn__txt">Add</span>
                                 <ng-template #elseBlock>
