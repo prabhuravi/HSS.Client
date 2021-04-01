@@ -2,7 +2,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { take } from 'rxjs/operators';
+import { take, timeout } from 'rxjs/operators';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
@@ -25,7 +25,6 @@ export class ListOperationsComponent implements OnInit {
   cols = [
     { field: 'Date', sortfield: '', header: 'Date', filterMatchMode: 'contains' },
     { field: 'Description', sortfield: 'Description', header: 'Description', filterMatchMode: 'contains' },
-    // { field: 'SecondaryOperations', sortfield: '', header: 'SecondaryOperations', filterMatchMode: '' },
     { field: 'Sections', sortfield: 'Sections', header: 'Sections', filterMatchMode: 'contains' },
     { field: 'OperationType.OperationTypeName', sortfield: 'OperationType.OperationTypeName', header: 'Type', filterMatchMode: 'contains' },
     { field: 'BookingStatus', sortfield: 'BookingStatus', header: 'Booking Status', filterMatchMode: 'contains' },
@@ -43,8 +42,14 @@ export class ListOperationsComponent implements OnInit {
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
     console.log('list op VesselId: ' + this.vesselId);
-
     this.loadOperations();
+
+    // this.route.params.subscribe(params => {
+    //   this.vesselId = params['vesselId'];
+    //   console.log(this.vesselId);
+    //   this.loadOperations();
+    // });
+
   }
 
   loadOperations()
@@ -60,16 +65,12 @@ export class ListOperationsComponent implements OnInit {
 
   editOperation(operation: Operation)
   {
-    console.log(operation);
     this.operationEdited.emit(operation);
-    this.showCreateOperation.emit(true);
   }
 
   editSecondaryOperation(secondaryOperation: SecondaryOperation)
   {
-    console.log(secondaryOperation);
     this.secondaryOperationEdited.emit(secondaryOperation);
-    this.showCreateOperation.emit(true);
   }
 
   onOperationUpdated(operation: Operation)
@@ -120,8 +121,8 @@ export class ListOperationsComponent implements OnInit {
   goToCreateOperation()
   {
     this.showCreateOperation.emit(true);
-    this.createOperation.emit(true);
   }
+
   triggerToast(severity: string, summary: string, detail: string): void {
     this.messageService.add(
       {
