@@ -77,7 +77,7 @@ export class CreateOperationComponent implements OnInit {
 
       this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
         this.sections = data;
-        console.log(this.sections);
+        // console.log(this.sections);
         this.formatResponseForTree();
         this.constructForm();
         this.formData = this.formBuliderService.buildForm(this.config);
@@ -199,17 +199,7 @@ export class CreateOperationComponent implements OnInit {
     this.showListOperation.emit(false);
   }
 
-  createOperation(event) {
-    this.editOperation = false;
-    this.formData.reset();
-    this.selectedOperator = null;
-    this.selectedTreeData = null;
-    this.selectedSections = [];
-    this.formData.controls.operationStatus.setValue(this.operationStatus[0]);
-    this.formData.controls.operationStatus.disable();
-    this.formData.controls.operationStatus.updateValueAndValidity();
-  }
-  onOperationEdited(operation: Operation): void {
+  onEditOperation(operation: Operation): void {
     console.log(operation);
     this.editOperation = true;
     this.selectedOperator = null;
@@ -238,7 +228,7 @@ export class CreateOperationComponent implements OnInit {
     // this.selectedTreeData = [{ "label": "Port Forward", "data": 3, "children": [{ "label": 1, "data": 9, "partialSelected": false }, { "label": 2, "data": 11, "partialSelected": false }, { "label": 3, "data": 12, "partialSelected": false }], "partialSelected": false }, { "label": 1, "data": 9, "partialSelected": false }, { "label": 2, "data": 11, "partialSelected": false }, { "label": 3, "data": 12, "partialSelected": false }];
   }
 
-  onSecondaryOperationEdited(secOperation: SecondaryOperation): void {
+  onEditSecondaryOperation(secOperation: SecondaryOperation): void {
     this.editOperation = true;
     this.secondayOperationToEdit = secOperation;
     console.log(this.secondayOperationToEdit);
@@ -276,14 +266,14 @@ export class CreateOperationComponent implements OnInit {
       this.operationalPlanService.updateOperation(this.operationToEdit.Id, operation).pipe(take(1)).subscribe((data) => {
         console.log(data);
         this.triggerToast('success', 'Success Message', `Operation updated successfully`);
-        // this.onFormReset();
+        this.onFormReset();
         this.operationUpdated.emit(operation);
       });
     } else {
       this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
         console.log(data);
         this.triggerToast('success', 'Success Message', `Operation added successfully`);
-        // this.onFormReset();
+        this.onFormReset();
         this.operationUpdated.emit(operation);
       });
     }
@@ -333,7 +323,7 @@ export class CreateOperationComponent implements OnInit {
       treeData.push(parent);
     });
     this.treeData = treeData;
-    console.log(treeData);
+    // console.log(treeData);
     // console.log(JSON.stringify(treeData));
   }
 
@@ -468,9 +458,6 @@ export class CreateOperationComponent implements OnInit {
   changeOperator(operator: Contact) {
     console.log(operator);
     this.selectedOperator = operator;
-  }
-
-  selectOperator() {
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

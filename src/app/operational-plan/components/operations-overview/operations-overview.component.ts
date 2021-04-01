@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {DialogModule} from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { take } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class OperationsOverviewComponent implements OnInit {
   showWhitelist: boolean = false;
   whiteListedCountries: IWhiteListedCountries[] = [];
 
-  constructor(private installationService: InstallationService, private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute,
+  constructor(private installationService: InstallationService, private prepareInstallationService: PrepareInstallationService, private router: Router, private route: ActivatedRoute,
     public connectivityControlService: ConnectivityControlService) { }
 
   ngOnInit() {
@@ -47,19 +47,14 @@ export class OperationsOverviewComponent implements OnInit {
       console.log(this.installationsDetail);
     });
 
-    this.installationService.getInstallationOverview(this.vesselId).pipe(take(1)).subscribe(async (data) => {
-      this.installationOverview = data;
-      console.log(this.installationOverview);
-    });
+    this.getInstallationOverview(this.vesselId);
   }
 
   installationChanged()
   {
-    console.log(this.selectedInstallation);
-    this.installationService.getInstallationOverview(this.selectedInstallation.id).pipe(take(1)).subscribe(async (data) => {
-      this.installationOverview = data;
-      console.log(this.installationOverview);
-    });
+    this.getInstallationOverview(this.selectedInstallation.id);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+    this.router.navigate(['/operational-plan/operations-overview/' + this.selectedInstallation.id]));
   }
 
   viewAISCard(e: any)
@@ -73,9 +68,20 @@ export class OperationsOverviewComponent implements OnInit {
     this.showAISCard = !this.showAISCard;
   }
 
-  showWhitelistDialog() {
-    // this.showWhitelist = !this.showWhitelist;
+  getInstallationOverview(vesselId: number)
+  {
     this.isDataLoading = true;
+    this.installationService.getInstallationOverview(vesselId).pipe(take(1)).subscribe(async (data) => {
+      this.installationOverview = data;
+      this.isDataLoading = false;
+      console.log(this.installationOverview);
+    });
+  }
+
+  showWhitelistDialog() {
+    this.showWhitelist = !this.showWhitelist;
+    this.isDataLoading = true;
+    console.log(this.installationOverview);
     this.connectivityControlService.getWhiteListedCountries(this.installationOverview.id).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       this.whiteListedCountries = data;
