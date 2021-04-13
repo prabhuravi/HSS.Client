@@ -58,6 +58,10 @@ export class CreateOperationComponent implements OnInit {
   subsections: SubSection[] = [];
   selectedSections = [];
   @Output() showListOperation = new EventEmitter<boolean>();
+  operatorNote: string;
+  operatorLogs: IOperatorLog[] = [];
+  showOperatorLog = false;
+  operatorLogLoading = false;
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
     private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
@@ -200,9 +204,21 @@ export class CreateOperationComponent implements OnInit {
     this.showListOperation.emit(false);
   }
 
+  addOperatorLog()
+  {
+    console.log(this.operatorNote);
+    this.operatorLogLoading = true;
+    this.operationalPlanService.addOperatorLog({OperationId: this.operationToEdit.Id, Note: this.operatorNote}).pipe(take(1)).subscribe((data) => {
+      this.operatorLogLoading = false;
+      console.log(data);
+      this.triggerToast('success', 'Success Message', `Note added successfully`);
+    });
+  }
+
   onEditOperation(operation: Operation): void {
     console.log(operation);
     console.log(this.selectedTreeData);
+    this.showOperatorLog = true;
     this.editOperation = true;
     this.selectedOperator = null;
     this.selectedTreeData = [];
@@ -215,6 +231,13 @@ export class CreateOperationComponent implements OnInit {
       this.secondaryOperationsForEdit.forEach(element => {
         this.secondaryListingComponent.updateSecondaryOperationList(element);
       });
+    });
+
+    this.operatorLogLoading = true;
+    this.operationalPlanService.getGetOperatorLogs(operation.Id).pipe(take(1)).subscribe((data) => {
+      this.operatorLogLoading = false;
+      this.operatorLogs = data;
+      console.log(this.operatorLogs);
     });
 
     console.log(this.operationToEdit);

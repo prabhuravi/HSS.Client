@@ -129,6 +129,21 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
 
+  getGetOperatorLogs(operationId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperatorLogs}/${operationId}`
+    };
+    return this.http.getData(requestData);
+  }
+
+  addOperatorLog(data: any): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.AddOperatorLog}`,
+      data: data
+    };
+    return this.http.postData(requestData);
+  }
+
   deleteOperation(id: number): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperation}/${id}`,
