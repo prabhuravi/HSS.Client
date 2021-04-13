@@ -122,6 +122,13 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
 
+  getSecondaryOperations(operationId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetSecondaryOperations}/${operationId}`
+    };
+    return this.http.getData(requestData);
+  }
+
   deleteOperation(id: number): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperation}/${id}`,

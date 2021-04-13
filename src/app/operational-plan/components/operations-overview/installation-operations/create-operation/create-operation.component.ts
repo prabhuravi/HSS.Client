@@ -40,6 +40,7 @@ export class CreateOperationComponent implements OnInit {
   selectedOperator: Contact = null;
   operatorList: Contact[] = [];
   secondaryOperationList: SecondaryOperation[] = [];
+  secondaryOperationsForEdit: SecondaryOperation[] = [];
 
   @Output() operationUpdated: EventEmitter<any> = new EventEmitter<any>();
   @Output() secondaryOperationUpdated: EventEmitter<any> = new EventEmitter<any>();
@@ -53,14 +54,14 @@ export class CreateOperationComponent implements OnInit {
   treeData: TreeNode[] = [];
   selectedTreeData = [];
   sections: VesselSection[] = [];
-  gobalSelectedSubSectionId: number [] = [];
+  gobalSelectedSubSectionId: number[] = [];
   subsections: SubSection[] = [];
   selectedSections = [];
   @Output() showListOperation = new EventEmitter<boolean>();
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
-              private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
-              public fb: FormBuilder, public datepipe: DatePipe) { }
+    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
+    public fb: FormBuilder, public datepipe: DatePipe) { }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
@@ -195,27 +196,52 @@ export class CreateOperationComponent implements OnInit {
   }
 
   goToListOperations() {
-    this.onFormReset();    
+    this.onFormReset();
     this.showListOperation.emit(false);
   }
 
   onEditOperation(operation: Operation): void {
     console.log(operation);
+    console.log(this.selectedTreeData);
     this.editOperation = true;
     this.selectedOperator = null;
-    this.selectedTreeData = null;
+    this.selectedTreeData = [];
     this.selectedSections = [];
     this.operationToEdit = operation;
+
+    this.operationalPlanService.getSecondaryOperations(operation.Id).pipe(take(1)).subscribe((data) => {
+      this.secondaryOperationsForEdit = data;
+      console.log(this.secondaryOperationsForEdit);
+      this.secondaryOperationsForEdit.forEach(element => {
+        this.secondaryListingComponent.updateSecondaryOperationList(element);
+      });
+    });
+
+    console.log(this.operationToEdit);
     this.selectedOperator = this.contactAdapter.adapt(operation.Operator);
     this.operationalPlanService.getOperationSections(operation.Id).pipe(take(1)).subscribe((data) => {
       console.log(data);
+      console.log(this.treeData);
+      this.treeData.forEach(section => {
+        section.children.forEach(subSection => {
+          if (subSection.data == 9) {
+            subSection.partialSelected = false;
+            section.partialSelected = true;
+            subSection.parent = section;
+            // subSection.parent = {data: 3, label: 'Port Forward', parent: undefined, partialSelected: true};
+            this.selectedTreeData.push(subSection);
+            console.log(this.selectedTreeData);
+          }
+        });
+      });
     });
+
     this.formData.setValue({
       operationType: this.operationTypes.find(p => p.Id == operation.OperationType.Id),
       operationDate: moment(operation.Date).toDate(),
       description: operation.Description,
       port: operation.PortLocation,
-      vesselETB: operation.ETB? moment(operation.ETB).toDate(): null,
+      vesselETB: operation.ETB ? moment(operation.ETB).toDate() : null,
       operationStatus: this.operationStatus.find(p => p.Id == operation.OperationStatus.Id),
       requestedBy: this.requestedBy.find(p => p.Id == operation.RequestedBy.Id),
     });
@@ -263,15 +289,19 @@ export class CreateOperationComponent implements OnInit {
     console.log(operation);
     if (this.editOperation) {
       operation.createdBy = this.operationToEdit.CreatedBy;
+      this.isDataLoading = true;
       this.operationalPlanService.updateOperation(this.operationToEdit.Id, operation).pipe(take(1)).subscribe((data) => {
         console.log(data);
+        this.isDataLoading = false;
         this.triggerToast('success', 'Success Message', `Operation updated successfully`);
-        this.onFormReset();
+        // this.onFormReset();
         this.operationUpdated.emit(operation);
       });
     } else {
+      this.isDataLoading = true;
       this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
         console.log(data);
+        this.isDataLoading = false;
         this.triggerToast('success', 'Success Message', `Operation added successfully`);
         this.onFormReset();
         this.operationUpdated.emit(operation);
@@ -356,7 +386,6 @@ export class CreateOperationComponent implements OnInit {
   nodeSelect(event) {
     console.log(this.selectedTreeData);
     // console.log(JSON.stringify(this.selectedTreeData));
-    console.log(event.node);
     if (event.node.parent === undefined) {
       const sectionIndex: number = this.selectedSections.findIndex((p) => p.id === event.node.data);
       if (sectionIndex > -1) {  // if section already exists
@@ -376,7 +405,6 @@ export class CreateOperationComponent implements OnInit {
       }
     } else {  // Sub Section
       const parentSectionIndex: number = this.selectedSections.findIndex((p) => p.id === event.node.parent.data);
-      console.log(parentSectionIndex);
       if (parentSectionIndex > -1) {
         this.selectedSections[parentSectionIndex].subSections.push({ id: event.node.data, subSectionNumber: event.node.label });
         this.gobalSelectedSubSectionId.push(event.node.data);
@@ -385,26 +413,24 @@ export class CreateOperationComponent implements OnInit {
         this.gobalSelectedSubSectionId.push(event.node.data);
       }
     }
-    console.log(this.selectedSections);
+    // console.log(this.selectedSections);
     // this.messageService.add({severity: 'info', summary: 'Node Selected', detail: event.node.label});
   }
 
   nodeUnselect(event) {
     console.log(this.selectedTreeData);
-    console.log(event.node);
     if (event.node.parent === undefined) {
       const sectionIndex: number = this.selectedSections.findIndex((p) => p.id === event.node.data);
       if (sectionIndex > -1) {
-        const sectionSelected =  this.selectedSections[sectionIndex];
+        const sectionSelected = this.selectedSections[sectionIndex];
         sectionSelected.subSections.forEach((sec) => {
-         const index = this.gobalSelectedSubSectionId.findIndex((x) => x === event.node.data);
-         this.gobalSelectedSubSectionId.splice(index, 1);
+          const index = this.gobalSelectedSubSectionId.findIndex((x) => x === event.node.data);
+          this.gobalSelectedSubSectionId.splice(index, 1);
         });
         this.selectedSections.splice(sectionIndex, 1);
       }
     } else {  // remove Sub Section
       const parentSectionIndex: number = this.selectedSections.findIndex((p) => p.id === event.node.parent.data);
-      console.log(parentSectionIndex);
       if (parentSectionIndex > -1) {
         const subSectionIndex: number = this.selectedSections[parentSectionIndex].subSections.findIndex((p) => p.id === event.node.data);
         if (subSectionIndex > -1) {
@@ -417,7 +443,7 @@ export class CreateOperationComponent implements OnInit {
         }
       }
     }
-    console.log(this.selectedSections);
+    // console.log(this.selectedSections);
   }
 
   onFormReset(): void {
@@ -431,19 +457,19 @@ export class CreateOperationComponent implements OnInit {
     this.formData.controls.operationStatus.disable();
     this.formData.controls.operationStatus.updateValueAndValidity();
     this.gobalSelectedSubSectionId = [];
-    if(this.secondaryListingComponent){
+    if (this.secondaryListingComponent) {
       this.secondaryListingComponent.clearSecondaryListing();
     }
-    if(this.secondaryComponent){
+    if (this.secondaryComponent) {
       this.secondaryComponent.clearForm();
     }
- }
+  }
 
   showAvailableOperators(e: any) {
     e.preventDefault();
     if (this.formData.controls.operationDate.value) {
       this.showOperatorModal = !this.showOperatorModal;
-      const bookingDate =  this.datepipe.transform(this.formData.controls.operationDate.value, 'yyyy-MM-dd');
+      const bookingDate = this.datepipe.transform(this.formData.controls.operationDate.value, 'yyyy-MM-dd');
       this.isDataLoading = true;
       this.operatorBookingService.getOperatorForVessel(this.vesselId, bookingDate).pipe(take(1)).subscribe((data) => {
         this.operatorList = data;

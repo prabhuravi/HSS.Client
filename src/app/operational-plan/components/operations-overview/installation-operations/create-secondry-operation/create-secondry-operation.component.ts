@@ -24,7 +24,6 @@ export class CreateSecondryOperationComponent implements OnInit {
   formValues: any = null;
   editSecondaryOperation: boolean = false;
   displayMaximizable: boolean;
-  secondaryOperation: SecondaryOperation;
   isDataLoading = false;
   secondaryconfig = {
     formList: [],
@@ -35,8 +34,8 @@ export class CreateSecondryOperationComponent implements OnInit {
   @Input() gobalSelectedSubSectionId: number[] = [];
   @Output() secondaryUpdated: EventEmitter<any> = new EventEmitter<any>();
   constructor(private formBuliderService: FromBuilderService,
-              private operationalPlanService: OperationalPlanService,
-              public fb: FormBuilder
+    private operationalPlanService: OperationalPlanService,
+    public fb: FormBuilder
 
   ) { }
 
@@ -60,25 +59,18 @@ export class CreateSecondryOperationComponent implements OnInit {
   onSubmit(): void {
     const operatontype = this.secodaryformData.controls.operationType.value;
     const operationStatus = this.secodaryformData.controls.operationStatus.value;
-    this.secondaryOperation = new SecondaryOperation(
-      0,
-      this.operation ? this.operation.Id : 0,
-      operatontype.Id,
-      operationStatus.Id,
-      '',
-      null,
-      operatontype,
-      operationStatus
+    this.secondaryUpdated.emit(
+      new SecondaryOperation(
+        0,
+        this.operation ? this.operation.Id : 0,
+        operatontype.Id,
+        operationStatus.Id,
+        '',
+        null,
+        operatontype,
+        operationStatus
+      )
     );
-    // this.sections.forEach((sections) => {
-    //   const selectedSubsections = sections.subSections.filter((x) => x.selected === true);
-    //   if (selectedSubsections) {
-    //     const ids = selectedSubsections.map(({ id }) => id);
-    //     Array.prototype.push.apply(this.secondaryOperation.SubsectionIds, ids);
-    //   }
-    // });
-
-    this.secondaryUpdated.emit(this.secondaryOperation);
     this.clearForm();
   }
   showMaximizableDialog() {
