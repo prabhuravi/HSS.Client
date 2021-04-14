@@ -11,64 +11,144 @@
             </div>
             <app-load *ngIf="isDataLoading"></app-load>
             <form [formGroup]="formData" class="kx-row kx-row--gutters" style="width: 100%">
-                <app-dynamic-form
-                    class="kx-col kx-col--12 kx-col--12@mob-m kx-col--4@tab-m kx-col--10@ltp-s kx-row kx-row--gutters"
-                    style="display: contents;" [form]="formData" [isFormSubmitted]="isFormSubmmited"
-                    [formValues]="formValues" [config]="config" (formOnchangeEvent)="formOnchangeEvent($event)">
-                </app-dynamic-form>
+                <div class="kx-row kx-row--gutters" style="margin-bottom: -50px;">
+                    <app-dynamic-form
+                        class="kx-col kx-col--12 kx-col--12@mob-m kx-col--4@tab-m kx-col--10@ltp-s kx-row kx-row--gutters"
+                        style="display: contents;" [form]="formData" [isFormSubmitted]="isFormSubmmited"
+                        [formValues]="formValues" [config]="config" (formOnchangeEvent)="formOnchangeEvent($event)">
+                    </app-dynamic-form>
 
-                <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--2@ltp-s" style="margin-left: 1%;">
-                    <label class="kx-label">Operator</label><small *ngIf="!selectedOperator"
-                        class="u--textDanger">*</small>
-                    <i class="kx-icon kx-icon--size-base" title="Select operator">
-                        <a href="#" (click)="showAvailableOperators($event)">
-                            <svg focusable="false">
-                                <use href="./assets/img/icons/sprites/icons.svg#person"></use>
-                            </svg>
-                        </a>
-                    </i>
-                    <div class="kx-mt--tiny">
-                        <input class="kx-field kx-field--size-base" type="text"
-                            value="{{selectedOperator ? selectedOperator.name : '' }}" placeholder="Click person icon"
-                            disabled />
+                    <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--2@ltp-s"
+                        style="margin-left: 1%;">
+                        <label class="kx-label">Operator</label><small *ngIf="!selectedOperator"
+                            class="u--textDanger">*</small>
+                        <i class="kx-icon kx-icon--size-base" title="Select operator">
+                            <a href="#" (click)="showAvailableOperators($event)">
+                                <svg focusable="false">
+                                    <use href="./assets/img/icons/sprites/icons.svg#person"></use>
+                                </svg>
+                            </a>
+                        </i>
+                        <div class="kx-mt--tiny">
+                            <input class="kx-field kx-field--size-base" type="text"
+                                value="{{selectedOperator ? selectedOperator.name : '' }}"
+                                placeholder="Click person icon" disabled />
+                        </div>
                     </div>
-                </div>
 
-                <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--3@ltp-s">
-                    <label class="kx-label">Section & Sub-Section</label><small *ngIf="selectedSections.length == 0"
-                        class="u--textDanger">*</small>
+                    <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--3@ltp-s">
+                        <label class="kx-label">Section & Sub-Section</label><small *ngIf="selectedSections.length == 0"
+                            class="u--textDanger">*</small>
 
-                    <div class="kx-mt--tiny">
-                        <button (click)="op.toggle($event)" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
-                            <span class="kx-btn__inner">
-                                <span class="kx-btn__txt">Select</span>
-                            </span>
-                        </button>
-                        <p-overlayPanel #op [showCloseIcon]="true">
-                            <p-tree [value]="treeData" selectionMode="checkbox" [(selection)]="selectedTreeData"
-                                (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
-                        </p-overlayPanel>
-                    </div>
-                    <!-- <div class="kx-mt--tiny"
+                        <div class="kx-mt--tiny">
+                            <button (click)="op.toggle($event)" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+                                <span class="kx-btn__inner">
+                                    <span class="kx-btn__txt">Select</span>
+                                </span>
+                            </button>
+                            <p-overlayPanel #op [showCloseIcon]="true">
+                                <p-tree [value]="treeData" selectionMode="checkbox" [(selection)]="selectedTreeData"
+                                    (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
+                                </p-tree>
+                            </p-overlayPanel>
+                        </div>
+                        <!-- <div class="kx-mt--tiny"
                         style="border: thin solid #c3c3c4f0; border-radius: 3px; height: 150px;overflow-y: auto;">
                         <p-tree [value]="treeData" selectionMode="checkbox" [(selection)]="selectedTreeData"
                             (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
                     </div> -->
+                    </div>
                 </div>
+
+                <div class="kx-card kx-card--skin-default" style="width: 100%; margin-left: 20px; margin-bottom: 20px;">
+                    <div class="kx-row kx-row--gutters" style="margin-top: -10px; margin-bottom: -14px;">
+                        <div class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
+                            <div class="kx-card kx-card--skin-default"
+                                style="height: 250px; margin-top: 20px;padding: 5px;margin-left: 10px;">
+                               <b>INSTALLATION CONTACT DETAILS</b>
+                            </div>
+                        </div>
+                        <div *ngIf="editOperation" class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
+                            <div class="kx-card kx-card--skin-default"
+                                style="height: 250px; margin-top: 20px;padding: 5px;">
+                               <b>PORT METEO CONDITIONS</b>
+                            </div>
+                        </div>
+
+                        <div *ngIf="editOperation" class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
+                            <div class="kx-card kx-card--skin-default"
+                                style="height: 250px; margin-top: 20px;padding: 5px;margin-right: 10px;">
+                                <b>OPERATOR LOGS</b>
+
+                                <form style="margin-top: 5px; margin-bottom: -15px;">
+                                    <div class="kx-row kx-row--gutters">
+                                        <div class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
+                                            <!-- <label class="kx-label">Note</label><small
+                                                class="u--textDanger">*</small> -->
+                                            <div class="kx-mt--tiny">
+                                                <input class="kx-field kx-field--size-base" type="text"
+                                                    [(ngModel)]="operatorNote" name="operatorNote"
+                                                    placeholder="Enter a note" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                        <div class="kx-col kx-col--6 kx-col--3@tab-m kx-col--6@mob-m">
+                                            <button style="height: 34px; margin-top: 4px;" (click)="addOperatorLog()" [disabled]="!operatorNote"
+                                                class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+                                                <span class="kx-btn__inner">
+                                                    <span class="kx-btn__txt">Save</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <app-load *ngIf="operatorLogLoading"></app-load>
+                                <div *ngIf="operatorLogs.length == 0" class="kx-card kx-card--skin-default kx-p--small">
+                                    No notes added
+                                </div>
+                                <div *ngIf="operatorLogs.length > 0"
+                                    style="border: thin solid #c3c3c4f0; border-radius: 3px; height: 163px;overflow-y: auto;">
+                                    <table
+                                        class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 70%;">Note</th>
+                                                <th style="width: 30%;">Date </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let log of operatorLogs; let i = index;">
+                                                <td style="width: 70%;">{{log.Note}}</td>
+                                                <td style="width: 30%;">{{log.Date | date:'MM/dd/yyyy HH:mm'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="kx-card kx-card--skin-default" style="width: 100%; margin-left: 20px;">
-                    <app-create-secondry-operation [sections]="sections" [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" style="width: 100%;
-                margin-left: 25px;" *ngIf="formData.valid" (secondaryUpdated)="secondaryListing.updateSecondaryOperationList($event)"
+                    <app-create-secondry-operation [sections]="sections"
+                        [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" style="width: 100%;
+                margin-left: 25px;" *ngIf="formData.valid"
+                        (secondaryUpdated)="secondaryListing.updateSecondaryOperationList($event)"
                         #createSecondaryOperation>
                     </app-create-secondry-operation>
-                    <app-secondry-operation-listing [sections]="sections" [gobalSelectedSubSectionId]="gobalSelectedSubSectionId"  #secondaryListing [secondaryoperations]="secondaryOperationList" style="width: 100%;
+                    <app-secondry-operation-listing [sections]="sections"
+                        [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" #secondaryListing
+                        [secondaryoperations]="secondaryOperationList" style="width: 100%;
                     margin-left: 25px;">
                     </app-secondry-operation-listing>
                 </div>
                 <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s"
                     style="margin: 21px 0px 0px 656px;">
                     <div class="kx-col kx-col--7 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
-                        <button (click)="onSubmit(secondaryListing)" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
-                        [disabled]="(formData.valid && selectedOperator != null && selectedSections.length > 0)? false: true">
+                        <button (click)="onSubmit(secondaryListing)"
+                            class="kx-btn kx-btn--skin-primary kx-btn--size-base"
+                            [disabled]="(formData.valid && selectedOperator != null && selectedSections.length > 0)? false: true">
                             <span class="kx-btn__inner">
                                 <span *ngIf="!editOperation; else elseBlock" class="kx-btn__txt">Add</span>
                                 <ng-template #elseBlock>
