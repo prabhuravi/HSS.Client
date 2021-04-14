@@ -60,7 +60,6 @@ export class CreateOperationComponent implements OnInit {
   @Output() showListOperation = new EventEmitter<boolean>();
   operatorNote: string;
   operatorLogs: IOperatorLog[] = [];
-  showOperatorLog = false;
   operatorLogLoading = false;
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
@@ -210,7 +209,8 @@ export class CreateOperationComponent implements OnInit {
     this.operatorLogLoading = true;
     this.operationalPlanService.addOperatorLog({OperationId: this.operationToEdit.Id, Note: this.operatorNote}).pipe(take(1)).subscribe((data) => {
       this.operatorLogLoading = false;
-      console.log(data);
+      this.operatorLogs = data;
+      this.operatorNote = '';
       this.triggerToast('success', 'Success Message', `Note added successfully`);
     });
   }
@@ -218,7 +218,6 @@ export class CreateOperationComponent implements OnInit {
   onEditOperation(operation: Operation): void {
     console.log(operation);
     console.log(this.selectedTreeData);
-    this.showOperatorLog = true;
     this.editOperation = true;
     this.selectedOperator = null;
     this.selectedTreeData = [];

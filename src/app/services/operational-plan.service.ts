@@ -138,7 +138,7 @@ export class OperationalPlanService {
 
   addOperatorLog(data: any): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.AddOperatorLog}`,
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.AddOperatorLog}`,
       data: data
     };
     return this.http.postData(requestData);
