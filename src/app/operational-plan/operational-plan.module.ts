@@ -45,6 +45,7 @@ import { CreateOperationComponent } from './components/operations-overview/insta
 import { ListOperationsComponent } from './components/operations-overview/installation-operations/list-operations/list-operations.component';
 import { CreateSecondryOperationComponent } from './components/operations-overview/installation-operations/create-secondry-operation/create-secondry-operation.component';
 import { SecondryOperationListingComponent } from './components/operations-overview/installation-operations/secondry-operation-listing/secondry-operation-listing.component';
+import { OperatorLogComponent } from './components/operations-overview/installation-operations/operator-log/operator-log.component';
 
 
 
@@ -119,7 +120,8 @@ const routes: Routes = [
     CreateOperationComponent,
     ListOperationsComponent,
     CreateSecondryOperationComponent,
-    SecondryOperationListingComponent],
+    SecondryOperationListingComponent,
+    OperatorLogComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

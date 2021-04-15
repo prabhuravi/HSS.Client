@@ -58,9 +58,9 @@ export class CreateOperationComponent implements OnInit {
   subsections: SubSection[] = [];
   selectedSections = [];
   @Output() showListOperation = new EventEmitter<boolean>();
-  operatorNote: string;
-  operatorLogs: IOperatorLog[] = [];
-  operatorLogLoading = false;
+  // operatorNote: string;
+  // operatorLogs: IOperatorLog[] = [];
+  // operatorLogLoading = false;
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
     private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
@@ -203,17 +203,17 @@ export class CreateOperationComponent implements OnInit {
     this.showListOperation.emit(false);
   }
 
-  addOperatorLog()
-  {
-    console.log(this.operatorNote);
-    this.operatorLogLoading = true;
-    this.operationalPlanService.addOperatorLog({OperationId: this.operationToEdit.Id, Note: this.operatorNote}).pipe(take(1)).subscribe((data) => {
-      this.operatorLogLoading = false;
-      this.operatorLogs = data;
-      this.operatorNote = '';
-      this.triggerToast('success', 'Success Message', `Note added successfully`);
-    });
-  }
+  // addOperatorLog()
+  // {
+  //   console.log(this.operatorNote);
+  //   this.operatorLogLoading = true;
+  //   this.operationalPlanService.addOperatorLog({OperationId: this.operationToEdit.Id, Note: this.operatorNote}).pipe(take(1)).subscribe((data) => {
+  //     this.operatorLogLoading = false;
+  //     this.operatorLogs = data;
+  //     this.operatorNote = '';
+  //     this.triggerToast('success', 'Success Message', `Note added successfully`);
+  //   });
+  // }
 
   onEditOperation(operation: Operation): void {
     console.log(operation);
@@ -232,12 +232,12 @@ export class CreateOperationComponent implements OnInit {
       });
     });
 
-    this.operatorLogLoading = true;
-    this.operationalPlanService.getGetOperatorLogs(operation.Id).pipe(take(1)).subscribe((data) => {
-      this.operatorLogLoading = false;
-      this.operatorLogs = data;
-      console.log(this.operatorLogs);
-    });
+    // this.operatorLogLoading = true;
+    // this.operationalPlanService.getGetOperatorLogs(operation.Id).pipe(take(1)).subscribe((data) => {
+    //   this.operatorLogLoading = false;
+    //   this.operatorLogs = data;
+    //   console.log(this.operatorLogs);
+    // });
 
     console.log(this.operationToEdit);
     this.selectedOperator = this.contactAdapter.adapt(operation.Operator);
