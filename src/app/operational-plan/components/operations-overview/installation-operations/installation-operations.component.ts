@@ -33,7 +33,11 @@ export class InstallationOperationsComponent implements OnInit {
   {
     this.viewCreateOperation = true;
     this.isDataLoading = true;
-    setTimeout(() => {
+    setTimeout(async () => {
+      while(!this.createOperationComponentRef.isFormDataReady)
+      {
+        await new Promise(r => setTimeout(r, 100));
+      }
       this.createOperationComponentRef.onEditOperation(operation);
       this.isDataLoading = false;
     }, 300);
@@ -47,6 +51,10 @@ export class InstallationOperationsComponent implements OnInit {
       this.createOperationComponentRef.onEditSecondaryOperation(secOperation);
       this.isDataLoading = false;
     }, 300);
+  }
+
+  Sleep(ms  ) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   onActivate(componentReference) {

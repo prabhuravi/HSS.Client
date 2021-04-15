@@ -58,9 +58,7 @@ export class CreateOperationComponent implements OnInit {
   subsections: SubSection[] = [];
   selectedSections = [];
   @Output() showListOperation = new EventEmitter<boolean>();
-  // operatorNote: string;
-  // operatorLogs: IOperatorLog[] = [];
-  // operatorLogLoading = false;
+  isFormDataReady = false;
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
     private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
@@ -85,6 +83,7 @@ export class CreateOperationComponent implements OnInit {
         this.formatResponseForTree();
         this.constructForm();
         this.formData = this.formBuliderService.buildForm(this.config);
+        this.isFormDataReady = true;
       });
     });
   }
@@ -203,18 +202,6 @@ export class CreateOperationComponent implements OnInit {
     this.showListOperation.emit(false);
   }
 
-  // addOperatorLog()
-  // {
-  //   console.log(this.operatorNote);
-  //   this.operatorLogLoading = true;
-  //   this.operationalPlanService.addOperatorLog({OperationId: this.operationToEdit.Id, Note: this.operatorNote}).pipe(take(1)).subscribe((data) => {
-  //     this.operatorLogLoading = false;
-  //     this.operatorLogs = data;
-  //     this.operatorNote = '';
-  //     this.triggerToast('success', 'Success Message', `Note added successfully`);
-  //   });
-  // }
-
   onEditOperation(operation: Operation): void {
     console.log(operation);
     console.log(this.selectedTreeData);
@@ -231,13 +218,6 @@ export class CreateOperationComponent implements OnInit {
         this.secondaryListingComponent.updateSecondaryOperationList(element);
       });
     });
-
-    // this.operatorLogLoading = true;
-    // this.operationalPlanService.getGetOperatorLogs(operation.Id).pipe(take(1)).subscribe((data) => {
-    //   this.operatorLogLoading = false;
-    //   this.operatorLogs = data;
-    //   console.log(this.operatorLogs);
-    // });
 
     console.log(this.operationToEdit);
     this.selectedOperator = this.contactAdapter.adapt(operation.Operator);
@@ -258,8 +238,6 @@ export class CreateOperationComponent implements OnInit {
       });
     });
 
-    this.isDataLoading = true;
-    setTimeout(() => {
       this.formData.setValue({
         operationType: this.operationTypes.find(p => p.Id == operation.OperationType.Id),
         operationDate: moment(operation.Date).toDate(),
@@ -271,8 +249,6 @@ export class CreateOperationComponent implements OnInit {
       });
       this.formData.controls.operationStatus.enable();
       this.formData.controls.operationStatus.updateValueAndValidity();
-      this.isDataLoading = false;
-    }, 1000);
 
     // console.log(this.selectedTreeData);
     // this.selectedTreeData = [{ "label": "Port Forward", "data": 3, "children": [{ "label": 1, "data": 9 }, { "label": 2, "data": 11 }, { "label": 3, "data": 12 }] }, { "label": "Port Mid", "data": 4, "children": [{ "label": 1, "data": 10 }] }, { "label": "Port Aft", "data": 5, "children": [{ "label": 1, "data": 13 }] }, { "label": "Startboard Forward", "data": 6, "children": [{ "label": 1, "data": 14 }] }, { "label": "Startboard Mid", "data": 7, "children": [{ "label": 1, "data": 15 }] }, { "label": "Startboard Aft", "data": 8, "children": [] }];
