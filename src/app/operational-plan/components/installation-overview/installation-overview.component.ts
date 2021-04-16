@@ -18,22 +18,23 @@ export class InstallationOverviewComponent implements OnInit {
 
   installationList: Installation[] = [];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
- installationStatus: InstallationStatus[] = [];
- foulingStatus = [];
- currentInstallation: Installation;
- showAISCard: boolean = false;
+  installationStatus: InstallationStatus[] = [];
+  foulingStatus = [];
+  currentInstallation: Installation;
+  showAISCard: boolean = false;
   statuses = [
-    {label: 'Up', value: 'Up'},
-    {label: 'Down', value: 'Down'}
+    { label: 'Up', value: 'Up' },
+    { label: 'Down', value: 'Down' }
   ];
   cols = [];
+  isDataLoading = false;
   constructor(private installationService: InstallationService,
-              private router: Router,
-              private confirmationService: ConfirmationService,
-              private formBuliderService: FromBuilderService) { }
+    private router: Router,
+    private confirmationService: ConfirmationService,
+    private formBuliderService: FromBuilderService) { }
 
   ngOnInit() {
-
+    this.isDataLoading = true;
     this.installationService.getInstallationOverviewData().pipe(take(1)).subscribe(async (data) => {
       console.log(data);
       this.installationList = data[0];
@@ -41,16 +42,18 @@ export class InstallationOverviewComponent implements OnInit {
       this.foulingStatus = data[2];
       console.log(this.installationList);
 
-      this.cols = [ { field: 'displayName', header: 'Name' , sortfield: 'displayName', filterMatchMode: 'contains'  },
-      { field: 'foulingState.State', header: 'Fouling State' ,  sortfield: 'foulingState.State', filterMatchMode: 'equals', options: this.foulingStatus, optionLabel: 'State'},
-      { field: 'installationStatus.name', header: 'Installation Status',  sortfield: 'installationStatus.name', filterMatchMode: 'equals', options: this.installationStatus,  optionLabel: 'name' },
-      { field: 'Status', header: 'Status',  sortfield: 'Status', filterMatchMode: 'contains' },
-      { field: 'Date', header: 'Date' , sortfield: 'Date'},
-      { field: 'aisData.destination', header: 'Port',  sortfield: 'aisData.destination', filterMatchMode: 'contains' },
-      { field: 'node.status', header: 'Connectivity Status', sortfield: 'node.status', filterMatchMode: 'equals', options: this.statuses,  optionLabel: 'value' },
+      this.cols = [{ field: 'displayName', header: 'Name', sortfield: 'displayName', filterMatchMode: 'contains' },
+      { field: 'foulingState.State', header: 'Fouling State', sortfield: 'foulingState.State', filterMatchMode: 'equals', options: this.foulingStatus, optionLabel: 'State' },
+      { field: 'installationStatus.name', header: 'Installation Status', sortfield: 'installationStatus.name', filterMatchMode: 'equals', options: this.installationStatus, optionLabel: 'name' },
+      { field: 'Status', header: 'Status', sortfield: 'Status', filterMatchMode: 'contains' },
+      { field: 'Date', header: 'Date', sortfield: 'Date' },
+      { field: 'aisData.destination', header: 'Port', sortfield: 'aisData.destination', filterMatchMode: 'contains' },
+      { field: 'node.status', header: 'Connectivity Status', sortfield: 'node.status', filterMatchMode: 'equals', options: this.statuses, optionLabel: 'value' },
       { field: 'aisData.eta', header: 'ETA', sortfield: 'aisData.eta' },
       { field: 'CurrentPosition', header: 'Current Position' },
       { field: '', header: '' }];
+
+      this.isDataLoading = false;
     });
   }
 
@@ -64,19 +67,17 @@ export class InstallationOverviewComponent implements OnInit {
     e.preventDefault();
     console.log(installation);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-    this.router.navigate(['/operational-plan/operations-overview/' + installation.id])
-  );
+      this.router.navigate(['/operational-plan/operations-overview/' + installation.id])
+    );
   }
 
-  viewAISCard(e: any, installation: Installation)
-  {
+  viewAISCard(e: any, installation: Installation) {
     e.preventDefault();
-    this. toggleShowAISCard();
+    this.toggleShowAISCard();
     this.currentInstallation = installation;
   }
 
-  toggleShowAISCard()
-  {
+  toggleShowAISCard() {
     this.showAISCard = !this.showAISCard;
   }
 

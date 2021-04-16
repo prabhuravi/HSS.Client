@@ -26,6 +26,7 @@ export class InstallationOperationsComponent implements OnInit {
   }
 
   showCreateOperation(data: boolean): void {
+    console.log(this.viewCreateOperation);
     this.viewCreateOperation = data;
   }
 

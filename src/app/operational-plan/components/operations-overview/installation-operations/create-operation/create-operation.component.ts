@@ -65,6 +65,7 @@ export class CreateOperationComponent implements OnInit {
     public fb: FormBuilder, public datepipe: DatePipe) { }
 
   ngOnInit() {
+    console.log('create operation');
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
     this.isDataLoading = true;
@@ -238,17 +239,17 @@ export class CreateOperationComponent implements OnInit {
       });
     });
 
-      this.formData.setValue({
-        operationType: this.operationTypes.find(p => p.Id == operation.OperationType.Id),
-        operationDate: moment(operation.Date).toDate(),
-        description: operation.Description,
-        port: operation.PortLocation,
-        vesselETB: operation.ETB ? moment(operation.ETB).toDate() : null,
-        operationStatus: this.operationStatus.find(p => p.Id == operation.OperationStatus.Id),
-        requestedBy: this.requestedBy.find(p => p.Id == operation.RequestedBy.Id),
-      });
-      this.formData.controls.operationStatus.enable();
-      this.formData.controls.operationStatus.updateValueAndValidity();
+    this.formData.setValue({
+      operationType: this.operationTypes.find(p => p.Id == operation.OperationType.Id),
+      operationDate: moment(operation.Date).toDate(),
+      description: operation.Description,
+      port: operation.PortLocation,
+      vesselETB: operation.ETB ? moment(operation.ETB).toDate() : null,
+      operationStatus: this.operationStatus.find(p => p.Id == operation.OperationStatus.Id),
+      requestedBy: this.requestedBy.find(p => p.Id == operation.RequestedBy.Id),
+    });
+    this.formData.controls.operationStatus.enable();
+    this.formData.controls.operationStatus.updateValueAndValidity();
 
     // console.log(this.selectedTreeData);
     // this.selectedTreeData = [{ "label": "Port Forward", "data": 3, "children": [{ "label": 1, "data": 9 }, { "label": 2, "data": 11 }, { "label": 3, "data": 12 }] }, { "label": "Port Mid", "data": 4, "children": [{ "label": 1, "data": 10 }] }, { "label": "Port Aft", "data": 5, "children": [{ "label": 1, "data": 13 }] }, { "label": "Startboard Forward", "data": 6, "children": [{ "label": 1, "data": 14 }] }, { "label": "Startboard Mid", "data": 7, "children": [{ "label": 1, "data": 15 }] }, { "label": "Startboard Aft", "data": 8, "children": [] }];
