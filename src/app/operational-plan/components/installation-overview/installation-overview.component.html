@@ -111,7 +111,7 @@
   <div class="modal-body">
     <div class="kx-container kx-p--none">
       <div
-        *ngIf="!currentInstallation && currentInstallation!=null && currentInstallation!=undefined && !currentInstallation.aisData"
+        *ngIf="!currentInstallation || currentInstallation!=null || currentInstallation!=undefined || !currentInstallation.aisData"
         class="kx-card kx-card--skin-default kx-p--small">
         No AIS Information available.
       </div>
