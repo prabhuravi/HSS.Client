@@ -46,16 +46,14 @@ import { ListOperationsComponent } from './components/operations-overview/instal
 import { CreateSecondryOperationComponent } from './components/operations-overview/installation-operations/create-secondry-operation/create-secondry-operation.component';
 import { SecondryOperationListingComponent } from './components/operations-overview/installation-operations/secondry-operation-listing/secondry-operation-listing.component';
 import { OperatorLogComponent } from './components/operations-overview/installation-operations/operator-log/operator-log.component';
-
-
-
+import { OperatorManagerGuard} from '../applications-guard.service';
 
 const routes: Routes = [
   {
     path: '', component: DashboardComponent, children: [
       { path: '', component: InstallationOverviewComponent, pathMatch: 'full' },
       {
-        path: 'prepare-installation', component: PrepareInstallationComponent, children: [
+        path: 'prepare-installation', component: PrepareInstallationComponent, canActivate: [OperatorManagerGuard], children: [
           { path: '', component: CreateInstallationComponent, pathMatch: 'full' },
           { path: 'create-installation/:vesselId', component: CreateInstallationComponent },
           { path: 'trade-route/:vesselId', component: TradeRouteComponent },

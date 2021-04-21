@@ -11,7 +11,7 @@
           <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
             placeholder="Search keyword" />
         </span>
-        <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base"
+        <button *ngIf = "accessPrepareInstallation" class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base"
           (click)="redirectToPrepareInstallation()">
           <span class="kx-btn__inner">
             <span class="kx-btn__txt">Prepare Installation</span>
