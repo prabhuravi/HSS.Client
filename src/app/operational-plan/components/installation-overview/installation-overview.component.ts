@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 import { take } from 'rxjs/operators';
-
-import { AppConstants } from 'src/app/app.constants';
+import { EntitlementsQueryService } from '@kognifai/poseidon-ng-entitlements-query-service';
+import { AppConstants, HSSRole } from 'src/app/app.constants';
 import { Installation, InstallationStatus } from 'src/app/models/Installation';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { InstallationService } from 'src/app/services/installation.service';
@@ -28,8 +28,10 @@ export class InstallationOverviewComponent implements OnInit {
   ];
   cols = [];
   isDataLoading = false;
+  accessPrepareInstallation = false;
   constructor(private installationService: InstallationService,
     private router: Router,
+    private entitlementsQueryService: EntitlementsQueryService,
     private confirmationService: ConfirmationService,
     private formBuliderService: FromBuilderService) { }
 
@@ -55,6 +57,14 @@ export class InstallationOverviewComponent implements OnInit {
 
       this.isDataLoading = false;
     });
+
+    this.entitlementsQueryService.getCurrentUserEntitlements().then((entitlements: any[]) => {
+      console.log(entitlements);
+      if (entitlements.findIndex(x => x.name == HSSRole.OperatorManager) != -1) {
+        this.accessPrepareInstallation = true;
+      }
+    });
+
   }
 
   redirectToPrepareInstallation(): void {
