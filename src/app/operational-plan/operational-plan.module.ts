@@ -45,16 +45,15 @@ import { CreateOperationComponent } from './components/operations-overview/insta
 import { ListOperationsComponent } from './components/operations-overview/installation-operations/list-operations/list-operations.component';
 import { CreateSecondryOperationComponent } from './components/operations-overview/installation-operations/create-secondry-operation/create-secondry-operation.component';
 import { SecondryOperationListingComponent } from './components/operations-overview/installation-operations/secondry-operation-listing/secondry-operation-listing.component';
-
-
-
+import { OperatorLogComponent } from './components/operations-overview/installation-operations/operator-log/operator-log.component';
+import { OperatorManagerGuard} from '../applications-guard.service';
 
 const routes: Routes = [
   {
     path: '', component: DashboardComponent, children: [
       { path: '', component: InstallationOverviewComponent, pathMatch: 'full' },
       {
-        path: 'prepare-installation', component: PrepareInstallationComponent, children: [
+        path: 'prepare-installation', component: PrepareInstallationComponent, canActivate: [OperatorManagerGuard], children: [
           { path: '', component: CreateInstallationComponent, pathMatch: 'full' },
           { path: 'create-installation/:vesselId', component: CreateInstallationComponent },
           { path: 'trade-route/:vesselId', component: TradeRouteComponent },
@@ -119,7 +118,8 @@ const routes: Routes = [
     CreateOperationComponent,
     ListOperationsComponent,
     CreateSecondryOperationComponent,
-    SecondryOperationListingComponent],
+    SecondryOperationListingComponent,
+    OperatorLogComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

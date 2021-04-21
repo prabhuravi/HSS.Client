@@ -1,47 +1,11 @@
-<!-- <div class="kx-row">
-    <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
-    </div>
-    <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
-        <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base"
-            (click)="redirectToCreateOperation()">
-            <span class="kx-btn__inner">
-                <span class="kx-btn__txt">Create Operation</span>
-            </span>
-        </button>
-    </div>
-</div> -->
-
-
 <div class="kx-pt--small">
-    <app-create-operation (showListOperation)="showListOperation($event)" [hidden]="!viewCreateOperation" #createOperation (operationUpdated)="listOperations.onOperationUpdated($event)"
-    (secondaryOperationUpdated)="listOperations.onSecondaryOperationUpdated($event)">
+    <app-load *ngIf="isDataLoading"></app-load>
+    <app-create-operation *ngIf="viewCreateOperation" (showListOperation)="showListOperation($event)"
+        (operationUpdated)="listOperations.onOperationUpdated($event)"
+        (secondaryOperationUpdated)="listOperations.onSecondaryOperationUpdated($event)" #createOperation>
     </app-create-operation>
-    <app-list-operations (showCreateOperation)="showCreateOperation($event)" [hidden]="viewCreateOperation" #listOperations (operationEdited)="createOperation.onOperationEdited($event)"
-    (createOperation)=" createOperation.createOperation($event)" (secondaryOperationEdited) = "createOperation.onSecondaryOperationEdited($event)">
+    <app-list-operations *ngIf="!viewCreateOperation" (showCreateOperation)="showCreateOperation($event)"
+        (operationEdited)="onOperationEdited($event)"
+        (secondaryOperationEdited)="onSecondaryOperationEdited($event)" #listOperations>
     </app-list-operations>
-
-    <!-- <div class="kx-row">
-        <div class="kx-col kx-col--6">
-            <button class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny" (click)="cancel()"
-                style="float: right; margin-right: 10px;">
-                <span class="kx-btn__inner">
-                    <span class="kx-btn__txt">Cancel</span>
-                </span>
-            </button>
-        </div>
-
-        <div class="kx-col kx-col--6" style="float: left;">
-            <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny" (click)="next()">
-                <span class="kx-btn__inner">
-                    <span class="kx-btn__txt">Next</span>
-                </span>
-            </button>
-        </div>
-    </div> -->
 </div>
-
-
-
-<!-- <div style="margin-top: 20px;">
-    <router-outlet (activate)="onActivate($event)"></router-outlet>
-</div> -->

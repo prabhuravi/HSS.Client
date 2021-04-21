@@ -16,10 +16,15 @@ export enum FormType {
     autocomplete,
     button
 }
-// export enum SectionStatus{
-//     Active,
-//     Obsolete
-// }
 export function getInputTypes() {
     return FormType;
+}
+
+export enum HSSRole {
+    OperatorManager = "Operator Manager",
+    SkateOperator = "Skate Operator",
+    ShipMaster = "Ship Master",
+    CrewMate = "Crew Mate",
+    PortAuthority = "Port Authority",
+    PortContact = "Port Contact",
 }

@@ -42,7 +42,9 @@ export class InstallationAISDataAdapter implements IModelAdapter<InstallationAIS
             item.Latitude ? item.Latitude : item.latitude ? item.latitude : '',
             item.longitude ? item.longitude : item.Longitude ? item.Longitude : '',
             item.speed ? item.speed : item.Speed ? item.Speed : '',
-            item.draft ? item.draft : item.Draft ? item.Draft : ''
+            item.draft ? item.draft : item.Draft ? item.Draft : '',
+            item.MessageTimestamp ? item.MessageTimestamp : item.messageTimestamp ? item.messageTimestamp : '',
+            item.Heading ? item.Heading : item.heading ? item.heading : ''
         );
     }
 

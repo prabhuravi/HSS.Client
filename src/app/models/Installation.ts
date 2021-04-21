@@ -53,6 +53,8 @@ export class InstallationAISData {
      public latitude: string,
      public longitude: string,
      public speed: string,
-     public draft: string
+     public draft: string,
+     public messageTimestamp: Date,
+     public heading: string
     ) {}
 }
