@@ -33,6 +33,7 @@ export class SecondryOperationListingComponent implements OnInit {
   selectedVesselSection: VesselSection[] = [];
   @Input() sections: VesselSection[] = [];
   @Input() gobalSelectedSubSectionId: number [] = [];
+  editOperation = false;
 
   constructor(private formBuliderService: FromBuilderService,
               private operationalPlanService: OperationalPlanService,
@@ -160,7 +161,7 @@ export class SecondryOperationListingComponent implements OnInit {
         key: 'operationStatus',
         validators: [Validators.required],
         optionLabel: 'Name',
-        disabled: secondaryOperation.Id <= 0
+        disabled: false
       }
 
     ];
