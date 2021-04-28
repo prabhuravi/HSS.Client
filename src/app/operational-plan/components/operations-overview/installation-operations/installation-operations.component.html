@@ -1,11 +1,8 @@
 <div class="kx-pt--small">
     <app-load *ngIf="isDataLoading"></app-load>
-    <app-create-operation *ngIf="viewCreateOperation" (showListOperation)="showListOperation($event)"
-        (operationUpdated)="listOperations.onOperationUpdated($event)"
-        (secondaryOperationUpdated)="listOperations.onSecondaryOperationUpdated($event)" #createOperation>
+    <app-create-operation *ngIf="viewCreateOperation" (showListOperation)="showListOperation($event)" #createOperation>
     </app-create-operation>
     <app-list-operations *ngIf="!viewCreateOperation" (showCreateOperation)="showCreateOperation($event)"
-        (operationEdited)="onOperationEdited($event)"
-        (secondaryOperationEdited)="onSecondaryOperationEdited($event)" #listOperations>
+        (operationEdited)="onOperationEdited($event)" #listOperations>
     </app-list-operations>
 </div>

@@ -1,62 +1,212 @@
 <div class="kx-card kx-card--skin-default" *ngIf="config && config.formList && config.formList.length > 0">
     <div class="kx-p--tiny kx-p--medium@mob-m">
         <div class="kx-row kx-row--gutters">
-            <div *ngIf="selectedSections.length > 0" style="margin-left: 25px; margin-bottom: 10px;"> <b>Selected
+
+            <!-- <div *ngIf="selectedSections.length > 0" style="margin-left: 25px; margin-bottom: 10px;"> <b>Selected
                     Sections:</b>
                 <span *ngFor="let section of selectedSections; let i = index;">
                     {{section.name}}(<span
                         *ngFor="let subSection of section.subSections; let i = index;">{{subSection.subSectionNumber}}<span
                             *ngIf="i != section.subSections.length - 1">,</span>
                     </span>)<span *ngIf="i != selectedSections.length - 1">,</span></span>
-            </div>
-            <app-load *ngIf="isDataLoading"></app-load>
-            <form [formGroup]="formData" class="kx-row kx-row--gutters" style="width: 100%">
-                <div class="kx-row kx-row--gutters" style="margin-bottom: -50px;">
-                    <app-dynamic-form
-                        class="kx-col kx-col--12 kx-col--12@mob-m kx-col--4@tab-m kx-col--10@ltp-s kx-row kx-row--gutters"
-                        style="display: contents;" [form]="formData" [isFormSubmitted]="isFormSubmmited"
-                        [formValues]="formValues" [config]="config" (formOnchangeEvent)="formOnchangeEvent($event)">
-                    </app-dynamic-form>
+            </div> -->
 
-                    <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--2@ltp-s"
-                        style="margin-left: 1%;">
-                        <label class="kx-label">Operator</label><small *ngIf="!selectedOperator"
-                            class="u--textDanger">*</small>
-                        <i class="kx-icon kx-icon--size-base" title="Select operator">
-                            <a href="#" (click)="showAvailableOperators($event)">
-                                <svg focusable="false">
-                                    <use href="./assets/img/icons/sprites/icons.svg#person"></use>
-                                </svg>
-                            </a>
-                        </i>
-                        <div class="kx-mt--tiny">
-                            <input class="kx-field kx-field--size-base" type="text"
-                                value="{{selectedOperator ? selectedOperator.name : '' }}"
-                                placeholder="Click person icon" disabled />
+            <app-load *ngIf="isDataLoading"></app-load>
+            <form [formGroup]="formsData" class="kx-row kx-row--gutters" style="width: 100%">
+
+                <div formArrayName="formsArray">
+                    <div class="kx-row kx-row--gutters" [formGroupName]="0" style="margin-bottom: -50px;">
+                        <app-dynamic-form
+                            class="kx-col kx-col--12 kx-col--12@mob-m kx-col--4@tab-m kx-col--10@ltp-s kx-row kx-row--gutters"
+                            style="display: contents" [form]="formsArray.controls[0]"
+                            [isFormSubmitted]="isFormSubmmited" [formValues]="form1Values"
+                            [config]="formsArrayConfigs[0]" (formOnchangeEvent)="formOnchangeEvent($event)">
+                        </app-dynamic-form>
+
+                        <!-- section/sub section here -->
+                        <p-button (click)="showMaximizableDialog()" icon="pi pi-external-link" style="margin-top: 27px;"
+                            label="{{editOperation? 'View Sections': 'Select Sections'}}"></p-button>
+
+                        <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--2@ltp-s">
+                            <!-- <label class="kx-label">Section & Sub-Section</label><small
+                                *ngIf="selectedSections.length == 0" class="u--textDanger">*</small> -->
+                            <div class="kx-mt--tiny">
+                                <button (click)="showModalDialog()" style="margin-top: 18px; height: 37px;"
+                                    class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+                                    <span class="kx-btn__inner">
+                                        <span class="kx-btn__txt">Operation Actions</span>
+                                    </span>
+                                </button>
+                                <p-overlayPanel #op [showCloseIcon]="true">
+                                    <div class="kx-listgroup">
+                                        <ul class="kx-list kx-list--item-highlight">
+                                            <li class="kx-list-item u--cursorPointer"
+                                                (click)="addSecondaryOperationToList($event, op)">
+                                                <span class="kx-list-item__text">
+                                                    <span class="kx-list-item__primary-text">Add Secondary
+                                                        Operation</span>
+                                                </span>
+                                            </li>
+                                            <li class="kx-list-item u--cursorPointer">
+                                                <span class="kx-list-item__text">
+                                                    <span class="kx-list-item__primary-text">Action 2</span>
+                                                </span>
+                                            </li>
+                                            <li class="kx-list-item u--cursorPointer">
+                                                <span class="kx-list-item__text">
+                                                    <span class="kx-list-item__primary-text">Action 3</span>
+                                                </span>
+                                            </li>
+                                            <li class="kx-list-item u--cursorPointer">
+                                                <span class="kx-list-item__text">
+                                                    <span class="kx-list-item__primary-text">Action 4</span>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </p-overlayPanel>
+                                <p-dialog #actionDialog [(visible)]="displayModal" [style]="{width: '15vw'}"
+                                    [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+                                    <div class="kx-listgroup">
+                                        <ul class="kx-list kx-list--item-highlight">
+                                            <li class="kx-list-item u--cursorPointer"
+                                                (click)="addSecondaryOperationToList($event, actionDialog)">
+                                                <span class="kx-list-item__text">
+                                                    <span class="kx-list-item__primary-text">Add Secondary
+                                                        Operation</span>
+                                                </span>
+                                            </li>
+                                            <li class="kx-list-item u--cursorPointer">
+                                                <span class="kx-list-item__text">
+                                                    <span class="kx-list-item__primary-text">Action 2</span>
+                                                </span>
+                                            </li>
+                                            <li class="kx-list-item u--cursorPointer">
+                                                <span class="kx-list-item__text">
+                                                    <span class="kx-list-item__primary-text">Action 3</span>
+                                                </span>
+                                            </li>
+                                            <li class="kx-list-item u--cursorPointer">
+                                                <span class="kx-list-item__text">
+                                                    <span class="kx-list-item__primary-text">Action 4</span>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <ng-template pTemplate="footer">
+                                        <p-button icon="pi pi-check" (click)="displayModal=false" label="Ok"
+                                            styleClass="p-button-text"></p-button>
+                                    </ng-template>
+                                </p-dialog>
+                            </div>
                         </div>
+
+                        <p-dialog header="" [(visible)]="displayMaximizable" [modal]="true" [style]="{width: '50vw'}"
+                            [maximizable]="true" [baseZIndex]="10000" [draggable]="true" [resizable]="true">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table>
+                                            <th>Sections</th>
+                                            <th colspan="90%">Subsections</th>
+                                            <tr *ngFor="let row of sections; let i=index;" style="margin-top: 16px">
+                                                <!-- <button *ngIf="!row.selected && isBookedSection(row)" [disabled]="true"
+                                                    style="color: white;"
+                                                    class="u--bgDanger kx-btn kx-btn--size-base section">
+                                                    <span class="kx-btn__inner">
+                                                        <span class="kx-btn__txt">{{row.name}}</span>
+                                                    </span>
+                                                </button> -->
+                                                <button *ngIf="!row.selected"
+                                                    class="kx-btn kx-btn--skin-secondary kx-btn--size-base section"
+                                                    (click)="onSectionSelected(row)">
+                                                    <span class="kx-btn__inner">
+                                                        <span class="kx-btn__txt">{{row.name}}</span>
+                                                    </span>
+                                                </button>
+
+                                                <button *ngIf="row.selected"
+                                                    class="u--bgSuccess kx-btn kx-btn--size-base section"
+                                                    (click)="onSectionSelected(row)">
+                                                    <span class="kx-btn__inner">
+                                                        <span class="kx-btn__txt">{{row.name}}</span>
+                                                    </span>
+                                                </button>
+                                                <td *ngFor="let col of row.subSections; let j=index">
+                                                    <!-- <button *ngIf="!col.selected && isBookedSubsection(col)"
+                                                        [disabled]="true" style="color: white;"
+                                                        class="u--bgDanger kx-btn kx-btn--size-base  subsection">
+                                                        <span class="kx-btn__inner">
+                                                            <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
+                                                        </span>
+                                                    </button> -->
+                                                    <button *ngIf="!col.selected"
+                                                        class="kx-btn kx-btn--skin-secondary kx-btn--size-base  subsection"
+                                                        (click)="onSubSectionSelected(row, col)">
+                                                        <span class="kx-btn__inner">
+                                                            <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
+                                                        </span>
+                                                    </button>
+                                                    <button *ngIf="col.selected"
+                                                        class="u--bgSuccess kx-btn kx-btn--size-base subsection"
+                                                        (click)="onSubSectionSelected(row, col)">
+                                                        <span class="kx-btn__inner">
+                                                            <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
+                                                        </span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <ng-template pTemplate="footer">
+                                <p-button icon="pi pi-check" (click)="displayMaximizable=false" label="Ok"
+                                    styleClass="p-button-text">
+                                </p-button>
+                            </ng-template>
+                        </p-dialog>
                     </div>
 
-                    <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--3@ltp-s">
-                        <label class="kx-label">Section & Sub-Section</label><small *ngIf="selectedSections.length == 0"
-                            class="u--textDanger">*</small>
+                    <div class="kx-row kx-row--gutters">
+                        <!-- <app-create-secondry-operation [sections]="sections"
+                            [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" style="width: 100%;
+                    margin-left: 25px;" (secondaryUpdated)="secondaryListing.updateSecondaryOperationList($event)"
+                            #createSecondaryOperation>
+                        </app-create-secondry-operation> -->
+                        <app-secondry-operation-listing [sections]="sections"
+                            [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" #secondaryListing
+                            [secondaryoperations]="secondaryOperationList" style="width: 100%;
+                        margin-left: 13px;">
+                        </app-secondry-operation-listing>
+                    </div>
 
-                        <div class="kx-mt--tiny">
-                            <button (click)="op.toggle($event)" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
-                                <span class="kx-btn__inner">
-                                    <span class="kx-btn__txt">Select</span>
-                                </span>
-                            </button>
-                            <p-overlayPanel #op [showCloseIcon]="true">
-                                <p-tree [value]="treeData" selectionMode="checkbox" [(selection)]="selectedTreeData"
-                                    (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
-                                </p-tree>
-                            </p-overlayPanel>
+                    <div class="kx-row kx-row--gutters" [formGroupName]="1" style="margin-bottom: -50px;">
+                        <app-dynamic-form
+                            class="kx-col kx-col--12 kx-col--12@mob-m kx-col--4@tab-m kx-col--10@ltp-s kx-row kx-row--gutters"
+                            style="display: contents" [form]="formsArray.controls[1]"
+                            [isFormSubmitted]="isFormSubmmited" [formValues]="form2Values"
+                            [config]="formsArrayConfigs[1]" (formOnchangeEvent)="formOnchangeEvent($event)">
+                        </app-dynamic-form>
+
+                        <div class="kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
+                            <label class="kx-label">Operator</label>
+                            <!-- <small *ngIf="!selectedOperator" class="u--textDanger">*</small> -->
+                            <i class="kx-icon kx-icon--size-base" title="Select operator">
+                                <a href="#" (click)="showAvailableOperators($event)">
+                                    <svg focusable="false">
+                                        <use href="./assets/img/icons/sprites/icons.svg#person"></use>
+                                    </svg>
+                                </a>
+                            </i>
+                            <div class="kx-mt--tiny">
+                                <input class="kx-field kx-field--size-base" type="text"
+                                    value="{{selectedOperator ? selectedOperator.name : '' }}"
+                                    placeholder="Click person icon" disabled />
+                            </div>
                         </div>
-                        <!-- <div class="kx-mt--tiny"
-                        style="border: thin solid #c3c3c4f0; border-radius: 3px; height: 150px;overflow-y: auto;">
-                        <p-tree [value]="treeData" selectionMode="checkbox" [(selection)]="selectedTreeData"
-                            (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
-                    </div> -->
+
                     </div>
                 </div>
 
@@ -74,83 +224,23 @@
                                 <b>PORT METEO CONDITIONS</b>
                             </div>
                         </div>
-
                         <div *ngIf="editOperation" class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
                             <div class="kx-card kx-card--skin-default"
                                 style="height: 250px; margin-top: 20px;padding: 5px;margin-right: 10px;">
                                 <b>OPERATOR LOGS</b>
-
                                 <app-operator-log [operation]="operationToEdit" #operatorLog>
                                 </app-operator-log>
-
-                                <!-- <form style="margin-top: 5px; margin-bottom: -15px;">
-                                    <div class="kx-row kx-row--gutters">
-                                        <div class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
-                                            <div class="kx-mt--tiny">
-                                                <input class="kx-field kx-field--size-base" type="text"
-                                                    [(ngModel)]="operatorNote" name="operatorNote"
-                                                    placeholder="Enter a note" autocomplete="off" />
-                                            </div>
-                                        </div>
-                                        <div class="kx-col kx-col--6 kx-col--3@tab-m kx-col--6@mob-m">
-                                            <button style="height: 34px; margin-top: 4px;" (click)="addOperatorLog()" [disabled]="!operatorNote"
-                                                class="kx-btn kx-btn--skin-primary kx-btn--size-base">
-                                                <span class="kx-btn__inner">
-                                                    <span class="kx-btn__txt">Save</span>
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <app-load *ngIf="operatorLogLoading"></app-load>
-                                <div *ngIf="operatorLogs.length == 0" class="kx-card kx-card--skin-default kx-p--small">
-                                    No notes added
-                                </div>
-                                <div *ngIf="operatorLogs.length > 0"
-                                    style="border: thin solid #c3c3c4f0; border-radius: 3px; height: 163px;overflow-y: auto;">
-                                    <table
-                                        class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 70%;">Note</th>
-                                                <th style="width: 30%;">Date </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let log of operatorLogs; let i = index;">
-                                                <td style="width: 70%;">{{log.Note}}</td>
-                                                <td style="width: 30%;">{{log.Date | date:'MM/dd/yyyy HH:mm'}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div> -->
-
-
-
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="kx-card kx-card--skin-default" style="width: 100%; margin-left: 20px;">
-                    <app-create-secondry-operation [sections]="sections"
-                        [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" style="width: 100%;
-                margin-left: 25px;" *ngIf="formData.valid"
-                        (secondaryUpdated)="secondaryListing.updateSecondaryOperationList($event)"
-                        #createSecondaryOperation>
-                    </app-create-secondry-operation>
-                    <app-secondry-operation-listing [sections]="sections"
-                        [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" #secondaryListing
-                        [secondaryoperations]="secondaryOperationList" style="width: 100%;
-                    margin-left: 25px;">
-                    </app-secondry-operation-listing>
-                </div>
                 <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s"
                     style="margin: 21px 0px 0px 656px;">
                     <div class="kx-col kx-col--7 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
-                        <button (click)="onSubmit(secondaryListing)"
+                        <button (click)="onSubmit()"
                             class="kx-btn kx-btn--skin-primary kx-btn--size-base"
-                            [disabled]="(formData.valid && selectedOperator != null && selectedSections.length > 0)? false: true">
+                            [disabled]="(formsData.valid)? false: true">
                             <span class="kx-btn__inner">
                                 <span *ngIf="!editOperation; else elseBlock" class="kx-btn__txt">Add</span>
                                 <ng-template #elseBlock>
@@ -176,12 +266,9 @@
                 </div>
             </form>
 
-
         </div>
     </div>
 </div>
-
-
 
 <app-modal [displayMe]="showOperatorModal">
     <div class="modal-header">
@@ -222,7 +309,6 @@
                                     <th style="text-align: center;">Installation</th>
                                     <th style="text-align: center;">Status</th>
                                     <th style="text-align: center;">Date</th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -248,7 +334,6 @@
                         </table>
                     </div>
                 </div>
-
                 <div class="kx-row">
                     <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
                         <div class="kx-mt--tiny">
