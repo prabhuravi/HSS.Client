@@ -9,14 +9,14 @@
                     [formValues]="formValues" [config]="secondaryconfigs[pointIndex]">
                 </app-dynamic-form>
                 <p-button (click)="showMaximizableDialog(pointIndex)" icon="pi pi-external-link"
-                    style="margin-top: 27px;" label="Section & SubSection"></p-button>
+                    style="margin-top: 27px;" label="{{editOperation? 'View Sections': 'Select Sections'}}"></p-button>
 
                     <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s"
                     style="margin: 21px 0px 0px 0px">
                     <div class="kx-col kx-col--7 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
-                        <button (click)="deleteSecondary(pointIndex)" style="color: white;" class="u--bgDanger kx-btn kx-btn--size-base">
+                        <button (click)="deleteSecondary(pointIndex)" style="color: white; height: 37px" class="u--bgDanger kx-btn kx-btn--size-base">
                             <span class="kx-btn__inner">
-                                <span class="kx-btn__txt">Delete</span>
+                                <span class="kx-btn__txt">Delete Secondary</span>
                                 
                             </span>
                         </button>
@@ -36,13 +36,13 @@
                         <th colspan="90%">Subsections</th>
                         <tr *ngFor="let row of selectedVesselSection; let i=index;" style="margin-top: 16px">
 
-                            <button *ngIf="!row.selected && isBookedSection(row)" [disabled]="true"
+                            <!-- <button *ngIf="!row.selected && isBookedSection(row)" [disabled]="true"
                                 class="u--bgDanger kx-btn kx-btn--size-base section" style="color: white;">
                                 <span class="kx-btn__inner">
                                     <span class="kx-btn__txt">{{row.name}}</span>
                                 </span>
-                            </button>
-                            <button *ngIf="!row.selected && !isBookedSection(row)"
+                            </button> -->
+                            <button *ngIf="!row.selected"
                                 class="kx-btn kx-btn--skin-secondary kx-btn--size-base section"
                                 (click)="onSectionSelected(row)">
                                 <span class="kx-btn__inner">
@@ -57,13 +57,13 @@
                                 </span>
                             </button>
                             <td *ngFor="let col of row.subSections; let j=index">
-                                <button *ngIf="!col.selected && isBookedSubsection(col)" [disabled]="true"
+                                <!-- <button *ngIf="!col.selected && isBookedSubsection(col)" [disabled]="true"
                                     class="u--bgDanger kx-btn kx-btn--size-base  subsection" style="color: white;">
                                     <span class="kx-btn__inner">
                                         <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
                                     </span>
-                                </button>
-                                <button *ngIf="!col.selected && !isBookedSubsection(col)"
+                                </button> -->
+                                <button *ngIf="!col.selected"
                                     class="kx-btn kx-btn--skin-secondary kx-btn--size-base  subsection"
                                     (click)="onSubSectionSelected(row, col)">
                                     <span class="kx-btn__inner">

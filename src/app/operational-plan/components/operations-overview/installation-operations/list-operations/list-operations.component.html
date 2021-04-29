@@ -54,8 +54,8 @@
                     <td>{{ rowData.Description }}</td>
                     <td>{{ rowData.Sections }}</td>
                     <td>{{ rowData.OperationType?.OperationTypeName}}</td>
-                    <td>{{ rowData.Operator.Availability ?'Availalbe': 'Booked' }}</td>
-                    <td>{{ rowData.Operator.Name }}</td>
+                    <td>{{ rowData.Operator ? (rowData.Operator.Availability ?'Availalbe': 'Booked') : '' }}</td>
+                    <td>{{ rowData.Operator ? rowData.Operator.Name : ''}}</td>
                     <td>{{ rowData.OperationStatus?.Name}}</td>
                     <td>{{ rowData.PortLocation?.PortName}}</td>
                     <td>{{ rowData.ETB | date:'MM/dd/yyyy HH:mm'}}</td>
@@ -139,7 +139,7 @@
                         rowData.OperationStatus?.Name}}
                     </td>
                     <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--1@tab-m kx-col--2@ltp-s">
-                        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit"
+                        <!-- <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit"
                             title="Edit" (click)="editSecondaryOperation(rowData)">
                             <span class="kx-btn__inner">
                                 <i class="kx-icon kx-icon--size-moderate">
@@ -149,7 +149,7 @@
                                 </i>
                                 <span class="kx-btn__txt kx-is-vishidden">Edit</span>
                             </span>
-                        </button> &nbsp;
+                        </button> &nbsp; -->
                         <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete"
                             title="Delete" (click)="deleteSecondaryOperation(rowData)">
                             <span class="kx-btn__inner">

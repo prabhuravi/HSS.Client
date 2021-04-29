@@ -18,7 +18,6 @@ export class ListOperationsComponent implements OnInit {
   @Output() showCreateOperation = new EventEmitter<boolean>();
   @Output() operationEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() createOperation: EventEmitter<any> = new EventEmitter<any>();
-  @Output() secondaryOperationEdited: EventEmitter<any> = new EventEmitter<any>();
   
   operations: Operation[] = [];
 
@@ -66,24 +65,6 @@ export class ListOperationsComponent implements OnInit {
   editOperation(operation: Operation)
   {
     this.operationEdited.emit(operation);
-  }
-
-  editSecondaryOperation(secondaryOperation: SecondaryOperation)
-  {
-    this.secondaryOperationEdited.emit(secondaryOperation);
-  }
-
-  onOperationUpdated(operation: Operation)
-  {
-    console.log(operation); 
-    this.loadOperations();
-    // added for updated operation. Updade grid with updated operation
-  }
-  
-  onSecondaryOperationUpdated(secOperation: SecondaryOperation)
-  {
-    console.log(secOperation); 
-    this.loadOperations();
   }
 
   deleteOperation(operation: Operation)

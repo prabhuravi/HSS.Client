@@ -59,16 +59,6 @@ export class InstallationOperationsComponent implements OnInit {
     }, 300);
   }
 
-  onSecondaryOperationEdited(secOperation: SecondaryOperation)
-  {
-    this.viewCreateOperation = true;
-    this.isDataLoading = true;
-    setTimeout(() => {
-      this.createOperationComponentRef.onEditSecondaryOperation(secOperation);
-      this.isDataLoading = false;
-    }, 300);
-  }
-
   Sleep(ms  ) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
