@@ -146,7 +146,7 @@ export class CreateContactComponent implements OnInit {
 
   onRoleChanged(roleItem: ContactRole) {
     console.log(roleItem);
-    if (roleItem.id === 3) {
+    if (roleItem.name === 'Skate Operator') {
       this.formData.controls.tagTraining.enable();
     } else {
       this.formData.controls.tagTraining.disable();
@@ -172,7 +172,7 @@ export class CreateContactComponent implements OnInit {
     this.formData.controls.alternativePhone.setValue(contactData.alternativePhone);
     this.formData.controls.role.setValue(contactData.ContactType);
     this.formData.controls.tagTraining.setValue(contactData.tagTraining);
-    if (contactData.ContactType.id === 3) {
+    if (contactData.ContactType.name === 'Skate Operator') {
       this.formData.controls.tagTraining.enable();
     } else {
       this.formData.controls.tagTraining.disable();

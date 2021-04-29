@@ -14,7 +14,8 @@ export enum FormType {
     checkbox,
     number,
     autocomplete,
-    button
+    button,
+    phone
 }
 export function getInputTypes() {
     return FormType;

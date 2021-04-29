@@ -47,6 +47,8 @@ import { CreateSecondryOperationComponent } from './components/operations-overvi
 import { SecondryOperationListingComponent } from './components/operations-overview/installation-operations/secondry-operation-listing/secondry-operation-listing.component';
 import { OperatorLogComponent } from './components/operations-overview/installation-operations/operator-log/operator-log.component';
 import { OperatorManagerGuard} from '../applications-guard.service';
+import { ContactSearchComponent } from './components/contact/contact-search/contact-search.component';
+
 
 const routes: Routes = [
   {
@@ -63,7 +65,13 @@ const routes: Routes = [
           { path: 'contacts/:vesselId', component: ContactComponent }
         ]
       },
-
+      {
+        path: 'operations', component: CreateOperationComponent, children: [
+          { path: ':vesselId', component: CreateOperationComponent, pathMatch: 'full' },
+          { path: 'sections/:vesselId', component: ListingSectionComponent },
+          { path: 'fouling-state/:vesselId', component: ListFoulingStateComponent }
+        ]
+      },
       {
         path: 'operations-overview/:vesselId', component: OperationsOverviewComponent, children: [
           { path: '', component: InstallationOperationsComponent, pathMatch: 'full' },
@@ -119,7 +127,8 @@ const routes: Routes = [
     ListOperationsComponent,
     CreateSecondryOperationComponent,
     SecondryOperationListingComponent,
-    OperatorLogComponent],
+    OperatorLogComponent,
+    ContactSearchComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

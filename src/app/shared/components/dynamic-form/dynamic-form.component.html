@@ -74,11 +74,10 @@
         </div>
         <div *ngSwitchCase="inputTypes.checkbox" class="kx-col   kx-col--12">
             <div class="kx-form__element">
-                <label class="kx-selector kx-selector__switch">
+                <label class="kx-ui kx-selector kx-selector__checkbox">
                     <input type="checkbox" [formControlName]="formItem.key" />
                     <div class="kx-selector__indicator"></div>
-                    <!-- <span *ngIf="!form.value[formItem.key]" class="label-text">OFF</span>
-                                <span *ngIf="form.value[formItem.key]" class="label-text">ON</span> -->
+                  
                 </label>
             </div>
         </div>
@@ -87,6 +86,23 @@
                 <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
                     type="number" placeholder="Select {{formItem.label}}" />
             </div>
+        </div>
+        <div *ngSwitchCase="inputTypes.phone" class="kx-col   kx-col--12">
+        <!-- <ngx-intl-tel-input [cssClass]="'custom'"
+				[preferredCountries]="preferredCountries"
+				[enableAutoCountrySelect]="true"
+				[enablePlaceholder]="true"
+				[searchCountryFlag]="true"
+				[searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+				[selectFirstCountry]="false"
+				[selectedCountryISO]="CountryISO.India"
+				[maxLength]="15"
+				[tooltipField]="TooltipLabel.Name"
+				[phoneValidation]="true"
+				[separateDialCode]="separateDialCode"
+				name="phone"
+				formControlName="phone">
+			</ngx-intl-tel-input> -->
         </div>
         <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col   kx-col--12">
             <div class="kx-mt--tiny">

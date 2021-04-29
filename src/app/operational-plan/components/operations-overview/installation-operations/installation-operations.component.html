@@ -1,9 +1,15 @@
 <div class="kx-pt--small">
     <app-load *ngIf="isDataLoading"></app-load>
-    <app-create-operation *ngIf="viewCreateOperation" (showListOperation)="showListOperation($event)"
+    <div *ngIf="viewCreateOperation">
+        <app-navigation-tab [routeList]=operationsRoutes></app-navigation-tab>
+        <div class="kx-pt--small@mob-m kx-pt--tiny">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <!-- <app-create-operation *ngIf="viewCreateOperation" (showListOperation)="showListOperation($event)"
         (operationUpdated)="listOperations.onOperationUpdated($event)"
         (secondaryOperationUpdated)="listOperations.onSecondaryOperationUpdated($event)" #createOperation>
-    </app-create-operation>
+    </app-create-operation> -->
     <app-list-operations *ngIf="!viewCreateOperation" (showCreateOperation)="showCreateOperation($event)"
         (operationEdited)="onOperationEdited($event)"
         (secondaryOperationEdited)="onSecondaryOperationEdited($event)" #listOperations>

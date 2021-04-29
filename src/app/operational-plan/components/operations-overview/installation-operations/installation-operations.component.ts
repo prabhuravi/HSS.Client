@@ -13,6 +13,21 @@ export class InstallationOperationsComponent implements OnInit {
   viewCreateOperation = false;
   isDataLoading = false;
   @ViewChild(CreateOperationComponent, { static: false }) createOperationComponentRef: CreateOperationComponent;
+  operationsRoutes: IRouteList[] = [
+    {
+      label: 'Operation',
+      route: '/operational-plan/operations/' + this.vesselId
+    },
+    {
+      label: 'Sections',
+      route: '/operational-plan/operations/sections/' + this.vesselId
+    },
+    {
+      label: 'Fouling State',
+      route: '/operational-plan/operations/fouling-state/' + this.vesselId
+    }
+  ];
+
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
