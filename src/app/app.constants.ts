@@ -20,11 +20,20 @@ export function getInputTypes() {
     return FormType;
 }
 
-export enum HSSRole {
+export enum HSSRoleEnum {
     OperatorManager = "Operator Manager",
     SkateOperator = "Skate Operator",
     ShipMaster = "Ship Master",
     CrewMate = "Crew Mate",
     PortAuthority = "Port Authority",
     PortContact = "Port Contact",
+}
+
+export enum OperationStatusEnum {
+    Requested = "Requested",
+    Pending = "Pending",
+    Confirmed = "Confirmed",
+    Running = "Running",
+    Completed = "Completed",
+    Aborted = "Aborted",
 }

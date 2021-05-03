@@ -2,7 +2,7 @@
     <form [formGroup]="secodaryformData">
         <div formArrayName="secondaryItems">
             <div class="kx-row kx-row--gutters" *ngFor="let item of secondaryItems.controls; let pointIndex=index"
-                [formGroupName]="pointIndex" style="width: 100%; margin-top: 21px; margin-bottom: -44px;">
+                [formGroupName]="pointIndex" style="width: 100%; margin-top: 5px; margin-bottom: -44px;">
                 <app-dynamic-form
                     class="kx-col kx-col--12 kx-col--12@mob-m kx-col--4@tab-m kx-col--@ltp-s kx-row kx-row--gutters"
                     style="display: contents" [form]="item" [isFormSubmitted]="isFormSubmmited"
