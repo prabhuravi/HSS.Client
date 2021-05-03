@@ -28,6 +28,14 @@ export class InstallationOperationsComponent implements OnInit {
   showCreateOperation(data: boolean): void {
     console.log(this.viewCreateOperation);
     this.viewCreateOperation = data;
+    this.isDataLoading = true;
+    setTimeout(async () => {
+      while(!this.createOperationComponentRef.isFormDataReady)
+      {
+        await new Promise(r => setTimeout(r, 100));
+      }
+      this.isDataLoading = false;
+    }, 300);
   }
 
   onOperationEdited(operation: Operation)
