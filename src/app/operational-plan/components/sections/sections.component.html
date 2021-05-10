@@ -1,27 +1,25 @@
-
 <div class="kx-pt--small">
-  <app-create-section  [hidden]="listingSection.subSectionFlag" #createSection [vesselSection]= "vesselSection" (sectionUpdated)="listingSection.onSectionDataUpdated($event)"></app-create-section>
-  <app-create-sub-section [hidden]="!listingSection.subSectionFlag"  #createSubSection (subSectionUpdated)="listingSection.onSubSectionDataUpdated($event)" (subSectionCancelled)="listingSection.onSubSectionCancelled()"></app-create-sub-section>
-  <app-listing-section #listingSection (sectionOnEdit)="createSection.sectionEditInit($event)" (subSectionOnEdit)="createSubSection.subSectionEditInit($event)" (subSectionOnAdd)="createSubSection.onNewSubSectionInit($event)" [vesselSection]= "vesselSection" [vesselSections]= "vesselSectionList"></app-listing-section>
-  
-  <div class="kx-row">
-    <div class="kx-col kx-col--6">
-        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny" (click)="cancel()"
-            style="float: right; margin-right: 10px;">
-            <span class="kx-btn__inner">
-                <span class="kx-btn__txt">Cancel</span>
-            </span>
-        </button>
+    <!-- <app-create-section  [hidden]="listingSection.subSectionFlag" #createSection [vesselSection]= "vesselSection" (sectionUpdated)="listingSection.onSectionDataUpdated($event)"></app-create-section>
+  <app-create-sub-section [hidden]="!listingSection.subSectionFlag"  #createSubSection (subSectionUpdated)="listingSection.onSubSectionDataUpdated($event)" (subSectionCancelled)="listingSection.onSubSectionCancelled()"></app-create-sub-section> -->
+    <!-- <app-listing-section #listingSection (sectionOnEdit)="createSection.sectionEditInit($event)" (subSectionOnEdit)="createSubSection.subSectionEditInit($event)" (subSectionOnAdd)="createSubSection.onNewSubSectionInit($event)" [vesselSection]= "vesselSection" [vesselSections]= "vesselSectionList"></app-listing-section> -->
+    <app-manage-section></app-manage-section>
+    <div class="kx-row">
+        <div class="kx-col kx-col--6">
+            <button class="kx-btn kx-btn--skin-secondary kx-btn--size-base kx-mt--tiny" (click)="cancel()"
+                style="float: right; margin-right: 10px;">
+                <span class="kx-btn__inner">
+                    <span class="kx-btn__txt">Cancel</span>
+                </span>
+            </button>
+        </div>
+
+        <div class="kx-col kx-col--6" style="float: left;">
+            <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny" (click)="next()">
+                <span class="kx-btn__inner">
+                    <span class="kx-btn__txt">Next</span>
+                </span>
+            </button>
+        </div>
     </div>
 
-    <div class="kx-col kx-col--6" style="float: left;">
-        <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny" (click)="next()">
-            <span class="kx-btn__inner">
-                <span class="kx-btn__txt">Next</span>
-            </span>
-        </button>
-    </div>
 </div>
-
-</div>
-
