@@ -25,14 +25,15 @@
 
                         <!-- section/sub section here -->
                         <p-button (click)="showMaximizableDialog()" icon="pi pi-external-link" style="margin-top: 27px;"
-                        [disabled]="disableForm" [ngClass]="disableForm ? 'disablePointerEvents' : 'none'" label="{{editOperation? 'View Sections': 'Select Sections'}}"></p-button>
+                            [disabled]="disableForm" [ngClass]="disableForm ? 'disablePointerEvents' : 'none'"
+                            label="{{editOperation? 'View Sections': 'Select Sections'}}"></p-button>
 
                         <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--2@ltp-s">
                             <!-- <label class="kx-label">Section & Sub-Section</label><small
                                 *ngIf="selectedSections.length == 0" class="u--textDanger">*</small> -->
                             <div class="kx-mt--tiny">
                                 <button (click)="showModalDialog()" style="margin-top: 18px; height: 37px;"
-                                 class="kx-btn kx-btn--skin-primary kx-btn--size-base" [disabled]="disableForm">
+                                    class="kx-btn kx-btn--skin-primary kx-btn--size-base">
                                     <span class="kx-btn__inner">
                                         <span class="kx-btn__txt">Operation Actions</span>
                                     </span>
@@ -176,8 +177,7 @@
                             #createSecondaryOperation>
                         </app-create-secondry-operation> -->
                         <app-secondry-operation-listing [sections]="sections"
-                            [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" #secondaryListing
-                            [secondaryoperations]="secondaryOperationList" style="width: 100%;
+                            [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" #secondaryListing style="width: 100%;
                         margin-left: 13px;">
                         </app-secondry-operation-listing>
                     </div>
@@ -193,7 +193,8 @@
                         <div class="kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
                             <label class="kx-label">Operator</label>
                             <!-- <small *ngIf="!selectedOperator" class="u--textDanger">*</small> -->
-                            <i class="kx-icon kx-icon--size-base" disabled="disableForm" [ngClass]="disableForm ? 'disablePointerEvents' : 'none'" title="Select operator">
+                            <i class="kx-icon kx-icon--size-base" disabled="disableForm"
+                                [ngClass]="disableForm ? 'disablePointerEvents' : 'none'" title="Select operator">
                                 <a href="#" (click)="showAvailableOperators($event)">
                                     <svg focusable="false">
                                         <use href="./assets/img/icons/sprites/icons.svg#person"></use>
@@ -238,9 +239,8 @@
                 <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s"
                     style="margin: 21px 0px 0px 656px;">
                     <div class="kx-col kx-col--7 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
-                        <button (click)="onSubmit()"
-                            class="kx-btn kx-btn--skin-primary kx-btn--size-base"
-                            [disabled]="!formsData.valid || disableForm">
+                        <button (click)="onSubmit()" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
+                            [disabled]="!formsData.valid">
                             <span class="kx-btn__inner">
                                 <span *ngIf="!editOperation; else elseBlock" class="kx-btn__txt">Add</span>
                                 <ng-template #elseBlock>
@@ -248,9 +248,19 @@
                                 </ng-template>
                             </span>
                         </button>
+                        <!-- <button (click)="onSubmit()" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
+                            [disabled]="!formsData.valid || disableForm">
+                            <span class="kx-btn__inner">
+                                <span *ngIf="!editOperation; else elseBlock" class="kx-btn__txt">Add</span>
+                                <ng-template #elseBlock>
+                                    <span class="kx-btn__txt">Save</span>
+                                </ng-template>
+                            </span>
+                        </button> -->
                     </div>
                     <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
-                        <button [disabled]="disableForm" class="kx-btn kx-btn--skin-secondary kx-btn--size-base" (click)="onFormReset()">
+                        <button [disabled]="disableForm" class="kx-btn kx-btn--skin-secondary kx-btn--size-base"
+                            (click)="onFormReset()">
                             <span class="kx-btn__inner">
                                 <span class="kx-btn__txt">Clear</span>
                             </span>

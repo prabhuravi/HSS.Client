@@ -8,8 +8,8 @@
                     style="display: contents" [form]="item" [isFormSubmitted]="isFormSubmmited"
                     [formValues]="formValues" [config]="secondaryconfigs[pointIndex]">
                 </app-dynamic-form>
-                <p-button (click)="showMaximizableDialog(pointIndex)" icon="pi pi-external-link"
-                    style="margin-top: 27px;" label="{{editOperation? 'View Sections': 'Select Sections'}}"></p-button>
+                <p-button (click)="showMaximizableDialog(pointIndex)" icon="pi pi-external-link" 
+                    style="margin-top: 27px;" [disabled]="disableForms[pointIndex]" [ngClass]="disableForms[pointIndex] ? 'disablePointerEvents' : 'none'" label="{{editOperation? 'View Sections': 'Select Sections'}}"></p-button>
 
                     <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s"
                     style="margin: 21px 0px 0px 0px">

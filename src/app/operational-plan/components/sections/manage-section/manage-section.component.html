@@ -93,9 +93,9 @@
                     <form style="display: flex; align-items: center;">
                         <input class="kx-field--size-base" style="height: 25px; min-width: 130px; width: 50%; margin-right: 5px;"
                             type="number" oninput="validity.valid || (value='');" min="1" name="subSectionNumbers[ri]"
-                            [(ngModel)]="subSectionNumbers[ri]" placeholder="Sub-section name" #subSectionNumber />
+                            [(ngModel)]="subSectionNumbers[ri]" placeholder="Add sub-section" #subSectionNumber />
                         <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
-                            aria-label="Add Sub-section" title="Add Sub-section"
+                            aria-label="Add sub-section" title="Add Sub-section"
                             (click)="addSubSection(subSectionNumber.value, rowData, ri)"
                             [disabled]="!subSectionNumbers[ri]">
                             <span class="kx-btn__inner">
@@ -123,15 +123,15 @@
                 </p-cellEditor>
             </td>
             <td>
-                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" style="margin-right: 5px;" aria-label="Edit section"
-                    title="Edit section" (click)="onSectionRowEdit(rowData)">
+                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" style="margin-right: 5px;" aria-label="Edit section name"
+                    title="Edit section name" (click)="onSectionRowEdit(rowData)">
                     <span class="kx-btn__inner">
                         <i class="kx-icon kx-icon--size-moderate">
                             <svg focusable="true">
                                 <use href="./assets/img/icons/sprites/icons.svg#pencil"></use>
                             </svg>
                         </i>
-                        <span class="kx-btn__txt kx-is-vishidden">Edit section</span>
+                        <span class="kx-btn__txt kx-is-vishidden">Edit section name</span>
                     </span>
                 </button>
                 <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete section"
@@ -152,14 +152,14 @@
         <tr>
             <td [attr.colspan]="5">
                 <div class="kx-table--outer-border"
-                    [ngStyle]="rowData.subSections.length > 0 ? {'padding-left': '27.4%'} : ''">
+                    [ngStyle]="rowData.subSections.length > 0 ? {'padding-left': '28%'} : ''">
                     <app-no-data [displayme]="rowData.subSections && rowData.subSections.length === 0"></app-no-data>
                     <p-table *ngIf="rowData.subSections.length > 0" [value]="rowData.subSections"
                         (onEditComplete)="onEditSaveSubSection($event)" tableStyleClass="kx-table" autoLayout="true">
                         <ng-template pTemplate="body" let-rowData>
         <tr class="kx-row">
             <td pEditableColumn [pEditableColumn]="rowData"
-                class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--1@ltp-s" style="margin-right: 26.5%;">
+                class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--1@ltp-s" style="margin-right: 26.9%;">
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <input pInputText type="number" min="1" oninput="validity.valid || (value='');"
@@ -171,7 +171,7 @@
                 </p-cellEditor>
             </td>
             <td pEditableColumn [pEditableColumn]="rowData"
-                class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--1@ltp-s" style="margin-right: 5.3%;">
+                class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--1@ltp-s" style="margin-right: 6.2%;">
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <p-dropdown [options]="sectionStatus" [(ngModel)]="rowData.sectionStatus"
