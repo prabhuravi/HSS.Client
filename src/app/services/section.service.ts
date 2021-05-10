@@ -136,4 +136,13 @@ export class SectionService {
     };
     return this.http.deleteData(requestData);
   }
+
+  addVesselSection(data: any): Observable<boolean> {
+    const requestData = {
+      endPoint:
+        `${this.operationalPlanConfig.domainURL}${this.sectionconfig.path}${this.sectionconfig.endpoints.AddVesselSection}`,
+      data: data
+    };
+    return this.http.postData(requestData);
+  }
 }
