@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, FormControl  } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { take } from 'rxjs/operators';
-import { FormType } from 'src/app/app.constants';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { FormType, OperationStatusEnum } from 'src/app/app.constants';
 import { SecondaryOperation } from 'src/app/models/Operation';
 import { SubSection, VesselSection } from 'src/app/models/Section';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
@@ -13,9 +14,7 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
   styleUrls: ['./secondry-operation-listing.component.scss']
 })
 export class SecondryOperationListingComponent implements OnInit {
-
-  @Input() secondaryoperations: SecondaryOperation[] = [];
-
+  secondaryoperations: SecondaryOperation[] = [];
   secodaryformData = this.fb.group({
     title: [],
     secondaryItems: this.fb.array([])
@@ -32,12 +31,15 @@ export class SecondryOperationListingComponent implements OnInit {
   secondaryconfigs: any[] = [];
   selectedVesselSection: VesselSection[] = [];
   @Input() sections: VesselSection[] = [];
-  @Input() gobalSelectedSubSectionId: number [] = [];
+  @Input() gobalSelectedSubSectionId: number[] = [];
   editOperation = false;
+  disableForms = new Array<boolean>(100).fill(false);
 
   constructor(private formBuliderService: FromBuilderService,
-              private operationalPlanService: OperationalPlanService,
-              public fb: FormBuilder
+    private operationalPlanService: OperationalPlanService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    public fb: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -46,12 +48,10 @@ export class SecondryOperationListingComponent implements OnInit {
       this.isDataLoading = false;
       this.operationTypes = data[0];
       this.operationStatus = data[1];
-
       this.secodaryformData = this.fb.group({
         title: [],
         secondaryItems: this.fb.array([])
       });
-
       this.secondaryoperations.forEach((element) => {
         this.attachToSecondaryList(element);
       });
@@ -63,26 +63,22 @@ export class SecondryOperationListingComponent implements OnInit {
   }
 
   get updatedSecondaryOperations() {
-
     this.secondaryItems.controls.forEach((element, index) => {
-      console.log(element);
       const ele = element as any;
       this.secondaryoperations[index].StatusId = ele.controls.operationStatus.value.Id;
-      this.secondaryoperations[index].OperationStatus =  ele.controls.operationStatus.value;
-      this.secondaryoperations[index].OperationTypeId =  ele.controls.operationType.value.Id;
-      this.secondaryoperations[index].OperationType =  ele.controls.operationType.value;
-      const vesselSection =   this.secondaryVesselSections[index] as VesselSection[];
+      this.secondaryoperations[index].OperationStatus = ele.controls.operationStatus.value;
+      this.secondaryoperations[index].OperationTypeId = ele.controls.operationType.value.Id;
+      this.secondaryoperations[index].OperationType = ele.controls.operationType.value;
+      const vesselSection = this.secondaryVesselSections[index] as VesselSection[];
       const vesselSectionArray = [];
       vesselSection.forEach((sections) => {
-       const selectedSubsections =    sections.subSections.filter((x) => x.selected === true);
-       if (selectedSubsections.length > 0) {
-         const section = JSON.parse(JSON.stringify(sections));
-         section.subSections = selectedSubsections;
-       // const ids = selectedSubsections.map(({ id }) => id);
-         vesselSectionArray.push(section);
-         this.secondaryoperations[index].VesselSectionModel = vesselSectionArray;
-         //Array.prototype.push.apply(this.secondaryoperations[index].VesselSectionModel, section);
-      }
+        const selectedSubsections = sections.subSections.filter((x) => x.selected === true);
+        if (selectedSubsections.length > 0) {
+          const section = JSON.parse(JSON.stringify(sections));
+          section.subSections = selectedSubsections;
+          vesselSectionArray.push(section);
+          this.secondaryoperations[index].VesselSectionModel = vesselSectionArray;
+        }
       });
     });
     return this.secondaryoperations;
@@ -94,11 +90,26 @@ export class SecondryOperationListingComponent implements OnInit {
       className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
     };
     this.constructForm(secondaryconfig, element);
-    this.secondaryItems.push(this.formBuliderService.buildForm(secondaryconfig));
+    let formGroup = this.formBuliderService.buildForm(secondaryconfig);
+    this.secondaryItems.push(formGroup);
+    if (element.Id != 0) // Editing secondary operation
+    {
+      let index = this.secondaryoperations.findIndex(p => p.Id == element.Id);
+      if (element.OperationStatus.Name == OperationStatusEnum.Completed || element.OperationStatus.Name == OperationStatusEnum.Aborted) {
+        formGroup.disable();
+        formGroup.updateValueAndValidity();
+        this.disableForms[index] = true;
+      }
+      if (element.OperationStatus.Name == OperationStatusEnum.Running) {
+        formGroup.controls.operationType.disable();
+        formGroup.controls.operationType.updateValueAndValidity();
+      }
+    }
+
     this.secondaryconfigs.push(secondaryconfig);
     this.sections.forEach((sec) => {
       sec.subSections.forEach((sub) => {
-        if (sub.selected){
+        if (sub.selected) {
           this.gobalSelectedSubSectionId.push(sub.id);
         }
       });
@@ -110,25 +121,38 @@ export class SecondryOperationListingComponent implements OnInit {
     this.secondaryoperations.push(event);
     this.attachToSecondaryList(event);
   }
-  deleteSecondary(index: number){
-    this.secondaryoperations.splice(index, 1);
-    this.secondaryItems.removeAt(index);
-    this.secondaryconfigs.splice(index, 1);
-    const sectionForSecondary = this.secondaryVesselSections[index];
-    sectionForSecondary.forEach((sec) => {
-      sec.subSections.forEach((sub) => {
-        if (sub.selected){
-         const globalIndex = this.gobalSelectedSubSectionId.findIndex((x) => x === sub.id);
-         this.gobalSelectedSubSectionId.splice(globalIndex, 1);
+
+  deleteSecondary(index: number) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the secondary operation?',
+      accept: () => {
+        if (this.secondaryoperations[index].OperationStatus.Name == OperationStatusEnum.Requested || this.secondaryoperations[index].OperationStatus.Name == OperationStatusEnum.Pending) {
+          this.secondaryoperations.splice(index, 1);
+          this.secondaryItems.removeAt(index);
+          this.secondaryconfigs.splice(index, 1);
+          const sectionForSecondary = this.secondaryVesselSections[index];
+          sectionForSecondary.forEach((sec) => {
+            sec.subSections.forEach((sub) => {
+              if (sub.selected) {
+                const globalIndex = this.gobalSelectedSubSectionId.findIndex((x) => x === sub.id);
+                this.gobalSelectedSubSectionId.splice(globalIndex, 1);
+              }
+            });
+          });
+          this.triggerToast('success', 'Success Message', `Secondary operation deleted successfully`);
         }
-      });
+        else {
+          this.triggerToast('error', 'Message', `You can delete secondary operation only when status is Requested or Pending`);
+        }
+      }
     });
   }
-  clearSecondaryListing(){
+
+  clearSecondaryListing() {
     this.secondaryoperations = [];
     this.secondaryItems.clear();
     this.secondaryconfigs = [];
-    this.secondaryVesselSections = [];    
+    this.secondaryVesselSections = [];
   }
 
   constructForm(config: any, secondaryOperation: SecondaryOperation): void {
@@ -167,70 +191,75 @@ export class SecondryOperationListingComponent implements OnInit {
     ];
   }
 
-
-
   showMaximizableDialog(index: number) {
     this.displayMaximizable = true;
     this.selectedVesselSection = this.secondaryVesselSections[index];
 
-}
-onSectionSelected(section: VesselSection) {
-  if (section.selected)  {
-    section.selected = false;
-    section.subSections.forEach((subSection) => {
-      subSection.selected = false;
-    });
-  } else {
-    section.selected = true;
-    section.subSections.forEach((subSection) => {
-      subSection.selected = true;
-    });
   }
-}
-
-onSubSectionSelected(rowsection: VesselSection, rowsubSection: SubSection) {
- if (rowsubSection.selected) {
-  rowsubSection.selected = false;
-  rowsection.selected = false;
-} else {
-  rowsubSection.selected = true;
-
-  const unSelectednode =  rowsection.subSections.find((x) => x.selected === false);
-  if (!unSelectednode) {
-    rowsection.selected = true;
+  onSectionSelected(section: VesselSection) {
+    if (section.selected) {
+      section.selected = false;
+      section.subSections.forEach((subSection) => {
+        subSection.selected = false;
+      });
+    } else {
+      section.selected = true;
+      section.subSections.forEach((subSection) => {
+        subSection.selected = true;
+      });
+    }
   }
-}
-}
 
+  onSubSectionSelected(rowsection: VesselSection, rowsubSection: SubSection) {
+    if (rowsubSection.selected) {
+      rowsubSection.selected = false;
+      rowsection.selected = false;
+    } else {
+      rowsubSection.selected = true;
+      const unSelectednode = rowsection.subSections.find((x) => x.selected === false);
+      if (!unSelectednode) {
+        rowsection.selected = true;
+      }
+    }
+  }
 
-isBookedSubsection(rowsubSection: SubSection) {
-  return this.gobalSelectedSubSectionId.find((x) => x === rowsubSection.id);
-}
+  isBookedSubsection(rowsubSection: SubSection) {
+    return this.gobalSelectedSubSectionId.find((x) => x === rowsubSection.id);
+  }
 
-isBookingSectionsValid() {
-  let vaild = false;
-  this.sections.forEach((section) => {
-    section.subSections.forEach((sub) => {
-      if (sub.selected) {
-        vaild = true;
+  isBookingSectionsValid() {
+    let vaild = false;
+    this.sections.forEach((section) => {
+      section.subSections.forEach((sub) => {
+        if (sub.selected) {
+          vaild = true;
+        }
+      });
+    });
+    return vaild;
+  }
+
+  isBookedSection(rowsection: VesselSection) {
+    if (!rowsection || !rowsection.subSections) {
+      return false;
+    }
+    let booked = true;
+    rowsection.subSections.forEach((element) => {
+      const subSectionid = this.gobalSelectedSubSectionId.find((x) => x === element.id);
+      if (!subSectionid) {
+        booked = false;
       }
     });
-  });
-  return vaild;
-}
-
-isBookedSection(rowsection: VesselSection) {
-  if (!rowsection || !rowsection.subSections) {
-    return false;
+    return booked;
   }
-  let booked = true;
-  rowsection.subSections.forEach((element) => {
-    const subSectionid = this.gobalSelectedSubSectionId.find((x) => x === element.id);
-    if (!subSectionid) {
-      booked = false;
-    }
-  });
-  return booked;
-}
+
+  triggerToast(severity: string, summary: string, detail: string): void {
+    this.messageService.add(
+      {
+        severity,
+        summary,
+        detail
+      });
+  }
 
 }

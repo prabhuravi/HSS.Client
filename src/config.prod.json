@@ -150,8 +150,8 @@
           "CreateVesselSection": "/VesselSection",
           "CreateSubSection": "/SubSection",
           "DeleteVesselSection": "/VesselSection",
-          "DeleteSubSection": "/SubSection"
-          
+          "DeleteSubSection": "/SubSection",
+          "AddVesselSection": "/AddVesselSection"
         }
       },
       "Contact": {

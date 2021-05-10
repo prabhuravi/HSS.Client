@@ -49,6 +49,8 @@ import { SecondryOperationListingComponent } from './components/operations-overv
 import { OperatorLogComponent } from './components/operations-overview/installation-operations/operator-log/operator-log.component';
 import { OperatorManagerGuard} from '../applications-guard.service';
 import { ContactSearchComponent } from './components/contact/contact-search/contact-search.component';
+import { PrepareInstallationGuard} from '../applications-guard.service';
+import { ManageSectionComponent } from './components/sections/manage-section/manage-section.component';
 
 
 const routes: Routes = [
@@ -56,7 +58,7 @@ const routes: Routes = [
     path: '', component: DashboardComponent, children: [
       { path: '', component: InstallationOverviewComponent, pathMatch: 'full' },
       {
-        path: 'prepare-installation', component: PrepareInstallationComponent, canActivate: [OperatorManagerGuard], children: [
+        path: 'prepare-installation', component: PrepareInstallationComponent, children: [
           { path: '', component: CreateInstallationComponent, pathMatch: 'full' },
           { path: 'create-installation/:vesselId', component: CreateInstallationComponent },
           { path: 'trade-route/:vesselId', component: TradeRouteComponent },
@@ -129,7 +131,8 @@ const routes: Routes = [
     CreateSecondryOperationComponent,
     SecondryOperationListingComponent,
     OperatorLogComponent,
-    ContactSearchComponent],
+        ManageSectionComponent,
+        ContactSearchComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

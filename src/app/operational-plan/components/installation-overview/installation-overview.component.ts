@@ -4,7 +4,7 @@ import { ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/components/table/table';
 import { take } from 'rxjs/operators';
 import { EntitlementsQueryService } from '@kognifai/poseidon-ng-entitlements-query-service';
-import { AppConstants, HSSRole } from 'src/app/app.constants';
+import { AppConstants, HSSRoleEnum } from 'src/app/app.constants';
 import { Installation, InstallationStatus } from 'src/app/models/Installation';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { InstallationService } from 'src/app/services/installation.service';
@@ -60,8 +60,12 @@ export class InstallationOverviewComponent implements OnInit {
 
     this.entitlementsQueryService.getCurrentUserEntitlements().then((entitlements: any[]) => {
       console.log(entitlements);
-      if (entitlements.findIndex(x => x.name == HSSRole.OperatorManager) != -1) {
+      if (entitlements.findIndex(x => x.name == HSSRoleEnum.OperatorManager) != -1) {
         this.accessPrepareInstallation = true;
+      }
+      else
+      {
+        this.accessPrepareInstallation = false;
       }
     });
 

@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take, timeout } from 'rxjs/operators';
+import { OperationStatusEnum } from 'src/app/app.constants';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
@@ -26,8 +27,8 @@ export class ListOperationsComponent implements OnInit {
     { field: 'Description', sortfield: 'Description', header: 'Description', filterMatchMode: 'contains' },
     { field: 'Sections', sortfield: 'Sections', header: 'Sections', filterMatchMode: 'contains' },
     { field: 'OperationType.OperationTypeName', sortfield: 'OperationType.OperationTypeName', header: 'Type', filterMatchMode: 'contains' },
-    { field: 'BookingStatus', sortfield: 'BookingStatus', header: 'Booking Status', filterMatchMode: 'contains' },
-    { field: 'Operator', sortfield: 'Operator', header: 'Operator', filterMatchMode: 'contains' },
+    { field: 'OperatorBooking.Status', sortfield: 'OperatorBooking.Status', header: 'Booking Status', filterMatchMode: 'contains' },
+    { field: 'Operator.Name', sortfield: 'Operator.Name', header: 'Operator', filterMatchMode: 'contains' },
     { field: 'OperationStatus.Name', sortfield: 'OperationStatus.Name', header: 'Status', filterMatchMode: 'contains' },
     { field: 'PortLocation.PortName', sortfield: 'PortLocation.PortName', header: 'Port', filterMatchMode: 'contains' },
     { field: 'ETB', sortfield: '', header: 'ETB', filterMatchMode: 'contains' },
@@ -57,6 +58,7 @@ export class ListOperationsComponent implements OnInit {
     this.operationalPlanService.getOperations(this.vesselId).pipe(take(1)).subscribe((data) => {
       console.log(data);
       this.operations = data;
+      this.operations = this.operations.sort((a, b) => (a.Date < b.Date) ? 1 : -1);
       console.log(this.operations);
       this.isDataLoading = false;
     });
@@ -73,12 +75,18 @@ export class ListOperationsComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the operation?',
       accept: () => {
-        this.isDataLoading = true;
-        this.operationalPlanService.deleteOperation(operation.Id).pipe(take(1)).subscribe((data) => {
-          this.isDataLoading = false;
-          this.triggerToast('success', 'Success Message', `Operation deleted successfully`);
-          this.loadOperations();
-        });
+        if(operation.OperationStatus.Name == OperationStatusEnum.Requested || operation.OperationStatus.Name == OperationStatusEnum.Pending)
+        {
+          this.isDataLoading = true;
+          this.operationalPlanService.deleteOperation(operation.Id).pipe(take(1)).subscribe((data) => {
+            this.isDataLoading = false;
+            this.triggerToast('success', 'Success Message', `Operation deleted successfully`);
+            this.loadOperations();
+          });
+        }
+        else{
+          this.triggerToast('error', 'Message', `You can delete operation only when status is Requested or Pending`);
+        }
       }
     });
   }

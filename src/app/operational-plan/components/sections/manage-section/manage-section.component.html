@@ -1,0 +1,206 @@
+<app-load *ngIf="isDataLoading"></app-load>
+<p-table *ngIf="vesselSections && vesselSections.length > 0" [columns]="cols" [value]="vesselSections"
+    [resetPageOnSort]="false" dataKey="id" editMode="row" (onEditComplete)="onEditSaveSection($event)"
+    [paginator]="true" #tt [rows]="PRIMENG_CONSTANTS.rowCount" [rowsPerPageOptions]="[5,10,20,50,100,200,500] "
+    [responsive]="true" rowExpandMode="single" tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th style="width: 3rem"></th>
+            <th>
+                <form style="display: flex; align-items: center;">
+                    <input class="kx-field--size-base" style="height: 25px; min-width: 130px; width: 45%; margin-right: 5px;"
+                        type="text" [(ngModel)]="sectionName" name = "addSectionName"
+                        [placeholder]="sectionToEdit? 'Update Section': 'Add Section'" #addSectionName />
+                    <button *ngIf="!sectionToEdit" style="margin-right: 5px;" class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                        aria-label="Add Section" title="Add Section" (click)="addSection(addSectionName.value)"
+                        [disabled]="!sectionName">
+                        <span class="kx-btn__inner">
+                            <i class="kx-icon kx-icon--size-moderate">
+                                <svg focusable="true">
+                                    <use href="./assets/img/icons/sprites/icons.svg#plus"></use>
+                                </svg>
+                            </i>
+                            <span class="kx-btn__txt kx-is-vishidden">Add Section</span>
+                        </span>
+                    </button>
+                    <button *ngIf="sectionToEdit" style="margin-right: 5px;"
+                        class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Update Section"
+                        title="Update Section" (click)="addSection(addSectionName.value)" [disabled]="!sectionName">
+                        <span class="kx-btn__inner">
+                            <i class="kx-icon kx-icon--size-moderate">
+                                <svg focusable="true">
+                                    <use href="./assets/img/icons/sprites/icons.svg#arrow-up"></use>
+                                </svg>
+                            </i>
+                            <span class="kx-btn__txt kx-is-vishidden">Update Section</span>
+                        </span>
+                    </button>
+                    <button *ngIf="sectionName" class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                        aria-label="Cancel" title="Cancel" (click)="cancelEditSection()">
+                        <span class="kx-btn__inner">
+                            <i class="kx-icon kx-icon--size-moderate">
+                                <svg focusable="true">
+                                    <use href="./assets/img/icons/sprites/icons.svg#cancel"></use>
+                                </svg>
+                            </i>
+                            <span class="kx-btn__txt kx-is-vishidden">Cancel</span>
+                        </span>
+                    </button>
+                </form>
+            </th>
+            <ng-container *ngFor="let col of columns">
+                <th *ngIf="col.field != 'name'" [ngSwitch]="col.field" [pSortableColumn]="col.sortfield"
+                    [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
+                    title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
+                    {{col.header}}
+                    <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
+                        ariaLabelDesc="Activate to sort in descending order"
+                        ariaLabelAsc="Activate to sort in ascending order">
+                    </p-sortIcon>
+                </th>
+            </ng-container>
+        </tr>
+        <!-- <tr>
+            <th style="width: 3rem"></th>
+            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                <input *ngSwitchCase="'name'" pInputText type="text"
+                    class="kx-field kx-field--size-base u--field--size-small" placeholder="Filter section"
+                    (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input *ngSwitchCase="'sectionStatus.name'" pInputText type="text"
+                    class="kx-field kx-field--size-base u--field--size-small" placeholder="Filter section status"
+                    (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+            </th>
+        </tr> -->
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-expanded="expanded">
+        <tr>
+            <td class="kx-p--small">
+                <a href="#" [pRowToggler]="rowData">
+                    <i [ngClass]="
+                expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+              "></i>
+                </a>
+            </td>
+            <td class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.name }}</td>
+            <td class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--3@ltp-s">
+                <div *ngIf="!expanded">
+                    <span
+                        *ngFor="let subSection of rowData.subSections; let i = index;">{{subSection.subSectionNumber}}<span
+                            *ngIf="i != rowData.subSections.length - 1">,</span>
+                    </span>
+                </div>
+                <div *ngIf="expanded">
+                    <form style="display: flex; align-items: center;">
+                        <input class="kx-field--size-base" style="height: 25px; min-width: 130px; width: 50%; margin-right: 5px;"
+                            type="number" oninput="validity.valid || (value='');" min="1" name="subSectionNumbers[ri]"
+                            [(ngModel)]="subSectionNumbers[ri]" placeholder="Add sub-section" #subSectionNumber />
+                        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                            aria-label="Add sub-section" title="Add Sub-section"
+                            (click)="addSubSection(subSectionNumber.value, rowData, ri)"
+                            [disabled]="!subSectionNumbers[ri]">
+                            <span class="kx-btn__inner">
+                                <i class="kx-icon kx-icon--size-moderate">
+                                    <svg focusable="true">
+                                        <use href="./assets/img/icons/sprites/icons.svg#plus"></use>
+                                    </svg>
+                                </i>
+                                <span class="kx-btn__txt kx-is-vishidden">Add Sub-section</span>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </td>
+            <td pEditableColumn [pEditableColumn]="rowData"
+                class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--1@ltp-s">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-dropdown [options]="sectionStatus" [(ngModel)]="rowData.sectionStatus" optionLabel="name">
+                        </p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{ rowData.sectionStatus.name }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td>
+                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" style="margin-right: 5px;" aria-label="Edit section name"
+                    title="Edit section name" (click)="onSectionRowEdit(rowData)">
+                    <span class="kx-btn__inner">
+                        <i class="kx-icon kx-icon--size-moderate">
+                            <svg focusable="true">
+                                <use href="./assets/img/icons/sprites/icons.svg#pencil"></use>
+                            </svg>
+                        </i>
+                        <span class="kx-btn__txt kx-is-vishidden">Edit section name</span>
+                    </span>
+                </button>
+                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete section"
+                    title="Delete section" (click)="onSectionRowDelete(rowData)">
+                    <span class="kx-btn__inner">
+                        <i class="kx-icon kx-icon--size-moderate">
+                            <svg focusable="true">
+                                <use href="./assets/img/icons/sprites/icons.svg#trash"></use>
+                            </svg>
+                        </i>
+                        <span class="kx-btn__txt kx-is-vishidden">Delete section</span>
+                    </span>
+                </button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns" let-editing="editing">
+        <tr>
+            <td [attr.colspan]="5">
+                <div class="kx-table--outer-border"
+                    [ngStyle]="rowData.subSections.length > 0 ? {'padding-left': '28%'} : ''">
+                    <app-no-data [displayme]="rowData.subSections && rowData.subSections.length === 0"></app-no-data>
+                    <p-table *ngIf="rowData.subSections.length > 0" [value]="rowData.subSections"
+                        (onEditComplete)="onEditSaveSubSection($event)" tableStyleClass="kx-table" autoLayout="true">
+                        <ng-template pTemplate="body" let-rowData>
+        <tr class="kx-row">
+            <td pEditableColumn [pEditableColumn]="rowData"
+                class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--1@ltp-s" style="margin-right: 26.9%;">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="number" min="1" oninput="validity.valid || (value='');"
+                            [(ngModel)]="rowData.subSectionNumber" title="Click outside the cell to save">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{ rowData.subSectionNumber }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td pEditableColumn [pEditableColumn]="rowData"
+                class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--1@ltp-s" style="margin-right: 6.2%;">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-dropdown [options]="sectionStatus" [(ngModel)]="rowData.sectionStatus"
+                            (ngModelChange)="subSectionStatusChanged(rowData)" title="Click outside the cell to save" optionLabel="name"></p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{ rowData.sectionStatus.name }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td class="kx-col kx-col--12 kx-col--2@mob-m kx-col--2@tab-m kx-col--1@ltp-s">
+                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete sub-section"
+                    title="Delete sub-section" (click)="onSubSectionDelete(rowData)">
+                    <span class="kx-btn__inner">
+                        <i class="kx-icon kx-icon--size-moderate">
+                            <svg focusable="true">
+                                <use href="./assets/img/icons/sprites/icons.svg#trash"></use>
+                            </svg>
+                        </i>
+                        <span class="kx-btn__txt kx-is-vishidden">Delete sub-section</span>
+                    </span>
+                </button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>
+<app-no-data [displayme]="vesselSections && vesselSections.length === 0"></app-no-data>
