@@ -37,7 +37,7 @@
             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
             (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)">
 
-          <p-dropdown *ngIf="col.filterMatchMode && col.filterMatchMode !== '' && col.filterMatchMode === 'equals'"
+          <p-dropdown appendTo="body" *ngIf="col.filterMatchMode && col.filterMatchMode !== '' && col.filterMatchMode === 'equals'"
             [options]="col.options" [optionLabel]="col.optionLabel"
             (onChange)="dt.filter($event.value ? $event.value[col.optionLabel]: '', col.field, col.filterMatchMode)"
             styleClass="p-column-filter" placeholder="Select to filter" [showClear]="true">

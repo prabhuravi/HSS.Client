@@ -13,6 +13,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import {TabViewModule} from 'primeng/tabview';
 
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -147,7 +148,8 @@ const routes: Routes = [
     TooltipModule,
     AutoCompleteModule,
     OverlayPanelModule,
-    ToastModule
+    ToastModule,
+    TabViewModule
   ],
   providers: [DatePipe]
 })
