@@ -108,7 +108,7 @@ export class CreateOperationComponent implements OnInit {
       },
       {
         type: FormType.dropdown,
-        label: 'Type',
+        label: 'Operation Type',
         options: this.operationTypes,
         value: this.operationTypes[0],
         key: 'operationType',
