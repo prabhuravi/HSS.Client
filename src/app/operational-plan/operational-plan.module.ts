@@ -13,6 +13,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import {TabViewModule} from 'primeng/tabview';
 
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -46,8 +47,11 @@ import { ListOperationsComponent } from './components/operations-overview/instal
 import { CreateSecondryOperationComponent } from './components/operations-overview/installation-operations/create-secondry-operation/create-secondry-operation.component';
 import { SecondryOperationListingComponent } from './components/operations-overview/installation-operations/secondry-operation-listing/secondry-operation-listing.component';
 import { OperatorLogComponent } from './components/operations-overview/installation-operations/operator-log/operator-log.component';
+import { ContactSearchComponent } from './components/contact/contact-search/contact-search.component';
 import { PrepareInstallationGuard} from '../applications-guard.service';
 import { ManageSectionComponent } from './components/sections/manage-section/manage-section.component';
+import { OpertionSectionComponent } from './components/operations-overview/installation-operations/opertion-section/opertion-section.component';
+import { OpertionFoulingComponent } from './components/operations-overview/installation-operations/opertion-fouling/opertion-fouling.component';
 
 const routes: Routes = [
   {
@@ -64,7 +68,13 @@ const routes: Routes = [
           { path: 'contacts/:vesselId', component: ContactComponent }
         ]
       },
-
+      {
+        path: 'operations', component: CreateOperationComponent, children: [
+          { path: ':vesselId', component: CreateOperationComponent, pathMatch: 'full' },
+          { path: 'sections/:vesselId', component: ListingSectionComponent },
+          { path: 'fouling-state/:vesselId', component: ListFoulingStateComponent }
+        ]
+      },
       {
         path: 'operations-overview/:vesselId', component: OperationsOverviewComponent, children: [
           { path: '', component: InstallationOperationsComponent, pathMatch: 'full' },
@@ -121,7 +131,10 @@ const routes: Routes = [
     CreateSecondryOperationComponent,
     SecondryOperationListingComponent,
     OperatorLogComponent,
-    ManageSectionComponent],
+        ManageSectionComponent,
+        ContactSearchComponent,
+        OpertionSectionComponent,
+        OpertionFoulingComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
@@ -140,7 +153,8 @@ const routes: Routes = [
     TooltipModule,
     AutoCompleteModule,
     OverlayPanelModule,
-    ToastModule
+    ToastModule,
+    TabViewModule
   ],
   providers: [DatePipe]
 })

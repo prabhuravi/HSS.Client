@@ -1,4 +1,7 @@
+
 <div class="kx-pt--small">
+    <app-contact-search style="margin-top: -20px;" #searchContact
+    (contactSearched)="contactListing.onSearchContactEvent($event)"></app-contact-search>
     <app-create-contact style="margin-top: -20px;" #createContact
         (contactUpdated)="contactListing.onContactDataUpdated($event)"></app-create-contact>
     <app-contact-listing #contactListing (contactOnEdit)="createContact.sectionEditInit($event)"></app-contact-listing>

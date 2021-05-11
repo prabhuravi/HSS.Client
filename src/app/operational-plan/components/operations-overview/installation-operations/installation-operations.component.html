@@ -1,8 +1,26 @@
-<div class="kx-pt--small">
+<!-- <div class="kx-pt--small">
     <app-load *ngIf="isDataLoading"></app-load>
     <app-create-operation *ngIf="viewCreateOperation" (showListOperation)="showListOperation($event)" #createOperation>
     </app-create-operation>
     <app-list-operations *ngIf="!viewCreateOperation" (showCreateOperation)="showCreateOperation($event)"
         (operationEdited)="onOperationEdited($event)" #listOperations>
     </app-list-operations>
-</div>
+</div> -->
+<app-load *ngIf="isDataLoading"></app-load>
+<app-list-operations *ngIf="!viewCreateOperation" (showCreateOperation)="showCreateOperation($event)"
+(operationEdited)="onOperationEdited($event)" #listOperations>
+</app-list-operations>
+<p-tabView  *ngIf="viewCreateOperation">
+    <p-tabPanel header="Operation">
+        <app-create-operation (showListOperation)="showListOperation($event)" #createOperation>
+        </app-create-operation>
+    </p-tabPanel>
+    <p-tabPanel header="Section"  *ngIf="createOperation.editOperation">
+        <app-opertion-section #operationSections [vesselSections]="createOperation.sections" [operation]="createOperation.operationToEdit" [gobalSelectedSubSectionId]="createOperation.gobalSelectedSubSectionId" >
+        </app-opertion-section>
+    </p-tabPanel>
+    <p-tabPanel header="Fouling"  *ngIf="createOperation.editOperation">
+            <app-opertion-fouling #operationSections [sections]="createOperation.sections" [operation]="createOperation.operationToEdit">
+        </app-opertion-fouling>
+    </p-tabPanel>
+</p-tabView>

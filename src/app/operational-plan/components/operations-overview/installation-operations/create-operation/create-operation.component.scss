@@ -16,6 +16,22 @@
   opacity: 0.7;
 }
 
+.subsection{
+  width: 36px;height:36px;
+  font-size: 9px;
+}
+.section{
+  width: 140px;height:36px;
+  font-size: 12px;
+  margin-right: 10px;
+  margin-top: 6px;
+}
+.disablePointerEvents
+{
+pointer-events: none;
+opacity: 0.7;
+}
+
 // i[disabled]
 // {
 //   pointer-events: none;

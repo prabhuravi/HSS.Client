@@ -1,0 +1,15 @@
+<div class="kx-row"  style="margin-top: 10px;margin-bottom: 2px;">
+  
+    <div class="kx-mt--tiny kx-col kx-col--12 kx-col--12@mob-m kx-col--12@tab-m kx-col--12@ltp-s">
+      <p-autoComplete #searchInput [(ngModel)]="searchedContact" [suggestions]="contactSearch" (onSelect)="onSelectContact($event)" inputStyleClass="kx-field kx-field--size-base"
+        (completeMethod)="searchContact($event)" field="name" [size]="100" emptyMessage="No results found"
+        placeholder="Seach contacts" [minLength]="1">
+        <ng-template let-user pTemplate="item">
+          <div class="ui-helper-clearfix">
+            Name: {{user.name}} {{user.surName}}, Email: {{user.email}}, Phone: {{user.phone}}, Role: {{user.ContactType.name}}
+          </div>
+      </ng-template>
+      </p-autoComplete>
+    </div>
+  
+</div>

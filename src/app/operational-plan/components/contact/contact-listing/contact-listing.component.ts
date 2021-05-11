@@ -16,7 +16,7 @@ export class ContactListingComponent implements OnInit {
 
   isDataLoading = false;
   @Input() excludeSearch: boolean;
-  searchedContact: Contact;
+
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   @Output() contactOnEdit: EventEmitter<any> = new EventEmitter<any>();
   cols = [
@@ -86,37 +86,30 @@ export class ContactListingComponent implements OnInit {
     //   this.contacts.push(ContactData);
     // }
   }
-  searchContact(event: any) {
-    console.log(event.query);
-    this.contactService.searchContacts(event.query).subscribe((data) => {
-      this.contactSearch = data;
-      console.log(data);
-    });
-  }
-  onSelectContact(event: Contact) {
-    const selectedContact = event;
-    const existingContact = this.contacts.filter((x) => x.id === selectedContact.id);
-    if (existingContact.length === 0) {
-      this.confirmationService.confirm({
-        message: 'Would you like to add this contact to this installation?',
-        accept: () => {
-          selectedContact.contactId = selectedContact.id;
-          selectedContact.vesselId = this.prepareInstallationService.installation.id;
-          this.isDataLoading = true;
-          this.contactService.createVesselContact(selectedContact).pipe(take(1)).subscribe((data) => {
-            this.loadVesselContacts();
-            this.isDataLoading = false;
-            this.triggerToast('success', 'Success Message', `contact added successfully`);
-            this.searchedContact = null;
-          });
-        }
-      });
-    } else {
-      this.triggerToast('warn', 'Warn Message', `contact already exists!`);
-      this.searchedContact = null;
-    }
-  }
+  onSearchContactEvent(event: Contact) {
 
+      const selectedContact = event;
+      const existingContact = this.contacts.filter((x) => x.id === selectedContact.id);
+      if (existingContact.length === 0) {
+        this.confirmationService.confirm({
+          message: 'Would you like to add this contact to this installation?',
+          accept: () => {
+            selectedContact.contactId = selectedContact.id;
+            selectedContact.vesselId = this.prepareInstallationService.installation.id;
+            this.isDataLoading = true;
+            this.contactService.createVesselContact(selectedContact).pipe(take(1)).subscribe((data) => {
+              this.loadVesselContacts();
+              this.isDataLoading = false;
+              this.triggerToast('success', 'Success Message', `contact added successfully`);
+
+            });
+          }
+        });
+      } else {
+        this.triggerToast('warn', 'Warn Message', `contact already exists!`);
+
+      }
+    }
   triggerToast(severity: string, summary: string, detail: string): void {
     this.messageService.add(
       {
