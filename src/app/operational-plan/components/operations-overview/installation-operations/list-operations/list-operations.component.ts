@@ -23,13 +23,13 @@ export class ListOperationsComponent implements OnInit {
   operations: Operation[] = [];
 
   cols = [
+    { field: 'OperationType.OperationTypeName', sortfield: 'OperationType.OperationTypeName', header: 'Type', filterMatchMode: 'contains' },
+    { field: 'OperationStatus.Name', sortfield: 'OperationStatus.Name', header: 'Status', filterMatchMode: 'contains' },
+    { field: 'Sections', sortfield: 'Sections', header: 'Sections', filterMatchMode: 'contains' },
     { field: 'Date', sortfield: '', header: 'Date', filterMatchMode: 'contains' },
     { field: 'Description', sortfield: 'Description', header: 'Description', filterMatchMode: 'contains' },
-    { field: 'Sections', sortfield: 'Sections', header: 'Sections', filterMatchMode: 'contains' },
-    { field: 'OperationType.OperationTypeName', sortfield: 'OperationType.OperationTypeName', header: 'Type', filterMatchMode: 'contains' },
-    { field: 'OperatorBooking.Status', sortfield: 'OperatorBooking.Status', header: 'Booking Status', filterMatchMode: 'contains' },
     { field: 'Operator.Name', sortfield: 'Operator.Name', header: 'Operator', filterMatchMode: 'contains' },
-    { field: 'OperationStatus.Name', sortfield: 'OperationStatus.Name', header: 'Status', filterMatchMode: 'contains' },
+    { field: 'OperatorBooking.Status', sortfield: 'OperatorBooking.Status', header: 'Booking Status', filterMatchMode: 'contains' },
     { field: 'PortLocation.PortName', sortfield: 'PortLocation.PortName', header: 'Port', filterMatchMode: 'contains' },
     { field: 'ETB', sortfield: '', header: 'ETB', filterMatchMode: 'contains' },
     { field: 'Id', header: 'Action', sortfield: '' }
@@ -58,6 +58,7 @@ export class ListOperationsComponent implements OnInit {
     this.operationalPlanService.getOperations(this.vesselId).pipe(take(1)).subscribe((data) => {
       console.log(data);
       this.operations = data;
+      console.log(this.operations);
       this.operations = this.operations.sort((a, b) => (a.Date < b.Date) ? 1 : -1);
       console.log(this.operations);
       this.isDataLoading = false;
@@ -67,6 +68,15 @@ export class ListOperationsComponent implements OnInit {
   editOperation(operation: Operation)
   {
     this.operationEdited.emit(operation);
+  }
+
+  goToOperationSections(operation: Operation)
+  {
+    console.log(operation);
+  }
+  goToSecondaryOperationSections(secOperation: SecondaryOperation)
+  {
+    console.log(secOperation);
   }
 
   deleteOperation(operation: Operation)
