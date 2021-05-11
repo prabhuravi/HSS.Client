@@ -106,10 +106,12 @@
           "DeleteOperation": "/DeleteOperation",
           "DeleteSecondaryOperation": "/DeleteSecondaryOperation",
           "GetOperationSections": "/GetOperationSections",
+          "GetOperationDetail": "",
           "GetSecondaryOperationSections": "/GetSecondaryOperationSections",
           "GetSecondaryOperations": "/GetSecondaryOperations",
           "GetOperatorLogs": "/GetOperatorLogs",
-          "AddOperatorLog": "/AddOperatorLog"
+          "AddOperatorLog": "/AddOperatorLog",
+          "UpdateOperationFouling": "/UpdateOperationFouling"
         }
       },
       "Installation": {

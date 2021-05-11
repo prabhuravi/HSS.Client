@@ -15,11 +15,12 @@
         <app-create-operation (showListOperation)="showListOperation($event)" #createOperation>
         </app-create-operation>
     </p-tabPanel>
-    <p-tabPanel header="Section">
-        <app-list-fouling-state #listFoulingState>
-        </app-list-fouling-state>
+    <p-tabPanel header="Section"  *ngIf="createOperation.editOperation">
+        <app-opertion-section #operationSections [vesselSections]="createOperation.sections" [operation]="createOperation.operationToEdit" [gobalSelectedSubSectionId]="createOperation.gobalSelectedSubSectionId" >
+        </app-opertion-section>
     </p-tabPanel>
-    <p-tabPanel header="Fouling">
-        Content 3
+    <p-tabPanel header="Fouling"  *ngIf="createOperation.editOperation">
+            <app-opertion-fouling #operationSections [sections]="createOperation.sections" [operation]="createOperation.operationToEdit">
+        </app-opertion-fouling>
     </p-tabPanel>
 </p-tabView>

@@ -47,11 +47,11 @@ import { ListOperationsComponent } from './components/operations-overview/instal
 import { CreateSecondryOperationComponent } from './components/operations-overview/installation-operations/create-secondry-operation/create-secondry-operation.component';
 import { SecondryOperationListingComponent } from './components/operations-overview/installation-operations/secondry-operation-listing/secondry-operation-listing.component';
 import { OperatorLogComponent } from './components/operations-overview/installation-operations/operator-log/operator-log.component';
-import { OperatorManagerGuard} from '../applications-guard.service';
 import { ContactSearchComponent } from './components/contact/contact-search/contact-search.component';
 import { PrepareInstallationGuard} from '../applications-guard.service';
 import { ManageSectionComponent } from './components/sections/manage-section/manage-section.component';
-
+import { OpertionSectionComponent } from './components/operations-overview/installation-operations/opertion-section/opertion-section.component';
+import { OpertionFoulingComponent } from './components/operations-overview/installation-operations/opertion-fouling/opertion-fouling.component';
 
 const routes: Routes = [
   {
@@ -132,7 +132,9 @@ const routes: Routes = [
     SecondryOperationListingComponent,
     OperatorLogComponent,
         ManageSectionComponent,
-        ContactSearchComponent],
+        ContactSearchComponent,
+        OpertionSectionComponent,
+        OpertionFoulingComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

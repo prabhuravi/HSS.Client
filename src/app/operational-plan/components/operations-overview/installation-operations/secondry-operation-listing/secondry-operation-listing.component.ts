@@ -36,10 +36,10 @@ export class SecondryOperationListingComponent implements OnInit {
   disableForms = new Array<boolean>(100).fill(false);
 
   constructor(private formBuliderService: FromBuilderService,
-    private operationalPlanService: OperationalPlanService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService,
-    public fb: FormBuilder
+              private operationalPlanService: OperationalPlanService,
+              private confirmationService: ConfirmationService,
+              private messageService: MessageService,
+              public fb: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -84,32 +84,36 @@ export class SecondryOperationListingComponent implements OnInit {
     return this.secondaryoperations;
   }
 
-  private attachToSecondaryList(element: SecondaryOperation) {
+  private attachToSecondaryList(element: any) {
     const secondaryconfig = {
       formList: [],
       className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
     };
     this.constructForm(secondaryconfig, element);
-    let formGroup = this.formBuliderService.buildForm(secondaryconfig);
+    const formGroup = this.formBuliderService.buildForm(secondaryconfig);
     this.secondaryItems.push(formGroup);
-    if (element.Id != 0) // Editing secondary operation
-    {
-      let index = this.secondaryoperations.findIndex(p => p.Id == element.Id);
-      if (element.OperationStatus.Name == OperationStatusEnum.Completed || element.OperationStatus.Name == OperationStatusEnum.Aborted) {
+    if (element.Id !== 0) {
+      const index = this.secondaryoperations.findIndex((p) => p.Id === element.Id);
+      if (element.OperationStatus.Name === OperationStatusEnum.Completed || element.OperationStatus.Name === OperationStatusEnum.Aborted) {
         formGroup.disable();
         formGroup.updateValueAndValidity();
         this.disableForms[index] = true;
       }
-      if (element.OperationStatus.Name == OperationStatusEnum.Running) {
+      if (element.OperationStatus.Name === OperationStatusEnum.Running) {
         formGroup.controls.operationType.disable();
         formGroup.controls.operationType.updateValueAndValidity();
       }
     }
-
+   // this.sections = element.VesselSectionModel;
+    // console.log(this.sections);
     this.secondaryconfigs.push(secondaryconfig);
     this.sections.forEach((sec) => {
       sec.subSections.forEach((sub) => {
-        if (sub.selected) {
+       const item =  element.VesselSectionModel.find((x) => x.Id === sec.id && x.SubSections.find((x) => x.Id === sub.id));
+       if(item){
+         sub.selected = true;
+       }
+       if (sub.selected) {
           this.gobalSelectedSubSectionId.push(sub.id);
         }
       });
@@ -126,7 +130,7 @@ export class SecondryOperationListingComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the secondary operation?',
       accept: () => {
-        if (this.secondaryoperations[index].OperationStatus.Name == OperationStatusEnum.Requested || this.secondaryoperations[index].OperationStatus.Name == OperationStatusEnum.Pending) {
+        if (this.secondaryoperations[index].OperationStatus.Name === OperationStatusEnum.Requested || this.secondaryoperations[index].OperationStatus.Name === OperationStatusEnum.Pending) {
           this.secondaryoperations.splice(index, 1);
           this.secondaryItems.removeAt(index);
           this.secondaryconfigs.splice(index, 1);
@@ -140,8 +144,7 @@ export class SecondryOperationListingComponent implements OnInit {
             });
           });
           this.triggerToast('success', 'Success Message', `Secondary operation deleted successfully`);
-        }
-        else {
+        } else {
           this.triggerToast('error', 'Message', `You can delete secondary operation only when status is Requested or Pending`);
         }
       }
@@ -219,6 +222,7 @@ export class SecondryOperationListingComponent implements OnInit {
       const unSelectednode = rowsection.subSections.find((x) => x.selected === false);
       if (!unSelectednode) {
         rowsection.selected = true;
+        this.gobalSelectedSubSectionId.push(rowsubSection.id);
       }
     }
   }

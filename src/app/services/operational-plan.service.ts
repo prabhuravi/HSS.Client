@@ -7,6 +7,7 @@ import { Configuration } from '../configuration';
 import { Installation } from '../models/Installation';
 import { VesselSection } from '../models/Section';
 import { VesselSectionAdapter } from '../models/modelAdapter';
+import { Operation } from '../models/Operation';
 
 @Injectable({
   providedIn: 'root'
@@ -157,9 +158,15 @@ export class OperationalPlanService {
     console.log(requestData);
     return this.http.deleteData(requestData);
   }
-  getOperationSections(operationId: number): Observable<any> {
+  getOperationSections(operationId: number): Observable<Operation> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationSections}/${operationId}`
+    };
+    return this.http.getDataGeneric<Operation>(requestData);
+  }
+  getOperationDeatils(operationId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationDetail}/${operationId}`
     };
     return this.http.getData(requestData);
   }
@@ -283,6 +290,15 @@ export class OperationalPlanService {
   updateSubSectionFoulingState(subSectionId: number, data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.UpdateSubSectionFoulingState}/${subSectionId}`,
+      data: data
+    };
+    // return of(true);
+    return this.http.putData(requestData);
+  }
+
+  UpdateOperationFouling(subSectionId: number, data: any): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.UpdateOperationFouling}/${subSectionId}`,
       data: data
     };
     // return of(true);
