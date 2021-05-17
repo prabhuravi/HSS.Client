@@ -59,7 +59,7 @@
                     <td>{{ rowData.Date | date:'MM/dd/yyyy HH:mm'}}</td>
                     <td style="text-align: justify;">{{ rowData.Description }}</td>
                     <td>{{ rowData.Operator ? (rowData.Operator.Name + ' ' + rowData.Operator.SurName) : ''}}</td>
-                    <td>{{ rowData.OperatorBooking?.Status }}</td>
+                    <td>{{ (rowData.Operator && rowData.OperatorBooking)? rowData.OperatorBooking.Status : '' }}</td>
                     <td>{{ rowData.PortLocation?.PortName}}</td>
                     <td>{{ rowData.ETB | date:'MM/dd/yyyy HH:mm'}}</td>
                     <td>

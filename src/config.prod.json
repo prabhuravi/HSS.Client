@@ -109,7 +109,9 @@
           "GetSecondaryOperationSections": "/GetSecondaryOperationSections",
           "GetSecondaryOperations": "/GetSecondaryOperations",
           "GetOperatorLogs": "/GetOperatorLogs",
-          "AddOperatorLog": "/AddOperatorLog"
+          "AddOperatorLog": "/AddOperatorLog",
+          "GetPortMeteorology": "/GetOperationPortMeteorology",
+          "UpdateBerthDepth": "/UpdateBerthDepth"
         }
       },
       "Installation": {

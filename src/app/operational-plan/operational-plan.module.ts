@@ -48,6 +48,7 @@ import { SecondryOperationListingComponent } from './components/operations-overv
 import { OperatorLogComponent } from './components/operations-overview/installation-operations/operator-log/operator-log.component';
 import { PrepareInstallationGuard} from '../applications-guard.service';
 import { ManageSectionComponent } from './components/sections/manage-section/manage-section.component';
+import { PortMeteorologyComponent } from './components/operations-overview/installation-operations/port-meteorology/port-meteorology.component';
 
 const routes: Routes = [
   {
@@ -121,7 +122,8 @@ const routes: Routes = [
     CreateSecondryOperationComponent,
     SecondryOperationListingComponent,
     OperatorLogComponent,
-    ManageSectionComponent],
+    ManageSectionComponent,
+    PortMeteorologyComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
