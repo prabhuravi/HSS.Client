@@ -1,0 +1,85 @@
+<app-load *ngIf="isDataLoading"></app-load>
+<p-table *ngIf="sections && sections.length > 0" [columns]="cols" [value]="operationSections" dataKey="id" editMode="row" [paginator]="true" #tt
+    [rows]="PRIMENG_CONSTANTS.rowCount" [rowsPerPageOptions]="[5,10,20,50,100,200,500]" rowExpandMode="single"
+    tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th style="width: 3rem"></th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
+                [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
+                title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
+                {{col.header}}
+                <p-sortIcon *ngIf="col.sortfield !== ''" [field]="col.field" ariaLabel="Activate to sort"
+                    ariaLabelDesc="Activate to sort in descending order"
+                    ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+            </th>
+        </tr>
+        <tr>
+            <th style="width: 3rem"></th>
+            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                <input *ngSwitchCase="'name'" pInputText type="text"
+                    class="kx-field kx-field--size-base u--field--size-small" placeholder="Filter section"
+                    (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                <input *ngSwitchCase="'foulingState.State'" pInputText type="text"
+                    class="kx-field kx-field--size-base u--field--size-small" placeholder="Filter fouling state"
+                    (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+            </th>
+        </tr>
+        <!-- <tr>
+      <th style="width: 3rem"></th>
+      <th *ngFor="let col of columns">
+        {{ col.header }}
+      </th>
+    </tr> -->
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-expanded="expanded">
+        <tr>
+            <td class="kx-p--small">
+                <a href="#" [pRowToggler]="rowData">
+                    <i [ngClass]="
+                expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+              "></i>
+                </a>
+            </td>
+            <td>{{ rowData.VesselSection.Name }}</td>
+            <td></td>
+            <td> {{ rowData.VesselSection.FoulingState.State }}</td> 
+            <td> {{ rowData.VesselSection.ModifiedDate | date:'MM/dd/yyyy HH:mm' }}</td>
+           </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+        <tr>
+            <td [attr.colspan]="5">
+                <div class="kx-table--outer-border" [ngStyle]="rowData.VesselSection.SubSections.length > 0 ? {'padding-left': '37%'} : ''">
+                    <app-no-data [displayme]="rowData.VesselSection.SubSections && rowData.VesselSection.SubSections.length === 0"></app-no-data>
+                    <p-table [value]="rowData.VesselSection.SubSections" tableStyleClass="kx-table" autoLayout="true">
+                        <ng-template pTemplate="body" let-rowData>
+        <tr class="kx-row">
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">{{ rowData.SubSectionNumber }}
+            </td>
+            <td pEditableColumn [pEditableColumn]="rowData"
+            class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--5@ltp-s" style="margin-right: 6.2%;">
+            <p-cellEditor>
+                <ng-template pTemplate="input">
+                    <p-dropdown [options]="foulingStates" [(ngModel)]="rowData.FoulingState" appendTo="body"
+                        (ngModelChange)="onFoulingStateChanged(rowData)" title="Click outside the cell to save" optionLabel="State"></p-dropdown>
+                </ng-template>
+                <ng-template pTemplate="output">
+                    {{ rowData.FoulingState.State }}
+                </ng-template>
+            </p-cellEditor>
+        </td>
+            <!-- <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--5@ltp-s" style="margin-right: 0.8%;">{{
+                rowData.FoulingState.State }}</td> -->
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.ModifiedDate | date:'MM/dd/yyyy HH:mm'}}
+            </td>           
+        </tr>
+    </ng-template>
+</p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>
+
+<app-no-data [displayme]="sections && sections.length === 0"></app-no-data>

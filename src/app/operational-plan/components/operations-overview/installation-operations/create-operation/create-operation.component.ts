@@ -24,12 +24,20 @@ import { CreateSecondryOperationComponent } from '../create-secondry-operation/c
   styleUrls: ['./create-operation.component.scss']
 })
 export class CreateOperationComponent implements OnInit {
+
+  constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
+              private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
+              public fb: FormBuilder, public datepipe: DatePipe) { }
+
+  get formsArray() {
+    return this.formsData.get('formsArray') as FormArray;
+  }
   operationTypes: IOperationTypes[] = [];
   operationStatus: IOperationStatus[] = [];
   requestedBy: IRequestedBy[] = [];
   isFormSubmmited: boolean = false;
   vesselId: number = 0;
-  operationToEdit: Operation;
+  operationToEdit: any;
   editOperation = false;
   showOperatorModal = false;
   selectedOperator: Contact = null;
@@ -56,13 +64,12 @@ export class CreateOperationComponent implements OnInit {
   };
   isDataLoading = false;
   sections: VesselSection[] = [];
+  opertionSections: VesselSection[] = [];
   gobalSelectedSubSectionId: number[] = [];
   @Output() showListOperation = new EventEmitter<boolean>();
   isFormDataReady = false;
 
-  constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
-    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
-    public fb: FormBuilder, public datepipe: DatePipe) { }
+  displayModal: boolean;
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
@@ -76,6 +83,7 @@ export class CreateOperationComponent implements OnInit {
       this.isDataLoading = true;
       this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
         this.sections = data;
+        this.opertionSections = JSON.parse(JSON.stringify(data)) as VesselSection[];
         this.formsData = this.fb.group({
           title: [],
           formsArray: this.fb.array([])
@@ -90,10 +98,6 @@ export class CreateOperationComponent implements OnInit {
         this.isDataLoading = false;
       });
     });
-  }
-
-  get formsArray() {
-    return this.formsData.get('formsArray') as FormArray;
   }
 
   constructFormPart1(config: any): void {
@@ -178,8 +182,6 @@ export class CreateOperationComponent implements OnInit {
     this.onFormReset();
     this.showListOperation.emit(false);
   }
-
-  displayModal: boolean;
   showModalDialog() {
     this.displayModal = true;
   }
@@ -191,13 +193,16 @@ export class CreateOperationComponent implements OnInit {
   }
 
   onEditOperation(operation: Operation): void {
-    console.log(operation);
-    this.editOperation = true;
-    this.selectedOperator = null;
-    this.operationToEdit = operation;
-    this.secondaryListingComponent.editOperation = true;
-    const formsArrayAsAny = this.formsData.controls.formsArray as any;
-    if (operation.OperationStatus.Name == OperationStatusEnum.Running) {
+      this.isDataLoading = true;
+      console.log(operation);
+      this.operationalPlanService.getOperationDeatils(operation.Id).pipe(take(1)).subscribe((data) => {
+      console.log(data);
+      this.editOperation = true;
+      this.selectedOperator = null;
+      this.operationToEdit = data;
+      this.secondaryListingComponent.editOperation = true;
+      const formsArrayAsAny = this.formsData.controls.formsArray as any;
+      if (operation.OperationStatus.Name === OperationStatusEnum.Running) {
       formsArrayAsAny.controls[0].controls.operationType.disable();
       formsArrayAsAny.controls[0].controls.operationType.updateValueAndValidity();
       formsArrayAsAny.controls[1].controls.port.disable();
@@ -205,57 +210,73 @@ export class CreateOperationComponent implements OnInit {
       formsArrayAsAny.controls[1].controls.operationDate.disable();
       formsArrayAsAny.controls[1].controls.operationDate.updateValueAndValidity();
     }
-    if (operation.OperationStatus.Name == OperationStatusEnum.Completed || operation.OperationStatus.Name == OperationStatusEnum.Aborted) {
+      if (operation.OperationStatus.Name === OperationStatusEnum.Completed || operation.OperationStatus.Name === OperationStatusEnum.Aborted) {
       formsArrayAsAny.controls[0].disable();
       formsArrayAsAny.controls[0].updateValueAndValidity();
       formsArrayAsAny.controls[1].disable();
       formsArrayAsAny.controls[1].updateValueAndValidity();
       this.disableForm = true;
     }
-
-    this.operationalPlanService.getSecondaryOperations(operation.Id).pipe(take(1)).subscribe((data) => {
+      this.isDataLoading = false;
+      this.operationalPlanService.getSecondaryOperations(operation.Id).pipe(take(1)).subscribe((data) => {
       this.secondaryOperationsForEdit = data;
       console.log(this.secondaryOperationsForEdit);
-      this.secondaryOperationsForEdit.forEach(element => {
+      this.secondaryOperationsForEdit.forEach((element) => {
         this.secondaryListingComponent.updateSecondaryOperationList(element);
         // this.secondaryListingComponent.editOperation = true;
       });
     });
 
-    this.selectedOperator = operation.Operator ? this.contactAdapter.adapt(operation.Operator) : null;
-    this.operationalPlanService.getOperationSections(operation.Id).pipe(take(1)).subscribe((data) => {
+      this.selectedOperator = operation.Operator ? this.contactAdapter.adapt(operation.Operator) : null;
+      this.operationalPlanService.getOperationSections(operation.Id).pipe(take(1)).subscribe((data) => {
       console.log(data);
     });
 
-    formsArrayAsAny.controls[0].setValue({
+      formsArrayAsAny.controls[0].setValue({
       assignmentType: 'Primary',
-      operationType: this.operationTypes.find(p => p.Id == operation.OperationType.Id),
-      operationStatus: this.operationStatus.find(p => p.Id == operation.OperationStatus.Id),
+      operationType: this.operationTypes.find((p) => p.Id === operation.OperationType.Id),
+      operationStatus: this.operationStatus.find((p) => p.Id === operation.OperationStatus.Id)
     });
-    formsArrayAsAny.controls[1].setValue({
+      formsArrayAsAny.controls[1].setValue({
       port: operation.PortLocation ? operation.PortLocation : '',
       operationDate: operation.Date ? moment(operation.Date).toDate() : null,
       vesselETB: operation.ETB ? moment(operation.ETB).toDate() : null,
-      requestedBy: operation.RequestedBy ? this.requestedBy.find(p => p.Id == operation.RequestedBy.Id) : null,
-      description: operation.Description,
+      requestedBy: operation.RequestedBy ? this.requestedBy.find((p) => p.Id === operation.RequestedBy.Id) : null,
+      description: operation.Description
     });
+      console.log(this.operationToEdit.OperationSections);
+      this.opertionSections.forEach((sec) => {
+      sec.subSections.forEach((sub) => {
+        const opSection = this.operationToEdit.OperationSections;
+        const item =  opSection.find((x) => x.VesselSection.Id === sec.id && x.VesselSection.SubSections.find((x) => x.Id === sub.id));
+        if (item) {
+         sub.selected = true;
+       }
+        if (sub.selected) {
+          this.gobalSelectedSubSectionId.push(sub.id);
+        }
+      });
+    });
+    });
+
   }
 
   onSubmit(): void {
     console.log(this.formsData);
     this.isFormSubmmited = true;
     const formsArrayAsAny = this.formsData.controls.formsArray as any;
-    if ((formsArrayAsAny.controls[0].controls.operationStatus.value.Name == OperationStatusEnum.Confirmed || formsArrayAsAny.controls[0].controls.operationStatus.value.Name == OperationStatusEnum.Running || formsArrayAsAny.controls[0].controls.operationStatus.value.Name == OperationStatusEnum.Completed)
+    if ((formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Confirmed || formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Running || formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Completed)
       && (!formsArrayAsAny.controls[1].controls.operationDate.value || !formsArrayAsAny.controls[1].controls.port.value
-        || !this.selectedOperator || this.vesselSectionArray.length == 0)) {
+        || !this.selectedOperator || this.vesselSectionArray.length === 0)) {
       this.triggerToast('error', 'Message', `Port, Date, Operator and Sections must be registered before operation status can be updated as Confirmed, Running or Completed`);
-    }
-    else {
+    } else {
       const secondaryOpearations = this.secondaryListingComponent.updatedSecondaryOperations;
-      if (secondaryOpearations.some(secOperation => (secOperation.OperationStatus.Name == OperationStatusEnum.Confirmed || secOperation.OperationStatus.Name == OperationStatusEnum.Running || secOperation.OperationStatus.Name == OperationStatusEnum.Completed) && secOperation.VesselSectionModel.length == 0)) {
+      if (secondaryOpearations.some((secOperation) => (secOperation.OperationStatus.Name === OperationStatusEnum.Confirmed || secOperation.OperationStatus.Name === OperationStatusEnum.Running || secOperation.OperationStatus.Name === OperationStatusEnum.Completed) && secOperation.VesselSectionModel.length === 0)) {
         this.triggerToast('error', 'Message', `Sections must be registered before secondary operation status can be updated as Confirmed, Running or Completed`);
-      }
-      else {
+      } else {
+        if ((formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Completed)){
+          this.triggerToast('warn', 'Message', `Please update the fouling state before completing the operation.`);
+        }
         const operation = {
           vesselId: this.vesselId,
           operationTypeId: formsArrayAsAny.controls[0].controls.operationType.value.Id,
@@ -318,7 +339,7 @@ export class CreateOperationComponent implements OnInit {
     if (this.secondaryListingComponent) {
       this.secondaryListingComponent.clearSecondaryListing();
     }
-  
+
   }
 
   showAvailableOperators(e: any) {
@@ -370,13 +391,14 @@ export class CreateOperationComponent implements OnInit {
       const unSelectednode = rowsection.subSections.find((x) => x.selected === false);
       if (!unSelectednode) {
         rowsection.selected = true;
+        this.gobalSelectedSubSectionId.push(rowsubSection.id);
       }
     }
     this.selectSectionSubsection();
   }
 
   selectSectionSubsection() {
-    const vesselSection = JSON.parse(JSON.stringify(this.sections)) as VesselSection[];
+    const vesselSection = JSON.parse(JSON.stringify(this.opertionSections)) as VesselSection[];
     this.vesselSectionArray = [];
     vesselSection.forEach((sections) => {
       const selectedSubsections = sections.subSections.filter((x) => x.selected === true);

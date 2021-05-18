@@ -13,12 +13,42 @@ export class InstallationOperationsComponent implements OnInit {
   viewCreateOperation = false;
   isDataLoading = false;
   @ViewChild(CreateOperationComponent, { static: false }) createOperationComponentRef: CreateOperationComponent;
+  operationsRoutes: IRouteList[] = [];
+  operationalPlanMainRouteList: IRouteList[] = [
+    {
+      label: 'Installation',
+      route: '/operational-plan'
+    },
+    {
+      label: 'Hull Skater',
+      route: '/operational-plan/HullSkater'
+    },
+    {
+      label: 'Admin',
+      route: '/operational-plan/HullSkater'
+    }
+  ];
+  
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
     console.log(this.vesselId);
+
+    this.operationsRoutes = [ {
+      label: 'Operation',
+      route: '/operational-plan/operations/' + this.vesselId
+    },
+    {
+      label: 'Sections',
+      route: '/operational-plan/operations/sections/' + this.vesselId
+    },
+    {
+      label: 'Fouling State',
+      route: '/operational-plan/operations/fouling-state/' + this.vesselId
+    }
+    ];
   }
 
   showListOperation(data: boolean): void {

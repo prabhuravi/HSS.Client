@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { getInputTypes } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { AppConstants } from 'src/app/app.constants';
+import {CheckboxModule} from 'primeng/checkbox';
+
 
 @Component({
   selector: 'app-dynamic-form',
@@ -14,6 +16,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   @Input() config: any;
   @Input() formValues: any;
   @Input() formReset: any;
+  separateDialCode = false;
+ 
 
   @Output() formOnchangeEvent: EventEmitter<any> = new EventEmitter<any>();
   inputTypes: any;
