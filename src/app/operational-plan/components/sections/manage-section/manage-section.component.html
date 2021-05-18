@@ -9,7 +9,7 @@
             <th>
                 <form style="display: flex; align-items: center;">
                     <input class="kx-field--size-base" style="height: 25px; min-width: 130px; width: 45%; margin-right: 5px;"
-                        type="text" [(ngModel)]="sectionName" name = "addSectionName"
+                        type="text" [(ngModel)]="sectionName" name = "addSectionName" autocomplete="off"
                         [placeholder]="sectionToEdit? 'Update Section': 'Add Section'" #addSectionName />
                     <button *ngIf="!sectionToEdit" style="margin-right: 5px;" class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                         aria-label="Add Section" title="Add Section" (click)="addSection(addSectionName.value)"
@@ -93,7 +93,7 @@
                     <form style="display: flex; align-items: center;">
                         <input class="kx-field--size-base" style="height: 25px; min-width: 130px; width: 50%; margin-right: 5px;"
                             type="number" oninput="validity.valid || (value='');" min="1" name="subSectionNumbers[ri]"
-                            [(ngModel)]="subSectionNumbers[ri]" placeholder="Add sub-section" #subSectionNumber />
+                            [(ngModel)]="subSectionNumbers[ri]" placeholder="Add sub-section" autocomplete="off" #subSectionNumber />
                         <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                             aria-label="Add sub-section" title="Add Sub-section"
                             (click)="addSubSection(subSectionNumber.value, rowData, ri)"
