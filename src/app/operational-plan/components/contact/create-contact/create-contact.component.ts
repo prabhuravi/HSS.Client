@@ -78,19 +78,17 @@ export class CreateContactComponent implements OnInit {
         disabled: false
       },
       {
-        type: FormType.text,
+        type: FormType.phone,
         label: 'Phone',
         value: '',
         key: 'phone',
-        validators: [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern(this.formBuliderService.phoneNumberPattern)],
         disabled: false
       },
       {
-        type: FormType.text,
+        type: FormType.phone,
         label: 'Alternative Phone',
         value: '',
         key: 'alternativePhone',
-        validators: [Validators.minLength(10), Validators.maxLength(15), Validators.pattern(this.formBuliderService.phoneNumberPattern)],
         disabled: false
       },
       {
@@ -186,8 +184,8 @@ export class CreateContactComponent implements OnInit {
     this.contact.name =  this.formData.controls.name.value;
     this.contact.surName = this.formData.controls.surName.value;
     this.contact.email = this.formData.controls.email.value;
-    this.contact.phone  = this.formData.controls.phone.value;
-    this.contact.alternativePhone = this.formData.controls.alternativePhone.value;
+    this.contact.phone = this.formData.controls.phone.value? this.formData.controls.phone.value.e164Number: null;
+    this.contact.alternativePhone = this.formData.controls.alternativePhone.value? this.formData.controls.alternativePhone.value.e164Number: null;
     this.contact.ContactType = this.formData.controls.role.value;
     this.contact.contactTypeId = this.formData.controls.role.value.id;
     this.contact.vesselId = this.prepareInstallationService.installation.id;
@@ -203,6 +201,12 @@ export class CreateContactComponent implements OnInit {
     const newContact = this.contactAdapter.adapt(this.formData.value);
     newContact.contactTypeId = this.formData.controls.role.value.id;
     newContact.vesselId = this.prepareInstallationService.installation.id;
+    if (this.formData.controls.phone.value != null) {
+      newContact.phone = this.formData.controls.phone.value.e164Number;
+    }
+    if (this.formData.controls.alternativePhone.value != null) {
+      newContact.alternativePhone = this.formData.controls.alternativePhone.value.e164Number;
+    }
     console.log(newContact);
     this.contactService.createVesselContact(newContact).pipe(take(1)).subscribe((data) => {
       newContact.id = data.id;

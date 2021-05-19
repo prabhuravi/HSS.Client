@@ -129,3 +129,18 @@ input.kx-field:read-only::placeholder {
   color: #A9ABAD !important;
   font-size: 15px;
 }
+.iti__flag-container.open .dropdown-menu.country-dropdown {
+  color: #212529;
+  background-color: #ffffff;
+}
+
+ngx-intl-tel-input input:hover {
+	outline: none;
+	border-color: #2e92a0;
+}
+
+ngx-intl-tel-input input:focus {
+	outline: none;
+	border-color: #2e92a0;
+}
+
