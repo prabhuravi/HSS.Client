@@ -70,7 +70,7 @@
     "Leaflet.MultiOptionsPolyline": "github:hgoebl/Leaflet.MultiOptionsPolyline",
     "angular-google-charts": "^0.1.6",
     "angular-resize-event": "^1.2.1",
-    "bootstrap": "4.1.1",
+    "bootstrap": "4.3.1",
     "core-js": "^2.5.4",
     "d3": "^4.11.0",
     "google-charts": "^2.0.0",

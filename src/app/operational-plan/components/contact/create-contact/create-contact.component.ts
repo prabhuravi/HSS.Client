@@ -184,12 +184,8 @@ export class CreateContactComponent implements OnInit {
     this.contact.name =  this.formData.controls.name.value;
     this.contact.surName = this.formData.controls.surName.value;
     this.contact.email = this.formData.controls.email.value;
-    if (this.formData.controls.phone.value != null) {
-      this.contact.phone = this.formData.controls.phone.value.e164Number;
-    }
-    if (this.formData.controls.alternativePhone.value != null) {
-      this.contact.alternativePhone = this.formData.controls.alternativePhone.value.e164Number;
-    }
+    this.contact.phone = this.formData.controls.phone.value? this.formData.controls.phone.value.e164Number: null;
+    this.contact.alternativePhone = this.formData.controls.alternativePhone.value? this.formData.controls.alternativePhone.value.e164Number: null;
     this.contact.ContactType = this.formData.controls.role.value;
     this.contact.contactTypeId = this.formData.controls.role.value.id;
     this.contact.vesselId = this.prepareInstallationService.installation.id;
