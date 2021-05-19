@@ -87,23 +87,6 @@
                     type="number" placeholder="{{formItem.placeHolder ? formItem.placeHolder : 'Select '+ formItem.label}}" />
             </div>
         </div>
-        <div *ngSwitchCase="inputTypes.phone" class="kx-col   kx-col--12">
-        <!-- <ngx-intl-tel-input [cssClass]="'custom'"
-				[preferredCountries]="preferredCountries"
-				[enableAutoCountrySelect]="true"
-				[enablePlaceholder]="true"
-				[searchCountryFlag]="true"
-				[searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
-				[selectFirstCountry]="false"
-				[selectedCountryISO]="CountryISO.India"
-				[maxLength]="15"
-				[tooltipField]="TooltipLabel.Name"
-				[phoneValidation]="true"
-				[separateDialCode]="separateDialCode"
-				name="phone"
-				formControlName="phone">
-			</ngx-intl-tel-input> -->
-        </div>
         <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col   kx-col--12">
             <div class="kx-mt--tiny">
                 <p-autoComplete [formControlName]="formItem.key" [suggestions]="portLocations"
