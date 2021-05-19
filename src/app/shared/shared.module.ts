@@ -6,7 +6,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MultiSelectModule } from 'primeng/multiselect';
-import {InputTextareaModule} from 'primeng/inputtextarea'
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 
 import { NavigationTabComponent } from './components/navigation-tab/navigation-tab.component';
 import { ModalComponent } from './components/modal/modal.component';
@@ -26,7 +27,8 @@ import { NoDataComponent } from './components/no-data/no-data.component';
     ReactiveFormsModule,
     AutoCompleteModule,
     MultiSelectModule,
-    InputTextareaModule
+    InputTextareaModule,
+    NgxIntlTelInputModule
   ],
   exports: [
     NavigationTabComponent,
