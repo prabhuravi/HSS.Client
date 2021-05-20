@@ -1,5 +1,5 @@
 <app-load *ngIf="isDataLoading"></app-load>
-<p-table *ngIf="sections && sections.length > 0" [columns]="cols" [value]="operationSections" dataKey="id" editMode="row" [paginator]="true" #tt
+<p-table *ngIf="operationSections && operationSections.length > 0" [columns]="cols" [value]="operationSections" dataKey="Id" editMode="row" [paginator]="true" #tt
     [rows]="PRIMENG_CONSTANTS.rowCount" [rowsPerPageOptions]="[5,10,20,50,100,200,500]" rowExpandMode="single"
     tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
     <ng-template pTemplate="header" let-columns>
@@ -43,35 +43,38 @@
             </td>
             <td>{{ rowData.VesselSection.Name }}</td>
             <td></td>
-            <td> {{ rowData.VesselSection.FoulingState.State }}</td> 
+            <td> {{ rowData.VesselSectionOldFoulingState.State }}</td> 
+            <td> {{ rowData.VesselSectionNewFoulingState.State }}</td> 
             <td> {{ rowData.VesselSection.ModifiedDate | date:'MM/dd/yyyy HH:mm' }}</td>
            </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
         <tr>
-            <td [attr.colspan]="5">
-                <div class="kx-table--outer-border" [ngStyle]="rowData.VesselSection.SubSections.length > 0 ? {'padding-left': '37%'} : ''">
-                    <app-no-data [displayme]="rowData.VesselSection.SubSections && rowData.VesselSection.SubSections.length === 0"></app-no-data>
-                    <p-table [value]="rowData.VesselSection.SubSections" tableStyleClass="kx-table" autoLayout="true">
+            <td [attr.colspan]="6">
+                <div class="kx-table--outer-border" [ngStyle]="rowData.OperationSubSections.length > 0 ? {'padding-left': '24vw'} : ''">
+                    <app-no-data [displayme]="rowData.OperationSubSections && rowData.OperationSubSections.length === 0"></app-no-data>
+                    <p-table [value]="rowData.OperationSubSections" tableStyleClass="kx-table" autoLayout="true">
                         <ng-template pTemplate="body" let-rowData>
         <tr class="kx-row">
-            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">{{ rowData.SubSectionNumber }}
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">{{ rowData.SubSection.SubSectionNumber }}
+            </td>
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.SubSectionOldFoulingState.State }}
             </td>
             <td pEditableColumn [pEditableColumn]="rowData"
-            class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--5@ltp-s" style="margin-right: 6.2%;">
+            class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--3@ltp-s" style="padding-left: 3.9vw;">
             <p-cellEditor>
                 <ng-template pTemplate="input">
-                    <p-dropdown [options]="foulingStates" [(ngModel)]="rowData.FoulingState" appendTo="body"
+                    <p-dropdown [options]="foulingStates" [(ngModel)]="rowData.SubSectionNewFoulingState" appendTo="body"
                         (ngModelChange)="onFoulingStateChanged(rowData)" title="Click outside the cell to save" optionLabel="State"></p-dropdown>
                 </ng-template>
                 <ng-template pTemplate="output">
-                    {{ rowData.FoulingState.State }}
+                    {{ rowData.SubSectionNewFoulingState.State }}
                 </ng-template>
             </p-cellEditor>
         </td>
             <!-- <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--5@ltp-s" style="margin-right: 0.8%;">{{
                 rowData.FoulingState.State }}</td> -->
-            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.ModifiedDate | date:'MM/dd/yyyy HH:mm'}}
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s"  style="padding-left: 6vw;">{{ rowData.SubSection.ModifiedDate | date:'MM/dd/yyyy HH:mm'}}
             </td>           
         </tr>
     </ng-template>
@@ -82,4 +85,12 @@
 </ng-template>
 </p-table>
 
-<app-no-data [displayme]="sections && sections.length === 0"></app-no-data>
+<div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--4@ltp-s" style="width: 50%; float: right;">
+    <button class="kx-btn kx-btn--skin-secondary kx-btn--size-base" (click)="goToListOperations()">
+        <span class="kx-btn__inner">
+            <span class="kx-btn__txt">Back</span>
+        </span>
+    </button>
+</div>
+
+<app-no-data class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--12@ltp-s" [displayme]="operationSections && operationSections.length === 0"></app-no-data>

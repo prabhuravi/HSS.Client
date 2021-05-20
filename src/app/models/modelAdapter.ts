@@ -3,6 +3,7 @@ import { Contact, ContactRole, OperatorBooking } from './Contact';
 import { IModelAdapter } from './IModelAdapter';
 import { Installation, InstallationAISData, InstallationStatus, InstallationType, VesselType } from './Installation';
 import { Node } from './Node';
+import { Operation, OperationStatus } from './Operation';
 import { VesselSection, SectionStatus, SubSection, Section } from './Section';
 
 @Injectable({
@@ -215,6 +216,54 @@ export class ContactAdapter implements IModelAdapter<Contact> {
 
     }
 }
+
+@Injectable({
+    providedIn: 'root'
+})
+export class OperationStatusAdapter implements IModelAdapter<OperationStatus> {
+    constructor() { }
+    adapt(item: any): OperationStatus {
+        return new OperationStatus(
+            item.Id ? item.Id : item.id ? item.id : 0,
+            item.Name ? item.Name : item.name ? item.name : ''
+            );
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class OperationAdapter implements IModelAdapter<Operation> {
+    constructor(private operationStatusAdapter: OperationStatusAdapter) { }
+    adapt(item: any): Operation {
+        return new Operation(
+            item.Id ? item.Id : item.id ? item.id : 0,
+            item.VesselId ? item.VesselId : item.vesselId ? item.vesselId : 0,
+            item.OperationName ? item.OperationName : item.operationName ? item.operationName : '',
+            item.OperationTypeId ? item.OperationTypeId : item.operationTypeId ? item.operationTypeId : 0,
+            item.date ? item.date : item.Date ? item.Date : null,
+            item.StatusId ? item.StatusId : item.statusId ? item.statusId : 0,
+            item.PortId ? item.PortId : item.portId ? item.portId : 0,
+            item.OperatorId ? item.OperatorId : item.operatorId ? item.operatorId : 0,
+            0,
+            item.RequestedById ? item.RequestedById : item.requestedById ? item.requestedById : 0,
+            item.Description ? item.Description : item.description ? item.description : '',
+            item.ETA ? item.ETA : item.eta ? item.eta : null,
+            item.ETB ? item.ETB : item.etb ? item.etb : null,
+            item.CreatedBy ? item.CreatedBy : item.createdBy ? item.createdBy : '',
+            null,
+            null,
+            null,
+            item.OperationStatus ? this.operationStatusAdapter.adapt(item.OperationStatus) : item.operationStatus? this.operationStatusAdapter.adapt(item.operationStatus) : null,
+            null,
+            null,
+            null,
+            null
+
+            );
+    }
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -226,7 +275,8 @@ export class InstallationAdapter implements IModelAdapter<Installation> {
         private nodeAdapter: NodeAdapter,
         private foulingStateAdapter: FoulingStateAdapter,
         private installationTypeAdapter: InstallationTypeAdapter,
-        private aisDataAdapter: InstallationAISDataAdapter    ) {
+        private aisDataAdapter: InstallationAISDataAdapter,
+        private operationAdapter: OperationAdapter    ) {
 
     }
     adapt(item: any): Installation {
@@ -249,7 +299,9 @@ export class InstallationAdapter implements IModelAdapter<Installation> {
             item.foulingState ? this.foulingStateAdapter.adapt(item.foulingState) : item.FoulingState ? this.foulingStateAdapter.adapt(item.FoulingState) : null,
             item.installationTypeId ? item.installationTypeId : item.InstallationTypeId ? item.InstallationTypeId : 0,
             item.installationType ? this.installationTypeAdapter.adapt(item.installationType) : item.InstallationType ? this.installationTypeAdapter.adapt(item.InstallationType) : null,
-            item.AISData ? this.aisDataAdapter.adapt(item.AISData) : item.aisData ? this.aisDataAdapter.adapt(item.aisData) : null
+            item.AISData ? this.aisDataAdapter.adapt(item.AISData) : item.aisData ? this.aisDataAdapter.adapt(item.aisData) : null,
+            item.Operation ? this.operationAdapter.adapt(item.Operation) : item.operation ? this.operationAdapter.adapt(item.operation) : null
+
         );
     }
 }

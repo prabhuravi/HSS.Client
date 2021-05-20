@@ -112,8 +112,10 @@
           "GetOperatorLogs": "/GetOperatorLogs",
           "AddOperatorLog": "/AddOperatorLog",
           "GetPortMeteorology": "/GetOperationPortMeteorology",
-          "UpdateBerthDepth": "/UpdateBerthDepth",
           "UpdateOperationFouling": "/UpdateOperationFouling",
+          "DeleteOperationSection": "/DeleteOperationSection",
+          "DeleteOperationSubSection": "/DeleteOperationSubSection",
+          "UpdateBerthDepth": "/UpdateBerthDepth",
           "DownloadMissionLogFile": "/DownloadMissionLogFile"
         }
       },

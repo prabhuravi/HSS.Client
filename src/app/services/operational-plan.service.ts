@@ -326,6 +326,20 @@ export class OperationalPlanService {
     // return of(true);
     return this.http.putData(requestData);
   }
+  deleteOperationSection(id: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperationSection}/${id}`,
+    };
+    // return of(true);
+    return this.http.deleteData(requestData);
+  }
+  deleteOperationSubSection(id: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperationSubSection}/${id}`,
+    };
+    // return of(true);
+    return this.http.deleteData(requestData);
+  }
 
   updateOperationPlan(planId: number, planData: any): Observable<any> {
     const requestData = {

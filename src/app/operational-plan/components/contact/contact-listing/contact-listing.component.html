@@ -1,8 +1,8 @@
 
 <app-load *ngIf="isDataLoading"></app-load>
-<p-table *ngIf="contacts.length > 0" [columns]="cols" [value]="contacts" dataKey="id" editMode="row"  #tt [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" [responsive]="true" [resetPageOnSort]="false" [rowsPerPageOptions]="[5,10,20,50,100,200,500]"
-  tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
-  <ng-template pTemplate="header" let-columns>
+<p-table *ngIf="contacts.length > 0" [columns]="cols" [value]="contacts" dataKey="id" editMode="row" [resizableColumns]="true" #tt [scrollable]="true" scrollHeight="170px" [paginator]="true" [rows]="PRIMENG_CONSTANTS.rowCount" [responsive]="true" [resetPageOnSort]="false" [rowsPerPageOptions]="[5,10,20,50,100,200,500]"
+  [tableStyleClass]="isOperationScreen ? 'p-datatable-sm' : 'kx-table kx-table--outer-border'" autoLayout="true">
+  <ng-template pTemplate="header" let-columns *ngIf="!isOperationScreen">
     <tr>
        <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield"
           [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
@@ -31,10 +31,10 @@
       <td>{{ rowData.alternativePhone }}</td>
       <td>{{ rowData.phone }}</td>
       <td>{{ rowData.ContactType ? rowData.ContactType.name : ''}}</td>
-      <td>
+      <td *ngIf="!isOperationScreen">
         <p-checkbox [name]="rowData.id + rowData.firstName" [(ngModel)]="rowData.tagTraining" [disabled]="true" [binary]="true"></p-checkbox>
       </td>
-      <td>
+      <td *ngIf="!isOperationScreen">
         <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit contact"
           title="Edit contact" (click)="onContactEditInit(rowData)">
           <span class="kx-btn__inner">
