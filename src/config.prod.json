@@ -111,6 +111,7 @@
           "GetSecondaryOperations": "/GetSecondaryOperations",
           "GetOperatorLogs": "/GetOperatorLogs",
           "AddOperatorLog": "/AddOperatorLog",
+          "GetPortMeteorology": "/GetOperationPortMeteorology",
           "UpdateOperationFouling": "/UpdateOperationFouling",
           "DeleteOperationSection": "/DeleteOperationSection",
           "DeleteOperationSubSection": "/DeleteOperationSubSection"

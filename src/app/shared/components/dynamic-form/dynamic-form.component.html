@@ -25,7 +25,7 @@
 
         <div *ngSwitchCase="inputTypes.dropdown" class="kx-col  kx-col--12">
             <div class="kx-mt--tiny">
-                <p-dropdown styleClass="u--fullWidth" placeholder="Select {{formItem.label}}"
+                <p-dropdown styleClass="u--fullWidth" placeholder="{{formItem.placeHolder ? formItem.placeHolder : 'Select '+ formItem.label}}"
                     [formControlName]="formItem.key" [options]="formItem.options" [optionLabel]="formItem.optionLabel"
                     (onChange)="onchangeEvents($event,formItem)" filter="true"></p-dropdown>
             </div>
@@ -63,7 +63,7 @@
         <div *ngSwitchCase="inputTypes.text" class="kx-col kx-col--12">
             <div class="kx-form__element">
                 <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
-                    type="text" placeholder="Enter {{formItem.label}}" />
+                    type="text" placeholder="{{formItem.placeHolder ? formItem.placeHolder : 'Enter '+ formItem.label}}" />
             </div>
         </div>
         <div *ngSwitchCase="inputTypes.textarea" class="kx-col kx-col--12">
@@ -84,25 +84,8 @@
         <div *ngSwitchCase="inputTypes.number" class="kx-col   kx-col--12">
             <div class="kx-form__element u--positionRelative">
                 <input [formControlName]="formItem.key" [id]="formItem.key" class="kx-field kx-field--size-base"
-                    type="number" placeholder="Select {{formItem.label}}" />
+                    type="number" placeholder="{{formItem.placeHolder ? formItem.placeHolder : 'Select '+ formItem.label}}" />
             </div>
-        </div>
-        <div *ngSwitchCase="inputTypes.phone" class="kx-col   kx-col--12">
-        <!-- <ngx-intl-tel-input [cssClass]="'custom'"
-				[preferredCountries]="preferredCountries"
-				[enableAutoCountrySelect]="true"
-				[enablePlaceholder]="true"
-				[searchCountryFlag]="true"
-				[searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
-				[selectFirstCountry]="false"
-				[selectedCountryISO]="CountryISO.India"
-				[maxLength]="15"
-				[tooltipField]="TooltipLabel.Name"
-				[phoneValidation]="true"
-				[separateDialCode]="separateDialCode"
-				name="phone"
-				formControlName="phone">
-			</ngx-intl-tel-input> -->
         </div>
         <div *ngSwitchCase="inputTypes.autocomplete" class="kx-col   kx-col--12">
             <div class="kx-mt--tiny">
@@ -111,6 +94,28 @@
                     field="PortName" placeholder="Type for suggestions..." [minLength]="1"></p-autoComplete>
             </div>
         </div>
+
+        <div *ngSwitchCase="inputTypes.phone" class="kx-col kx-col--12">
+            <div>
+			    <ngx-intl-tel-input
+                    [cssClass]="'custom'"
+				    [preferredCountries]="preferredCountries"
+                    [enableAutoCountrySelect]="true"
+                    [enablePlaceholder]="true"
+                    [searchCountryFlag]="true"
+                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                    [selectFirstCountry]="false"
+                    [selectedCountryISO]="CountryISO.Norway"
+                    [maxLength]="15"
+                    [tooltipField]="TooltipLabel.Name"
+                    [phoneValidation]="true"
+                    [separateDialCode]="false"
+                    [inputId]="formItem.key"
+                    [formControlName]="formItem.key">
+			    </ngx-intl-tel-input>
+		    </div>
+        </div>
+        
         <div *ngSwitchDefault class="kx-col kx-col--5">
             {{formItem.type}} : input type is not handled
         </div>

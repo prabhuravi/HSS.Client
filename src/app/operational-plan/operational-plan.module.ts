@@ -52,6 +52,7 @@ import { PrepareInstallationGuard} from '../applications-guard.service';
 import { ManageSectionComponent } from './components/sections/manage-section/manage-section.component';
 import { OpertionSectionComponent } from './components/operations-overview/installation-operations/opertion-section/opertion-section.component';
 import { OpertionFoulingComponent } from './components/operations-overview/installation-operations/opertion-fouling/opertion-fouling.component';
+import { PortMeteorologyComponent } from './components/operations-overview/installation-operations/port-meteorology/port-meteorology.component';
 
 const routes: Routes = [
   {
@@ -134,7 +135,8 @@ const routes: Routes = [
         ManageSectionComponent,
         ContactSearchComponent,
         OpertionSectionComponent,
-        OpertionFoulingComponent],
+        OpertionFoulingComponent,
+        PortMeteorologyComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

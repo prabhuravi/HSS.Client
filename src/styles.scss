@@ -305,3 +305,123 @@ body .ui-widget-overlay {
   body .ui-overlaypanel.ui-overlaypanel-flipped:before {
     border-top-color: #c8c8c8;
   }
+
+.iti {
+    display: block;
+    width: 100%;
+
+  .iti__flag-container .dropdown-menu.country-dropdown {
+    display: none;
+  }
+
+  .iti__flag-container.open .dropdown-menu.country-dropdown {
+    display: block;
+    inset: 100% auto auto 0px;
+    transform: translateY(0px);
+
+    position: absolute;
+    z-index: 1000;
+    float: left;
+    min-width: 10rem;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    text-align: left;
+    list-style: none;
+    background-clip: padding-box;
+    border-radius: .25rem;
+  }
+
+  .tooltip {
+    display: block;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1070;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: start;
+    text-decoration: none;
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+    word-break: normal;
+    word-spacing: normal;
+    white-space: normal;
+    line-break: auto;
+    font-size: .875rem;
+
+    & .arrow {
+      position: absolute;
+      display: block;
+      width: .8rem;
+      height: .4rem;
+
+      &:before {
+        position: absolute;
+        content: '';
+        border-color: transparent;
+        border-style: solid;
+      }
+    }
+    &.show {
+      opacity: 1.0;
+    }
+  }
+}
+
+.iti .dropdown-menu.country-dropdown {
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-color: #c7cace;
+	margin-top: -1px;
+}
+
+.iti .iti__country-list {
+	box-shadow: none;
+	font-size: 14px;
+	margin-left: 0;
+	width: 300px;
+	max-height: 170px;
+    background-color: inherit;
+}
+
+.iti__flag-container.open + input {
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.iti .search-container input {
+	font-size: 14px;
+	border-color: #c7cace;
+	border-radius: 0;
+	padding: 5px 10px;
+}
+
+.iti .search-container input:focus {
+	outline: none;
+}
+
+@media screen and (max-width: 479px) {
+	.iti .iti__country-list {
+		width: 100vw;
+	}
+}
+
+ngx-intl-tel-input input {
+	height: 2.2em;
+    width: 100%;
+	margin-bottom: 20px;
+	padding: 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #c7cace;
+	border-radius: 2px;
+	font-size: 1em;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+ngx-intl-tel-input.ng-invalid.ng-touched input {
+	border: 1px solid #c0392b;
+}

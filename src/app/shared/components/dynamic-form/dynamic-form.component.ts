@@ -1,10 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { getInputTypes } from '../../../app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { AppConstants } from 'src/app/app.constants';
-import {CheckboxModule} from 'primeng/checkbox';
-
+import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -27,6 +26,11 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   portLocations: any[] = [];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
 
+	SearchCountryField = SearchCountryField;
+	TooltipLabel = TooltipLabel;
+	CountryISO = CountryISO;
+	preferredCountries: CountryISO[] = [];
+  
   constructor(
     public fb: FormBuilder,
     public operationalPlanService: OperationalPlanService

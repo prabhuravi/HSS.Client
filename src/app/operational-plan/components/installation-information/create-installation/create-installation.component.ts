@@ -91,7 +91,7 @@ export class CreateInstallationComponent implements OnInit {
         label: 'IMO Number',
         value: '',
         key: 'ImoNo',
-        validators: [Validators.required, Validators.min(1000000), Validators.max(9999999)],
+        placeHolder: 'IMO Number',
         disabled: false
       },
       {
@@ -99,7 +99,8 @@ export class CreateInstallationComponent implements OnInit {
         label: 'Installation Id',
         value: '',
         key: 'InstallationId',
-        validators: [Validators.required, Validators.maxLength(7)],
+        validators: [Validators.required],
+        placeHolder: 'Installation Id',
         disabled: false
       },
       {
@@ -109,7 +110,7 @@ export class CreateInstallationComponent implements OnInit {
         value: '',
         key: 'VesselType',
         optionLabel: 'name',
-        validators: [Validators.required],
+        placeHolder: 'Installation Type',
         disabled: false
       },
       {
@@ -119,7 +120,7 @@ export class CreateInstallationComponent implements OnInit {
         value: '',
         key: 'InstallationType',
         optionLabel: 'name',
-        validators: [Validators.required],
+        placeHolder: 'Installation Type General',
         disabled: false
       },
       {
@@ -128,8 +129,8 @@ export class CreateInstallationComponent implements OnInit {
         options: this.installationStatus,
         value: this.installationStatus[0],
         key: 'InstallationStatus',
-        optionLabel: 'name',
         validators: [Validators.required],
+        optionLabel: 'name',
         disabled: false
       },
       {
@@ -137,7 +138,8 @@ export class CreateInstallationComponent implements OnInit {
         label: 'Node Number',
         value: '',
         key: 'NodeNumber',
-        validators: [Validators.required, Validators.min(10000), Validators.max(99999)],
+        validators: [Validators.required],
+        placeHolder: 'Node Number',
         disabled: false
       },
       {
@@ -145,7 +147,8 @@ export class CreateInstallationComponent implements OnInit {
         label: 'IP Address',
         value: '',
         key: 'gatewayIP',
-        validators: [Validators.required, Validators.pattern(this.formBuliderService.ipAddressPattern)],
+        validators: [Validators.required],
+        placeHolder: 'IP Address',
         disabled: false
       }
     ];

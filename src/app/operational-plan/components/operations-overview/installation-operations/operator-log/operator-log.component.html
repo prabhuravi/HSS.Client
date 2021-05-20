@@ -1,12 +1,10 @@
-
 <form style="margin-top: 5px; margin-bottom: -15px;">
     <div class="kx-row kx-row--gutters">
         <div class="kx-col kx-col--4 kx-col--8@tab-m kx-col--8@mob-m kx-col--5@ltp-s">
             <!-- <label class="kx-label">Note</label><small
                 class="u--textDanger">*</small> -->
             <div class="kx-mt--tiny">
-                <input class="kx-field kx-field--size-base" type="text"
-                    [(ngModel)]="operatorNote" name="operatorNote"
+                <input class="kx-field kx-field--size-base" type="text" [(ngModel)]="operatorNote" name="operatorNote"
                     placeholder="Enter a note" autocomplete="off" />
             </div>
         </div>
@@ -27,8 +25,7 @@
 </div>
 <div *ngIf="operatorLogs.length > 0"
     style="border: thin solid #c3c3c4f0; border-radius: 3px; height: 163px;overflow-y: auto;">
-    <table
-        class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
+    <table class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
         <thead>
             <tr>
                 <th style="width: 70%;">Note</th>
