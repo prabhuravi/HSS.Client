@@ -36,8 +36,8 @@ export class ListOperationsComponent implements OnInit {
     { field: 'Id', header: 'Action', sortfield: '' }
   ];
 
-  constructor(private operationalPlanService: OperationalPlanService,private confirmationService: ConfirmationService, private route: ActivatedRoute,
-  private messageService: MessageService) { }
+  constructor(private operationalPlanService: OperationalPlanService, private confirmationService: ConfirmationService, private route: ActivatedRoute,
+    private messageService: MessageService) { }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
@@ -53,19 +53,32 @@ export class ListOperationsComponent implements OnInit {
 
   }
 
-  downloadOperatorLogs(missionId)
-  {
+  downloadOperatorLogs(missionId) {
     this.isDataLoading = true;
     this.operationalPlanService.downloadMissionLog(missionId).pipe(take(1)).subscribe((response) => {
-      console.log(response);
       let blob: any = new Blob([response], { type: 'text/csv; charset=utf-8' });
-      fileSaver.saveAs(blob,'Test.csv');
+      fileSaver.saveAs(blob, 'Test.csv');
       this.isDataLoading = false;
-    });
+    },
+      err => {
+        this.isDataLoading = false;
+        console.log(err.message);
+        if (err.status == 404) {
+          this.triggerToast('error', 'Message', `No operator comments generated for the mission.`);
+        }
+        else {
+          this.confirmationService.confirm({
+            header: 'Error',
+            message: `<span class="u--bgDanger">${err.message}</span>`,
+            rejectVisible: false,
+            acceptLabel: 'Ok'
+          });
+        }
+      }
+    );
   }
 
-  loadOperations()
-  {
+  loadOperations() {
     this.isDataLoading = true;
     this.operationalPlanService.getOperations(this.vesselId).pipe(take(1)).subscribe((data) => {
       console.log(data);
@@ -77,29 +90,24 @@ export class ListOperationsComponent implements OnInit {
     });
   }
 
-  editOperation(operation: Operation)
-  {
+  editOperation(operation: Operation) {
     this.operationEdited.emit(operation);
   }
 
-  goToOperationSections(operation: Operation)
-  {
+  goToOperationSections(operation: Operation) {
     this.operationEdited.emit(operation);
     console.log(operation);
   }
-  goToSecondaryOperationSections(secOperation: SecondaryOperation)
-  {
+  goToSecondaryOperationSections(secOperation: SecondaryOperation) {
     console.log(secOperation);
   }
 
-  deleteOperation(operation: Operation)
-  {
+  deleteOperation(operation: Operation) {
     console.log(operation);
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the operation?',
       accept: () => {
-        if(operation.OperationStatus.Name == OperationStatusEnum.Requested || operation.OperationStatus.Name == OperationStatusEnum.Pending)
-        {
+        if (operation.OperationStatus.Name == OperationStatusEnum.Requested || operation.OperationStatus.Name == OperationStatusEnum.Pending) {
           this.isDataLoading = true;
           this.operationalPlanService.deleteOperation(operation.Id).pipe(take(1)).subscribe((data) => {
             this.isDataLoading = false;
@@ -107,15 +115,14 @@ export class ListOperationsComponent implements OnInit {
             this.loadOperations();
           });
         }
-        else{
+        else {
           this.triggerToast('error', 'Message', `You can delete operation only when status is Requested or Pending`);
         }
       }
     });
   }
 
-  deleteSecondaryOperation(secondaryOperation: SecondaryOperation)
-  {
+  deleteSecondaryOperation(secondaryOperation: SecondaryOperation) {
     console.log(secondaryOperation);
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the secondary operation?',
@@ -130,8 +137,7 @@ export class ListOperationsComponent implements OnInit {
     });
   }
 
-  goToCreateOperation()
-  {
+  goToCreateOperation() {
     this.showCreateOperation.emit(true);
   }
 

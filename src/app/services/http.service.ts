@@ -95,10 +95,7 @@ export class HttpService {
   }
 
   getFile(requestData: any): Observable<any> {
-   return this.http.get(requestData.endPoint, { responseType: 'blob' }).pipe(
-      retry(0),
-      catchError(this.handleError.bind(this))
-    );
+   return this.http.get(requestData.endPoint, { responseType: 'blob' });
   }
 
   putData(requestData: any): Observable<any> {
