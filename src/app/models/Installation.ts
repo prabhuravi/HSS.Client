@@ -1,4 +1,5 @@
 import { Node } from './Node';
+import { Operation } from './Operation';
 
 export class Installation {
     constructor(
@@ -19,7 +20,8 @@ export class Installation {
         public foulingState: IFoulingState,
         public installationTypeId: number,
         public installationType: InstallationType,
-        public aisData: InstallationAISData) { }
+        public aisData: InstallationAISData,
+        public operation: Operation) { }
 
 }
 
@@ -58,3 +60,5 @@ export class InstallationAISData {
      public heading: string
     ) {}
 }
+
+

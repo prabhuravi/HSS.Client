@@ -10,17 +10,17 @@
 <app-list-operations *ngIf="!viewCreateOperation" (showCreateOperation)="showCreateOperation($event)"
 (operationEdited)="onOperationEdited($event)" #listOperations>
 </app-list-operations>
-<p-tabView  *ngIf="viewCreateOperation">
+<p-tabView  *ngIf="viewCreateOperation" [(activeIndex)]="index" dynamic="true" (onChange)="handleChange($event)">
     <p-tabPanel header="Operation">
-        <app-create-operation (showListOperation)="showListOperation($event)" #createOperation>
+        <app-create-operation (formAlteredEvent)="updateTabs($event)" (showListOperation)="showListOperation($event)" #createOperation>
         </app-create-operation>
     </p-tabPanel>
-    <p-tabPanel header="Section"  *ngIf="createOperation.editOperation">
+    <p-tabPanel header="Section"   *ngIf="createOperation.editOperation">
         <app-opertion-section #operationSections [vesselSections]="createOperation.sections" [operation]="createOperation.operationToEdit" [gobalSelectedSubSectionId]="createOperation.gobalSelectedSubSectionId" >
         </app-opertion-section>
     </p-tabPanel>
     <p-tabPanel header="Fouling"  *ngIf="createOperation.editOperation">
-            <app-opertion-fouling #operationSections [sections]="createOperation.sections" [operation]="createOperation.operationToEdit">
+            <app-opertion-fouling #operationFouling [sections]="createOperation.sections" [operation]="createOperation.operationToEdit">
         </app-opertion-fouling>
     </p-tabPanel>
 </p-tabView>

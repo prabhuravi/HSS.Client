@@ -1,5 +1,5 @@
 <app-load *ngIf="isDataLoading"></app-load>
-<p-table *ngIf="operationSections && operationSections.length > 0" [columns]="cols" [value]="operationSections"  [resetPageOnSort]="false" dataKey="id" editMode="row" [paginator]="true" #tt
+<p-table *ngIf="operationSections && operationSections.length > 0" [columns]="cols" [value]="operationSections"  [resetPageOnSort]="false" dataKey="Id" editMode="row" [paginator]="true" #tt
   [rows]="PRIMENG_CONSTANTS.rowCount" [rowsPerPageOptions]="[5,10,20,50,100,200,500] " [responsive]="true"
   rowExpandMode="single" tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
   <ng-template pTemplate="header" let-columns>
@@ -57,17 +57,17 @@
   
     <tr>
       <td [attr.colspan]="5">
-        <div class="kx-table--outer-border" [ngStyle]="rowData.VesselSection.SubSections.length > 0 ? {'padding-left': '37%'} : ''" >
-          <app-no-data [displayme]="rowData.VesselSection.SubSections && rowData.VesselSection.SubSections.length === 0"></app-no-data>
-          <p-table *ngIf="rowData.VesselSection.SubSections.length > 0" [value]="rowData.VesselSection.SubSections" tableStyleClass="kx-table" autoLayout="true">
+        <div class="kx-table--outer-border" [ngStyle]="rowData.OperationSubSections.length > 0 ? {'padding-left': '36.7vw'} : ''" >
+          <app-no-data [displayme]="rowData.OperationSubSections && rowData.OperationSubSections.length === 0"></app-no-data>
+          <p-table *ngIf="rowData.OperationSubSections.length > 0" [value]="rowData.OperationSubSections" tableStyleClass="kx-table" autoLayout="true">
             <ng-template pTemplate="body" let-rowData>
     <tr class="kx-row">
 
       <!-- <td style ="width: 25rem;"></td> -->
-      <td class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.SubSectionNumber }}</td>
-      <td class="kx-col kx-col--12 kx-col--6@mob-m kx-col--6@tab-m kx-col--6@ltp-s" style="margin-right: 0.8%;">
-        {{ rowData.SectionStatus.Name }}</td>
-      <td class="kx-col kx-col--12 kx-col--2@mob-m kx-col--2@tab-m kx-col--1@ltp-s">
+      <td class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.SubSection.SubSectionNumber }}</td>
+      <td class="kx-col kx-col--12 kx-col--6@mob-m kx-col--6@tab-m kx-col--6@ltp-s" style="padding-left: 9.2vw;">
+        {{ rowData.SubSection.SectionStatus.Name }}</td>
+      <td class="kx-col kx-col--12 kx-col--2@mob-m kx-col--2@tab-m kx-col--1@ltp-s" style="padding-left: 0.4vw;">
 
         <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete section"
           title="Delete section" (click)="onSubSectionDelete(rowData)">
@@ -92,4 +92,13 @@
 
 </p-table>
 
-<app-no-data [displayme]="operationSections && operationSections.length === 0"></app-no-data>
+
+<div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--4@ltp-s" style="width: 50%; float: right;">
+  <button class="kx-btn kx-btn--skin-secondary kx-btn--size-base" (click)="goToListOperations()">
+      <span class="kx-btn__inner">
+          <span class="kx-btn__txt">Back</span>
+      </span>
+  </button>
+</div>
+
+<app-no-data class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--12@ltp-s" [displayme]="operationSections && operationSections.length === 0"></app-no-data>

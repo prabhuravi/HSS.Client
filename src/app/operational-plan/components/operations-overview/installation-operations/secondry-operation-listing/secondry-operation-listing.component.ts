@@ -31,6 +31,8 @@ export class SecondryOperationListingComponent implements OnInit {
   secondaryconfigs: any[] = [];
   selectedVesselSection: VesselSection[] = [];
   @Input() sections: VesselSection[] = [];
+  @Input() isFormDirty: boolean;
+  @Input() isEditOperation: boolean;
   @Input() gobalSelectedSubSectionId: number[] = [];
   editOperation = false;
   disableForms = new Array<boolean>(100).fill(false);
@@ -112,6 +114,8 @@ export class SecondryOperationListingComponent implements OnInit {
        const item =  element.VesselSectionModel.find((x) => x.Id === sec.id && x.SubSections.find((x) => x.Id === sub.id));
        if(item){
          sub.selected = true;
+       } else{
+         sub.selected = false;
        }
        if (sub.selected) {
           this.gobalSelectedSubSectionId.push(sub.id);
@@ -200,6 +204,9 @@ export class SecondryOperationListingComponent implements OnInit {
 
   }
   onSectionSelected(section: VesselSection) {
+    if(this.isEditOperation){
+      this.isFormDirty = true;
+    }
     if (section.selected) {
       section.selected = false;
       section.subSections.forEach((subSection) => {
@@ -214,6 +221,10 @@ export class SecondryOperationListingComponent implements OnInit {
   }
 
   onSubSectionSelected(rowsection: VesselSection, rowsubSection: SubSection) {
+    if(this.isEditOperation){
+      this.isFormDirty = true;
+      console.log(this.isFormDirty);
+    }
     if (rowsubSection.selected) {
       rowsubSection.selected = false;
       rowsection.selected = false;

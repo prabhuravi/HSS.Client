@@ -176,7 +176,7 @@
                     margin-left: 25px;" (secondaryUpdated)="secondaryListing.updateSecondaryOperationList($event)"
                             #createSecondaryOperation>
                         </app-create-secondry-operation> -->
-                        <app-secondry-operation-listing [sections]="sections"
+                        <app-secondry-operation-listing [sections]="sections" [isEditOperation]="editOperation" [isFormDirty]="isFormDirty"
                             [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" #secondaryListing style="width: 100%;
                         margin-left: 13px;">
                         </app-secondry-operation-listing>
@@ -216,7 +216,8 @@
                         <div class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
                             <div class="kx-card kx-card--skin-default"
                                 style="height: 250px; margin-top: 20px;padding: 5px;margin-left: 10px;">
-                                <b>INSTALLATION CONTACT DETAILS</b>
+                                <!-- <b>INSTALLATION CONTACT DETAILS</b> -->
+                                <app-contact-listing #contactListing [isOperationScreen]="true"></app-contact-listing>
                             </div>
                         </div>
                         <div *ngIf="editOperation" class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">

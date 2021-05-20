@@ -111,7 +111,9 @@
           "GetSecondaryOperations": "/GetSecondaryOperations",
           "GetOperatorLogs": "/GetOperatorLogs",
           "AddOperatorLog": "/AddOperatorLog",
-          "UpdateOperationFouling": "/UpdateOperationFouling"
+          "UpdateOperationFouling": "/UpdateOperationFouling",
+          "DeleteOperationSection": "/DeleteOperationSection",
+          "DeleteOperationSubSection": "/DeleteOperationSubSection"
         }
       },
       "Installation": {

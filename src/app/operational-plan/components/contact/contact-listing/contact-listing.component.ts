@@ -16,6 +16,7 @@ export class ContactListingComponent implements OnInit {
 
   isDataLoading = false;
   @Input() excludeSearch: boolean;
+  @Input() isOperationScreen: boolean;
 
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   @Output() contactOnEdit: EventEmitter<any> = new EventEmitter<any>();

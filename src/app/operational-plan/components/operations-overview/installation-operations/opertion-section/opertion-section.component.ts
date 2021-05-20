@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { element } from 'protractor';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import { SubSection, VesselSection } from 'src/app/models/Section';
+import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { SectionService } from 'src/app/services/section.service';
 
 @Component({
@@ -17,7 +18,8 @@ export class OpertionSectionComponent implements OnInit {
 
   constructor(public sectionService: SectionService,
               public fb: FormBuilder, private confirmationService: ConfirmationService,
-              private messageService: MessageService, private route: ActivatedRoute) { }
+              private messageService: MessageService, private route: ActivatedRoute,
+              private operationalPlanService: OperationalPlanService, private router: Router) { }
 
 isDataLoading = false;
 @Input() vesselSections: VesselSection[];
@@ -41,21 +43,28 @@ cols = [
 ];
 
 ngOnInit() {
-  this.onOperationSectionLoad();
+  this.onOperationSectionLoad(null);
 }
-onOperationSectionLoad() {
-if (this.operation.OperationSections) {
+onOperationSectionLoad(op: any) {
+  if(op){
+    this.operation = op;
+  }
+  console.log('sectionLoad');
+  this.operationSections = [];
+  if (this.operation.OperationSections) {
   this.operation.OperationSections.forEach((opSection: any) => {
     this.operationSections.push(opSection);
   });
  }
 
-if (this.operation.SecondaryOperations) {
+  if (this.operation.SecondaryOperations) {
    if (this.operation.SecondaryOperations.OperationSections) {
     this.operation.SecondaryOperations.OperationSections.forEach((opSection: any) => {
       this.operationSections.push(opSection);
   });
    }
+
+   console.log(this.operationSections);
  }
 }
 isBookedSubsection(rowsubSection: SubSection) {
@@ -103,45 +112,42 @@ this.vesselSections = data;
 }
 }
 
-onSectionRowDelete(vesselSectionRow: VesselSection) {
+onSectionRowDelete(operationSection: any) {
 this.confirmationService.confirm({
-message: 'Are you sure you want to delete this section?',
+message: 'Are you sure you want to remove this section from this operation?',
 accept: () => {
-this.isDataLoading = true;
-this.vesselSections = this.vesselSections.filter((x) => x !== vesselSectionRow);
-this.triggerToast('success', 'Success Message', `Section deleted successfully`);
-this.isDataLoading = false;
-// this.sectionService.deleteVesselSection(vesselSectionRow.id).pipe(take(1)).subscribe((data) => {
-// this.isDataLoading = false;
-// this.vesselSections = this.vesselSections.filter((x) => x !== vesselSectionRow);
-// this.subSectionFlag = false;
-// this.loadVesselSections();
-// this.triggerToast('success', 'Success Message', `Section deleted successfully`);
-// });
+  this.operationalPlanService.deleteOperationSection(operationSection.Id).pipe(take(1)).subscribe((data) => {
+    this.isDataLoading = true;
+    this.operationSections = this.operationSections.filter((x) => x !== operationSection);
+    this.triggerToast('success', 'Success Message', `Section deleted successfully`);
+    this.isDataLoading = false;
+  });
+
 }
 });
 }
 
-onSubSectionDelete(subSectionRow: SubSection) {
+onSubSectionDelete(operationSubSection: any) {
 
 this.confirmationService.confirm({
-message: 'Are you sure you want to delete this sub-section?',
+message: 'Are you sure you want to remove this sub-section from this operation?',
 accept: () => {
-this.isDataLoading = true;
-const sectionRow =  this.vesselSections.find((x) => x.id === subSectionRow.vesselSectionId);
-let subsections = sectionRow.subSections;
-subsections = subsections.filter((x) => x !== subSectionRow);
-sectionRow.subSections = subsections;
-this.isDataLoading = false;
-this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
-// this.sectionService.deleteSubSection(subSectionRow.id).pipe(take(1)).subscribe((data) => {
-// this.isDataLoading = false;
-// this.loadVesselSections();
-// this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
-// });
-// }
-// });
+  this.operationalPlanService.deleteOperationSubSection(operationSubSection.Id).pipe(take(1)).subscribe((data) => {
+    this.isDataLoading = true;
 
+    const sectionRow =  this.operationSections.find((x) => x.Id === operationSubSection.OperationSectionId);
+    let subsections = sectionRow.OperationSubSections;
+    subsections = subsections.filter((x) => x !== operationSubSection);
+    if (subsections.length > 0) {
+  sectionRow.OperationSubSections = subsections;
+  sectionRow.VesselSection.SubSections = sectionRow.VesselSection.SubSections.filter((x) => x.Id !== operationSubSection.SubSectionId);
+} else {
+  this.operationSections =  this.operationSections.filter((x) => x !== sectionRow);
+}
+
+    this.isDataLoading = false;
+    this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
+  });
 }
 });
 }
@@ -153,6 +159,11 @@ severity,
 summary,
 detail
 });
+}
+goToListOperations() {
+  this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+    this.router.navigate(['/operational-plan/operations-overview/' + this.operation.VesselId])
+  );
 }
 
 }
