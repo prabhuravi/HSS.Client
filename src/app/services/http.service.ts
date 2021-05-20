@@ -34,6 +34,7 @@ export class HttpService {
       catchError(this.handleError.bind(this))
     );
   }
+
   getDataGeneric<T>(requestData: any): Observable<T> {
     return this.http.get<T>(requestData.endPoint).pipe(
       retry(0),
@@ -88,6 +89,13 @@ export class HttpService {
   postDocument(requestData: any): Observable<any> {
     requestData.data.set('CreatedBy', this.username);
     return this.http.post(requestData.endPoint, requestData.data).pipe(
+      retry(0),
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  getFile(requestData: any): Observable<any> {
+   return this.http.get(requestData.endPoint, { responseType: 'blob' }).pipe(
       retry(0),
       catchError(this.handleError.bind(this))
     );

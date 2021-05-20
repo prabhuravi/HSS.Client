@@ -113,7 +113,8 @@
           "AddOperatorLog": "/AddOperatorLog",
           "GetPortMeteorology": "/GetOperationPortMeteorology",
           "UpdateBerthDepth": "/UpdateBerthDepth",
-          "UpdateOperationFouling": "/UpdateOperationFouling"
+          "UpdateOperationFouling": "/UpdateOperationFouling",
+          "DownloadMissionLogFile": "/DownloadMissionLogFile"
         }
       },
       "Installation": {

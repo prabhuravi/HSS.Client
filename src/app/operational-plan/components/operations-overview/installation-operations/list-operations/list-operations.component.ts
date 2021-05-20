@@ -6,6 +6,7 @@ import { take, timeout } from 'rxjs/operators';
 import { OperationStatusEnum } from 'src/app/app.constants';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-list-operations',
@@ -19,7 +20,7 @@ export class ListOperationsComponent implements OnInit {
   @Output() showCreateOperation = new EventEmitter<boolean>();
   @Output() operationEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() createOperation: EventEmitter<any> = new EventEmitter<any>();
-  
+
   operations: Operation[] = [];
 
   cols = [
@@ -52,6 +53,17 @@ export class ListOperationsComponent implements OnInit {
 
   }
 
+  downloadOperatorLogs(missionId)
+  {
+    this.isDataLoading = true;
+    this.operationalPlanService.downloadMissionLog(missionId).pipe(take(1)).subscribe((response) => {
+      console.log(response);
+      let blob: any = new Blob([response], { type: 'text/csv; charset=utf-8' });
+      fileSaver.saveAs(blob,'Test.csv');
+      this.isDataLoading = false;
+    });
+  }
+
   loadOperations()
   {
     this.isDataLoading = true;
@@ -72,6 +84,7 @@ export class ListOperationsComponent implements OnInit {
 
   goToOperationSections(operation: Operation)
   {
+    this.operationEdited.emit(operation);
     console.log(operation);
   }
   goToSecondaryOperationSections(secOperation: SecondaryOperation)
