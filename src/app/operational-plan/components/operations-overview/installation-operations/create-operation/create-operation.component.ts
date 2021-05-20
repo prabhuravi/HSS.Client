@@ -58,7 +58,7 @@ export class CreateOperationComponent implements OnInit {
   @Output() formAlteredEvent: EventEmitter<any> = new EventEmitter<any>();
   disableForm = false;
   @ViewChild(SecondryOperationListingComponent, { static: false }) secondaryListingComponent: SecondryOperationListingComponent;
- 
+
   config = {
     formList: [],
     className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s'
@@ -201,15 +201,14 @@ export class CreateOperationComponent implements OnInit {
     this.isFormDirty = false;
     this.isDataLoading = true;
     console.log(operation);
-    this.operationalPlanService.getOperationDeatils(operation.Id).pipe(take(1)).subscribe((data) => {
-      console.log(data);
-      this.editOperation = true;
-      this.selectedOperator = null;
-      this.operationToEdit = data;
-      this.secondaryListingComponent.editOperation = true;
-      const formsArrayAsAny = this.formsData.controls.formsArray as any;
 
-      if (operation.OperationStatus.Name === OperationStatusEnum.Running) {
+    this.editOperation = true;
+    this.selectedOperator = null;
+    this.operationToEdit = operation;
+    this.secondaryListingComponent.editOperation = true;
+    const formsArrayAsAny = this.formsData.controls.formsArray as any;
+
+    if (operation.OperationStatus.Name === OperationStatusEnum.Running) {
       formsArrayAsAny.controls[0].controls.operationType.disable();
       formsArrayAsAny.controls[0].controls.operationType.updateValueAndValidity();
       formsArrayAsAny.controls[1].controls.port.disable();
@@ -217,16 +216,21 @@ export class CreateOperationComponent implements OnInit {
       formsArrayAsAny.controls[1].controls.operationDate.disable();
       formsArrayAsAny.controls[1].controls.operationDate.updateValueAndValidity();
     }
-      if (operation.OperationStatus.Name === OperationStatusEnum.Completed || operation.OperationStatus.Name === OperationStatusEnum.Aborted) {
+    if (operation.OperationStatus.Name === OperationStatusEnum.Completed || operation.OperationStatus.Name === OperationStatusEnum.Aborted) {
       formsArrayAsAny.controls[0].disable();
       formsArrayAsAny.controls[0].updateValueAndValidity();
       formsArrayAsAny.controls[1].disable();
       formsArrayAsAny.controls[1].updateValueAndValidity();
       this.disableForm = true;
     }
-      this.isDataLoading = false;
+    this.isDataLoading = false;
+    this.operationalPlanService.getOperationSections(operation.Id).pipe(take(1)).subscribe((opSecdata) => {
+      this.operationToEdit.OperationSections = opSecdata;
+      this.formAlteredEvent.emit(this.operationToEdit);
       this.operationalPlanService.getSecondaryOperations(operation.Id).pipe(take(1)).subscribe((data) => {
       this.secondaryOperationsForEdit = data;
+      this.operationToEdit.SecondaryOperations = data;
+      this.formAlteredEvent.emit(this.operationToEdit);
       console.log(this.secondaryOperationsForEdit);
       this.secondaryOperationsForEdit.forEach((element) => {
         this.secondaryListingComponent.updateSecondaryOperationList(element);
@@ -235,10 +239,6 @@ export class CreateOperationComponent implements OnInit {
     });
 
       this.selectedOperator = operation.Operator ? this.contactAdapter.adapt(operation.Operator) : null;
-      this.operationalPlanService.getOperationSections(operation.Id).pipe(take(1)).subscribe((data) => {
-      console.log(data);
-    });
-
       formsArrayAsAny.controls[0].setValue({
       assignmentType: 'Primary',
       operationType: this.operationTypes.find((p) => p.Id === operation.OperationType.Id),
@@ -253,7 +253,7 @@ export class CreateOperationComponent implements OnInit {
     });
       console.log(this.operationToEdit.OperationSections);
       this.setSectionForOperation();
-    });
+  });
 
   }
 
@@ -269,8 +269,7 @@ export class CreateOperationComponent implements OnInit {
           const item = opSection.find((x) => x.VesselSection.Id === sec.id && x.VesselSection.SubSections.find((x) => x.Id === sub.id));
           if (item) {
             sub.selected = true;
-          }
-          else{
+          } else {
             sub.selected = false;
           }
           if (sub.selected) {
