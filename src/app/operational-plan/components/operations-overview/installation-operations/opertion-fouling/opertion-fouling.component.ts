@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
@@ -17,9 +17,10 @@ export class OpertionFoulingComponent implements OnInit {
   constructor(public sectionService: SectionService,
               private operationalPlanService: OperationalPlanService,
               public fb: FormBuilder, private confirmationService: ConfirmationService, private route: ActivatedRoute,
-              private messageService: MessageService) { }
+              private messageService: MessageService, private router: Router) { }
 
   isDataLoading = false;
+ 
   @Input() sections: VesselSection[];
   foulingStates: any[]= [];
   @Input() operation: any;
@@ -30,9 +31,9 @@ export class OpertionFoulingComponent implements OnInit {
   cols = [
     { field: 'name', header: 'Section', sortfield: 'name', filterMatchMode: 'contains' },
     { field: 'subSections', header: 'Sub-Section', sortfield: '', filterMatchMode: '' },
-    { field: 'foulingState.State', header: 'Fouling State', sortfield: 'foulingState.State', filterMatchMode: 'contains' },
+    { field: 'VesselSectionOldFoulingState.State', header: 'Prev Fouling State', sortfield: 'VesselSectionOldFoulingState.State', filterMatchMode: 'contains' },
+    { field: 'VesselSectionNewFoulingState.State', header: 'Aft Fouling State', sortfield: 'VesselSectionNewFoulingState.State', filterMatchMode: 'contains' },
     { field: 'modifiedDate', header: 'Modified Date', sortfield: 'modifiedDate', filterMatchMode: 'contains' }
-  
   ];
 
   vesselId = 0;
@@ -40,10 +41,14 @@ export class OpertionFoulingComponent implements OnInit {
   ngOnInit() {
     this.operationalPlanService.getFoulingStates().pipe(take(1)).subscribe((data) => {
       this.foulingStates = data;
-      this.onOperationSectionLoad();
-    });    
+      this.onOperationSectionLoad(null);
+    });
   }
-  onOperationSectionLoad() {
+  onOperationSectionLoad(op : any) {
+    if(op){
+      this.operation = op;
+    }
+    this.operationSections = [];
     if (this.operation.OperationSections) {
       this.operation.OperationSections.forEach((opSection: any) => {
         this.operationSections.push(opSection);
@@ -53,21 +58,26 @@ export class OpertionFoulingComponent implements OnInit {
 
     onFoulingStateChanged(rowData: any){
       let operationSectionId = 0;
+      rowData.SubSectionNewFoulingId = rowData.SubSectionNewFoulingState.Id;
       let vesselSection ;
       this.operationSections.forEach((operationSec) => {
         operationSec.VesselSection.SubSections.forEach((opSubsection) => {
-          if(opSubsection.Id === rowData.Id){
+          if(opSubsection.Id === rowData.SubSectionId){
             operationSectionId = operationSec.Id;
             vesselSection = operationSec;
           }
 
         });
       });
+      this.isDataLoading = true;
       this.operationalPlanService.UpdateOperationFouling(operationSectionId, rowData).pipe(take(1)).subscribe((data) => {
         vesselSection.FoulingState = this.foulingStates.find((x) => x.Id === data.FoulingId);
         vesselSection.FoulingId = data.FoulingId;
+        vesselSection.ModifiedDate = data.ModifiedDate;
         console.log(data);
-        rowData.ModifiedDate = new Date();
+        rowData.SubSection.ModifiedDate = new Date().getUTCDate;
+        this.triggerToast('success', 'Success Message', `Fouling updated successfully`);
+        this.isDataLoading = false;
       });
     }
 
@@ -78,6 +88,11 @@ export class OpertionFoulingComponent implements OnInit {
         summary,
         detail
       });
+  }
+  goToListOperations(){
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate(['/operational-plan/operations-overview/' + this.operation.VesselId])
+    );
   }
 
 }
