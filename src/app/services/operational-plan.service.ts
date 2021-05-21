@@ -160,6 +160,13 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
 
+  downloadMissionLog(missionId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DownloadMissionLogFile}/${missionId}`,
+    };
+    return this.http.getFile(requestData);
+  }
+
   deleteOperation(id: number): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperation}/${id}`,
