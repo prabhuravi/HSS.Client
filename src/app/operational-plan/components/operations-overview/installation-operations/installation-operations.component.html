@@ -10,7 +10,7 @@
 <app-list-operations *ngIf="!viewCreateOperation" (showCreateOperation)="showCreateOperation($event)"
 (operationEdited)="onOperationEdited($event)" #listOperations>
 </app-list-operations>
-<p-tabView  *ngIf="viewCreateOperation" [(activeIndex)]="index" dynamic="true" (onChange)="handleChange($event)">
+<p-tabView #tabViewElement  *ngIf="viewCreateOperation" [(activeIndex)]="index" dynamic="true" (onChange)="handleChange($event)">
     <p-tabPanel header="Operation">
         <app-create-operation (formAlteredEvent)="updateTabs($event)" (showListOperation)="showListOperation($event)" #createOperation>
         </app-create-operation>
