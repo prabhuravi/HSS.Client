@@ -99,46 +99,21 @@
 
             <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
                 <tr *ngIf="rowData.SecondaryOperations && rowData.SecondaryOperations.length > 0 ">
-                    <td [attr.colspan]="4">
-                        <div [ngStyle]="rowData.SecondaryOperations.length > 0 ? {'padding-left': '4%'} : ''"
+                    <td [attr.colspan]="3">
+                        <div [ngStyle]="rowData.SecondaryOperations.length > 0 ? {'padding-left': ''} : ''"
                             class="kx-table--outer-border">
-                            <!-- <app-no-data
-                                [displayme]="rowData.SecondaryOperations && rowData.SecondaryOperations.length === 0">
-                            </app-no-data> -->
+
                             <p-table [value]="rowData.SecondaryOperations" tableStyleClass="kx-table" autoLayout="true">
-                                <!-- 
-                <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th>
-                        Sections
-                    </th>
-                    <th>
-                        Type
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                </tr>
-            </ng-template> -->
+
                                 <ng-template pTemplate="body" let-rowData>
                 <tr class="kx-row">
                     <td></td>
-                    <td style="width: 33%;">{{
+                    <td style="width: 48%;">{{
                         rowData.OperationType?.OperationTypeName }}</td>
-                    <td style="width: 32.8%;">{{
+                    <td style="width: 35%;">{{
                         rowData.OperationStatus?.Name}}
                     </td>
-                    <td>
-                        <p-button (click)="goToSecondaryOperationSections(rowData)" class="viewsection"
-                            icon="pi pi-external-link" label="View Sections"></p-button>
-                    </td>
-                    <!-- <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--3@ltp-s"
-                        style="margin-right: 0.8%;">{{
-                        rowData.OperationType?.OperationTypeName }}</td>
-                    <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{
-                        rowData.OperationStatus?.Name}}
-                    </td>
-                    <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">
+                    <!-- <td>
                         <p-button (click)="goToSecondaryOperationSections(rowData)" class="viewsection"
                             icon="pi pi-external-link" label="View Sections"></p-button>
                     </td> -->
@@ -149,8 +124,6 @@
     </td>
     </tr>
     </ng-template>
-
-
     </p-table>
     <app-no-data [displayme]="operations.length === 0"></app-no-data>
 </div>
