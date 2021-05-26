@@ -278,6 +278,7 @@ export class CreateOperationComponent implements OnInit {
         });
       }
     });
+    this.selectSectionSubsection();
   }
 
   SetSecondaryOperations() {
@@ -451,6 +452,19 @@ export class CreateOperationComponent implements OnInit {
         this.vesselSectionArray.push(section);
       }
     });
+  }
+
+  isBookedSection(rowsection: VesselSection) {
+    if (!rowsection || !rowsection.subSections) {
+      return false;
+    }
+    let booked = true;
+    rowsection.subSections.forEach((element) => {
+      if (!element.selected) {
+        return false;
+      }
+    });
+    return true;
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {
