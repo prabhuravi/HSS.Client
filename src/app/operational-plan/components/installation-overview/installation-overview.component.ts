@@ -45,12 +45,12 @@ export class InstallationOverviewComponent implements OnInit {
       console.log(this.installationList);
 
       this.cols = [{ field: 'displayName', header: 'Name', sortfield: 'displayName', filterMatchMode: 'contains' },
-      { field: 'foulingState.State', header: 'Fouling State', sortfield: 'foulingState.State', filterMatchMode: 'equals', options: this.foulingStatus, optionLabel: 'State' },
-      { field: 'installationStatus.name', header: 'Installation Status', sortfield: 'installationStatus.name', filterMatchMode: 'equals', options: this.installationStatus, optionLabel: 'name' },
+      { field: 'foulingState.State', header: 'Fouling State', sortfield: 'foulingState.State', filterMatchMode: 'contains', options: this.foulingStatus, optionLabel: 'State' },
+      { field: 'installationStatus.name', header: 'Installation Status', sortfield: 'installationStatus.name', filterMatchMode: 'contains', options: this.installationStatus, optionLabel: 'name' },
       { field: 'operation.OperationStatus.Name', header: 'Status', sortfield: 'operation.OperationStatus.Name', filterMatchMode: 'contains' },
       { field: 'operation.Date', header: 'Date', sortfield: 'operation.Date' },
-      { field: 'aisData.destination', header: 'Port', sortfield: 'aisData.destination', filterMatchMode: 'contains' },
-      { field: 'node.status', header: 'Connectivity Status', sortfield: 'node.status', filterMatchMode: 'equals', options: this.statuses, optionLabel: 'value' },
+      { field: 'operation.PortLocation.PortName', header: 'Port', sortfield: 'operation.PortLocation.PortName', filterMatchMode: 'contains' },
+      { field: 'node.status', header: 'Connectivity Status', sortfield: 'node.status', filterMatchMode: 'contains', options: this.statuses, optionLabel: 'value' },
       { field: 'aisData.eta', header: 'ETA', sortfield: 'aisData.eta' },
       { field: 'CurrentPosition', header: 'Current Position' },
       { field: '', header: '' }];

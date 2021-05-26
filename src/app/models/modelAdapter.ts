@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Contact, ContactRole, OperatorBooking } from './Contact';
 import { IModelAdapter } from './IModelAdapter';
 import { Installation, InstallationAISData, InstallationStatus, InstallationType, VesselType } from './Installation';
+import { Mission } from './mission';
 import { Node } from './Node';
 import { Operation, OperationStatus } from './Operation';
+import { DocumentType, OperationDocument } from './OperationDocument';
 import { VesselSection, SectionStatus, SubSection, Section } from './Section';
 
 @Injectable({
@@ -120,7 +122,7 @@ export class SectionAdapter implements IModelAdapter<Section> {
             item.Name ? item.Name : item.name ? item.name : ''
         );
     }
-    
+
 }
 @Injectable({
     providedIn: 'root'
@@ -254,8 +256,8 @@ export class OperationAdapter implements IModelAdapter<Operation> {
             null,
             null,
             null,
-            item.OperationStatus ? this.operationStatusAdapter.adapt(item.OperationStatus) : item.operationStatus? this.operationStatusAdapter.adapt(item.operationStatus) : null,
-            null,
+            item.OperationStatus ? this.operationStatusAdapter.adapt(item.OperationStatus) : item.operationStatus ? this.operationStatusAdapter.adapt(item.operationStatus) : null,
+            item.PortLocation ? item.PortLocation : item.portLocation ? item.portLocation : null,
             null,
             null,
             null
@@ -264,6 +266,60 @@ export class OperationAdapter implements IModelAdapter<Operation> {
     }
 }
 
+@Injectable({
+    providedIn: 'root'
+})
+export class DocumentTypeAdapter implements IModelAdapter<DocumentType> {
+    constructor() { }
+    adapt(item: any): DocumentType {
+        return new DocumentType(
+            item.Id ? item.Id : item.id ? item.id : 0,
+            item.TypeName ? item.TypeName : item.typeName ? item.typeName : ''
+            );
+    }
+}
+@Injectable({
+    providedIn: 'root'
+})
+export class OperationDocumentAdapter implements IModelAdapter<OperationDocument> {
+    constructor(
+        private documentTypeAdapter: DocumentTypeAdapter
+    ) { }
+    adapt(item: any): OperationDocument {
+        return new OperationDocument(
+            item.Id ? item.Id : item.id ? item.id : 0,
+            item.OperationId ? item.OperationId : item.operationId ? item.operationId : 0,
+            item.DocumentTypeId ? item.DocumentTypeId : item.documentTypeId ? item.documentTypeId : 0,
+            item.File ? item.File : item.file ? item.file : '',
+            item.CreatedDate ? item.CreatedDate : item.createdDate ? item.createdDate : null,
+            item.ModifiedDate ? item.ModifiedDate : item.modifiedDate ? item.modifiedDate : null,
+            item.DocumentType ? this.documentTypeAdapter.adapt(item.DocumentType) : item.documentType ?  this.documentTypeAdapter.adapt(item.documentType) : null
+            );
+    }
+}
+@Injectable({
+    providedIn: 'root'
+})
+export class OperationMissionAdapter implements IModelAdapter<Mission> {
+    constructor(
+        private documentTypeAdapter: DocumentTypeAdapter
+    ) { }
+    adapt(item: any): Mission {
+        return new Mission(
+            item.Id ? item.Id : item.id ? item.id : 0,
+            item.OperationId ? item.OperationId : item.operationId ? item.OperationId : 0,
+            item.Number ? item.Number : item.number ? item.number : 0,
+            item.Name ? item.Name : item.name ? item.name : '',
+            item.MissionPath ? item.MissionPath : item.missionPath ? item.missionPath : '',
+            item.Address ? item.Address : item.address ? item.address : '',
+            item.Type ? item.Type : item.type ? item.type : '',
+            item.Description ? item.Description : item.description ? item.description : '',
+            item.StartTime ? item.StartTime : item.startTime ? item.startTime : null,
+            item.EndTime ? item.EndTime : item.endTime ? item.endTime : null,
+            item.UploadedDate ? item.UploadedDate : item.uploadedDate ? item.uploadedDate : null
+            );
+    }
+}
 @Injectable({
     providedIn: 'root'
 })

@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
 import { CreateOperationComponent } from './create-operation/create-operation.component';
+import { OperationDocumentComponent } from './operation-document/operation-document.component';
+import { OperationMissionsComponent } from './operation-missions/operation-missions.component';
 import { OpertionFoulingComponent } from './opertion-fouling/opertion-fouling.component';
 import { OpertionSectionComponent } from './opertion-section/opertion-section.component';
 import { SecondryOperationListingComponent } from './secondry-operation-listing/secondry-operation-listing.component';
@@ -19,7 +21,9 @@ export class InstallationOperationsComponent implements OnInit {
   @ViewChild(CreateOperationComponent, { static: false }) createOperationComponentRef: CreateOperationComponent;
   @ViewChild(OpertionSectionComponent, { static: false }) operationSectionComponent: OpertionSectionComponent;
   @ViewChild(OpertionFoulingComponent, { static: false }) operationFoulingComponent: OpertionFoulingComponent;
-  
+  @ViewChild(OperationDocumentComponent, { static: false }) OperationDocumentComponent: OperationDocumentComponent;
+  @ViewChild(OperationMissionsComponent, { static: false }) OperationMissionComponent: OperationMissionsComponent;
+
   operationsRoutes: IRouteList[] = [];
   operationalPlanMainRouteList: IRouteList[] = [
     {
@@ -98,16 +102,22 @@ export class InstallationOperationsComponent implements OnInit {
       this.createOperationComponentRef.isFormDirty = false;
       this.createOperationComponentRef.secondaryListingComponent.isFormDirty = false;
       this.createOperationComponentRef.onSubmit();
-      
+
    }
-    if(e.index === 0) {
+    if (e.index === 0) {
     this.createOperationComponentRef.setSectionForOperation();
     this.createOperationComponentRef.SetSecondaryOperations();
   }
+    if (e.index === 3) {
+    this.OperationDocumentComponent.getOperationDocuments(this.createOperationComponentRef.operationToEdit);
+  }
+    if (e.index === 4) {
+    this.OperationDocumentComponent.getOperationDocuments(this.createOperationComponentRef.operationToEdit);
+  }
 }
-updateTabs(opeation: any){
-  this.operationSectionComponent.onOperationSectionLoad(opeation);
-  this.operationFoulingComponent.onOperationSectionLoad(opeation);
+updateTabs(operation: any) {
+  this.operationSectionComponent.onOperationSectionLoad(operation);
+  this.operationFoulingComponent.onOperationSectionLoad(operation);
 }
 
 }

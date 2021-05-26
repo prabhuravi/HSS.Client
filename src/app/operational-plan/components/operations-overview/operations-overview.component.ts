@@ -95,6 +95,10 @@ export class OperationsOverviewComponent implements OnInit {
       {
         label: 'Operations',
         route: '/operational-plan/operations-overview/'+ this.vesselId+'/installation-operations/' + this.vesselId
+      },
+      {
+        label: 'Document',
+        route: '/operational-plan/operations-overview/' +  this.vesselId + '/installation-document/' + this.vesselId
       }
     ];
   }

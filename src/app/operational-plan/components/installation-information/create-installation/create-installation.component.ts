@@ -30,7 +30,7 @@ export class CreateInstallationComponent implements OnInit {
   installationList: Installation[] = [];
   robotsystemList: IRobotSystemDetails[] = [];
   vesselTypes: VesselType[] = [];
-  installationTypes: InstallationType[] =[];
+  installationTypes: InstallationType[] = [];
   installationStatus: InstallationStatus[] = [];
   // foulingStates: IFoulingState[] = [];
 
@@ -62,7 +62,7 @@ export class CreateInstallationComponent implements OnInit {
         let vesselId = 0;
         const params = this.route.snapshot.paramMap.get('vesselId');
         vesselId = parseInt(params, null);
-        if(vesselId > 0) {
+        if (vesselId > 0) {
           this.prepareInstallationService.getInstallationById(vesselId);
         }
       }
@@ -248,11 +248,23 @@ export class CreateInstallationComponent implements OnInit {
      const formValues = this.formData.getRawValue();
      const installationIformation: Installation = formValues.Installation;
     // installationIformation.foulingState = formValues.FoulingState;
-     installationIformation.vesselType = formValues.VesselType;
-     installationIformation.vesselTypeId = formValues.VesselType.id;
-     installationIformation.installationTypeId = formValues.InstallationType.id;
+     if (formValues.VesselType) {
+      installationIformation.vesselType = formValues.VesselType;
+      installationIformation.vesselTypeId = formValues.VesselType.id;
+    } else {
+      installationIformation.vesselTypeId = null;
+    }
+     if (formValues.InstallationType) {
+      installationIformation.installationTypeId = formValues.InstallationType.id;
+    } else {
+      installationIformation.installationTypeId = null;
+    }
+
      installationIformation.imoNo = formValues.ImoNo;
     // installationIformation.foulingId = formValues.FoulingState.Id;
+     if (!formValues.imoNo) {
+      installationIformation.imoNo = 0;
+    }
      installationIformation.node.nodeNumber = formValues.NodeNumber;
      installationIformation.node.gatewayIP = formValues.gatewayIP;
      installationIformation.node.installationId = formValues.InstallationId;

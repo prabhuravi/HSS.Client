@@ -425,3 +425,29 @@ ngx-intl-tel-input input {
 ngx-intl-tel-input.ng-invalid.ng-touched input {
 	border: 1px solid #c0392b;
 }
+// tab view
+/* not selected */
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    border-color: gray;
+    background: darkgray;
+    color: navy;
+    }
+    /* hover */
+    .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+    background: orange;
+    border-color: brown;
+    color: navy;
+    }
+    /* selected */
+    .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: brown;
+    border-color: brown;
+    color: white;
+    }
+
+    body .ui-tabview-nav {
+       margin-left: 15px !important;
+      }
+      
+
+   

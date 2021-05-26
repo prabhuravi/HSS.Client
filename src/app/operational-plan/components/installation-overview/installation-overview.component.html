@@ -60,7 +60,7 @@
         <td>{{ installationList.installationStatus ? installationList.installationStatus.name : '' }}</td>
         <td> {{ installationList.operation ? installationList.operation.OperationStatus.Name : '' }} </td>
         <td> {{ installationList.operation ? (installationList.operation.Date | date: "dd/MM/yyyy") : ''}}</td>
-        <td>{{ installationList.aisData ? installationList.aisData.destination : ''}}</td>
+        <td>{{ installationList.operation ?  installationList.operation.PortLocation ? installationList.operation.PortLocation.PortName : '': ''}}</td>
         <td>
           <div *ngIf="installationList.node && installationList.node.status === 'Down'"
             class="u--bgDanger u--textCenter u--withBorderRadius" style="width: 85%;">

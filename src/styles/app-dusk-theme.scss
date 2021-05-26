@@ -233,3 +233,7 @@ ngx-intl-tel-input input:focus {
 	outline: none;
 	border-color: #2bdeee;
 }
+body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active {
+    color: #2bdeee;
+    box-shadow: inset 0 -0.2rem 0 0 #2bdeee;
+  }

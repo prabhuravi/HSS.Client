@@ -6,8 +6,10 @@ import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice
 import { Configuration } from '../configuration';
 import { Installation } from '../models/Installation';
 import { VesselSection } from '../models/Section';
-import { VesselSectionAdapter } from '../models/modelAdapter';
+import { OperationDocumentAdapter, OperationMissionAdapter, VesselSectionAdapter } from '../models/modelAdapter';
 import { Operation } from '../models/Operation';
+import { OperationDocument } from '../models/OperationDocument';
+import { Mission } from '../models/mission';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +28,10 @@ export class OperationalPlanService {
   foulingStateApiUrl: string;
   sectionApiUrl: string;
 
-  constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>, private vesselSectionAdapter: VesselSectionAdapter,) {
+  constructor(private http: HttpService, public configurationService: ConfigurationService<Configuration>,
+              private vesselSectionAdapter: VesselSectionAdapter,
+              private operationDocumentAdapter: OperationDocumentAdapter,
+              private operationMissionAdapter: OperationMissionAdapter) {
     this.operationalPlanConfig = this.configurationService.config.apiCollection.OperationalPlan;
     this.operationPlanApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.OperationPlan.path}`;
     this.vesselApiUrl = `${this.operationalPlanConfig.domainURL}${this.operationalPlanConfig.Vessel.path}`;
@@ -76,14 +81,14 @@ export class OperationalPlanService {
 
   getOperationStatuses(): Observable<IOperationStatus[]> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationStatuses}`,
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationStatuses}`
     };
     return this.http.getData(requestData);
   }
 
   getRequestedBy(): Observable<IRequestedBy[]> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetRequestedBy}`,
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetRequestedBy}`
     };
     return this.http.getData(requestData);
   }
@@ -91,11 +96,11 @@ export class OperationalPlanService {
   getOperationMasterData(): Observable<[IOperationTypes[], IOperationStatus[], IRequestedBy[]]> {
     return forkJoin([this.getOperationTypes(), this.getOperationStatuses(), this.getRequestedBy()]);
   }
-  
+
   createOperation(data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.CreateOperation}`,
-      data: data
+      data
     };
     return this.http.postData(requestData);
   }
@@ -103,7 +108,7 @@ export class OperationalPlanService {
   updateOperation(operationId: number, data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.UpdateOperation}/${operationId}`,
-      data: data
+      data
     };
     return this.http.putData(requestData);
   }
@@ -111,7 +116,7 @@ export class OperationalPlanService {
   createSecondaryOperation(data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.CreateSecondaryOperation}`,
-      data: data
+      data
     };
     return this.http.postData(requestData);
   }
@@ -147,7 +152,7 @@ export class OperationalPlanService {
   updateBerthDepth(id: number, data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.UpdateBerthDepth}/${id}`,
-      data: data
+      data
     };
     return this.http.putData(requestData);
   }
@@ -155,20 +160,20 @@ export class OperationalPlanService {
   addOperatorLog(data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.AddOperatorLog}`,
-      data: data
+      data
     };
     return this.http.postData(requestData);
   }
 
   deleteOperation(id: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperation}/${id}`,
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperation}/${id}`
     };
     return this.http.deleteData(requestData);
   }
   deleteSecondaryOperation(id: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteSecondaryOperation}/${id}`,
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteSecondaryOperation}/${id}`
     };
     console.log(requestData);
     return this.http.deleteData(requestData);
@@ -191,7 +196,7 @@ export class OperationalPlanService {
     };
     return this.http.getData(requestData);
   }
-  
+
   getTradeRouteByVesselId(vesselId: number): Observable<any> {
     const requestData = {
       endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.GetTradeRouteByVesselId}/${vesselId}`
@@ -206,17 +211,16 @@ export class OperationalPlanService {
   addPortToRoute(data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.AddPortToRoute}`,
-      data: data
+      data
     };
     // return of(true);
     return this.http.postData(requestData);
   }
 
-  reorderTradeRoute(data: any): Observable<any>
-  {
+  reorderTradeRoute(data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.ReorderTradeRoute}`,
-      data: data
+      data
     };
     return this.http.putData(requestData);
   }
@@ -236,11 +240,37 @@ export class OperationalPlanService {
     // return of("test");
     return this.http.getData(requestData);
   }
+  getOperationDocuments(operationId: number): Observable<OperationDocument[]> {
+    const requestData = {
+      endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.GetOperationDocuments}/${operationId}`
+    };
+    return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.operationDocumentAdapter.adapt(item))));
+  }
+  getOperationMissions(operationId: number): Observable<Mission[]> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperationMissions}/${operationId}`
+    };
+    return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.operationMissionAdapter.adapt(item))));
+  }
+  downloadDocument(documentId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.GetDocumentForDownload}/${documentId}`
+    };
+    // return of("test");
+    return this.http.getData(requestData);
+  }
+  downloadOperationDocument(documentId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.GetOperationDocumentForDownload}/${documentId}`
+    };
+    // return of("test");
+    return this.http.getMediaData(requestData, 'blob');
+  }
 
   AddDocumentAsync(data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.AddDocument}`,
-      data: data
+      data
     };
     // return of(true);
     return this.http.postDocument(requestData);
@@ -255,7 +285,7 @@ export class OperationalPlanService {
 
   deleteInstallationDocument(id: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.DeleteInstallationDocument}/${id}`,
+      endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.DeleteInstallationDocument}/${id}`
     };
     // return of(true);
     return this.http.deleteData(requestData);
@@ -263,7 +293,7 @@ export class OperationalPlanService {
 
   deletePortFromRoute(id: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.DeletePortFromRoute}/${id}`,
+      endPoint: `${this.tradeRouteApiUrl}${this.operationalPlanConfig.TradeRoute.endpoints.DeletePortFromRoute}/${id}`
     };
     // return of(true);
     return this.http.deleteData(requestData);
@@ -293,7 +323,7 @@ export class OperationalPlanService {
   reCalculateFoulingState(data: any): Observable<VesselSection[]> {
     const requestData = {
       endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.ReCalculateFoulingState}`,
-      data: data
+      data
     };
     return this.http
       .postData(requestData)
@@ -305,7 +335,7 @@ export class OperationalPlanService {
   updateSubSectionFoulingState(subSectionId: number, data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.UpdateSubSectionFoulingState}/${subSectionId}`,
-      data: data
+      data
     };
     // return of(true);
     return this.http.putData(requestData);
@@ -314,21 +344,21 @@ export class OperationalPlanService {
   UpdateOperationFouling(subSectionId: number, data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.UpdateOperationFouling}/${subSectionId}`,
-      data: data
+      data
     };
     // return of(true);
     return this.http.putData(requestData);
   }
   deleteOperationSection(id: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperationSection}/${id}`,
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperationSection}/${id}`
     };
     // return of(true);
     return this.http.deleteData(requestData);
   }
   deleteOperationSubSection(id: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperationSubSection}/${id}`,
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteOperationSubSection}/${id}`
     };
     // return of(true);
     return this.http.deleteData(requestData);
@@ -344,7 +374,7 @@ export class OperationalPlanService {
 
   completeOperationPlan(planId: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.CompleteOperationPlan}/${planId}`,
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.CompleteOperationPlan}/${planId}`
     };
     return this.http.putData(requestData);
   }
@@ -367,12 +397,12 @@ export class OperationalPlanService {
 
   completeSubOperationPlan(subPlanId: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.CompleteSubOperationPlan}/${subPlanId}`,
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.CompleteSubOperationPlan}/${subPlanId}`
     };
     return this.http.putData(requestData);
   }
 
-  //Robot System
+  // Robot System
   getRobotSystemDetails(): Observable<IRobotSystemDetails[]> {
     const requestData = {
       endPoint: `${this.robotApiUrl}${this.operationalPlanConfig.Robot.endpoints.GetRobotSystemDetails}`
@@ -398,12 +428,12 @@ export class OperationalPlanService {
 
   deleteRobotSystemDetail(id: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.robotApiUrl}${this.operationalPlanConfig.Robot.endpoints.DeleteRobotSystem}/${id}`,
+      endPoint: `${this.robotApiUrl}${this.operationalPlanConfig.Robot.endpoints.DeleteRobotSystem}/${id}`
     };
     return this.http.deleteData(requestData);
   }
 
-  //OperationType
+  // OperationType
   getOperationTypes(): Observable<IOperationTypes[]> {
     const requestData = {
       endPoint: `${this.operationTypeApiUrl}${this.operationalPlanConfig.OperationType.endpoints.GetOperationTypes}`
@@ -429,7 +459,7 @@ export class OperationalPlanService {
 
   deleteOperationType(id: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationTypeApiUrl}${this.operationalPlanConfig.OperationType.endpoints.DeleteOperationType}/${id}`,
+      endPoint: `${this.operationTypeApiUrl}${this.operationalPlanConfig.OperationType.endpoints.DeleteOperationType}/${id}`
     };
     return this.http.deleteData(requestData);
   }
@@ -460,7 +490,7 @@ export class OperationalPlanService {
 
   deleteOperator(id: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.operatorApiUrl}${this.operationalPlanConfig.Operator.endpoints.DeleteOperator}/${id}`,
+      endPoint: `${this.operatorApiUrl}${this.operationalPlanConfig.Operator.endpoints.DeleteOperator}/${id}`
     };
     return this.http.deleteData(requestData);
   }
@@ -499,7 +529,7 @@ export class OperationalPlanService {
 
   deleteVessel(id: number): Observable<any> {
     const requestData = {
-      endPoint: `${this.vesselApiUrl}${this.operationalPlanConfig.Vessel.endpoints.DeleteVessel}/${id}`,
+      endPoint: `${this.vesselApiUrl}${this.operationalPlanConfig.Vessel.endpoints.DeleteVessel}/${id}`
     };
     return this.http.deleteData(requestData);
   }
@@ -511,17 +541,16 @@ export class OperationalPlanService {
 
   filterPortLocations(portName: string): Observable<any[]> {
     const requestData = {
-      endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.FilterPortLocations}/${portName}`,
+      endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.FilterPortLocations}/${portName}`
     };
     return this.http.getData(requestData);
   }
 
   getPortLocationById(portId: string): Observable<any> {
     const requestData = {
-      endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.GetPortLocationById}/${portId}`,
+      endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.GetPortLocationById}/${portId}`
     };
     return this.http.getData(requestData);
   }
-
 
 }

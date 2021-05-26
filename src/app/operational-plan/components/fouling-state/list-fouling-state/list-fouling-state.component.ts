@@ -17,14 +17,16 @@ import { SectionService } from 'src/app/services/section.service';
 export class ListFoulingStateComponent implements OnInit {
 
   constructor(public sectionService: SectionService,
-    private prepareInstallationService: PrepareInstallationService, private operationalPlanService: OperationalPlanService,
-    public fb: FormBuilder, private confirmationService: ConfirmationService, private route: ActivatedRoute,
-    private messageService: MessageService) { }
+              private prepareInstallationService: PrepareInstallationService, private operationalPlanService: OperationalPlanService,
+              public fb: FormBuilder, private confirmationService: ConfirmationService, private route: ActivatedRoute,
+              private messageService: MessageService) { }
 
   isDataLoading = false;
   @Input() sections: VesselSection[];
   @Output() foulingStateEdited: EventEmitter<any> = new EventEmitter<any>();
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  foulingStates: IFoulingState[] = [];
+  overallFoulingState: string = 'Not Rated';
 
   cols = [
     { field: 'name', header: 'Section', sortfield: 'name', filterMatchMode: 'contains' },
@@ -44,12 +46,20 @@ export class ListFoulingStateComponent implements OnInit {
       const params = this.route.snapshot.paramMap.get('vesselId');
       this.vesselId = parseInt(params, null);
       this.isDataLoading = true;
-      this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
-        this.isDataLoading = false;
-        console.log(data);
-        this.sections = data;
-      });
+      this.getSectionwithFouling();
     }
+    this.operationalPlanService.getFoulingStates().pipe(take(1)).subscribe((data) => {
+      this.foulingStates = data;
+    });
+  }
+
+  private getSectionwithFouling() {
+    this.isDataLoading = true;
+    this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
+      this.isDataLoading = false;
+      console.log(data);
+      this.sections = data;
+    });
   }
 
   editSubSectionFoulingState(subSection: SubSection): void {
@@ -64,6 +74,27 @@ export class ListFoulingStateComponent implements OnInit {
         this.isDataLoading = false;
         this.sections = data;
       });
+    }
+  }
+  onFoulingStateChanged(rowdata: SubSection) {
+    this.isDataLoading = true;
+    console.log(rowdata);
+    rowdata.foulingId = rowdata.foulingState.Id;
+    this.operationalPlanService.updateSubSectionFoulingState(rowdata.id, rowdata).pipe(take(1)).subscribe((data) => {
+      this.triggerToast('success', 'Success Message', `Sub Section fouling state updated successfully`);
+      this.isDataLoading = false;
+      this.getSectionwithFouling();
+    });
+  }
+  calculateVesselFoulingState() {
+    if (this.sections.some((p) => p.foulingState.State === 'Not Rated')) {
+      this.overallFoulingState = 'Not Rated';
+    } else if (this.sections.some((p) => p.foulingState.State === 'Poor')) {
+      this.overallFoulingState = 'Poor';
+    } else if (this.sections.some((p) => p.foulingState.State === 'Fair')) {
+      this.overallFoulingState = 'Fair';
+    } else if (this.sections.some((p) => p.foulingState.State === 'Good')) {
+      this.overallFoulingState = 'Good';
     }
   }
 

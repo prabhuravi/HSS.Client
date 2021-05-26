@@ -52,6 +52,18 @@ export class HttpService {
       catchError(this.handleError.bind(this))
     );
   }
+  getMediaData(requestData: any, mediaType: any): Observable<any> {
+    return this.http.get(requestData.endPoint, {
+      params: new HttpParams({
+        fromObject: requestData.params
+      }),
+      responseType: mediaType
+    }
+    ).pipe(
+      retry(0),
+      catchError(this.handleError.bind(this))
+    );
+  }
 
   handleError(error) {
     let errorMessage = '';
