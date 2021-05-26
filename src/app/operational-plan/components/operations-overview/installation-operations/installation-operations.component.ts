@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TabView } from 'primeng/tabview';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
 import { CreateOperationComponent } from './create-operation/create-operation.component';
 import { OperationDocumentComponent } from './operation-document/operation-document.component';
@@ -22,7 +23,8 @@ export class InstallationOperationsComponent implements OnInit {
   @ViewChild(OpertionSectionComponent, { static: false }) operationSectionComponent: OpertionSectionComponent;
   @ViewChild(OpertionFoulingComponent, { static: false }) operationFoulingComponent: OpertionFoulingComponent;
   @ViewChild(OperationDocumentComponent, { static: false }) OperationDocumentComponent: OperationDocumentComponent;
-  @ViewChild(OperationMissionsComponent, { static: false }) OperationMissionComponent: OperationMissionsComponent;
+    @ViewChild(OperationMissionsComponent, { static: false }) OperationMissionComponent: OperationMissionsComponent;
+    @ViewChild('tabViewElement', { static: false }) tabViewElement: TabView;
 
   operationsRoutes: IRouteList[] = [];
   operationalPlanMainRouteList: IRouteList[] = [
@@ -81,6 +83,10 @@ export class InstallationOperationsComponent implements OnInit {
   onOperationEdited(operation: Operation) {
     this.viewCreateOperation = true;
     this.isDataLoading = true;
+    this.index = 1;
+    // this.tabViewElement.tabs[1].selected = true;
+    // this.tabViewElement.tabs[0].selected = false;
+    // this.tabViewElement.tabs[2].selected = false;
     setTimeout(async () => {
       while (!this.createOperationComponentRef.isFormDataReady) {
         await new Promise((r) => setTimeout(r, 100));

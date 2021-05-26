@@ -1,6 +1,14 @@
 <div class="kx-row">
     <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
     </div>
+
+    <!-- <button aria-label="Download operator logs" title="Download operator logs" (click)="downloadOperatorLogs(2)">
+        <span class="kx-btn__inner">
+            <img src="./assets/micorsoft-csv.png" alt="Download" style="height: 25px; width: 25px;">
+            <span class="kx-btn__txt kx-is-vishidden">Download operator logs</span>
+        </span>
+    </button> -->
+
     <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
         <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base"
             (click)="goToCreateOperation()">
@@ -91,45 +99,21 @@
 
             <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
                 <tr *ngIf="rowData.SecondaryOperations && rowData.SecondaryOperations.length > 0 ">
-                    <td [attr.colspan]="4">
-                        <div [ngStyle]="rowData.SecondaryOperations.length > 0 ? {'padding-left': '4%'} : ''" class="kx-table--outer-border">
-                            <!-- <app-no-data
-                                [displayme]="rowData.SecondaryOperations && rowData.SecondaryOperations.length === 0">
-                            </app-no-data> -->
+                    <td [attr.colspan]="3">
+                        <div [ngStyle]="rowData.SecondaryOperations.length > 0 ? {'padding-left': ''} : ''"
+                            class="kx-table--outer-border">
+
                             <p-table [value]="rowData.SecondaryOperations" tableStyleClass="kx-table" autoLayout="true">
-                                <!-- 
-                <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th>
-                        Sections
-                    </th>
-                    <th>
-                        Type
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                </tr>
-            </ng-template> -->
+
                                 <ng-template pTemplate="body" let-rowData>
                 <tr class="kx-row">
                     <td></td>
-                    <td style="width: 33%;">{{
+                    <td style="width: 48%;">{{
                         rowData.OperationType?.OperationTypeName }}</td>
-                    <td style="width: 32.8%;">{{
+                    <td style="width: 35%;">{{
                         rowData.OperationStatus?.Name}}
                     </td>
-                    <td>
-                        <p-button (click)="goToSecondaryOperationSections(rowData)" class="viewsection"
-                            icon="pi pi-external-link" label="View Sections"></p-button>
-                    </td>
-                    <!-- <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--3@ltp-s"
-                        style="margin-right: 0.8%;">{{
-                        rowData.OperationType?.OperationTypeName }}</td>
-                    <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{
-                        rowData.OperationStatus?.Name}}
-                    </td>
-                    <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">
+                    <!-- <td>
                         <p-button (click)="goToSecondaryOperationSections(rowData)" class="viewsection"
                             icon="pi pi-external-link" label="View Sections"></p-button>
                     </td> -->
@@ -140,8 +124,6 @@
     </td>
     </tr>
     </ng-template>
-
-
     </p-table>
     <app-no-data [displayme]="operations.length === 0"></app-no-data>
 </div>

@@ -115,7 +115,9 @@
           "UpdateOperationFouling": "/UpdateOperationFouling",
           "DeleteOperationSection": "/DeleteOperationSection",
           "DeleteOperationSubSection": "/DeleteOperationSubSection",
-          "GetOperationMissions": "/Missions"
+          "GetOperationMissions": "/Missions",
+          "UpdateBerthDepth": "/UpdateBerthDepth",
+          "DownloadMissionLogFile": "/DownloadMissionLogFile"
         }
       },
       "Installation": {
