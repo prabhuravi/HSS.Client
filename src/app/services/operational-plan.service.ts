@@ -169,7 +169,7 @@ export class OperationalPlanService {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DownloadMissionLogFile}/${missionId}`,
     };
-    return this.http.getFile(requestData);
+    return this.http.getMediaData(requestData, 'blob');
   }
 
   deleteOperation(id: number): Observable<any> {

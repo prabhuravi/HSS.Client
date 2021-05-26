@@ -7,9 +7,7 @@ import { take } from 'rxjs/operators';
 import { saveAs } from 'file-saver';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
-
-
-
+import * as fileSaver from 'file-saver';
 @Component({
   selector: 'app-installation-document',
   templateUrl: './installation-document.component.html',
@@ -52,11 +50,14 @@ export class InstallationDocumentComponent implements OnInit {
     }
   }
   downloadDocument(row: IInstallationDocument) {
-    this.operationalPlanService.downloadDocument(row.DocumentId).pipe(take(1)).subscribe((blob) => {
+    this.operationalPlanService.downloadDocument(row.DocumentId).pipe(take(1)).subscribe((response) => {
+
+      const blob: any = new Blob([response], { type: response.type });
+      fileSaver.saveAs(blob, row.FileName);
       console.log(blob);
-      saveAs(blob, row.FileName, {
-        type: blob.type
-     });
+    //   saveAs(blob, row.FileName, {
+    //     type: blob.type
+    //  });
   });
 }
 }

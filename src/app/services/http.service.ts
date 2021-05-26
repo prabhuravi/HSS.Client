@@ -106,9 +106,9 @@ export class HttpService {
     );
   }
 
-  getFile(requestData: any): Observable<any> {
-   return this.http.get(requestData.endPoint, { responseType: 'blob' });
-  }
+  // getFile(requestData: any): Observable<any> {
+  //  return this.http.get(requestData.endPoint, { responseType: 'blob' });
+  // }
 
   putData(requestData: any): Observable<any> {
     if (requestData.data) {

@@ -6,7 +6,7 @@ import { ConfirmationService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { OperationDocument } from 'src/app/models/OperationDocument';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
-import { saveAs } from 'file-saver';
+import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-operation-document',
@@ -48,11 +48,12 @@ export class OperationDocumentComponent implements OnInit {
     });
   }
   downloadDocument(row: OperationDocument) {
-    this.operationalPlanService.downloadOperationDocument(row.id).subscribe((blob) => {
-      console.log(blob);
-      saveAs(blob, row.file, {
-         type: blob.type
-      });
+    this.operationalPlanService.downloadOperationDocument(row.id).subscribe((response) => {
+       const blob: any = new Blob([response], { type: response.type });
+       fileSaver.saveAs(blob, row.file);
+      // saveAs(blob, row.file {
+      //    type: blob.type
+      // });
     });
   }
 }
