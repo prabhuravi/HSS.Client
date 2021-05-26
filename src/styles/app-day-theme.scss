@@ -143,4 +143,9 @@ ngx-intl-tel-input input:focus {
 	outline: none;
 	border-color: #2e92a0;
 }
+//tab view
+body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active {
+  color: #007a8c;
+  box-shadow: inset 0 -0.2rem 0 0 #007a8c;
+}
 

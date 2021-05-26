@@ -1,0 +1,12 @@
+.wrapper-dropdown:after {
+    content: "";
+    width: 0;
+    height: 0;
+    background: url(/assets/img/icons/sprites/icons.svg#pencil) no-repeat;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    margin-top: -3px;
+  
+}
+

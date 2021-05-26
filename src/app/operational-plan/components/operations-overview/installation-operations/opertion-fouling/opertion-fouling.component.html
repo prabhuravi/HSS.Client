@@ -49,7 +49,7 @@
            </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
-        <tr>
+        <tr> 
             <td [attr.colspan]="6">
                 <div class="kx-table--outer-border" [ngStyle]="rowData.OperationSubSections.length > 0 ? {'padding-left': '24vw'} : ''">
                     <app-no-data [displayme]="rowData.OperationSubSections && rowData.OperationSubSections.length === 0"></app-no-data>

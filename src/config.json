@@ -115,8 +115,10 @@
           "UpdateOperationFouling": "/UpdateOperationFouling",
           "DeleteOperationSection": "/DeleteOperationSection",
           "DeleteOperationSubSection": "/DeleteOperationSubSection",
+          "GetOperationMissions": "/Missions",
           "UpdateBerthDepth": "/UpdateBerthDepth",
           "DownloadMissionLogFile": "/DownloadMissionLogFile"
+
         }
       },
       "Installation": {
@@ -230,7 +232,10 @@
         "endpoints": {
           "AddDocument": "",
           "GetInstallationDocuments": "",
+          "GetOperationDocuments": "/Operation",
           "GetDocumentTypes": "/GetDocumentTypes",
+          "GetDocumentForDownload": "/DownloadDocument",
+          "GetOperationDocumentForDownload": "/Operation/DownloadDocument",
           "DeleteInstallationDocument": "",
           "GetInstallationsByDocumentTypeId": "/GetInstallationsByDocumentTypeId"
         }

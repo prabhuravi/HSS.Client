@@ -53,6 +53,9 @@ import { ManageSectionComponent } from './components/sections/manage-section/man
 import { OpertionSectionComponent } from './components/operations-overview/installation-operations/opertion-section/opertion-section.component';
 import { OpertionFoulingComponent } from './components/operations-overview/installation-operations/opertion-fouling/opertion-fouling.component';
 import { PortMeteorologyComponent } from './components/operations-overview/installation-operations/port-meteorology/port-meteorology.component';
+import { InstallationDocumentComponent } from './components/operations-overview/installation-document/installation-document.component';
+import { OperationDocumentComponent } from './components/operations-overview/installation-operations/operation-document/operation-document.component';
+import { OperationMissionsComponent } from './components/operations-overview/installation-operations/operation-missions/operation-missions.component';
 
 const routes: Routes = [
   {
@@ -81,12 +84,14 @@ const routes: Routes = [
           { path: '', component: InstallationOperationsComponent, pathMatch: 'full' },
           {
             path: 'installation-operations/:vesselId', component: InstallationOperationsComponent
+            
             // , children: [
             //   { path: '', component: ListOperationsComponent, pathMatch: 'full' },
             //   { path: 'list-operations/:vesselId', component: ListOperationsComponent },
             //   { path: 'create-operation/:vesselId', component: CreateOperationComponent }
             // ]
-          }
+          },
+          {path: 'installation-document/:vesselId', component: InstallationDocumentComponent}
         ]
       },
 
@@ -136,7 +141,10 @@ const routes: Routes = [
         ContactSearchComponent,
         OpertionSectionComponent,
         OpertionFoulingComponent,
-        PortMeteorologyComponent],
+        PortMeteorologyComponent,
+        InstallationDocumentComponent,
+        OperationDocumentComponent,
+        OperationMissionsComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

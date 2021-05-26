@@ -1,4 +1,8 @@
 <app-load *ngIf="isDataLoading"></app-load>
+<div class="kx-row" style="margin-top: -25px; margin-left: 15px;">
+    <b>Vessel Fouling State:</b> &nbsp;
+    {{overallFoulingState}}
+</div>
 <p-table *ngIf="sections && sections.length > 0" [columns]="cols" [value]="sections" dataKey="id" editMode="row" [paginator]="true" #tt
     [rows]="PRIMENG_CONSTANTS.rowCount" [rowsPerPageOptions]="[5,10,20,50,100,200,500]" rowExpandMode="single"
     tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
@@ -44,9 +48,7 @@
             <td>{{ rowData.name }}</td>
             <td></td>
             <td> {{ rowData.foulingState.State }}</td> 
-            <td> {{ rowData.modifiedDate | date:'MM/dd/yyyy HH:mm' }}</td>
-            <td>
-            </td>
+            <td> {{ rowData.modifiedDate | date:'MM/dd/yyyy HH:mm' }}</td>          
         </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
@@ -59,23 +61,23 @@
         <tr class="kx-row">
             <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">{{ rowData.subSectionNumber }}
             </td>
-            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--5@ltp-s" style="margin-right: 0.8%;">{{
-                rowData.foulingState.State }}</td>
+            <td pEditableColumn [pEditableColumn]="rowData"
+            class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--5@ltp-s" style="margin-right: 0.8%;">
+            <p-cellEditor>
+                <ng-template pTemplate="input">
+                    <p-dropdown [options]="foulingStates" [(ngModel)]="rowData.foulingState" appendTo="body"
+                        (ngModelChange)="onFoulingStateChanged(rowData)" title="Click outside the cell to save" optionLabel="State"></p-dropdown>
+                </ng-template>
+                <ng-template pTemplate="output">
+                    <div class="wrapper-dropdown">
+                    {{ rowData.foulingState.State }}
+                </div>
+                </ng-template>
+            </p-cellEditor>
+        </td>
+           
             <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.modifiedDate | date:'MM/dd/yyyy HH:mm'}}
-            </td>
-            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--1@tab-m kx-col--1@ltp-s">
-                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit"
-                    title="Edit" (click)="editSubSectionFoulingState(rowData)">
-                    <span class="kx-btn__inner">
-                        <i class="kx-icon kx-icon--size-moderate">
-                            <svg focusable="true">
-                                <use href="./assets/img/icons/sprites/icons.svg#pencil"></use>
-                            </svg>
-                        </i>
-                        <span class="kx-btn__txt kx-is-vishidden">Edit</span>
-                    </span>
-                </button>
-            </td>
+            </td>            
         </tr>
     </ng-template>
 </p-table>

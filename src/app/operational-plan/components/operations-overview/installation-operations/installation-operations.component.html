@@ -6,21 +6,36 @@
         (operationEdited)="onOperationEdited($event)" #listOperations>
     </app-list-operations>
 </div> -->
-<app-load *ngIf="isDataLoading"></app-load>
-<app-list-operations *ngIf="!viewCreateOperation" (showCreateOperation)="showCreateOperation($event)"
-(operationEdited)="onOperationEdited($event)" #listOperations>
-</app-list-operations>
-<p-tabView #tabViewElement  *ngIf="viewCreateOperation" [(activeIndex)]="index" dynamic="true" (onChange)="handleChange($event)">
+<div class="kx-pt--small">
+  <app-load *ngIf="isDataLoading"></app-load>
+  <app-list-operations *ngIf="!viewCreateOperation" (showCreateOperation)="showCreateOperation($event)"
+    (operationEdited)="onOperationEdited($event)" #listOperations>
+  </app-list-operations>
+  <p-tabView #tabview *ngIf="viewCreateOperation" [(activeIndex)]="index" dynamic="true"
+    (onChange)="handleChange($event)">
     <p-tabPanel header="Operation">
-        <app-create-operation (formAlteredEvent)="updateTabs($event)" (showListOperation)="showListOperation($event)" #createOperation>
-        </app-create-operation>
+      <app-create-operation (formAlteredEvent)="updateTabs($event)" (showListOperation)="showListOperation($event)"
+        #createOperation>
+      </app-create-operation>
     </p-tabPanel>
-    <p-tabPanel header="Section"   *ngIf="createOperation.editOperation">
-        <app-opertion-section #operationSections [vesselSections]="createOperation.sections" [operation]="createOperation.operationToEdit" [gobalSelectedSubSectionId]="createOperation.gobalSelectedSubSectionId" >
-        </app-opertion-section>
+    <p-tabPanel header="Section" *ngIf="createOperation.editOperation">
+      <app-opertion-section #operationSections [vesselSections]="createOperation.sections"
+        [operation]="createOperation.operationToEdit"
+        [gobalSelectedSubSectionId]="createOperation.gobalSelectedSubSectionId">
+      </app-opertion-section>
     </p-tabPanel>
-    <p-tabPanel header="Fouling"  *ngIf="createOperation.editOperation">
-            <app-opertion-fouling #operationFouling [sections]="createOperation.sections" [operation]="createOperation.operationToEdit">
-        </app-opertion-fouling>
+    <p-tabPanel header="Fouling" *ngIf="createOperation.editOperation">
+      <app-opertion-fouling #operationFouling [sections]="createOperation.sections"
+        [operation]="createOperation.operationToEdit">
+      </app-opertion-fouling>
     </p-tabPanel>
-</p-tabView>
+    <p-tabPanel header="Documents" *ngIf="createOperation.editOperation">
+      <app-operation-document #operationDocument [operation]="createOperation.operationToEdit">
+      </app-operation-document>
+    </p-tabPanel>
+    <p-tabPanel header="Missions" *ngIf="createOperation.editOperation">
+      <app-operation-missions #operationMissions [operation]="createOperation.operationToEdit">
+      </app-operation-missions>
+    </p-tabPanel>
+  </p-tabView>
+</div>

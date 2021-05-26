@@ -57,7 +57,7 @@
   
     <tr>
       <td [attr.colspan]="5">
-        <div class="kx-table--outer-border" [ngStyle]="rowData.OperationSubSections.length > 0 ? {'padding-left': '36.7vw'} : ''" >
+        <div class="kx-table--outer-border" [ngStyle]="rowData.OperationSubSections.length > 0 ? {'padding-left': '31.7vw'} : ''" >
           <app-no-data [displayme]="rowData.OperationSubSections && rowData.OperationSubSections.length === 0"></app-no-data>
           <p-table *ngIf="rowData.OperationSubSections.length > 0" [value]="rowData.OperationSubSections" tableStyleClass="kx-table" autoLayout="true">
             <ng-template pTemplate="body" let-rowData>
