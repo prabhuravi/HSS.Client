@@ -260,12 +260,11 @@ export class SecondryOperationListingComponent implements OnInit {
     }
     let booked = true;
     rowsection.subSections.forEach((element) => {
-      const subSectionid = this.gobalSelectedSubSectionId.find((x) => x === element.id);
-      if (!subSectionid) {
-        booked = false;
+      if (!element.selected) {
+        return false;
       }
     });
-    return booked;
+    return true;
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {
