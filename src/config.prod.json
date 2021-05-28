@@ -385,7 +385,7 @@
     }
   },
   
-  "filemanagerLink": "https://hss.kognif.ai/poseidonnext/kognifai-file-manager-client/",
+  "filemanagerLink": "https://hss.kognif.ai/PoseidonNext/file-manager/#/browse?path=",
   "galoreApiUrl": "https://hss.kognif.ai/galoreapi/",
   "galoreSignalRUrl": "https://hss.kognif.ai/galoreapi/"
 }

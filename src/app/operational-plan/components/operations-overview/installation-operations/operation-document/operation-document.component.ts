@@ -56,4 +56,10 @@ export class OperationDocumentComponent implements OnInit {
       // });
     });
   }
+
+  goToListOperations(){
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate(['/operational-plan/operations-overview/' + this.operation.VesselId])
+    );
+  }
 }
