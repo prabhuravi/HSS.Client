@@ -54,6 +54,7 @@ export class CreateOperationComponent implements OnInit {
   form1Values: any = null;
   form2Values: any = null;
   displayMaximizable: boolean;
+  displayRegularityKPI: boolean;
   vesselSectionArray: any[] = [];
   @Output() formAlteredEvent: EventEmitter<any> = new EventEmitter<any>();
   disableForm = false;
@@ -73,13 +74,15 @@ export class CreateOperationComponent implements OnInit {
   gobalSelectedSubSectionId: number[] = [];
   @Output() showListOperation = new EventEmitter<boolean>();
   isFormDataReady = false;
-
-  displayModal: boolean;
+  hsRegularityKPIConfigs = [{Revision: 'v1.0.0', Description: 'Default template for HullSkater Regularity KPI'}];
+  defaultHSRegularityKPIConfig;
+  displayActionModal: boolean;
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
     this.isDataLoading = true;
+    this.defaultHSRegularityKPIConfig = this.hsRegularityKPIConfigs[0];
     this.operationalPlanService.getOperationMasterData().pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       this.operationTypes = data[0];
@@ -188,11 +191,11 @@ export class CreateOperationComponent implements OnInit {
     this.showListOperation.emit(false);
   }
   showModalDialog() {
-    this.displayModal = true;
+    this.displayActionModal = true;
   }
 
   addSecondaryOperationToList(event, element) {
-    this.displayModal = false;
+    this.displayActionModal = false;
     // element.hide(event);
     this.secondaryListingComponent.updateSecondaryOperationList(new SecondaryOperation(0, 0, 2, 1, '', null, null, null));
   }
@@ -452,6 +455,11 @@ export class CreateOperationComponent implements OnInit {
         this.vesselSectionArray.push(section);
       }
     });
+  }
+
+  openRegularityKPIForm()
+  {
+    this.displayRegularityKPI = true;
   }
 
   isBookedSection(rowsection: VesselSection) {

@@ -249,6 +249,12 @@
           "ReCalculateFoulingState": "/ReCalculateFoulingState"
         }
       },
+      "KPI": {
+        "path": "/OperationKPI",
+        "endpoints": {
+          "GetHSRegularityKPIQuestion": "/GetHSRegularityKPIQuestion"
+        }
+      },
       "GetTimeZone": [
         {
           "name": "GMT",

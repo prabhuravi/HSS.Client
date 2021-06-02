@@ -56,6 +56,7 @@ import { PortMeteorologyComponent } from './components/operations-overview/insta
 import { InstallationDocumentComponent } from './components/operations-overview/installation-document/installation-document.component';
 import { OperationDocumentComponent } from './components/operations-overview/installation-operations/operation-document/operation-document.component';
 import { OperationMissionsComponent } from './components/operations-overview/installation-operations/operation-missions/operation-missions.component';
+import { HullskaterRegularityKpiComponent } from './components/kpi/hullskater-regularity-kpi/hullskater-regularity-kpi.component';
 
 const routes: Routes = [
   {
@@ -144,7 +145,8 @@ const routes: Routes = [
         PortMeteorologyComponent,
         InstallationDocumentComponent,
         OperationDocumentComponent,
-        OperationMissionsComponent],
+        OperationMissionsComponent,
+        HullskaterRegularityKpiComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

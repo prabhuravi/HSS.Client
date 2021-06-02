@@ -66,7 +66,7 @@
                                         </ul>
                                     </div>
                                 </p-overlayPanel>
-                                <p-dialog #actionDialog [(visible)]="displayModal" [style]="{width: '15vw'}"
+                                <p-dialog #actionDialog [(visible)]="displayActionModal" [style]="{width: '15vw'}"
                                     [baseZIndex]="10000" [draggable]="false" [resizable]="false">
                                     <div class="kx-listgroup">
                                         <ul class="kx-list kx-list--item-highlight">
@@ -77,9 +77,10 @@
                                                         Operation</span>
                                                 </span>
                                             </li>
-                                            <li class="kx-list-item u--cursorPointer">
+                                            <li class="kx-list-item u--cursorPointer"
+                                                (click)="openRegularityKPIForm($event, actionDialog)">
                                                 <span class="kx-list-item__text">
-                                                    <span class="kx-list-item__primary-text">Action 2</span>
+                                                    <span class="kx-list-item__primary-text">Regularity KPI</span>
                                                 </span>
                                             </li>
                                             <li class="kx-list-item u--cursorPointer">
@@ -95,7 +96,7 @@
                                         </ul>
                                     </div>
                                     <ng-template pTemplate="footer">
-                                        <p-button icon="pi pi-check" (click)="displayModal=false" label="Ok"
+                                        <p-button icon="pi pi-check" (click)="displayActionModal=false" label="Ok"
                                             styleClass="p-button-text"></p-button>
                                     </ng-template>
                                 </p-dialog>
@@ -110,7 +111,8 @@
                                         <table>
                                             <th>Sections</th>
                                             <th colspan="90%">Subsections</th>
-                                            <tr *ngFor="let row of opertionSections; let i=index;" style="margin-top: 16px">
+                                            <tr *ngFor="let row of opertionSections; let i=index;"
+                                                style="margin-top: 16px">
                                                 <!-- <button *ngIf="!row.selected && isBookedSection(row)" [disabled]="true"
                                                     style="color: white;"
                                                     class="u--bgDanger kx-btn kx-btn--size-base section">
@@ -159,7 +161,6 @@
                                             </tr>
                                         </table>
                                     </div>
-
                                 </div>
                             </div>
                             <ng-template pTemplate="footer">
@@ -176,8 +177,9 @@
                     margin-left: 25px;" (secondaryUpdated)="secondaryListing.updateSecondaryOperationList($event)"
                             #createSecondaryOperation>
                         </app-create-secondry-operation> -->
-                        <app-secondry-operation-listing [sections]="sections" [isEditOperation]="editOperation" [isFormDirty]="isFormDirty"
-                            [gobalSelectedSubSectionId]="gobalSelectedSubSectionId" #secondaryListing style="width: 100%;
+                        <app-secondry-operation-listing [sections]="sections" [isEditOperation]="editOperation"
+                            [isFormDirty]="isFormDirty" [gobalSelectedSubSectionId]="gobalSelectedSubSectionId"
+                            #secondaryListing style="width: 100%;
                         margin-left: 13px;">
                         </app-secondry-operation-listing>
                     </div>
@@ -224,7 +226,7 @@
                             <div class="kx-card kx-card--skin-default"
                                 style="height: 250px; margin-top: 20px;padding: 5px;">
                                 <b>PORT METEOROLOGY</b>
-                                <app-port-meteorology  [operation]="operationToEdit"></app-port-meteorology>
+                                <app-port-meteorology [operation]="operationToEdit"></app-port-meteorology>
                             </div>
                         </div>
                         <div *ngIf="editOperation" class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
@@ -282,6 +284,26 @@
     </div>
 </div>
 
+<p-dialog header="HullSkater Regularity KPI" [(visible)]="displayRegularityKPI" [modal]="true" [style]="{width: '60vw'}"
+    [maximizable]="true" [baseZIndex]="10000" [draggable]="true" [resizable]="true">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                Config Id <p-dropdown autoWidth="false" [style]="{'width':'150px'}" [options]="hsRegularityKPIConfigs"
+                    optionLabel="Revision" name="hsRegularityKPIConfig" [(ngModel)]="defaultHSRegularityKPIConfig"
+                    filter="true" placeholder="Select config id" [disabled]="true">
+                </p-dropdown>
+                <app-hullskater-regularity-kpi [operation]="operationToEdit">
+                </app-hullskater-regularity-kpi>
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="displayRegularityKPI=false" label="Ok" styleClass="p-button-text">
+        </p-button>
+    </ng-template>
+</p-dialog>
+
 <app-modal [displayMe]="showOperatorModal">
     <div class="modal-header">
         <div>
@@ -333,7 +355,7 @@
                                     </td>
                                     <td style="text-align: center;">{{operator.name}}</td>
                                     <td style="text-align: center;">{{operator.surName}}</td>
-                                    <td style="text-align: center;">{{operator.availability ?'Availalbe': 'Booked'}}
+                                    <td style="text-align: center;">{{operator.availability ?'Available': 'Booked'}}
                                     </td>
                                     <td style="text-align: center;">{{operator.operatorBooking ?
                                         operator.operatorBooking.installationName : ''}}</td>
