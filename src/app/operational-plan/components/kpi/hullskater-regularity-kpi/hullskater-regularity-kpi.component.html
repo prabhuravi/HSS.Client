@@ -42,11 +42,11 @@
                     <div class="">
                         <p-dropdown *ngIf="kpiQuestion.HSRegularityKPIQuestionOptions.length > 0"
                             [options]="kpiQuestion.HSRegularityKPIQuestionOptions" autoWidth="false"
-                            [style]="{'width':'100%'}" [formControlName]="i" optionLabel="Option" filter="true"
+                            [style]="{'width':'100%'}" [formControlName]="'control'+i" optionLabel="Option" filter="true"
                             placeholder="Select option">
                         </p-dropdown>
                         <input *ngIf="!(kpiQuestion.HSRegularityKPIQuestionOptions.length > 0)"
-                            class="kx-field kx-field--size-base" style="width: 100%;" type="text" [formControlName]="i"
+                            class="kx-field kx-field--size-base" style="width: 100%;" type="text" [formControlName]="'control'+i"
                             [placeholder]="i == 3? 'hh:mm' : 'Optional comments' " />
                     </div>
                 </td>

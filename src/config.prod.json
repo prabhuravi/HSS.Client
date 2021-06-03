@@ -252,7 +252,8 @@
       "KPI": {
         "path": "/OperationKPI",
         "endpoints": {
-          "GetHSRegularityKPIQuestion": "/GetHSRegularityKPIQuestion"
+          "GetHSRegularityKPIQuestion": "/GetHSRegularityKPIQuestion",
+          "UpdateHSRegularityKPIAnswer": "/UpdateHSRegularityKPIAnswer"
         }
       },
       "GetTimeZone": [

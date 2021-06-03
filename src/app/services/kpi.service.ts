@@ -19,7 +19,14 @@ export class KPIService {
         const requestData = {
             endPoint: `${this.operationalPlanConfig.domainURL}${this.kpiConfig.path}${this.kpiConfig.endpoints.GetHSRegularityKPIQuestion}/${templateId}`
         };
-        console.log(requestData);
         return this.http.getData(requestData);
+    }
+
+    updateHSRegularityKPIAnswer(operationId: number, kpiAnswers: any): Observable<any> {
+        const requestData = {
+            endPoint: `${this.operationalPlanConfig.domainURL}${this.kpiConfig.path}${this.kpiConfig.endpoints.UpdateHSRegularityKPIAnswer}/${operationId}`,
+            data: kpiAnswers
+        };
+        return this.http.postData(requestData);
     }
 }
