@@ -21,14 +21,14 @@ export class ContactListingComponent implements OnInit {
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   @Output() contactOnEdit: EventEmitter<any> = new EventEmitter<any>();
   cols = [
-    { field: 'name', header: 'First Name', sortfield: 'name', filterMatchMode: 'contains' },
-    { field: 'surName', header: 'Surname', sortfield: 'surName', filterMatchMode: 'contains' },
-    { field: 'email', header: 'Email', sortfield: 'email', filterMatchMode: 'contains' },
-    { field: 'alternativePhone', header: 'Alternative Phone', sortfield: 'alternativePhone', filterMatchMode: 'contains' },
-    { field: 'phone', header: 'Phone', sortfield: 'phone', filterMatchMode: 'contains' },
-    { field: 'ContactType.name', header: 'Role', sortfield: 'ContactType.name', filterMatchMode: 'contains' },
-    { field: 'tagTraining', header: 'Tag Training', sortfield: '' },
-    { field: 'action', header: 'Actions', sortfield: '' }
+    { field: 'name', header: 'First Name', sortfield: 'name', filterMatchMode: 'contains' , displayInOperation: true },
+    { field: 'surName', header: 'Surname', sortfield: 'surName', filterMatchMode: 'contains', displayInOperation: true  },
+    { field: 'email', header: 'Email', sortfield: 'email', filterMatchMode: 'contains', displayInOperation: false  },
+    { field: 'alternativePhone', header: 'Alternative Phone', sortfield: 'alternativePhone',  filterMatchMode: 'contains', displayInOperation: false },
+    { field: 'phone', header: 'Phone', sortfield: 'phone', filterMatchMode: 'contains' , displayInOperation: true},
+    { field: 'ContactType.name', header: 'Role', sortfield: 'ContactType.name', filterMatchMode: 'contains', displayInOperation: false },
+    { field: 'tagTraining', header: 'Tag Training', sortfield: '', displayInOperation: false },
+    { field: 'action', header: 'Actions', sortfield: '', displayInOperation: false }
   ];
   contactSearch: Contact[];
   contacts: Contact[] = [];
@@ -56,7 +56,9 @@ export class ContactListingComponent implements OnInit {
       this.contacts = data;
     });
   }
-
+public seeDetailedInfo(rowData: Contact): string{
+  return 'Email: ' + rowData.email + ' Alternate Phone: ' + rowData.alternativePhone ;
+}
   onContactEditInit(rowData: Contact) {
     this.contactOnEdit.emit(rowData);
   }

@@ -65,8 +65,8 @@ export class OperationMissionsComponent implements OnInit {
   downloadOperatorLog(row: Mission) {
     this.isDataLoading = true;
     this.operationalPlanService.downloadMissionLog(row.id).pipe(take(1)).subscribe((response) => {
-      const blob: any = new Blob([response], { type: 'text/csv; charset=utf-8' });
-      fileSaver.saveAs(blob, 'Test.csv');
+      const blob: any = new Blob([response], { type: response.contentType });
+      fileSaver.saveAs(blob, response.fileDownloadName);
       this.isDataLoading = false;
     },
       (err) => {
