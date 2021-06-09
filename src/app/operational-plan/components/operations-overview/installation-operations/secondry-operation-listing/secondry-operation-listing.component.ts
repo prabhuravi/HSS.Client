@@ -95,16 +95,7 @@ export class SecondryOperationListingComponent implements OnInit {
     const formGroup = this.formBuliderService.buildForm(secondaryconfig);
     this.secondaryItems.push(formGroup);
     if (element.Id !== 0) {
-      const index = this.secondaryoperations.findIndex((p) => p.Id === element.Id);
-      if (element.OperationStatus.Name === OperationStatusEnum.Completed || element.OperationStatus.Name === OperationStatusEnum.Aborted) {
-        formGroup.disable();
-        formGroup.updateValueAndValidity();
-        this.disableForms[index] = true;
-      }
-      if (element.OperationStatus.Name === OperationStatusEnum.Running) {
-        formGroup.controls.operationType.disable();
-        formGroup.controls.operationType.updateValueAndValidity();
-      }
+      this.setEditRule(element, formGroup);
     }
    // this.sections = element.VesselSectionModel;
     // console.log(this.sections);
@@ -123,6 +114,26 @@ export class SecondryOperationListingComponent implements OnInit {
       });
     });
     this.secondaryVesselSections.push(JSON.parse(JSON.stringify(this.sections)));
+  }
+
+  setEditRule(secOperation: SecondaryOperation, formGroup: FormGroup) {
+    const index = this.secondaryoperations.findIndex((p) => p.Id === secOperation.Id);
+    if (secOperation.OperationStatus.Name === OperationStatusEnum.Completed || secOperation.OperationStatus.Name === OperationStatusEnum.Aborted) {
+      formGroup.disable();
+      formGroup.updateValueAndValidity();
+      this.disableForms[index] = true;
+    }
+    if (secOperation.OperationStatus.Name === OperationStatusEnum.Running) {
+      formGroup.controls.operationType.disable();
+      formGroup.controls.operationType.updateValueAndValidity();
+    }
+  }
+
+  applySecondaryEditRule()
+  {
+    this.updatedSecondaryOperations.forEach((secOperation, index)=> {
+      this.setEditRule(secOperation, this.secondaryItems.controls[index] as FormGroup);
+    });
   }
 
   updateSecondaryOperationList(event: SecondaryOperation) {

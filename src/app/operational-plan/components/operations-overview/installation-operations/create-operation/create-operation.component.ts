@@ -267,7 +267,6 @@ export class CreateOperationComponent implements OnInit {
   }
 
   setSectionForOperation() {
-    console.log('reset Operation Section');
     const opSection = this.operationToEdit.OperationSections;
     this.opertionSections.forEach((sec) => {
       const secItem = opSection.find((x) => x.VesselSection.Id === sec.id);
@@ -313,7 +312,8 @@ export class CreateOperationComponent implements OnInit {
       if (secondaryOpearations.some((secOperation) => (secOperation.OperationStatus.Name === OperationStatusEnum.Confirmed || secOperation.OperationStatus.Name === OperationStatusEnum.Running || secOperation.OperationStatus.Name === OperationStatusEnum.Completed) && secOperation.VesselSectionModel.length === 0)) {
         this.triggerToast('error', 'Message', `Sections must be registered before secondary operation status can be updated as Confirmed, Running or Completed`);
       } else {
-        if ((formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Completed)) {
+        if ((formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Completed
+          && formsArrayAsAny.controls[0].controls.operationStatus.dirty)) {
           this.confirmationService.confirm({
             message: 'You are going to complete the operation without rating fouling state on selected sections. Press No and update fouling state if remaining',
             accept: () => {
@@ -351,15 +351,14 @@ export class CreateOperationComponent implements OnInit {
       operation.createdBy = this.operationToEdit.CreatedBy;
       this.isDataLoading = true;
       this.operationalPlanService.updateOperation(this.operationToEdit.Id, operation).pipe(take(1)).subscribe((data) => {
-        this.isDataLoading = true;
         this.operationalPlanService.getOperationDeatils(this.operationToEdit.Id).pipe(take(1)).subscribe((updatedData) => {
           this.setEditRule(updatedData);
+          this.secondaryListingComponent.applySecondaryEditRule();
           this.isDataLoading = false;
           this.operationToEdit = updatedData;
           this.formAlteredEvent.emit(updatedData);
           this.isFormDirty = false;
         });
-        this.isDataLoading = false;
         this.triggerToast('success', 'Success Message', `Operation updated successfully`);
       });
     } else {
