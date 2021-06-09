@@ -28,8 +28,8 @@ import { OpertionFoulingComponent } from '../opertion-fouling/opertion-fouling.c
 export class CreateOperationComponent implements OnInit {
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
-              private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
-              public fb: FormBuilder, public datepipe: DatePipe) { }
+    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
+    public fb: FormBuilder, public datepipe: DatePipe) { }
 
   get formsArray() {
     return this.formsData.get('formsArray') as FormArray;
@@ -39,7 +39,7 @@ export class CreateOperationComponent implements OnInit {
   requestedBy: IRequestedBy[] = [];
   isFormSubmmited: boolean = false;
   isFormDirty = false;
-    vesselId: number = 0;
+  vesselId: number = 0;
   operationToEdit: any;
   editOperation = false;
   showOperatorModal = false;
@@ -74,7 +74,7 @@ export class CreateOperationComponent implements OnInit {
   gobalSelectedSubSectionId: number[] = [];
   @Output() showListOperation = new EventEmitter<boolean>();
   isFormDataReady = false;
-  hsRegularityKPIConfigs = [{Revision: 'v1.0.0', Description: 'Default template for HullSkater Regularity KPI'}];
+  hsRegularityKPIConfigs = [{ Revision: 'v1.0.0', Description: 'Default template for HullSkater Regularity KPI' }];
   defaultHSRegularityKPIConfig;
   displayActionModal: boolean;
 
@@ -202,15 +202,54 @@ export class CreateOperationComponent implements OnInit {
 
   onEditOperation(operation: Operation): void {
     this.isFormDirty = false;
-    this.isDataLoading = true;
+
     console.log(operation);
 
     this.editOperation = true;
     this.selectedOperator = null;
     this.operationToEdit = operation;
     this.secondaryListingComponent.editOperation = true;
+    this.setEditRule(operation);
     const formsArrayAsAny = this.formsData.controls.formsArray as any;
 
+    this.isDataLoading = true;
+    this.operationalPlanService.getOperationSections(operation.Id).pipe(take(1)).subscribe((opSecdata) => {
+      this.isDataLoading = false;
+      this.operationToEdit.OperationSections = opSecdata;
+      this.formAlteredEvent.emit(this.operationToEdit);
+      this.isDataLoading = true;
+      this.operationalPlanService.getSecondaryOperations(operation.Id).pipe(take(1)).subscribe((data) => {
+        this.secondaryOperationsForEdit = data;
+        this.operationToEdit.SecondaryOperations = data;
+        this.formAlteredEvent.emit(this.operationToEdit);
+        console.log(this.secondaryOperationsForEdit);
+        this.secondaryOperationsForEdit.forEach((element) => {
+          this.secondaryListingComponent.updateSecondaryOperationList(element);
+          // this.secondaryListingComponent.editOperation = true;
+        });
+        this.isDataLoading = false;
+      });
+
+      this.selectedOperator = operation.Operator ? this.contactAdapter.adapt(operation.Operator) : null;
+      formsArrayAsAny.controls[0].setValue({
+        assignmentType: 'Primary',
+        operationType: this.operationTypes.find((p) => p.Id === operation.OperationType.Id),
+        operationStatus: this.operationStatus.find((p) => p.Id === operation.OperationStatus.Id)
+      });
+      formsArrayAsAny.controls[1].setValue({
+        port: operation.PortLocation ? operation.PortLocation : '',
+        operationDate: operation.Date ? moment(operation.Date).toDate() : null,
+        vesselETB: operation.ETB ? moment(operation.ETB).toDate() : null,
+        requestedBy: operation.RequestedBy ? this.requestedBy.find((p) => p.Id === operation.RequestedBy.Id) : null,
+        description: operation.Description
+      });
+      console.log(this.operationToEdit.OperationSections);
+      this.setSectionForOperation();
+    });
+  }
+
+  setEditRule(operation: Operation) {
+    const formsArrayAsAny = this.formsData.controls.formsArray as any;
     if (operation.OperationStatus.Name === OperationStatusEnum.Running) {
       formsArrayAsAny.controls[0].controls.operationType.disable();
       formsArrayAsAny.controls[0].controls.operationType.updateValueAndValidity();
@@ -226,49 +265,15 @@ export class CreateOperationComponent implements OnInit {
       formsArrayAsAny.controls[1].updateValueAndValidity();
       this.disableForm = true;
     }
-    this.isDataLoading = false;
-    this.operationalPlanService.getOperationSections(operation.Id).pipe(take(1)).subscribe((opSecdata) => {
-      this.operationToEdit.OperationSections = opSecdata;
-      this.formAlteredEvent.emit(this.operationToEdit);
-      this.operationalPlanService.getSecondaryOperations(operation.Id).pipe(take(1)).subscribe((data) => {
-      this.secondaryOperationsForEdit = data;
-      this.operationToEdit.SecondaryOperations = data;
-      this.formAlteredEvent.emit(this.operationToEdit);
-      console.log(this.secondaryOperationsForEdit);
-      this.secondaryOperationsForEdit.forEach((element) => {
-        this.secondaryListingComponent.updateSecondaryOperationList(element);
-        // this.secondaryListingComponent.editOperation = true;
-      });
-    });
-
-      this.selectedOperator = operation.Operator ? this.contactAdapter.adapt(operation.Operator) : null;
-      formsArrayAsAny.controls[0].setValue({
-      assignmentType: 'Primary',
-      operationType: this.operationTypes.find((p) => p.Id === operation.OperationType.Id),
-      operationStatus: this.operationStatus.find((p) => p.Id === operation.OperationStatus.Id)
-    });
-      formsArrayAsAny.controls[1].setValue({
-      port: operation.PortLocation ? operation.PortLocation : '',
-      operationDate: operation.Date ? moment(operation.Date).toDate() : null,
-      vesselETB: operation.ETB ? moment(operation.ETB).toDate() : null,
-      requestedBy: operation.RequestedBy ? this.requestedBy.find((p) => p.Id === operation.RequestedBy.Id) : null,
-      description: operation.Description
-    });
-      console.log(this.operationToEdit.OperationSections);
-      this.setSectionForOperation();
-  });
-
   }
 
-   setSectionForOperation() {
-     console.log('reset Operation Section');
-     const opSection = this.operationToEdit.OperationSections;
-     this.opertionSections.forEach((sec) => {
+  setSectionForOperation() {
+    console.log('reset Operation Section');
+    const opSection = this.operationToEdit.OperationSections;
+    this.opertionSections.forEach((sec) => {
       const secItem = opSection.find((x) => x.VesselSection.Id === sec.id);
       if (secItem && !secItem.SecondaryOperationId) {
-
         sec.subSections.forEach((sub) => {
-
           const item = opSection.find((x) => x.VesselSection.Id === sec.id && x.VesselSection.SubSections.find((x) => x.Id === sub.id));
           if (item) {
             sub.selected = true;
@@ -334,7 +339,12 @@ export class CreateOperationComponent implements OnInit {
           this.isDataLoading = true;
           this.operationalPlanService.updateOperation(this.operationToEdit.Id, operation).pipe(take(1)).subscribe((data) => {
             console.log(data);
+            this.isDataLoading = true;
             this.operationalPlanService.getOperationDeatils(this.operationToEdit.Id).pipe(take(1)).subscribe((updatedData) => {
+              console.log(updatedData);
+              // this.onEditOperation(updatedData);
+              // this.setEditRule(updatedData);
+              this.isDataLoading = false;
               this.operationToEdit = updatedData;
               this.formAlteredEvent.emit(updatedData);
               this.isFormDirty = false;
@@ -457,8 +467,7 @@ export class CreateOperationComponent implements OnInit {
     });
   }
 
-  openRegularityKPIForm()
-  {
+  openRegularityKPIForm() {
     this.displayRegularityKPI = true;
   }
 
