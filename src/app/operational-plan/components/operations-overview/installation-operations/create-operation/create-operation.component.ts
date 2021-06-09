@@ -3,7 +3,7 @@ import { Component, ElementRef, EventEmitter, OnInit, Output, TemplateRef, ViewC
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TreeNode } from 'primeng/api';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import * as moment from 'moment';
 import { take, timeout } from 'rxjs/operators';
 import { FormType, OperationStatusEnum } from 'src/app/app.constants';
@@ -27,7 +27,7 @@ import { OpertionFoulingComponent } from '../opertion-fouling/opertion-fouling.c
 })
 export class CreateOperationComponent implements OnInit {
 
-  constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService,
+  constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService, private confirmationService: ConfirmationService,
     private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
     public fb: FormBuilder, public datepipe: DatePipe) { }
 
@@ -196,7 +196,6 @@ export class CreateOperationComponent implements OnInit {
 
   addSecondaryOperationToList(event, element) {
     this.displayActionModal = false;
-    // element.hide(event);
     this.secondaryListingComponent.updateSecondaryOperationList(new SecondaryOperation(0, 0, 2, 1, '', null, null, null));
   }
 
@@ -290,7 +289,6 @@ export class CreateOperationComponent implements OnInit {
   }
 
   SetSecondaryOperations() {
-    console.log('secondry reset');
     this.secondaryListingComponent.clearSecondaryListing();
     this.operationalPlanService.getSecondaryOperations(this.operationToEdit.Id).pipe(take(1)).subscribe((data) => {
       this.secondaryOperationsForEdit = data;
@@ -316,54 +314,63 @@ export class CreateOperationComponent implements OnInit {
         this.triggerToast('error', 'Message', `Sections must be registered before secondary operation status can be updated as Confirmed, Running or Completed`);
       } else {
         if ((formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Completed)) {
-          this.triggerToast('warn', 'Message', `Please update the fouling state before completing the operation.`);
+          this.confirmationService.confirm({
+            message: 'You are going to complete the operation without rating fouling state on selected sections. Press No and update fouling state if remaining',
+            accept: () => {
+              this.submitOperation();
+            }
+          });
         }
-        const operation = {
-          vesselId: this.vesselId,
-          operationTypeId: formsArrayAsAny.controls[0].controls.operationType.value.Id,
-          date: formsArrayAsAny.controls[1].controls.operationDate.value ? this.converDateToISOString(formsArrayAsAny.controls[1].controls.operationDate.value) : null,
-          statusId: formsArrayAsAny.controls[0].controls.operationStatus.value.Id,
-          portId: formsArrayAsAny.controls[1].controls.port.value ? formsArrayAsAny.controls[1].controls.port.value.Id : null,
-          operatorId: this.selectedOperator ? this.selectedOperator.contactId : null,
-          // hullSkaterId: 1,
-          requestedById: formsArrayAsAny.controls[1].controls.requestedBy.value ? formsArrayAsAny.controls[1].controls.requestedBy.value.Id : null,
-          description: formsArrayAsAny.controls[1].controls.description.value ? formsArrayAsAny.controls[1].controls.description.value : '',
-          operationName: formsArrayAsAny.controls[1].controls.description.value ? formsArrayAsAny.controls[1].controls.description.value : '',
-          etb: formsArrayAsAny.controls[1].controls.vesselETB.value ? this.converDateToISOString(formsArrayAsAny.controls[1].controls.vesselETB.value) : null,
-          createdBy: '',
-          VesselSectionModel: this.vesselSectionArray,
-          SecondaryOperations: secondaryOpearations
-        };
-        if (this.editOperation) {
-          operation.createdBy = this.operationToEdit.CreatedBy;
-          this.isDataLoading = true;
-          this.operationalPlanService.updateOperation(this.operationToEdit.Id, operation).pipe(take(1)).subscribe((data) => {
-            console.log(data);
-            this.isDataLoading = true;
-            this.operationalPlanService.getOperationDeatils(this.operationToEdit.Id).pipe(take(1)).subscribe((updatedData) => {
-              console.log(updatedData);
-              // this.onEditOperation(updatedData);
-              // this.setEditRule(updatedData);
-              this.isDataLoading = false;
-              this.operationToEdit = updatedData;
-              this.formAlteredEvent.emit(updatedData);
-              this.isFormDirty = false;
-            });
-            this.isDataLoading = false;
-            this.triggerToast('success', 'Success Message', `Operation updated successfully`);
-          });
-        } else {
-          this.isDataLoading = true;
-          this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
-            console.log(data);
-            this.isDataLoading = false;
-            this.triggerToast('success', 'Success Message', `Operation added successfully`);
-            this.onFormReset();
-          });
+        else {
+          this.submitOperation();
         }
       }
     }
+  }
 
+  submitOperation() {
+    const formsArrayAsAny = this.formsData.controls.formsArray as any;
+    const secondaryOpearations = this.secondaryListingComponent.updatedSecondaryOperations;
+    const operation = {
+      vesselId: this.vesselId,
+      operationTypeId: formsArrayAsAny.controls[0].controls.operationType.value.Id,
+      date: formsArrayAsAny.controls[1].controls.operationDate.value ? this.converDateToISOString(formsArrayAsAny.controls[1].controls.operationDate.value) : null,
+      statusId: formsArrayAsAny.controls[0].controls.operationStatus.value.Id,
+      portId: formsArrayAsAny.controls[1].controls.port.value ? formsArrayAsAny.controls[1].controls.port.value.Id : null,
+      operatorId: this.selectedOperator ? this.selectedOperator.contactId : null,
+      // hullSkaterId: 1,
+      requestedById: formsArrayAsAny.controls[1].controls.requestedBy.value ? formsArrayAsAny.controls[1].controls.requestedBy.value.Id : null,
+      description: formsArrayAsAny.controls[1].controls.description.value ? formsArrayAsAny.controls[1].controls.description.value : '',
+      operationName: formsArrayAsAny.controls[1].controls.description.value ? formsArrayAsAny.controls[1].controls.description.value : '',
+      etb: formsArrayAsAny.controls[1].controls.vesselETB.value ? this.converDateToISOString(formsArrayAsAny.controls[1].controls.vesselETB.value) : null,
+      createdBy: '',
+      VesselSectionModel: this.vesselSectionArray,
+      SecondaryOperations: secondaryOpearations
+    };
+    if (this.editOperation) {
+      operation.createdBy = this.operationToEdit.CreatedBy;
+      this.isDataLoading = true;
+      this.operationalPlanService.updateOperation(this.operationToEdit.Id, operation).pipe(take(1)).subscribe((data) => {
+        this.isDataLoading = true;
+        this.operationalPlanService.getOperationDeatils(this.operationToEdit.Id).pipe(take(1)).subscribe((updatedData) => {
+          this.setEditRule(updatedData);
+          this.isDataLoading = false;
+          this.operationToEdit = updatedData;
+          this.formAlteredEvent.emit(updatedData);
+          this.isFormDirty = false;
+        });
+        this.isDataLoading = false;
+        this.triggerToast('success', 'Success Message', `Operation updated successfully`);
+      });
+    } else {
+      this.isDataLoading = true;
+      this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
+        console.log(data);
+        this.isDataLoading = false;
+        this.triggerToast('success', 'Success Message', `Operation added successfully`);
+        this.onFormReset();
+      });
+    }
   }
 
   formOnchangeEvent(changedItem: any): void {
@@ -390,7 +397,6 @@ export class CreateOperationComponent implements OnInit {
     if (this.secondaryListingComponent) {
       this.secondaryListingComponent.clearSecondaryListing();
     }
-
   }
 
   showAvailableOperators(e: any) {
