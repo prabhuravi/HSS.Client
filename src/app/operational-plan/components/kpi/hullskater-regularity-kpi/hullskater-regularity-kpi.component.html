@@ -1,0 +1,70 @@
+<app-load *ngIf="isDataLoading"></app-load>
+<table class="kx-table kx-table--outer-border kx-table--slim-rows kx-table--zebra-stripes" style="margin-bottom:-1px; margin-top: 5px;">
+    <tbody>
+        <tr class="">
+            <td>Report Id</td>
+            <td></td>
+        </tr>
+        <tr class="">
+            <td>Installation Id</td>
+            <td>{{operation?.Vessel?.InstallationId}}</td>
+        </tr>
+        <tr class="">
+            <td>Operation Date</td>
+            <td>{{operation?.Date | date:'MM/dd/yyyy HH:mm'}}</td>
+        </tr>
+        <tr class="">
+            <td>Requested By</td>
+            <td>{{operation?.RequestedBy?.Name}}</td>
+        </tr>
+        <tr class="">
+            <td>Port</td>
+            <td>{{operation?.PortLocation?.PortName}}</td>
+        </tr>
+        <tr class="">
+            <td>Operation Type</td>
+            <td>{{operation?.OperationType?.OperationTypeName}}</td>
+        </tr>
+        <tr class="">
+            <td>Operation Description</td>
+            <td>{{operation?.Description}}</td>
+        </tr>
+        <tr class="">
+            <td>Operator</td>
+            <td>{{operation?.Operator?.Name + ' ' + operation?.Operator?.SurName}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<form [formGroup]="kpiForm">
+    <table class="kx-table kx-table--outer-border">
+        <tbody>
+            <tr *ngFor="let kpiQuestion of hsRegularityKPIQuestions; let i = index;" class="">
+                <td style="vertical-align: middle; width: 60%;">{{kpiQuestion.Question}}<small *ngIf="i != 7"
+                        class="u--textDanger">*</small></td>
+                <td>
+                    <div class="">
+                        <p-dropdown *ngIf="kpiQuestion.HSRegularityKPIQuestionOptions.length > 0"
+                            [options]="kpiQuestion.HSRegularityKPIQuestionOptions" autoWidth="false"
+                            [style]="{'width':'100%'}" [formControlName]="'control'+i" optionLabel="Option" filter="true"
+                            placeholder="Select option">
+                        </p-dropdown>
+                        <input *ngIf="!(kpiQuestion.HSRegularityKPIQuestionOptions.length > 0)"
+                            class="kx-field kx-field--size-base" style="width: 100%;" type="text" [formControlName]="'control'+i"
+                            [placeholder]="i == 3? 'hh:mm' : 'Optional comments' " />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="float: right;"> <button (click)="saveKpi()"
+                        class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
+                        [disabled]="!kpiForm.valid">
+                        <span class="kx-btn__inner">
+                            <span class="kx-btn__txt">Save</span>
+                        </span>
+                    </button></td>
+            </tr>
+        </tbody>
+    </table>
+</form>
