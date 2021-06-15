@@ -11,13 +11,14 @@
             <span
                 *ngIf="(form.controls[formItem.key].errors && form.controls[formItem.key].errors.required) && isFormSubmitted"
                 class="u--textDanger">Required</span>
+                <!-- {{form.controls[formItem.key] | log}} -->
             <span
                 *ngIf="((form.controls[formItem.key].errors && form.controls[formItem.key].errors.max)) ||
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.min)) ||
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.pattern)) ||
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.email)) ||
                                 ((form.controls[formItem.key].errors && form.controls[formItem.key].errors.maxLength)) ||
-                                ((!form.controls[formItem.key].valid && (form.controls[formItem.key].dirty ||  form.controls[formItem.key].touched)))"
+                                ((!form.controls[formItem.key].valid && form.controls[formItem.key].dirty && form.controls[formItem.key].status != 'DISABLED'))"
                 class="u--textDanger"> (Invalid {{formItem.label}} )</span>
             <span *ngIf="form.controls[formItem.key].errors && form.controls[formItem.key].errors.required"
                 class="u--textDanger" style="position: relative;top: 2px;">*</span>

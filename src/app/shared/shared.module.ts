@@ -15,9 +15,10 @@ import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.com
 import { LoaderComponent } from './components/loader/loader.component';
 import { RemainingTimeDirective } from './directives/remaining-time.directive';
 import { NoDataComponent } from './components/no-data/no-data.component';
+import { LogPipe } from './pipes/LogPipe';
 
 @NgModule({
-  declarations: [NavigationTabComponent, ModalComponent, DynamicFormComponent, LoaderComponent, RemainingTimeDirective, NoDataComponent],
+  declarations: [NavigationTabComponent, ModalComponent, DynamicFormComponent, LoaderComponent, RemainingTimeDirective, NoDataComponent, LogPipe],
   imports: [
     CommonModule,
     RouterModule,
@@ -36,7 +37,8 @@ import { NoDataComponent } from './components/no-data/no-data.component';
     DynamicFormComponent,
     LoaderComponent,
     RemainingTimeDirective,
-    NoDataComponent
+    NoDataComponent,
+    LogPipe
   ]
 })
 export class SharedModule { }
