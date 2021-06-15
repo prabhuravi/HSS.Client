@@ -25,7 +25,7 @@
 
         <div *ngSwitchCase="inputTypes.dropdown" class="kx-col  kx-col--12">
             <div class="kx-mt--tiny">
-                <p-dropdown styleClass="u--fullWidth" placeholder="{{formItem.placeHolder ? formItem.placeHolder : 'Select '+ formItem.label}}"
+                <p-dropdown styleClass="u--fullWidth" appendTo="body" [style]="{'width':'100%'}" placeholder="{{formItem.placeHolder ? formItem.placeHolder : 'Select '+ formItem.label}}"
                     [formControlName]="formItem.key" [options]="formItem.options" [optionLabel]="formItem.optionLabel"
                     (onChange)="onchangeEvents($event,formItem)" filter="true"></p-dropdown>
             </div>

@@ -16,6 +16,7 @@ export class ContactListingComponent implements OnInit {
 
   isDataLoading = false;
   @Input() excludeSearch: boolean;
+  @Input() isnonEditable: boolean;
   @Input() isOperationScreen: boolean;
 
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
@@ -27,8 +28,7 @@ export class ContactListingComponent implements OnInit {
     { field: 'alternativePhone', header: 'Alternative Phone', sortfield: 'alternativePhone',  filterMatchMode: 'contains', displayInOperation: false },
     { field: 'phone', header: 'Phone', sortfield: 'phone', filterMatchMode: 'contains' , displayInOperation: true},
     { field: 'ContactType.name', header: 'Role', sortfield: 'ContactType.name', filterMatchMode: 'contains', displayInOperation: false },
-    { field: 'tagTraining', header: 'Tag Training', sortfield: '', displayInOperation: false },
-    { field: 'action', header: 'Actions', sortfield: '', displayInOperation: false }
+    { field: 'tagTraining', header: 'Tag Training', sortfield: '', displayInOperation: false }   
   ];
   contactSearch: Contact[];
   contacts: Contact[] = [];
@@ -39,6 +39,9 @@ export class ContactListingComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
+    if(!this.isnonEditable){
+      this.cols.push( { field: 'action', header: 'Actions', sortfield: '', displayInOperation: false });
+    }
     if (!this.prepareInstallationService.installation) {
       this.prepareInstallationService.setInstallationFromRoute(this.route);
     }

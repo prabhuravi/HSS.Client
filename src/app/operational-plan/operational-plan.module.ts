@@ -56,6 +56,8 @@ import { PortMeteorologyComponent } from './components/operations-overview/insta
 import { InstallationDocumentComponent } from './components/operations-overview/installation-document/installation-document.component';
 import { OperationDocumentComponent } from './components/operations-overview/installation-operations/operation-document/operation-document.component';
 import { OperationMissionsComponent } from './components/operations-overview/installation-operations/operation-missions/operation-missions.component';
+import { InstallationContactComponent } from './components/operations-overview/installation-contact/installation-contact.component';
+import { InstallationTradeRouteComponent } from './components/operations-overview/installation-trade-route/installation-trade-route.component';
 
 const routes: Routes = [
   {
@@ -83,15 +85,16 @@ const routes: Routes = [
         path: 'operations-overview/:vesselId', component: OperationsOverviewComponent, children: [
           { path: '', component: InstallationOperationsComponent, pathMatch: 'full' },
           {
-            path: 'installation-operations/:vesselId', component: InstallationOperationsComponent
-            
+            path: 'installation-operations/:vesselId', component: InstallationOperationsComponent            
             // , children: [
             //   { path: '', component: ListOperationsComponent, pathMatch: 'full' },
             //   { path: 'list-operations/:vesselId', component: ListOperationsComponent },
             //   { path: 'create-operation/:vesselId', component: CreateOperationComponent }
             // ]
           },
-          {path: 'installation-document/:vesselId', component: InstallationDocumentComponent}
+          {path: 'installation-document/:vesselId', component: InstallationDocumentComponent},
+          {path: 'installation-contact/:vesselId', component: InstallationContactComponent},
+          {path: 'installation-trade-route/:vesselId', component: InstallationTradeRouteComponent}
         ]
       },
 
@@ -144,7 +147,9 @@ const routes: Routes = [
         PortMeteorologyComponent,
         InstallationDocumentComponent,
         OperationDocumentComponent,
-        OperationMissionsComponent],
+        OperationMissionsComponent,
+        InstallationContactComponent,
+        InstallationTradeRouteComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

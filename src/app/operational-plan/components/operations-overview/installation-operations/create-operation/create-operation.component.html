@@ -101,7 +101,6 @@
                                 </p-dialog>
                             </div>
                         </div>
-
                         <p-dialog header="" [(visible)]="displayMaximizable" [modal]="true" [style]="{width: '50vw'}"
                             [maximizable]="true" [baseZIndex]="10000" [draggable]="true" [resizable]="true">
                             <div class="container">
@@ -211,11 +210,21 @@
                     </div>
                 </div>
 
+              
                 <div class="kx-card kx-card--skin-default" style="width: 100%; margin-left: 20px; margin-bottom: 20px;">
                     <div class="kx-row kx-row--gutters" style="margin-top: -10px; margin-bottom: -14px;">
                         <div class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
+                            <i class="kx-icon kx-icon--size-base" style="position: absolute; margin-top: 25px; margin-left: 85%; z-index: 9; cursor: pointer;" *ngIf="operationToEdit && operationToEdit.Id>0"
+                                [ngClass]="disableForm ? 'disablePointerEvents' : 'none'" title="Add port contacts">
+                                <a  (click)="showAddContactModalDialog()">
+                                    <svg focusable="false" style="width: 32px;height: 25px;">
+                                        <use href="./assets/img/icons/sprites/icons.svg#group"></use>
+                                    </svg>
+                                </a>
+                            </i>
                             <div class="kx-card kx-card--skin-default"
                                 style="height: 250px; margin-top: 20px;padding: 5px;margin-left: 10px;">
+                              
                                 <!-- <b>INSTALLATION CONTACT DETAILS</b> -->
                                 <app-contact-listing #contactListing [isOperationScreen]="true"></app-contact-listing>
                             </div>
@@ -282,6 +291,13 @@
     </div>
 </div>
 
+<p-dialog header="Add port contacts" [(visible)]="displayAddContactModal" [modal]="true"  [contentStyle]="{'overflow':'visible'}" [style]="{width: '75vw'}"
+  [draggable]="true">
+<app-contact-search style="margin-top: -20px;" #searchContact
+(contactSearched)="contactListing.onSearchContactEvent($event)"></app-contact-search>
+<app-create-contact *ngIf="operationToEdit" [isOperationScreen]="true" [operation]="operationToEdit" style="margin-top: -20px;" #createContact
+   (contactUpdated)="contactListing.onContactDataUpdated($event)"></app-create-contact>                      
+</p-dialog>
 <app-modal [displayMe]="showOperatorModal">
     <div class="modal-header">
         <div>

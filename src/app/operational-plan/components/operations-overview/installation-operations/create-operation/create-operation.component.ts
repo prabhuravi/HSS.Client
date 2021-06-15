@@ -75,6 +75,8 @@ export class CreateOperationComponent implements OnInit {
   isFormDataReady = false;
 
   displayModal: boolean;
+  
+  displayAddContactModal: boolean;
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
@@ -189,6 +191,10 @@ export class CreateOperationComponent implements OnInit {
   }
   showModalDialog() {
     this.displayModal = true;
+  }
+
+  showAddContactModalDialog() {
+    this.displayAddContactModal = true;
   }
 
   addSecondaryOperationToList(event, element) {
@@ -344,6 +350,7 @@ export class CreateOperationComponent implements OnInit {
           this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
             console.log(data);
             this.isDataLoading = false;
+            this.operationToEdit = operation;
             this.triggerToast('success', 'Success Message', `Operation added successfully`);
             this.onFormReset();
           });
