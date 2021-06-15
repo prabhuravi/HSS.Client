@@ -1,5 +1,5 @@
 <app-load *ngIf="isDataLoading"></app-load>
-<div class="kx-card kx-card--skin-default">
+<div *ngIf="!isOperationScreen" class="kx-card kx-card--skin-default">
     <div class="kx-p--tiny kx-p--medium@mob-m">
         <div class="kx-row">
             <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--3@ltp-s">
@@ -50,7 +50,7 @@
             [rowsPerPageOptions]="[5,10,20,50,100,200,500]">
             <ng-template pTemplate="header" let-columns>    
                 <tr>
-                    <th style="width:3rem"></th>
+                    <th *ngIf="!isOperationScreen" style="width:3rem"></th>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" [ngStyle]="{'width':'100px'}"
                         [ngClass]="{'u--cursorPointer': col.sortfield !== ''}"
                         title="{{(col.sortfield!=='') ? 'Click to sort' : ''}}">
@@ -61,7 +61,7 @@
                     </th>
                 </tr>
                 <tr>
-                    <th></th>
+                    <th *ngIf="!isOperationScreen"></th>
                     <th *ngFor="let col of columns" [ngSwitch]="col.field">
                         <input *ngSwitchCase="'PortName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Port"
@@ -74,7 +74,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-index="rowIndex">
                 <tr [pReorderableRow]="index">
-                    <td>
+                    <td *ngIf="!isOperationScreen">
                         <span class="pi pi-bars" pReorderableRowHandle></span>
                     </td>
                     <td *ngFor="let col of columns">
@@ -83,7 +83,7 @@
                                 <!-- <input type="image" src="./assets/img/icons/sprites/icons.svg#trash" alt="Remove"
                                     (click)="removePortFromTradeRoute(rowData)" [disabled]="disableActivity"
                                     height="23px" width="23px" title="Delete"> -->
-                                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                <button  *ngIf="!isOperationScreen" class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                     aria-label="Delete" title="Delete" (click)="removePortFromTradeRoute(rowData)">
                                     <span class="kx-btn__inner">
                                         <i class="kx-icon kx-icon--size-moderate">

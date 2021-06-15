@@ -78,6 +78,10 @@ export class CreateOperationComponent implements OnInit {
   defaultHSRegularityKPIConfig;
   displayActionModal: boolean;
 
+  displayModal: boolean;
+  
+  displayAddContactModal: boolean;
+
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
@@ -192,6 +196,10 @@ export class CreateOperationComponent implements OnInit {
   }
   showModalDialog() {
     this.displayActionModal = true;
+  }
+
+  showAddContactModalDialog() {
+    this.displayAddContactModal = true;
   }
 
   addSecondaryOperationToList(event, element) {
