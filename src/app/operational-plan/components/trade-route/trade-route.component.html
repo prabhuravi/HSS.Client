@@ -24,7 +24,7 @@
             </div>
 
             <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
-                <button (click)="addNewPort()"
+                <button (click)="addPortToRoute()"
                     class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--medium@mob-m"
                     [disabled]="disableAddToRoute(port)">
                     <span class="kx-btn__inner">
@@ -40,15 +40,18 @@
                 </button>
             </div>
         </div>
+        <div style="width: 200px; margin-top: 5px;"><a href="#" (click)="showAddEditPort($event)">
+                <span *ngIf="!editPort">Add a new port</span> <span *ngIf="editPort">Edit this port</span> </a></div>
     </div>
+
 </div>
 
 <div class="kx-pt--small">
     <div *ngIf="!isDataLoading">
         <p-table *ngIf="vesselTradeRoute.length > 0" tableStyleClass="kx-table kx-table--outer-border"
-            [value]="vesselTradeRoute" (onRowReorder) = "onRowReorder($event)" [columns]="cols" autoLayout="true" #tt [paginator]="true" [rows]="10"
-            [rowsPerPageOptions]="[5,10,20,50,100,200,500]">
-            <ng-template pTemplate="header" let-columns>    
+            [value]="vesselTradeRoute" (onRowReorder)="onRowReorder($event)" [columns]="cols" autoLayout="true" #tt
+            [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20,50,100,200,500]">
+            <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width:3rem"></th>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.sortfield" [ngStyle]="{'width':'100px'}"
@@ -122,5 +125,58 @@
             </span>
         </button>
     </div>
-
 </div>
+
+<app-load *ngIf="addEditPortLoading"></app-load>
+<p-dialog header="Add or Edit Port" [(visible)]="displayAddEditPort" [modal]="true" [style]="{width: '55vw'}"
+    [maximizable]="true" [baseZIndex]="10000" [draggable]="true" [resizable]="true">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="kx-card kx-card--skin-default"
+                    *ngIf="addPortConfig && addPortConfig.formList && addPortConfig.formList.length > 0">
+                    <div class="kx-p--tiny kx-p--medium@mob-m">
+                        <div class="kx-row kx-row--gutters">
+                            <app-load *ngIf="isDataLoading"></app-load>
+                            <form [formGroup]="formData" class="kx-row kx-row--gutters" (ngSubmit)="addEditPort()"
+                                style="width: 100%">
+                                <app-dynamic-form
+                                    class="kx-col kx-col--12 kx-col--12@mob-m kx-col--4@tab-m kx-col--10@ltp-s kx-row kx-row--gutters"
+                                    style="display: contents;" [form]="formData" [formValues]="formValues"
+                                    [config]="addPortConfig">
+                                </app-dynamic-form>
+
+                                <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--3@ltp-s"
+                                    style="margin: 21px 0px 0px 0px;">
+                                    <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--5@ltp-s">
+                                        <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
+                                            [disabled]="formData.invalid">
+                                            <span class="kx-btn__inner">
+                                                <span *ngIf="!editPort; else elseBlock" class="kx-btn__txt">Add</span>
+                                                <ng-template #elseBlock>
+                                                    <span class="kx-btn__txt">Update</span>
+                                                </ng-template>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <!-- <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--1@ltp-s">
+                                        <button type="submit" class="kx-btn kx-btn--skin-secondary kx-btn--size-base"
+                                            (click)="onFormReset()">
+                                            <span class="kx-btn__inner">
+                                                <span class="kx-btn__txt">Clear</span>
+                                            </span>
+                                        </button>
+                                    </div> -->
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="displayAddEditPort=false" label="Ok" styleClass="p-button-text">
+        </p-button>
+    </ng-template>
+</p-dialog>

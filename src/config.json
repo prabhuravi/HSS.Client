@@ -215,7 +215,9 @@
         "path": "/PortLocation",
         "endpoints": {
           "FilterPortLocations": "/FilterByLocation",
-          "GetPortLocationById": "/GetPortById"
+          "GetPortLocationById": "/GetPortById",
+          "AddPort": "/AddPort",
+          "UpdatePort": "/UpdatePort"
         }
       },
       "TradeRoute": {

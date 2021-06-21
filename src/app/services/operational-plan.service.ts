@@ -560,4 +560,20 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
 
+  addNewPort(portData): Observable<any> {
+    const requestData = {
+      endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.AddPort}`,
+      data: portData
+    };
+    return this.http.postData(requestData);
+  }
+
+  updatePort(id: number, portData): Observable<any> {
+    const requestData = {
+      endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.UpdatePort}/${id}`,
+      data: portData
+    };
+    return this.http.putData(requestData);
+  }
+
 }

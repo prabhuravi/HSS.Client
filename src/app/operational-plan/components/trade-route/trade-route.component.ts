@@ -1,8 +1,11 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { FormType } from 'src/app/app.constants';
+import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
@@ -18,21 +21,31 @@ export class TradeRouteComponent implements OnInit {
   portLocations: IPortLocation[] = [];
   vesselTradeRoute: ITradeRoute[];
   clonedVesselTradeRoute: ITradeRoute[];
-  // username: string = '';
   isDataLoading = false;
+  addEditPortLoading = false;
   vesselId = 0;
   @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
-
   cols = [
     { field: 'PortName', sortfield: 'PortName', header: 'Port Name', filterMatchMode: 'contains' },
     { field: 'Order', sortfield: 'Order', header: 'Port Order', filterMatchMode: 'contains' },
     { field: 'Id', sortfield: '', header: 'Action' }
   ];
 
+  addPortConfig = {
+    formList: [],
+    className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--3@ltp-s'
+  };
+  formData: FormGroup;
+  formValues: any = null;
+  portTypes = [{ name: 'Port' }, { name: 'Anchorage' }];
+  editPort = false;
+  displayAddEditPort = false;
+
   constructor(private operationalPlanService: OperationalPlanService, private router: Router,
     private confirmationService: ConfirmationService,
     private prepareInstallationService: PrepareInstallationService,
-    private route: ActivatedRoute, private messageService: MessageService) {
+    private route: ActivatedRoute, private messageService: MessageService,
+    private formBuliderService: FromBuilderService) {
   }
 
   ngOnInit() {
@@ -41,6 +54,8 @@ export class TradeRouteComponent implements OnInit {
       this.prepareInstallationService.setInstallationFromRoute(this.route);
     }
     this.getVesselTradeRoute();
+    this.constructForm();
+    this.formData = this.formBuliderService.buildForm(this.addPortConfig);
   }
 
   onRowReorder(event) {
@@ -68,13 +83,142 @@ export class TradeRouteComponent implements OnInit {
     // }
   }
 
+  constructForm(): void {
+    this.addPortConfig.formList = [
+      {
+        type: FormType.text,
+        label: 'Country Code',
+        value: '',
+        key: 'countryCode',
+        validators: [Validators.required, Validators.pattern('^[A-Za-z]+$'), Validators.minLength(2), Validators.maxLength(2)],
+        disabled: false,
+        placeHolder: 'Eg. NO'
+      },
+      {
+        type: FormType.text,
+        label: 'Port Code',
+        value: '',
+        key: 'portCode',
+        validators: [Validators.required, Validators.pattern('^[A-Za-z]+$'), Validators.minLength(3), Validators.maxLength(3)],
+        disabled: false,
+        placeHolder: 'Eg. OSL'
+      },
+      {
+        type: FormType.text,
+        label: 'Port Name',
+        value: '',
+        key: 'portName',
+        validators: [Validators.required],
+        disabled: false,
+        placeHolder: 'Port Name'
+      },
+      {
+        type: FormType.dropdown,
+        label: 'Type',
+        options: this.portTypes,
+        value: '',
+        key: 'portType',
+        validators: [Validators.required],
+        optionLabel: 'name',
+        disabled: false
+      },
+      // {
+      //   type: FormType.text,
+      //   label: 'Latitude',
+      //   value: '',
+      //   key: 'latitude',
+      //   validators: [],
+      //   // validators: [Validators.pattern('^((\\-?|\\+?)?\d+(\.\d+)?),\s*((\\-?|\\+?)?\d+(\.\d+)?)$')],
+      //   disabled: false
+      // },
+      {
+        type: FormType.text,
+        label: 'Lat Long',
+        value: '',
+        key: 'coordinate',
+        validators: [],
+        // validators: [Validators.pattern('^((\\-?|\\+?)?\d+(\.\d+)?),\s*((\\-?|\\+?)?\d+(\.\d+)?)$')],
+        disabled: false,
+        placeHolder: 'Eg. 59.9,10.7333'
+      },
+      {
+        type: FormType.text,
+        label: 'Description',
+        value: '',
+        key: 'description',
+        validators: [],
+        disabled: false,
+        placeHolder: 'Description'
+      }
+    ];
+  }
+
+  showAddEditPort(e: any) {
+    e.preventDefault();
+    console.log(this.port);
+    this.displayAddEditPort = true
+    this.formData.reset();
+    this.formData.enable();
+    if (this.editPort) {
+      var portCodeSplits = this.port.PortCode.split(' ');
+      console.log(portCodeSplits);
+      this.formData.setValue({
+        portName: this.port.PortName,
+        countryCode: portCodeSplits[0],
+        portCode: portCodeSplits[1],
+        coordinate: this.port.Coordinate ? this.port.Coordinate : '',
+        portType: this.port.Type ? this.portTypes.find((p) => p.name === this.port.Type) : null,
+        description: this.port.Description ? this.port.Description : ''
+      });
+      if (!this.port.IsNewPort) {
+        this.formData.controls.countryCode.disable();
+        this.formData.controls.portName.disable();
+        this.formData.controls.portCode.disable();
+      }
+    }
+  }
+
+  addEditPort() {
+    console.log(this.formData);
+    const portDetail = {
+      PortName: this.formData.controls.portName.value,
+      PortCode: (this.formData.controls.countryCode.value + ' ' + this.formData.controls.portCode.value).toUpperCase(),
+      Coordinate: this.formData.controls.coordinate.value,
+      Type: this.formData.controls.portType.value.name,
+      IsNewPort: !this.editPort ? true : this.port.IsNewPort,
+      Description: this.formData.controls.description.value
+    };
+    if (this.editPort) // edit existing port
+    {
+      this.addEditPortLoading = true;
+      console.log(this.port);
+      this.operationalPlanService.updatePort(this.port.Id, portDetail).subscribe((response) => {
+        if (response)
+          this.triggerToast('success', 'Success Message', `Port updated successfully`);
+        else
+          this.triggerToast('error', 'Error Message', `Port not updated`);
+        this.addEditPortLoading = false;
+      });
+    }
+    else { //Add new port
+      this.addEditPortLoading = true;
+      this.operationalPlanService.addNewPort(portDetail).subscribe((response) => {
+        if (response)
+          this.triggerToast('success', 'Success Message', `Port added to route successfully`);
+        else
+          this.triggerToast('error', 'Error Message', `Port already exists with this country code and port code`);
+        this.addEditPortLoading = false;
+      });
+    }
+  }
+
   filterPortLocations(event) {
     this.operationalPlanService.filterPortLocations(event.query).subscribe((data) => {
       this.portLocations = data;
     });
   }
 
-  addNewPort() {
+  addPortToRoute() {
     if (this.vesselTradeRoute.findIndex((p) => p.PortId === this.port.Id) === -1) {
       this.isDataLoading = true;
       console.log(this.port);
@@ -142,6 +286,11 @@ export class TradeRouteComponent implements OnInit {
   }
 
   disableAddToRoute(port: any): boolean {
+    if ((port !== null && typeof port !== 'object') || port === null || port === '')
+      this.editPort = false;
+    else
+      this.editPort = true;
+
     return (port !== null && typeof port !== 'object') || port === null || port === '' || this.portOrder === null;
   }
 
