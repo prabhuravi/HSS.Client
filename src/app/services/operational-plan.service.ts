@@ -149,6 +149,13 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
 
+  refetchPortMeteorology(operationId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.RefetchPortMeteorology}/${operationId}`
+    };
+    return this.http.getData(requestData);
+  }
+
   updateBerthDepth(id: number, data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.UpdateBerthDepth}/${id}`,

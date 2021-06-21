@@ -112,6 +112,7 @@
           "GetOperatorLogs": "/GetOperatorLogs",
           "AddOperatorLog": "/AddOperatorLog",
           "GetPortMeteorology": "/GetOperationPortMeteorology",
+          "RefetchPortMeteorology": "/RefetchOperationPortMeteorology",
           "UpdateOperationFouling": "/UpdateOperationFouling",
           "DeleteOperationSection": "/DeleteOperationSection",
           "DeleteOperationSubSection": "/DeleteOperationSubSection",
