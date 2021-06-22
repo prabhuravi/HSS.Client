@@ -38,7 +38,7 @@ export class TradeRouteComponent implements OnInit {
   };
   formData: FormGroup;
   formValues: any = null;
-  portTypes = [{ name: 'Port' }, { name: 'Anchorage' }];
+  portTypes = [{Id: 1, name: 'Port' }, {Id: 2, name: 'Anchorage' }];
   editPort = false;
   displayAddEditPort = false;
 
@@ -88,7 +88,7 @@ export class TradeRouteComponent implements OnInit {
   }
 
   constructForm(): void {
-    this.portTypes = [{ name: 'Port' }, { name: 'Anchorage' }];
+    // this.portTypes = [{ name: 'Port' }, { name: 'Anchorage' }];
     this.addPortConfig.formList = [
       {
         type: FormType.text,
