@@ -75,6 +75,10 @@ export class PortLocation {
         public Id: number,
         public PortName: string,
         public PortCode: string,
+        public Coordinate: string,
+        public Type: string,
+        public IsNewPort: boolean,
+        public Description: string
     ) { }
 }
 export class RequestedBy {

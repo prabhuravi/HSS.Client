@@ -1,33 +1,36 @@
 <app-load *ngIf="portMeteorologyLoading"></app-load>
-<div *ngIf="!portMeteorology" style="border-radius: 3px; margin-top: 8px;"
-    class="kx-card kx-card--skin-default kx-p--small">
-    Data is available only 24 hr prior to vessel ETB (Or operation time when ETB is not available) given that a port is assigned
-</div>
-<div *ngIf="portMeteorology" style="border-radius: 3px; margin-top: 10px;">
+<div style="border-radius: 3px; margin-top: 10px;">
     <table class="kx-table kx-table--slim-rows u--with-tbody-scroll">
         <tbody>
             <tr style="margin-left: -12px;">
-                <td style="width: 30%;">Collected at:</td>
-                <!-- <td colspan="2" *ngIf="!portMeteorology.Date" style="width: 55%;">Never collected</td> -->
-                <td colspan="2" *ngIf="portMeteorology.Date" style="width: 55%;">{{portMeteorology.Date | date:'MM/dd/yyyy HH:mm'}}
-                    (UTC)</td>
+                <td colspan="3" *ngIf="portMeteorology" style="width: 85%;">Collected at {{portMeteorology?.ModifiedDate |
+                    date:'MM/dd/yyyy HH:mm'}} for {{portMeteorology?.Date |
+                        date:'MM/dd/yyyy HH:mm'}}</td>
+                <td colspan="3" *ngIf="!portMeteorology" style="width: 85%;">No weather update</td>
                 <td style="width: 15%;">
-                    <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Refresh"
-                        title="Refresh" (click)="refreshPortMeteorology()">
+                    <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Manual update"
+                        title="Manual update" (click)="refetchPortMeteorology()">
                         <span class="kx-btn__inner">
                             <i class="kx-icon kx-icon--size-moderate">
                                 <svg focusable="true">
                                     <use href="./assets/img/icons/sprites/icons.svg#reload"></use>
                                 </svg>
                             </i>
-                            <span class="kx-btn__txt kx-is-vishidden">Refresh</span>
+                            <span class="kx-btn__txt kx-is-vishidden">Manual update</span>
                         </span>
                     </button>
                 </td>
             </tr>
         </tbody>
     </table>
-    <table style="margin-top: 7px;" class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
+    <div *ngIf="!portMeteorology" style="border-radius: 3px; margin-top: 8px;"
+        class="kx-card kx-card--skin-default kx-p--small">
+        Weather update starts 24 hrs prior to vessel ETB (Operation Date when no ETB) until Operation Date is passed (ETB
+        when no Operation Date). Date (or ETB) and a port with valid coordinates must be registred. No weather updates once operation is
+        Completed or Aborted. Weather data available upto 3 days. Use manual update to override default behaviour.
+    </div>
+    <table *ngIf="portMeteorology" style="margin-top: 7px;"
+        class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
         <tbody>
             <tr>
                 <td style="width: 30%;">Air Temp:</td>
@@ -44,11 +47,10 @@
                 <td *ngIf="portMeteorology.Humidity" style="width: 20%;">{{portMeteorology.Humidity}}%</td>
                 <td style="width: 30%;">Berth Depth:</td>
                 <td style="width: 20%;">
-                    <input style="height: 25px; width: 45px; text-align: center;" type="number" oninput="validity.valid || (value='');"
-                        [(ngModel)]="portMeteorology.BerthDepth" (change)="updateBerthDepth()"
-                        name="berthDepth" autocomplete="off" />m
+                    <input style="height: 25px; width: 45px; text-align: center;" type="number"
+                        oninput="validity.valid || (value='');" [(ngModel)]="portMeteorology.BerthDepth"
+                        (change)="updateBerthDepth()" name="berthDepth" autocomplete="off" />m
                 </td>
-                <!-- <td style="width: 25%;">{{portMeteorology.BerthDepth}}m</td> -->
             </tr>
             <tr>
                 <td style="width: 30%;">Prcp:</td>

@@ -112,6 +112,7 @@
           "GetOperatorLogs": "/GetOperatorLogs",
           "AddOperatorLog": "/AddOperatorLog",
           "GetPortMeteorology": "/GetOperationPortMeteorology",
+          "RefetchPortMeteorology": "/RefetchOperationPortMeteorology",
           "UpdateOperationFouling": "/UpdateOperationFouling",
           "DeleteOperationSection": "/DeleteOperationSection",
           "DeleteOperationSubSection": "/DeleteOperationSubSection",
@@ -215,7 +216,9 @@
         "path": "/PortLocation",
         "endpoints": {
           "FilterPortLocations": "/FilterByLocation",
-          "GetPortLocationById": "/GetPortById"
+          "GetPortLocationById": "/GetPortById",
+          "AddPort": "/AddPort",
+          "UpdatePort": "/UpdatePort"
         }
       },
       "TradeRoute": {

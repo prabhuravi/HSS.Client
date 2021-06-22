@@ -8,5 +8,6 @@ interface IPortMeteorology
     WindSpeed: string,
     WindDirection: string,
     Date: Date,
-    BerthDepth: number
+    BerthDepth: number,
+    ModifiedDate: Date
 }

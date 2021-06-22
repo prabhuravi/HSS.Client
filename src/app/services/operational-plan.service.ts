@@ -149,6 +149,13 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
 
+  refetchPortMeteorology(operationId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.RefetchPortMeteorology}/${operationId}`
+    };
+    return this.http.getData(requestData);
+  }
+
   updateBerthDepth(id: number, data: any): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.UpdateBerthDepth}/${id}`,
@@ -558,6 +565,22 @@ export class OperationalPlanService {
       endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.GetPortLocationById}/${portId}`
     };
     return this.http.getData(requestData);
+  }
+
+  addNewPort(portData): Observable<any> {
+    const requestData = {
+      endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.AddPort}`,
+      data: portData
+    };
+    return this.http.postData(requestData);
+  }
+
+  updatePort(id: number, portData): Observable<any> {
+    const requestData = {
+      endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.UpdatePort}/${id}`,
+      data: portData
+    };
+    return this.http.putData(requestData);
   }
 
 }

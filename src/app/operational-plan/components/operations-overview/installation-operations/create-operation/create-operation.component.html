@@ -234,7 +234,15 @@
                         <div *ngIf="editOperation" class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
                             <div class="kx-card kx-card--skin-default"
                                 style="height: 250px; margin-top: 20px;padding: 5px;">
-                                <b>PORT METEOROLOGY</b>
+                                <div>
+                                    <b>PORT METEOROLOGY</b> <i style="vertical-align: top; margin-left: 5px;"
+                                        class="kx-icon kx-icon--size-moderate"
+                                        title="Weather update starts 24 hrs prior to vessel ETB (Operation Date when no ETB) until Operation Date is passed (ETB when no Operation Date). Date (or ETB) and a port with valid coordinates must be registred. No weather updates once operation is Completed or Aborted. Weather data available upto 3 days. Use manual update to override default behaviour.">
+                                        <svg focusable="true">
+                                            <use href="./assets/img/icons/sprites/icons.svg#info"></use>
+                                        </svg>
+                                    </i>
+                                </div>
                                 <app-port-meteorology [operation]="operationToEdit"></app-port-meteorology>
                             </div>
                         </div>
