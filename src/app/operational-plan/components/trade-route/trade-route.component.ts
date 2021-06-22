@@ -122,22 +122,12 @@ export class TradeRouteComponent implements OnInit {
         optionLabel: 'name',
         disabled: false
       },
-      // {
-      //   type: FormType.text,
-      //   label: 'Latitude',
-      //   value: '',
-      //   key: 'latitude',
-      //   validators: [],
-      //   // validators: [Validators.pattern('^((\\-?|\\+?)?\d+(\.\d+)?),\s*((\\-?|\\+?)?\d+(\.\d+)?)$')],
-      //   disabled: false
-      // },
       {
         type: FormType.text,
         label: 'Lat Long',
         value: '',
         key: 'coordinate',
-        validators: [],
-        // validators: [Validators.pattern('^((\\-?|\\+?)?\d+(\.\d+)?),\s*((\\-?|\\+?)?\d+(\.\d+)?)$')],
+        validators: [Validators.pattern(/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/)],
         disabled: false,
         placeHolder: 'Eg. 59.9,10.7333'
       },
