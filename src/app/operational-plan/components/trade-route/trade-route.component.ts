@@ -50,6 +50,7 @@ export class TradeRouteComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.portTypes = [{ name: 'Port' }, { name: 'Anchorage' }];
     if(!this.isOperationScreen){
       this.cols.push({ field: 'Id', sortfield: '', header: 'Action' , filterMatchMode:''});
     }
