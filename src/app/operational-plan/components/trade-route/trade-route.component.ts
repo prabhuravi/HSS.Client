@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -25,10 +25,11 @@ export class TradeRouteComponent implements OnInit {
   addEditPortLoading = false;
   vesselId = 0;
   @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
+  @Input() isOperationScreen: boolean;
+
   cols = [
     { field: 'PortName', sortfield: 'PortName', header: 'Port Name', filterMatchMode: 'contains' },
-    { field: 'Order', sortfield: 'Order', header: 'Port Order', filterMatchMode: 'contains' },
-    { field: 'Id', sortfield: '', header: 'Action' }
+    { field: 'Order', sortfield: 'Order', header: 'Port Order', filterMatchMode: 'contains' }    
   ];
 
   addPortConfig = {
@@ -49,6 +50,9 @@ export class TradeRouteComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(!this.isOperationScreen){
+      this.cols.push({ field: 'Id', sortfield: '', header: 'Action' , filterMatchMode:''});
+    }
     // this.username = this.operationalPlanService.getLoggedInUser();
     if (!this.prepareInstallationService.installation) {
       this.prepareInstallationService.setInstallationFromRoute(this.route);

@@ -9,11 +9,12 @@
                     (formOnchangeEvent)="formOnchangeEvent($event)">
                 </app-dynamic-form>
 
-                <div class="kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--3@ltp-s"
+                <div  [ngClass]="isOperationScreen ? 'kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--7@ltp-s' : 'kx-row kx-row--gutters kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--3@ltp-s'" 
                 style="margin: 21px 0px 0px 0px;"> 
-                    <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--5@ltp-s">
+                    <div [ngClass]="isOperationScreen ? 'kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--10@ltp-s' : 'kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--5@ltp-s'"
+                    >
                         <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
-                            [disabled]="formData.invalid">
+                            [disabled]="formData.invalid" [ngStyle]="{'float': isOperationScreen ? 'right' : 'left'}">
                             <span class="kx-btn__inner">
                                 <span *ngIf="!editMode; else elseBlock" class="kx-btn__txt">Add Contact</span>
                                 <ng-template #elseBlock>

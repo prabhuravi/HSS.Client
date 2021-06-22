@@ -1,4 +1,4 @@
-import { EventEmitter, Output, ViewEncapsulation } from '@angular/core';
+import { EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -27,6 +27,8 @@ export class CreateContactComponent implements OnInit {
   };
 
   @Output() contactUpdated: EventEmitter<any> = new EventEmitter<any>();
+  @Input() isOperationScreen: boolean;
+  @Input() operation: any;
 
   isDataLoading = false;
   editMode: boolean = false;
@@ -44,7 +46,11 @@ export class CreateContactComponent implements OnInit {
     this.isDataLoading = true;
     this.contactService.getContactTypes().pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
-      this.roleList = data;
+      if (this.operation) {
+        this.roleList = data.filter((x) => x.id >= 2 && x.id <= 5);
+      } else {
+        this.roleList = data;
+      }
       this.constructForm();
       this.formData = this.formBuliderService.buildForm(this.config);
     });
@@ -100,27 +106,32 @@ export class CreateContactComponent implements OnInit {
         validators: [Validators.required],
         optionLabel: 'name',
         disabled: false
-      },
-      {
-        type: FormType.checkbox,
-        label: 'Tag Training',
-        value: false,
-        key: 'tagTraining',
-        validators: [],
-        disabled: true
       }
-
     ];
-  }
+    if(!this.isOperationScreen){
+      this.config.formList.push(
+        {
+          type: FormType.checkbox,
+          label: 'Tag Training',
+          value: false,
+          key: 'tagTraining',
+          validators: [],
+          disabled: true
+        }
+      );
+    } else {
+      this.config.className = 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--6@ltp-s';
+    }
+ }
 
   onSubmit(): void {
     this.isFormSubmmited = true;
     if (this.editMode) {
-        this.saveContact();
-      } else {
+      this.saveContact();
+    } else {
 
-        this.addNewContact();
-      }
+      this.addNewContact();
+    }
     this.onFormReset();
 
   }
@@ -181,26 +192,37 @@ export class CreateContactComponent implements OnInit {
     console.log('save');
     console.log(this.formData.value);
 
-    this.contact.name =  this.formData.controls.name.value;
+    this.contact.name = this.formData.controls.name.value;
     this.contact.surName = this.formData.controls.surName.value;
     this.contact.email = this.formData.controls.email.value;
-    this.contact.phone = this.formData.controls.phone.value? this.formData.controls.phone.value.e164Number: null;
-    this.contact.alternativePhone = this.formData.controls.alternativePhone.value? this.formData.controls.alternativePhone.value.e164Number: null;
+    this.contact.phone = this.formData.controls.phone.value ? this.formData.controls.phone.value.e164Number : null;
+    this.contact.alternativePhone = this.formData.controls.alternativePhone.value ? this.formData.controls.alternativePhone.value.e164Number : null;
     this.contact.ContactType = this.formData.controls.role.value;
     this.contact.contactTypeId = this.formData.controls.role.value.id;
-    this.contact.vesselId = this.prepareInstallationService.installation.id;
+    if(this.operation){
+      this.contact.vesselId = this.operation.VesselId;
+    } else {
+      this.contact.vesselId = this.prepareInstallationService.installation.id;
+    }
+    
+    
     this.contact.tagTraining = this.formData.controls.tagTraining.value;
     this.contactService.updateVesselContact(this.contact).pipe(take(1)).subscribe((data) => {
       this.onFormReset();
       this.editMode = false;
       this.contactUpdated.emit(this.contact);
-      });
+    });
   }
 
   addNewContact(): void {
     const newContact = this.contactAdapter.adapt(this.formData.value);
     newContact.contactTypeId = this.formData.controls.role.value.id;
-    newContact.vesselId = this.prepareInstallationService.installation.id;
+    if(this.operation){
+      newContact.vesselId  = this.operation.VesselId;
+    } else {
+      newContact.vesselId = this.prepareInstallationService.installation.id;
+    }
+    
     if (this.formData.controls.phone.value != null) {
       newContact.phone = this.formData.controls.phone.value.e164Number;
     }
