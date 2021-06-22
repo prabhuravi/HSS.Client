@@ -1,18 +1,12 @@
 <app-load *ngIf="portMeteorologyLoading"></app-load>
-<!-- <div *ngIf="!portMeteorology" style="border-radius: 3px; margin-top: 8px;"
-    class="kx-card kx-card--skin-default kx-p--small">
-    Data is available only 24 hr prior to vessel ETB (Or operation time when ETB is not available) given that a port is assigned
-</div> -->
 <div style="border-radius: 3px; margin-top: 10px;">
     <table class="kx-table kx-table--slim-rows u--with-tbody-scroll">
         <tbody>
             <tr style="margin-left: -12px;">
-                <td colspan="3" *ngIf="portMeteorology" style="width: 85%;">Collected at: {{portMeteorology?.Date |
-                    date:'MM/dd/yyyy HH:mm'}}</td>
+                <td colspan="3" *ngIf="portMeteorology" style="width: 85%;">Collected at {{portMeteorology?.ModifiedDate |
+                    date:'MM/dd/yyyy HH:mm'}} for {{portMeteorology?.Date |
+                        date:'MM/dd/yyyy HH:mm'}}</td>
                 <td colspan="3" *ngIf="!portMeteorology" style="width: 85%;">No weather update</td>
-                <!-- <td colspan="2" *ngIf="!portMeteorology.Date" style="width: 55%;">Never collected</td> -->
-                <!-- <td colspan="2" *ngIf="portMeteorology.Date" style="width: 55%;">{{portMeteorology.Date | date:'MM/dd/yyyy HH:mm'}}
-                    (UTC)</td> -->
                 <td style="width: 15%;">
                     <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Manual update"
                         title="Manual update" (click)="refetchPortMeteorology()">
@@ -32,9 +26,8 @@
     <div *ngIf="!portMeteorology" style="border-radius: 3px; margin-top: 8px;"
         class="kx-card kx-card--skin-default kx-p--small">
         Weather update starts 24 hrs prior to vessel ETB (Operation Date when no ETB) until Operation Date is passed (ETB
-        when no Operation Date).
-        Date (or ETB) and a port with valid coordinates must be registred. No weather updates once operation is
-        Completed or Aborted. Weather data available upto 3 days.
+        when no Operation Date). Date (or ETB) and a port with valid coordinates must be registred. No weather updates once operation is
+        Completed or Aborted. Weather data available upto 3 days. Use manual update to override default behaviour.
     </div>
     <table *ngIf="portMeteorology" style="margin-top: 7px;"
         class="kx-table kx-table--outer-border kx-table--slim-rows u--with-tbody-scroll">
@@ -58,7 +51,6 @@
                         oninput="validity.valid || (value='');" [(ngModel)]="portMeteorology.BerthDepth"
                         (change)="updateBerthDepth()" name="berthDepth" autocomplete="off" />m
                 </td>
-                <!-- <td style="width: 25%;">{{portMeteorology.BerthDepth}}m</td> -->
             </tr>
             <tr>
                 <td style="width: 30%;">Prcp:</td>
