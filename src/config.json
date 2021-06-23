@@ -263,7 +263,9 @@
         "path": "/Email",
         "endpoints": {
           "planProposalPreview": "/PlanProposalPreview",
-          "portRequestPreview": "/PortRequestPreview"
+          "portRequestPreview": "/PortRequestPreview",
+          "approvePortRequest": "/ApprovePortRequest",
+          "approvePlanProposal": "/ApprovePlanProposal"
         }
       },
       "GetTimeZone": [

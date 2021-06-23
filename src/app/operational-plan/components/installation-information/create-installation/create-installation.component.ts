@@ -146,7 +146,7 @@ export class CreateInstallationComponent implements OnInit {
         type: FormType.text,
         label: 'IP Address',
         value: '',
-        key: 'gatewayIP',
+        key: 'robotIP',
         validators: [Validators.required],
         placeHolder: 'IP Address',
         disabled: false
@@ -219,9 +219,9 @@ export class CreateInstallationComponent implements OnInit {
         this.formData.controls.NodeNumber.disable();
       }
 
-      if (installation.node && installation.node.gatewayIP !== '') {
-        this.formData.controls.gatewayIP.setValue(installation.node.gatewayIP);
-        this.formData.controls.gatewayIP.disable();
+      if (installation.node && installation.node.robotIP !== '') {
+        this.formData.controls.robotIP.setValue(installation.node.robotIP);
+        this.formData.controls.robotIP.disable();
       }
       const selectedInstallation = this.installationList.find((x) => x.id === installation.id);
       this.formData.controls.Installation.setValue(selectedInstallation);
@@ -236,7 +236,7 @@ export class CreateInstallationComponent implements OnInit {
     this.formData.controls.ImoNo.enable();
     this.formData.controls.InstallationId.enable();
     this.formData.controls.NodeNumber.enable();
-    this.formData.controls.gatewayIP.enable();
+    this.formData.controls.robotIP.enable();
 
   }
 
@@ -266,7 +266,7 @@ export class CreateInstallationComponent implements OnInit {
       installationIformation.imoNo = 0;
     }
      installationIformation.node.nodeNumber = formValues.NodeNumber;
-     installationIformation.node.gatewayIP = formValues.gatewayIP;
+     installationIformation.node.robotIP = formValues.robotIP;
      installationIformation.node.installationId = formValues.InstallationId;
      installationIformation.installationStatus = formValues.InstallationStatus;
      installationIformation.installationStatusId = formValues.InstallationStatus.id;

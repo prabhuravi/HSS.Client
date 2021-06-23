@@ -31,4 +31,17 @@ getPlanProposal(operationId: number): Observable<any> {
   return this.http.getMediaData(requestData, 'text');
 }
 
+approvePortRequest(operationId: number): Observable<any> {
+  const requestData = {
+    endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.approvePortRequest}/${operationId}`
+  };
+  return this.http.putData(requestData);
+}
+approvePlanProposal(operationId: number): Observable<any> {
+  const requestData = {
+    endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.approvePortRequest}/${operationId}`
+  };
+  return this.http.putData(requestData);
+}
+
 }
