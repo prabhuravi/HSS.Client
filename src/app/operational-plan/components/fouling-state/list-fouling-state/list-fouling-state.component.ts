@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
-import { SubSection, VesselSection } from 'src/app/models/Section';
+import { Section, SubSection, VesselSection } from 'src/app/models/Section';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { SectionService } from 'src/app/services/section.service';
@@ -59,6 +59,9 @@ export class ListFoulingStateComponent implements OnInit {
       this.isDataLoading = false;
       console.log(data);
       this.sections = data;
+      this.sections.forEach((opSection: VesselSection) => {
+        opSection.subSections.sort((a, b) => (a.subSectionNumber < b.subSectionNumber ? -1 : 1));
+      });
     });
   }
 

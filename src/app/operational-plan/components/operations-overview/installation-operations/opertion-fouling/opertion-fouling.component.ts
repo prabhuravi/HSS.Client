@@ -33,7 +33,7 @@ export class OpertionFoulingComponent implements OnInit {
     { field: 'subSections', header: 'Sub-Section', sortfield: '', filterMatchMode: '' },
     { field: 'VesselSectionOldFoulingState.State', header: 'Prev Fouling State', sortfield: 'VesselSectionOldFoulingState.State', filterMatchMode: 'contains' },
     { field: 'VesselSectionNewFoulingState.State', header: 'Aft Fouling State', sortfield: 'VesselSectionNewFoulingState.State', filterMatchMode: 'contains' },
-    { field: 'modifiedDate', header: 'Modified Date', sortfield: 'modifiedDate', filterMatchMode: 'contains' }
+    { field: 'modifiedDate', header: 'Last Modified Date', sortfield: 'modifiedDate', filterMatchMode: 'contains' }
   ];
 
   vesselId = 0;
@@ -51,6 +51,7 @@ export class OpertionFoulingComponent implements OnInit {
     this.operationSections = [];
     if (this.operation.OperationSections) {
       this.operation.OperationSections.forEach((opSection: any) => {
+        opSection.OperationSubSections.sort((a, b) => (a.SubSection.SubSectionNumber < b.SubSection.SubSectionNumber ? -1 : 1));
         this.operationSections.push(opSection);
       });
      }
@@ -75,7 +76,7 @@ export class OpertionFoulingComponent implements OnInit {
         vesselSection.FoulingId = data.FoulingId;
         vesselSection.ModifiedDate = data.ModifiedDate;
         console.log(data);
-        rowData.SubSection.ModifiedDate = new Date().getUTCDate;
+        rowData.SubSection.ModifiedDate = new Date();
         this.triggerToast('success', 'Success Message', `Fouling updated successfully`);
         this.isDataLoading = false;
       });
