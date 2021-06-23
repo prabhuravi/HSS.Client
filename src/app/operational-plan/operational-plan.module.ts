@@ -59,6 +59,7 @@ import { OperationMissionsComponent } from './components/operations-overview/ins
 import { InstallationContactComponent } from './components/operations-overview/installation-contact/installation-contact.component';
 import { InstallationTradeRouteComponent } from './components/operations-overview/installation-trade-route/installation-trade-route.component';
 import { HullskaterRegularityKpiComponent } from './components/kpi/hullskater-regularity-kpi/hullskater-regularity-kpi.component';
+import { OperationDocumentTemplatesComponent } from './components/operations-overview/installation-operations/operation-document-templates/operation-document-templates.component';
 
 const routes: Routes = [
   {
@@ -151,7 +152,8 @@ const routes: Routes = [
         OperationMissionsComponent,
         InstallationContactComponent,
         InstallationTradeRouteComponent,
-        HullskaterRegularityKpiComponent],
+        HullskaterRegularityKpiComponent,
+        OperationDocumentTemplatesComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
