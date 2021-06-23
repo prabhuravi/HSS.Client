@@ -187,7 +187,7 @@ export class TradeRouteComponent implements OnInit {
       PortName: this.formData.controls.portName.value,
       PortCode: (this.formData.controls.countryCode.value + ' ' + this.formData.controls.portCode.value).toUpperCase(),
       Coordinate: this.formData.controls.coordinate.value,
-      Type: this.formData.controls.portType.value.name,
+      Type: this.formData.controls.portType.value.Name,
       IsNewPort: !this.editPort ? true : this.port.IsNewPort,
       Description: this.formData.controls.description.value
     };
@@ -207,7 +207,10 @@ export class TradeRouteComponent implements OnInit {
       this.addEditPortLoading = true;
       this.operationalPlanService.addNewPort(portDetail).subscribe((response) => {
         if (response)
+        {
           this.triggerToast('success', 'Success Message', `Port added to route successfully`);
+          this.formData.reset();
+        }
         else
           this.triggerToast('error', 'Error Message', `Port already exists with this country code and port code`);
         this.addEditPortLoading = false;

@@ -366,8 +366,8 @@ export class CreateOperationComponent implements OnInit {
           this.operationToEdit = updatedData;
           this.formAlteredEvent.emit(updatedData);
           this.isFormDirty = false;
+          this.triggerToast('success', 'Success Message', `Operation updated successfully`);
         });
-        this.triggerToast('success', 'Success Message', `Operation updated successfully`);
       });
     } else {
       this.isDataLoading = true;
