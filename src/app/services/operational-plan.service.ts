@@ -560,6 +560,13 @@ export class OperationalPlanService {
     return this.http.getData(requestData);
   }
 
+  getPortTypes(): Observable<any> {
+    const requestData = {
+      endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.GetPortTypes}`
+    };
+    return this.http.getData(requestData);
+  }
+
   getPortLocationById(portId: string): Observable<any> {
     const requestData = {
       endPoint: `${this.portApiUrl}${this.operationalPlanConfig.PortLocation.endpoints.GetPortLocationById}/${portId}`

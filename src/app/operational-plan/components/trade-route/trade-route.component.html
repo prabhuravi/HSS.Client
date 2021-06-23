@@ -69,6 +69,14 @@
                         <input *ngSwitchCase="'PortName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Port"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'Type'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small"
+                            placeholder="Type to filter Port Type"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'Coordinate'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small"
+                            placeholder="Type to filter Coordinate"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'Order'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Order"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
@@ -86,7 +94,8 @@
                                 <!-- <input type="image" src="./assets/img/icons/sprites/icons.svg#trash" alt="Remove"
                                     (click)="removePortFromTradeRoute(rowData)" [disabled]="disableActivity"
                                     height="23px" width="23px" title="Delete"> -->
-                                <button  *ngIf="!isOperationScreen" class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                <button *ngIf="!isOperationScreen"
+                                    class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                     aria-label="Delete" title="Delete" (click)="removePortFromTradeRoute(rowData)">
                                     <span class="kx-btn__inner">
                                         <i class="kx-icon kx-icon--size-moderate">

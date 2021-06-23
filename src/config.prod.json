@@ -218,7 +218,8 @@
           "FilterPortLocations": "/FilterByLocation",
           "GetPortLocationById": "/GetPortById",
           "AddPort": "/AddPort",
-          "UpdatePort": "/UpdatePort"
+          "UpdatePort": "/UpdatePort",
+          "GetPortTypes": "/GetPortTypes"
         }
       },
       "TradeRoute": {
