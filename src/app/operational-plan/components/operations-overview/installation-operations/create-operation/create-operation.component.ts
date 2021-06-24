@@ -19,6 +19,8 @@ import { SecondryOperationListingComponent } from '../secondry-operation-listing
 import { CreateSecondryOperationComponent } from '../create-secondry-operation/create-secondry-operation.component';
 import { OpertionSectionComponent } from '../opertion-section/opertion-section.component';
 import { OpertionFoulingComponent } from '../opertion-fouling/opertion-fouling.component';
+import { OperationDocumentTemplatesComponent } from '../operation-document-templates/operation-document-templates.component';
+import { Template } from 'src/app/models/templateEnum';
 
 @Component({
   selector: 'app-create-operation',
@@ -59,6 +61,7 @@ export class CreateOperationComponent implements OnInit {
   @Output() formAlteredEvent: EventEmitter<any> = new EventEmitter<any>();
   disableForm = false;
   @ViewChild(SecondryOperationListingComponent, { static: false }) secondaryListingComponent: SecondryOperationListingComponent;
+  @ViewChild(OperationDocumentTemplatesComponent, { static: false }) templatePreviewComponent: OperationDocumentTemplatesComponent;
 
   config = {
     formList: [],
@@ -205,6 +208,19 @@ export class CreateOperationComponent implements OnInit {
   addSecondaryOperationToList(event, element) {
     this.displayActionModal = false;
     this.secondaryListingComponent.updateSecondaryOperationList(new SecondaryOperation(0, 0, 2, 1, '', null, null, null));
+  }
+
+  openPlanProposalTemplate(documentTemplate: any){
+    console.log('Plan Proposal');
+    this.displayActionModal = false;
+    documentTemplate.displayTemplate = true;
+    documentTemplate.templateType = Template.PlanProposal;
+    documentTemplate.getPlanProposalTemplate(this.operationToEdit.Id);
+  }
+  openPortRequestTemplate(documentTemplate: any){
+    this.displayActionModal = false;
+    documentTemplate.displayTemplate = true;
+    documentTemplate.templateType = Template.PortRequest;
   }
 
   onEditOperation(operation: Operation): void {

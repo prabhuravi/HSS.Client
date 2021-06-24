@@ -259,6 +259,13 @@
           "UpdateHSRegularityKPIAnswer": "/UpdateHSRegularityKPIAnswer"
         }
       },
+      "Email": {
+        "path": "/Email",
+        "endpoints": {
+          "planProposalPreview": "/PlanProposalPreview",
+          "portRequestPreview": "/PortRequestPreview"
+        }
+      },
       "GetTimeZone": [
         {
           "name": "GMT",

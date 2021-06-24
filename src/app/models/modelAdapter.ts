@@ -92,7 +92,7 @@ export class NodeAdapter implements IModelAdapter<Node> {
         return new Node(
             item.Id ? item.Id : item.id ? item.id : 0,
             item.NodeNumber ? item.NodeNumber : item.nodeNumber ? item.nodeNumber : 0,
-            item.GatewayIP ? item.GatewayIP : item.gatewayIP ? item.gatewayIP : '',
+            item.RobotIP ? item.RobotIP : item.robotIP ? item.robotIP : '',
             item.InstallationId ? item.InstallationId : item.installationId ? item.installationId : '',
             item.Status ? item.Status : item.status ? item.status : ''
         );

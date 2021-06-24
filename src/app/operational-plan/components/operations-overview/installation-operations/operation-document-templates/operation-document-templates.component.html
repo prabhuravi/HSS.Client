@@ -1,0 +1,18 @@
+<div>
+<p-dialog [header]= "templateType ==1 ? 'Plan Proposal':'Port Request'" [(visible)]="displayTemplate" [modal]="false" [style]="{width: '75vw'}"
+[maximizable]="true" [baseZIndex]="10000" [draggable]="true" [responsive]="true"  [resizable]="true">
+
+<app-load *ngIf="isDataLoading"></app-load>
+<div [innerHTML]="templateHtml"></div>
+   
+<p-footer>
+    <p-button  icon="pi pi-check" (click)="onApprovalOfTemplate()" label="Approve and send email"
+styleClass="p-button-text">
+</p-button>
+<p-button  icon="pi pi-pencil" (click)="displayTemplate=false" label="Edit template"
+styleClass="p-button-text">
+</p-button>
+
+</p-footer>
+</p-dialog>
+</div>
