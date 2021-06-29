@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
@@ -19,7 +18,7 @@ export class TradeRouteComponent implements OnInit {
   portOrder: number = 1;
   maxPortOrder: number = 1
   portLocations: IPortLocation[] = [];
-  vesselTradeRoute: ITradeRoute[];
+  vesselTradeRoute: ITradeRoute[] = [];
   clonedVesselTradeRoute: ITradeRoute[];
   isDataLoading = false;
   addEditPortLoading = false;
@@ -29,16 +28,19 @@ export class TradeRouteComponent implements OnInit {
 
   cols = [
     { field: 'PortName', sortfield: 'PortName', header: 'Port Name', filterMatchMode: 'contains' },
+    { field: 'Type', sortfield: 'Type', header: 'Type', filterMatchMode: 'contains' },
+    { field: 'Coordinate', sortfield: '', header: 'Lat Long', filterMatchMode: 'contains' },
     { field: 'Order', sortfield: 'Order', header: 'Port Order', filterMatchMode: 'contains' }    
   ];
-
+  
   addPortConfig = {
     formList: [],
     className: 'kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--3@ltp-s'
   };
   formData: FormGroup;
   formValues: any = null;
-  portTypes = [{ name: 'Port' }, { name: 'Anchorage' }];
+  // portTypes: IPortType[] = [];
+   portTypes = [{Id: 1, Name: 'Port' }, {Id: 2, Name: 'Anchorage' }];
   editPort = false;
   displayAddEditPort = false;
 
@@ -53,10 +55,18 @@ export class TradeRouteComponent implements OnInit {
     if(!this.isOperationScreen){
       this.cols.push({ field: 'Id', sortfield: '', header: 'Action' , filterMatchMode:''});
     }
-    // this.username = this.operationalPlanService.getLoggedInUser();
     if (!this.prepareInstallationService.installation) {
       this.prepareInstallationService.setInstallationFromRoute(this.route);
     }
+
+    // this.isDataLoading = true;
+    // this.operationalPlanService.getPortTypes().pipe(take(1)).subscribe((data) => {
+    //   this.portTypes = data;
+    //   this.isDataLoading = false;
+    //   this.constructForm();
+    //   this.formData = this.formBuliderService.buildForm(this.addPortConfig);
+    // });
+
     this.getVesselTradeRoute();
     this.constructForm();
     this.formData = this.formBuliderService.buildForm(this.addPortConfig);
@@ -123,7 +133,7 @@ export class TradeRouteComponent implements OnInit {
         value: '',
         key: 'portType',
         validators: [Validators.required],
-        optionLabel: 'name',
+        optionLabel: 'Name',
         disabled: false
       },
       {
@@ -155,13 +165,12 @@ export class TradeRouteComponent implements OnInit {
     this.formData.enable();
     if (this.editPort) {
       var portCodeSplits = this.port.PortCode.split(' ');
-      console.log(portCodeSplits);
       this.formData.setValue({
         portName: this.port.PortName,
         countryCode: portCodeSplits[0],
         portCode: portCodeSplits[1],
         coordinate: this.port.Coordinate ? this.port.Coordinate : '',
-        portType: this.port.Type ? this.portTypes.find((p) => p.name === this.port.Type) : null,
+        portType: this.port.Type ? this.portTypes.find((p) => p.Name === this.port.Type) : null,
         description: this.port.Description ? this.port.Description : ''
       });
       if (!this.port.IsNewPort) {
@@ -178,7 +187,7 @@ export class TradeRouteComponent implements OnInit {
       PortName: this.formData.controls.portName.value,
       PortCode: (this.formData.controls.countryCode.value + ' ' + this.formData.controls.portCode.value).toUpperCase(),
       Coordinate: this.formData.controls.coordinate.value,
-      Type: this.formData.controls.portType.value.name,
+      Type: this.formData.controls.portType.value.Name,
       IsNewPort: !this.editPort ? true : this.port.IsNewPort,
       Description: this.formData.controls.description.value
     };
@@ -198,7 +207,10 @@ export class TradeRouteComponent implements OnInit {
       this.addEditPortLoading = true;
       this.operationalPlanService.addNewPort(portDetail).subscribe((response) => {
         if (response)
+        {
           this.triggerToast('success', 'Success Message', `Port added to route successfully`);
+          this.formData.reset();
+        }
         else
           this.triggerToast('error', 'Error Message', `Port already exists with this country code and port code`);
         this.addEditPortLoading = false;
@@ -230,7 +242,7 @@ export class TradeRouteComponent implements OnInit {
         // this.reAssignProperties()
 
         this.port = null;
-        this.getVesselTradeRoute();  // for time being
+        this.getVesselTradeRoute();
       });
     } else {
       this.port = null;
@@ -273,6 +285,7 @@ export class TradeRouteComponent implements OnInit {
       this.isDataLoading = true;
       this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
         this.vesselTradeRoute = data;
+        console.log(this.vesselTradeRoute);
         this.isDataLoading = false;
         this.reAssignProperties();
       });

@@ -30,8 +30,7 @@ export class PortMeteorologyComponent implements OnInit {
     });
   }
 
-  getInstallationOverview(vesselId: number)
-  {
+  getInstallationOverview(vesselId: number) {
     this.portMeteorologyLoading = true;
     this.installationService.getInstallationOverview(vesselId).pipe(take(1)).subscribe(async (data) => {
       this.installationOverview = data;
@@ -40,41 +39,34 @@ export class PortMeteorologyComponent implements OnInit {
     });
   }
 
-  updateBerthDepth()
-  {
+  updateBerthDepth() {
     this.portMeteorologyLoading = true;
-    this.operationalPlanService.updateBerthDepth(this.portMeteorology.Id, {BerthDepth: Number(this.portMeteorology.BerthDepth) }).pipe(take(1)).subscribe((data) => {
+    this.operationalPlanService.updateBerthDepth(this.portMeteorology.Id, { BerthDepth: Number(this.portMeteorology.BerthDepth) }).pipe(take(1)).subscribe((data) => {
       this.portMeteorologyLoading = false;
-      if(data)
-      {
+      if (data) {
         this.triggerToast('success', 'Success Message', `Berth depth updated`);
       }
-      else{
+      else {
         this.triggerToast('error', 'Message', `Berth depth not updated`);
       }
     });
   }
 
-  refetchPortMeteorology()
-  {
+  refetchPortMeteorology() {
     console.log(this.operation);
-    if (this.operation.OperationStatus.Name === OperationStatusEnum.Completed || this.operation.OperationStatus.Name === OperationStatusEnum.Aborted)
-    {
+    if (this.operation.OperationStatus.Name === OperationStatusEnum.Completed || this.operation.OperationStatus.Name === OperationStatusEnum.Aborted) {
       this.triggerToast('error', 'Message', `No weather updates available once operation is Completed or Aborted`);
       return;
     }
-    if (!this.operation.ETB && !this.operation.Date)
-    {
+    if (!this.operation.ETB && !this.operation.Date) {
       this.triggerToast('error', 'Message', `Operation Date or ETB (either of two) is required for weather updates`);
       return;
     }
-    if(!this.operation.PortLocation)
-    {
+    if (!this.operation.PortLocation) {
       this.triggerToast('error', 'Message', `No port registered. Please register the port first`);
       return;
     }
-    if(!this.operation.PortLocation.Coordinate)
-    {
+    if (!this.operation.PortLocation.Coordinate) {
       this.triggerToast('error', 'Message', `No coordinates registered for the port. Please use Trade Route screen to register lat long first`);
       return;
     }
@@ -83,7 +75,10 @@ export class PortMeteorologyComponent implements OnInit {
       this.portMeteorologyLoading = false;
       this.portMeteorology = data;
       console.log(this.portMeteorology);
-      this.triggerToast('success', 'Success Message', `Meteorological data refetched`);
+      if (this.portMeteorology)
+        this.triggerToast('success', 'Success Message', `Meteorological data refetched`);
+      else
+        this.triggerToast('error', 'Message', `Some problem refetching data. Please contact admin`);
     });
   }
 
