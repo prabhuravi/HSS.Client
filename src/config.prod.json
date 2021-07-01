@@ -129,8 +129,8 @@
           "GetVesselType": "/VesselType",
           "GetInstallationType": "/InstallationType",
           "GetInstallationOverview": "/Overview",
-          "UpdateInstallation": ""
-          
+          "UpdateInstallation": "",
+          "GetPreparedInstallations": "/GetPreparedInstallations"
         }
       },
       "OperatorBooking": {
