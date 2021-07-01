@@ -44,6 +44,13 @@ export class InstallationService {
     return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.installationAdapter.adapt(item))));
   }
 
+  getPreparedInstallations(): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.GetPreparedInstallations}`
+    };
+    return this.http.getData(requestData);
+  }
+
   getinstallationsById(vesselId: number): Observable<Installation> {
     const requestData = {
       endPoint: `${this.operationalPlanConfig.domainURL}${this.installationConfig.path}${this.installationConfig.endpoints.GetInstallations}/${vesselId}`
