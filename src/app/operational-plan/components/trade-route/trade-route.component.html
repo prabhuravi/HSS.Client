@@ -7,8 +7,8 @@
                 <div class="kx-mt--tiny">
                     <p-autoComplete [(ngModel)]="port" [suggestions]="portLocations"
                         inputStyleClass="kx-field kx-field--size-base" (completeMethod)="filterPortLocations($event)"
-                        field="PortName" [size]="30" placeholder="Type at least 3 chars for suggestions"
-                        [minLength]="3">
+                        field="PortDisplayName" [size]="30" placeholder="Type for suggestions"
+                        [minLength]="2">
                     </p-autoComplete>
                 </div>
             </div>
@@ -68,6 +68,9 @@
                     <th *ngFor="let col of columns" [ngSwitch]="col.field">
                         <input *ngSwitchCase="'PortName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Port"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'CountryName'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Country"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'Type'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small"
