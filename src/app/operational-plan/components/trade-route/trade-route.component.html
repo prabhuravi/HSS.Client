@@ -7,8 +7,8 @@
                 <div class="kx-mt--tiny">
                     <p-autoComplete [(ngModel)]="port" [suggestions]="portLocations"
                         inputStyleClass="kx-field kx-field--size-base" (completeMethod)="filterPortLocations($event)"
-                        field="PortName" [size]="30" placeholder="Type at least 3 chars for suggestions"
-                        [minLength]="3">
+                        field="PortDisplayName" [size]="30" placeholder="Type for suggestions"
+                        [minLength]="2">
                     </p-autoComplete>
                 </div>
             </div>
@@ -69,6 +69,17 @@
                         <input *ngSwitchCase="'PortName'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Port"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'CountryName'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Country"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'Type'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small"
+                            placeholder="Type to filter Port Type"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                        <input *ngSwitchCase="'Coordinate'" pInputText type="text"
+                            class="kx-field kx-field--size-base u--field--size-small"
+                            placeholder="Type to filter Coordinate"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                         <input *ngSwitchCase="'Order'" pInputText type="text"
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter Order"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
@@ -86,7 +97,8 @@
                                 <!-- <input type="image" src="./assets/img/icons/sprites/icons.svg#trash" alt="Remove"
                                     (click)="removePortFromTradeRoute(rowData)" [disabled]="disableActivity"
                                     height="23px" width="23px" title="Delete"> -->
-                                <button  *ngIf="!isOperationScreen" class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                                <button *ngIf="!isOperationScreen"
+                                    class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                     aria-label="Delete" title="Delete" (click)="removePortFromTradeRoute(rowData)">
                                     <span class="kx-btn__inner">
                                         <i class="kx-icon kx-icon--size-moderate">
@@ -159,14 +171,6 @@
                                             </span>
                                         </button>
                                     </div>
-                                    <!-- <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--2@tab-m kx-col--1@ltp-s">
-                                        <button type="submit" class="kx-btn kx-btn--skin-secondary kx-btn--size-base"
-                                            (click)="onFormReset()">
-                                            <span class="kx-btn__inner">
-                                                <span class="kx-btn__txt">Clear</span>
-                                            </span>
-                                        </button>
-                                    </div> -->
                                 </div>
                             </form>
                         </div>

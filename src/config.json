@@ -130,7 +130,8 @@
           "GetVesselType": "/VesselType",
           "GetInstallationType": "/InstallationType",
           "GetInstallationOverview": "/Overview",
-          "UpdateInstallation": ""
+          "UpdateInstallation": "",
+          "GetPreparedInstallations": "/GetPreparedInstallations"
         }
       },
       "OperatorBooking": {
@@ -218,7 +219,9 @@
           "FilterPortLocations": "/FilterByLocation",
           "GetPortLocationById": "/GetPortById",
           "AddPort": "/AddPort",
-          "UpdatePort": "/UpdatePort"
+          "UpdatePort": "/UpdatePort",
+          "GetPortTypes": "/GetPortTypes",
+          "GetUnLocodeCountries": "/GetUnLocodeCountries"
         }
       },
       "TradeRoute": {

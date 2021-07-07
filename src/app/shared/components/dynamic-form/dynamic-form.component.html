@@ -26,7 +26,7 @@
 
         <div *ngSwitchCase="inputTypes.dropdown" class="kx-col  kx-col--12">
             <div class="kx-mt--tiny">
-                <p-dropdown styleClass="u--fullWidth" appendTo="body" [style]="{'width':'100%'}" placeholder="{{formItem.placeHolder ? formItem.placeHolder : 'Select '+ formItem.label}}"
+                <p-dropdown styleClass="u--fullWidth" [style]="{'width':'100%'}" placeholder="{{formItem.placeHolder ? formItem.placeHolder : 'Select '+ formItem.label}}"
                     [formControlName]="formItem.key" [options]="formItem.options" [optionLabel]="formItem.optionLabel"
                     (onChange)="onchangeEvents($event,formItem)" filter="true"></p-dropdown>
             </div>
@@ -92,7 +92,7 @@
             <div class="kx-mt--tiny">
                 <p-autoComplete [formControlName]="formItem.key" [suggestions]="portLocations"
                     inputStyleClass="kx-field kx-field--size-base" [inputStyle]="{'width': '100%'}" (completeMethod)="filterPortLocations($event)"
-                    field="PortName" placeholder="Type for suggestions..." [minLength]="1"></p-autoComplete>
+                    field="PortDisplayName" placeholder="Type for suggestions..." [minLength]="1"></p-autoComplete>
             </div>
         </div>
 
