@@ -21,7 +21,7 @@ export class EmailServiceService {
     const requestData = {
         endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.portRequestPreview}/${operationId}`
     };
-    return this.http.getData(requestData);
+    return this.http.getMediaData(requestData, 'text');
 }
 
 getPlanProposal(operationId: number): Observable<any> {
