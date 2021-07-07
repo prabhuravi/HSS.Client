@@ -220,7 +220,8 @@
           "GetPortLocationById": "/GetPortById",
           "AddPort": "/AddPort",
           "UpdatePort": "/UpdatePort",
-          "GetPortTypes": "/GetPortTypes"
+          "GetPortTypes": "/GetPortTypes",
+          "GetUnLocodeCountries": "/GetUnLocodeCountries"
         }
       },
       "TradeRoute": {
