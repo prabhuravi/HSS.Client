@@ -16,7 +16,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
   @Input() templateType: Template;
   opertionId: number;
   templateHtml: any;
-  isDataLoading: boolean;
+  isDataLoading: boolean = false;
   constructor( private emailService: EmailServiceService, private sanitizer: DomSanitizer, private messageService: MessageService ) { }
 
   ngOnInit() {
@@ -24,8 +24,10 @@ export class OperationDocumentTemplatesComponent implements OnInit {
 
   getPlanProposalTemplate(operationId: number){
     this.opertionId = operationId;
+    this.templateHtml = null;
     this.isDataLoading = true;
     this.emailService.getPlanProposal(operationId).subscribe((data) => {
+      this.displayTemplate = true;
       this.isDataLoading = false;
       console.log(data);
       this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
@@ -34,8 +36,10 @@ export class OperationDocumentTemplatesComponent implements OnInit {
 
   getPortRequestTemplate(operationId: number){
     this.opertionId = operationId;
+    this.templateHtml = null;
     this.isDataLoading = true;
     this.emailService.getPortRequest(operationId).subscribe((data) => {
+      this.displayTemplate = true;
       this.isDataLoading = false;
       console.log(data);
       this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);

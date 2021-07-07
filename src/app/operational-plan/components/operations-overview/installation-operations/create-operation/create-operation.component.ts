@@ -213,14 +213,15 @@ export class CreateOperationComponent implements OnInit {
   openPlanProposalTemplate(documentTemplate: any){
     console.log('Plan Proposal');
     this.displayActionModal = false;
-    documentTemplate.displayTemplate = true;
+    
     documentTemplate.templateType = Template.PlanProposal;
     documentTemplate.getPlanProposalTemplate(this.operationToEdit.Id);
   }
   openPortRequestTemplate(documentTemplate: any){
     this.displayActionModal = false;
-    documentTemplate.displayTemplate = true;
+    
     documentTemplate.templateType = Template.PortRequest;
+    documentTemplate.getPortRequestTemplate(this.operationToEdit.Id);
   }
 
   onEditOperation(operation: Operation): void {
