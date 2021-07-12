@@ -99,18 +99,23 @@ export class OperationDocumentTemplatesComponent implements OnInit {
 
   onApprovalOfTemplate(){
     this.displayTemplate = false;
-    if(this.templateType === Template.PlanProposal){
-      this.emailService.approvePlanProposal(this.opertionId).subscribe((data) => {
-        this.isDataLoading = false;
-        console.log(data);
-        this.triggerToast('success', 'Success Message', `Email queued for sending`);
-      });
-    } else{
-      this.emailService.approvePortRequest(this.opertionId).subscribe((data) => {
-        this.isDataLoading = false;
-        console.log(data);
-        this.triggerToast('success', 'Success Message', `Email queued for sending`);
-      });
+    switch(this.templateType){
+      case(Template.PlanProposal || Template.PlanProposalEditable):{
+        this.emailService.approvePlanProposal(this.opertionId).subscribe((data) => {
+          this.isDataLoading = false;
+          console.log(data);
+          this.triggerToast('success', 'Success Message', `Email queued for sending`);
+        });
+        break;
+      }
+      case(Template.PortRequest || Template.PortRequestEditable):{
+        this.emailService.approvePortRequest(this.opertionId).subscribe((data) => {
+          this.isDataLoading = false;
+          console.log(data);
+          this.triggerToast('success', 'Success Message', `Email queued for sending`);
+        });
+        break;
+      }
     }
   }
 
