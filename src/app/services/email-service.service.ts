@@ -17,9 +17,16 @@ export class EmailServiceService {
     this.emailConfig = this.operationalPlanConfig.Email;
   }
 
-  getPortRequest(operationId: number): Observable<any> {
+getPortRequest(operationId: number): Observable<any> {
     const requestData = {
         endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.portRequestPreview}/${operationId}`
+    };
+    return this.http.getMediaData(requestData, 'text');
+}
+
+getPortRequestEditable(operationId: number): Observable<any> {
+    const requestData = {
+        endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.portRequestEditable}/${operationId}`
     };
     return this.http.getMediaData(requestData, 'text');
 }
@@ -27,6 +34,13 @@ export class EmailServiceService {
 getPlanProposal(operationId: number): Observable<any> {
   const requestData = {
       endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.planProposalPreview}/${operationId}`
+  };
+  return this.http.getMediaData(requestData, 'text');
+}
+
+getPlanProposalEditable(operationId: number): Observable<any> {
+  const requestData = {
+      endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.planProposalEditable}/${operationId}`
   };
   return this.http.getMediaData(requestData, 'text');
 }

@@ -1,19 +1,11 @@
 <div>
-    <app-load *ngIf="isDataLoading"></app-load>
-<p-dialog [header]= "templateType ==1 ? 'Plan Proposal':'Port Request'" [(visible)]="displayTemplate" [modal]="false" [style]="{width: '75vw'}"
-[maximizable]="true" [baseZIndex]="10000" [draggable]="true" [responsive]="true"  [resizable]="true">
-
-
-<div [innerHTML]="templateHtml" style="min-height: 50%; min-width: 50%;"></div>
-   
-<p-footer>
-    <p-button  icon="pi pi-check" (click)="onApprovalOfTemplate()" label="Approve and send email"
-styleClass="p-button-text">
-</p-button>
-<p-button  icon="pi pi-pencil" (click)="displayTemplate=false" label="Edit template"
-styleClass="p-button-text">
-</p-button>
-
-</p-footer>
-</p-dialog>
+    <p-dialog [header]= "templateType ==1 ? 'Plan Proposal':'Port Request'" [(visible)]="displayTemplate" [modal]="false" [style]="{width: '75vw'}"
+    [maximizable]="true" [contentStyle]="{minHeight: '300px', maxHeight: '500px'}" [baseZIndex]="10000" [draggable]="true" [responsive]="true"  [resizable]="true">
+    <app-load *ngIf="isTemplateLoading"></app-load>
+    <div [innerHTML]="templateHtml" style="min-height: 50%; min-width: 50%;"></div>
+    <p-footer>
+    <p-button icon="pi pi-check" (click)="onApprovalOfTemplate()" label="Approve and send email" styleClass="p-button-text"></p-button>
+    <p-button id=edit (click)="onEditTemplate()" label="Edit template" styleClass="p-button-text"></p-button>
+    </p-footer>
+    </p-dialog>
 </div>
