@@ -28,7 +28,7 @@ export class TradeRouteComponent implements OnInit {
   @Input() isOperationScreen: boolean;
 
   cols = [
-    { field: 'PortName', sortfield: 'PortName', header: 'Port Name', filterMatchMode: 'contains' },
+    { field: 'PortName', sortfield: 'PortName', header: 'Port', filterMatchMode: 'contains' },
     { field: 'CountryName', sortfield: 'CountryName', header: 'Country', filterMatchMode: 'contains' },
     { field: 'Type', sortfield: 'Type', header: 'Type', filterMatchMode: 'contains' },
     { field: 'Coordinate', sortfield: '', header: 'Lat Long', filterMatchMode: 'contains' },

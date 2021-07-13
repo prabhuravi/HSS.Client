@@ -74,6 +74,7 @@ export class PortLocation {
     constructor(
         public Id: number,
         public PortName: string,
+        public PortDisplayName: string,
         public PortCode: string,
         public Coordinate: string,
         public Type: string,
