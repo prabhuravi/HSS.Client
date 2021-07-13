@@ -35,15 +35,11 @@ export class OperationsOverviewComponent implements OnInit {
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
     this.setInstallationSteps();
-
-    // this.prepareInstallationService.installationDetail.subscribe((x) => {
-    //   this.vesselId = x.id;
-    //   this.setInstallationSteps();
-    // });
-
+    this.isDataLoading = true;
     this.installationService.getinstallations().pipe(take(1)).subscribe(async (data) => {
       this.installationsDetail = data;
       this.selectedInstallation = this.installationsDetail.find(p => p.id == this.vesselId);
+      this.isDataLoading = false;
       console.log(this.installationsDetail);
     });
 

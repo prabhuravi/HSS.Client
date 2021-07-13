@@ -340,7 +340,7 @@ export class CreateOperationComponent implements OnInit {
         if ((formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Completed
           && formsArrayAsAny.controls[0].controls.operationStatus.dirty)) {
           this.confirmationService.confirm({
-            message: 'You are going to complete the operation without rating fouling state on selected sections. Press No and update fouling state if remaining',
+            message: 'Did you remember to update the fouling state before completion? If remaining, press No and update fouling state',
             accept: () => {
               this.submitOperation();
             }

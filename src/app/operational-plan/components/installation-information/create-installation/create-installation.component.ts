@@ -35,19 +35,18 @@ export class CreateInstallationComponent implements OnInit {
   // foulingStates: IFoulingState[] = [];
 
   constructor(private installationService: InstallationService,
-              private router: Router,
-              private confirmationService: ConfirmationService,
-              private formBuliderService: FromBuilderService,
-              private prepareInstallationService: PrepareInstallationService,
-              private route: ActivatedRoute,
-              private installationAdapter: InstallationAdapter,
-              private nodeAdapter: NodeAdapter,
-              public fb: FormBuilder, public messageService: MessageService) { }
+    private router: Router,
+    private confirmationService: ConfirmationService,
+    private formBuliderService: FromBuilderService,
+    private prepareInstallationService: PrepareInstallationService,
+    private route: ActivatedRoute,
+    private installationAdapter: InstallationAdapter,
+    private nodeAdapter: NodeAdapter,
+    public fb: FormBuilder, public messageService: MessageService) { }
 
   ngOnInit() {
-
+    this.isDataLoading = true;
     this.installationService.getInstallationFormData().pipe(take(1)).subscribe(async (data) => {
-
       this.installationList = data[0];
       console.log(this.installationList);
       this.vesselTypes = data[1];
@@ -56,7 +55,6 @@ export class CreateInstallationComponent implements OnInit {
       // this.foulingStates = data[3];
       this.constructForm();
       this.formData = this.formBuliderService.buildForm(this.config);
-      this.isDataLoading = false;
       this.prepareInstallationService.setInstallationFromRoute(this.route);
       if (this.route !== undefined && this.route !== null) {
         let vesselId = 0;
@@ -71,6 +69,7 @@ export class CreateInstallationComponent implements OnInit {
           this.setFormValue(x);
         }
       });
+      this.isDataLoading = false;
     });
   }
 
@@ -245,43 +244,41 @@ export class CreateInstallationComponent implements OnInit {
     console.log(this.formData);
     if (this.formData.valid) {
 
-     const formValues = this.formData.getRawValue();
-     const installationIformation: Installation = formValues.Installation;
-    // installationIformation.foulingState = formValues.FoulingState;
-     if (formValues.VesselType) {
-      installationIformation.vesselType = formValues.VesselType;
-      installationIformation.vesselTypeId = formValues.VesselType.id;
-    } else {
-      installationIformation.vesselTypeId = null;
-    }
-     if (formValues.InstallationType) {
-      installationIformation.installationTypeId = formValues.InstallationType.id;
-    } else {
-      installationIformation.installationTypeId = null;
-    }
+      const formValues = this.formData.getRawValue();
+      const installationIformation: Installation = formValues.Installation;
+      // installationIformation.foulingState = formValues.FoulingState;
+      if (formValues.VesselType) {
+        installationIformation.vesselType = formValues.VesselType;
+        installationIformation.vesselTypeId = formValues.VesselType.id;
+      } else {
+        installationIformation.vesselTypeId = null;
+      }
+      if (formValues.InstallationType) {
+        installationIformation.installationTypeId = formValues.InstallationType.id;
+      } else {
+        installationIformation.installationTypeId = null;
+      }
 
-     installationIformation.imoNo = formValues.ImoNo;
-    // installationIformation.foulingId = formValues.FoulingState.Id;
-     if (!formValues.imoNo) {
-      installationIformation.imoNo = 0;
-    }
-     installationIformation.node.nodeNumber = formValues.NodeNumber;
-     installationIformation.node.robotIP = formValues.robotIP;
-     installationIformation.node.installationId = formValues.InstallationId;
-     installationIformation.installationStatus = formValues.InstallationStatus;
-     installationIformation.installationStatusId = formValues.InstallationStatus.id;
-     console.log(this.formData.getRawValue());
-     console.log(installationIformation);
-    //  console.log(installationIformation);
+      installationIformation.imoNo = formValues.ImoNo;
+      // installationIformation.foulingId = formValues.FoulingState.Id;
+      if (!formValues.imoNo) {
+        installationIformation.imoNo = 0;
+      }
+      installationIformation.node.nodeNumber = formValues.NodeNumber;
+      installationIformation.node.robotIP = formValues.robotIP;
+      installationIformation.node.installationId = formValues.InstallationId;
+      installationIformation.installationStatus = formValues.InstallationStatus;
+      installationIformation.installationStatusId = formValues.InstallationStatus.id;
+      this.isDataLoading = true;
+      this.installationService.UpdateInstallationInformation(installationIformation).pipe(take(1)).subscribe(async (data) => {
+        if (data) {
+          this.triggerToast('success', 'Success Message', `Installation Information updated`);
+          this.prepareInstallationService.updateInstallationDetail(installationIformation);
+          this.isDataLoading = false;
+          this.router.navigateByUrl('/operational-plan/prepare-installation/trade-route/' + installationIformation.id);
+        }
 
-     this.installationService.UpdateInstallationInformation(installationIformation).pipe(take(1)).subscribe(async (data) => {
-       if (data) {
-        this.triggerToast('success', 'Success Message', `Installation Information updated`);
-        this.prepareInstallationService.updateInstallationDetail(installationIformation);
-        this.router.navigateByUrl('/operational-plan/prepare-installation/trade-route/' + installationIformation.id);
-       }
-
-    });
+      });
 
     }
   }
