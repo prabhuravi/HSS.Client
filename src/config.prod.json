@@ -265,7 +265,9 @@
         "path": "/Email",
         "endpoints": {
           "planProposalPreview": "/PlanProposalPreview",
+          "planProposalEditable": "/PlanProposalEditable",
           "portRequestPreview": "/PortRequestPreview",
+          "portRequestEditable": "/PortRequestEditable",
           "approvePortRequest": "/ApprovePortRequest",
           "approvePlanProposal": "/ApprovePlanProposal"
         }

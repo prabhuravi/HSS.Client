@@ -17,6 +17,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
   opertionId: number;
   templateHtml: any;
   isDataLoading: boolean = false;
+  isTemplateLoading = false;
   constructor( private emailService: EmailServiceService, private sanitizer: DomSanitizer, private messageService: MessageService ) { }
 
   ngOnInit() {
@@ -25,10 +26,10 @@ export class OperationDocumentTemplatesComponent implements OnInit {
   getPlanProposalTemplate(operationId: number){
     this.opertionId = operationId;
     this.templateHtml = null;
-    this.isDataLoading = true;
+    this.isTemplateLoading = true;
+    this.displayTemplate = true;
     this.emailService.getPlanProposal(operationId).subscribe((data) => {
-      this.displayTemplate = true;
-      this.isDataLoading = false;
+      this.isTemplateLoading = false;
       console.log(data);
       this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
     });
@@ -37,10 +38,10 @@ export class OperationDocumentTemplatesComponent implements OnInit {
   getPortRequestTemplate(operationId: number){
     this.opertionId = operationId;
     this.templateHtml = null;
-    this.isDataLoading = true;
+    this.isTemplateLoading = true;
+    this.displayTemplate = true;
     this.emailService.getPortRequest(operationId).subscribe((data) => {
-      this.displayTemplate = true;
-      this.isDataLoading = false;
+      this.isTemplateLoading = false;
       console.log(data);
       this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
     });
@@ -48,13 +49,12 @@ export class OperationDocumentTemplatesComponent implements OnInit {
 
   onEditTemplate() {
     this.templateHtml = null;
-    this.isDataLoading = true;
+    this.isTemplateLoading = true;
     switch(this.templateType) {
       case Template.PlanProposal:{
         document.getElementById("edit").textContent  = "Use default";
         this.emailService.getPlanProposalEditable(this.opertionId).subscribe((data) => {
-          this.displayTemplate = true;
-          this.isDataLoading = false;
+          this.isTemplateLoading = false;
           console.log(data);
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
           this.templateType = Template.PlanProposalEditable
@@ -64,8 +64,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
       case Template.PlanProposalEditable:{
         document.getElementById("edit").textContent  = "Edit template";
         this.emailService.getPlanProposal(this.opertionId).subscribe((data) => {
-          this.displayTemplate = true;
-          this.isDataLoading = false;
+          this.isTemplateLoading = false;
           console.log(data);
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
           this.templateType = Template.PlanProposal
@@ -75,8 +74,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
       case Template.PortRequest:{
         document.getElementById("edit").textContent  = "Use default";
         this.emailService.getPortRequestEditable(this.opertionId).subscribe((data) => {
-          this.displayTemplate = true;
-          this.isDataLoading = false;
+          this.isTemplateLoading = false;
           console.log(data);
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
           this.templateType = Template.PortRequestEditable
@@ -86,8 +84,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
       case Template.PortRequestEditable:{
         document.getElementById("edit").textContent  = "Edit template";
         this.emailService.getPortRequest(this.opertionId).subscribe((data) => {
-          this.displayTemplate = true;
-          this.isDataLoading = false;
+          this.isTemplateLoading = false;
           console.log(data);
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
           this.templateType = Template.PortRequest
