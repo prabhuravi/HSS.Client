@@ -57,9 +57,9 @@
                     <td>{{ rowData.missionNumber }}</td>
                     <td>{{ rowData.type }}</td>
                     <td>{{ rowData.description }}</td>
-                    <td>{{ rowData.startTime | date:'MM/dd/yyyy'}}</td>
-                    <td>{{ rowData.endTime | date:'MM/dd/yyyy'}}</td>
-                    <td>{{ rowData.uploadedDate | date:'MM/dd/yyyy' }}</td>
+                    <td>{{ rowData.startTime | date: appConstants.dateFormatWithoutTime}}</td>
+                    <td>{{ rowData.endTime | date: appConstants.dateFormatWithoutTime}}</td>
+                    <td>{{ rowData.uploadedDate | date: appConstants.dateFormatWithoutTime }}</td>
                 </tr>
             </ng-template>
         </p-table>

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, interval } from 'rxjs';
+import { AppConstants } from '../app.constants';
 
 @Component({
   selector: 'app-custom-header',
@@ -10,6 +11,7 @@ export class CustomHeaderComponent implements OnInit, OnDestroy {
 
   constructor() { }
   UTCTIME: Date;
+  appConstants = AppConstants;
   utcTimeSubscription: Subscription;
 
   ngOnInit(): void {

@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as fileSaver from 'file-saver';
 import { take } from 'rxjs/operators';
+import { AppConstants } from 'src/app/app.constants';
 import { OperationDocument } from 'src/app/models/OperationDocument';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
@@ -28,6 +29,7 @@ export class OperationDocumentComponent implements OnInit {
   vesselId = 0;
   OperationDocuments: OperationDocument[] = [];
   isDataLoading = false;
+  appConstants = AppConstants;
   @Input() operation: any;
 
   ngOnInit() {

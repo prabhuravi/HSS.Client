@@ -40,7 +40,7 @@
             <td></td>
             <td> {{ rowData.VesselSectionOldFoulingState.State }}</td>
             <td> {{ rowData.VesselSectionNewFoulingState.State }}</td>
-            <td> {{ rowData.VesselSection.ModifiedDate | date:'MM/dd/yyyy HH:mm' }}</td>
+            <td> {{ rowData.VesselSection.ModifiedDate | date: appConstants.dateFormatWithoutTime }}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
@@ -74,7 +74,7 @@
                 </p-cellEditor>
             </td>
             <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s" style="padding-left: 6vw;">{{
-                rowData.SubSection.ModifiedDate | date:'MM/dd/yyyy HH:mm'}}
+                rowData.SubSection.ModifiedDate | date: appConstants.dateFormatWithTime}}
             </td>
         </tr>
     </ng-template>

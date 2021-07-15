@@ -29,8 +29,8 @@
                 <tr>
                     <td>{{ rowData.documentType.typeName }}</td>
                     <td>{{ rowData.file }}</td>
-                    <td>{{ rowData.createdDate | date:'MM/dd/yyyy'}}</td>
-                    <td>{{ rowData.modifiedDate | date:'MM/dd/yyyy' }}</td>
+                    <td>{{ rowData.createdDate | date: appConstants.dateFormatWithoutTime}}</td>
+                    <td>{{ rowData.modifiedDate | date: appConstants.dateFormatWithoutTime}}</td>
                     <td>
                         <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                             aria-label="Download" title="Download" (click)="downloadDocument(rowData)">

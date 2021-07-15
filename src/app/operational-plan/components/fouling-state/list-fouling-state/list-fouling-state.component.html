@@ -42,7 +42,7 @@
             <td>{{ rowData.name }}</td>
             <td></td>
             <td> {{ rowData.foulingState.State }}</td>
-            <td> {{ rowData.modifiedDate | date:'MM/dd/yyyy HH:mm' }}</td>
+            <td> {{ rowData.modifiedDate | date: appConstants.dateFormatWithTime}}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
@@ -73,7 +73,7 @@
             </td>
 
             <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.modifiedDate |
-                date:'MM/dd/yyyy HH:mm'}}
+                date: appConstants.dateFormatWithTime}}
             </td>
         </tr>
     </ng-template>

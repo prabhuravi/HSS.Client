@@ -3,6 +3,7 @@ import { take } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { Operation } from 'src/app/models/Operation';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { AppConstants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-operator-log',
@@ -15,6 +16,7 @@ export class OperatorLogComponent implements OnInit {
   operatorNote: string;
   operatorLogs: IOperatorLog[] = [];
   operatorLogLoading = false;
+  appConstants = AppConstants;
 
   constructor(private operationalPlanService: OperationalPlanService, private messageService: MessageService) { }
 

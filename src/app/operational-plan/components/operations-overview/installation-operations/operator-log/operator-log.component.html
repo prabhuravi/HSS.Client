@@ -26,7 +26,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let log of operatorLogs; let i = index;">
-                <td style="width: 30%;">{{log.Date | date:'MM/dd/yyyy HH:mm'}}</td>
+                <td style="width: 30%;">{{log.Date | date: appConstants.dateFormatWithTime}}</td>
                 <td style="width: 70%;">{{log.Note}}</td>
             </tr>
         </tbody>

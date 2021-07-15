@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
+import { AppConstants } from 'src/app/app.constants';
 import { HSRegularityKPIAnswer } from 'src/app/models/hsRegularityKPIAnswer';
 import { HSRegularityKPIQuestion } from 'src/app/models/hsRegularityKPIQuestion';
 import { Operation } from 'src/app/models/Operation';
@@ -18,6 +19,7 @@ export class HullskaterRegularityKpiComponent implements OnInit {
   @Input() operation: Operation;
   hsRegularityKPIQuestions: HSRegularityKPIQuestion[] = [];
   hsRegularityKPIAnswers: HSRegularityKPIAnswer[] = [];
+  appConstants = AppConstants;
   constructor(public fb: FormBuilder, private kpiService: KPIService, private messageService: MessageService) { }
 
   ngOnInit() {

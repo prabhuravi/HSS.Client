@@ -331,7 +331,7 @@
                                 <div class="kx-mt--tiny">
                                     <strong>Timestamp :</strong>
                                     <div class="kx-mt--tiny">
-                                        {{aisData && aisData.MessageTimestamp  ? (aisData.MessageTimestamp | date:'dd/MM/yyyy HH:mm') : noData}}
+                                        {{aisData && aisData.MessageTimestamp  ? (aisData.MessageTimestamp | date: appConstants.dateFormatWithTime) : noData}}
                                     </div>
                                 </div>
                             </div>
@@ -345,7 +345,7 @@
                                 <div class="kx-mt--tiny">
                                     <strong>ETA :</strong>
                                     <div class="kx-mt--tiny">
-                                        {{aisData && aisData.Eta ? (aisData.Eta | date:'dd/MM/yyyy HH:mm') : noData}}
+                                        {{aisData && aisData.Eta ? (aisData.Eta | date: appConstants.dateFormatWithTime) : noData}}
                                     </div>
                                 </div>
                             </div>

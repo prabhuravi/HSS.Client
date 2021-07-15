@@ -5,7 +5,7 @@ import { OperationalPlanService } from 'src/app/services/operational-plan.servic
 import { InstallationService } from 'src/app/services/installation.service';
 import { Installation } from 'src/app/models/Installation';
 import { Operation } from 'src/app/models/Operation';
-import { OperationStatusEnum } from 'src/app/app.constants';
+import { AppConstants, OperationStatusEnum } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-port-meteorology',
@@ -17,6 +17,7 @@ export class PortMeteorologyComponent implements OnInit {
   portMeteorology: IPortMeteorology;
   installationOverview: Installation
   portMeteorologyLoading = false;
+  appConstants = AppConstants;
   constructor(private operationalPlanService: OperationalPlanService, private messageService: MessageService,
     private installationService: InstallationService) { }
 

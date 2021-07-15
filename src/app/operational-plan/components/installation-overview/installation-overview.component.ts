@@ -15,6 +15,7 @@ export class InstallationOverviewComponent implements OnInit {
 
   installationList: Installation[] = [];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  appConstants = AppConstants;
   installationStatus: InstallationStatus[] = [];
   foulingStatus = [];
   currentInstallation: Installation;

@@ -5,6 +5,7 @@ import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice
 import * as fileSaver from 'file-saver';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
+import { AppConstants } from 'src/app/app.constants';
 import { Configuration } from 'src/app/configuration';
 import { Mission } from 'src/app/models/mission';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
@@ -38,6 +39,7 @@ export class OperationMissionsComponent implements OnInit {
   OperationMissions: Mission[] = [];
   isDataLoading = false;
   @Input() operation: any;
+  appConstants = AppConstants;
 
   ngOnInit() {
     this.getoperationMissions(this.operation);

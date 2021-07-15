@@ -25,6 +25,7 @@ export class ListFoulingStateComponent implements OnInit {
   @Input() sections: VesselSection[];
   @Output() foulingStateEdited: EventEmitter<any> = new EventEmitter<any>();
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  appConstants = AppConstants;
   foulingStates: IFoulingState[] = [];
   overallFoulingState: string = 'Not Rated';
 

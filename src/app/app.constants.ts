@@ -3,7 +3,11 @@ export class AppConstants {
         datepickerFormat: 'mm/dd/yy',
         rowCount: 10
     };
+    public static dateFormatWithTime = 'dd/MM/yyyy HH:mm';
+    public static dateFormatWithoutTime = 'dd/MM/yyyy';
 }
+
+
 
 export enum FormType {
     text,

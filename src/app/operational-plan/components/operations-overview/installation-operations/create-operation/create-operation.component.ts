@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
-import { FormType, OperationStatusEnum } from 'src/app/app.constants';
+import { AppConstants, FormType, OperationStatusEnum } from 'src/app/app.constants';
 import { Contact } from 'src/app/models/Contact';
 import { ContactAdapter } from 'src/app/models/modelAdapter';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
@@ -35,6 +35,7 @@ export class CreateOperationComponent implements OnInit {
   operationStatus: IOperationStatus[] = [];
   requestedBy: IRequestedBy[] = [];
   isFormSubmmited: boolean = false;
+  appConstants = AppConstants
   isFormDirty = false;
   vesselId: number = 0;
   operationToEdit: any;

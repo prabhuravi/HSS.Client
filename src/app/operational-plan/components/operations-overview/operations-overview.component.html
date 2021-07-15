@@ -40,12 +40,6 @@
             <div class="kx-col kx-col--4 kx-col--2@tab-m kx-col--6@mob-m kx-col--2@ltp-s" style="text-align: center;">
                 <label class="kx-label">
                     Destination
-                    <!-- <div class="kx-mt--tiny kx-icon kx-icon--size-base"
-                        style="width: 25px; margin-left: 54px; cursor: pointer;" (click)="viewAISCard($event)">
-                        <svg focusable="false">
-                            <use href="./assets/img/icons/sprites/icons.svg#map"></use>
-                        </svg>
-                    </div> -->
                 </label>
                 <div class="kx-mt--tiny">
                     {{(installationOverview && installationOverview.aisData)? installationOverview.aisData.destination:
@@ -56,7 +50,7 @@
                 <label class="kx-label">ETA</label>
                 <div class="kx-mt--tiny">
                     {{(installationOverview && installationOverview.aisData)? (installationOverview.aisData.eta |
-                    date:'dd/MM/yyyy HH:mm') : ''}}
+                    date: appConstants.dateFormatWithTime) : ''}}
                 </div>
             </div>
             <div class="kx-col kx-col--4 kx-col--1@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;margin-top: 4px;">
@@ -125,7 +119,7 @@
                                     <div class="kx-col kx-col--4">
                                         <strong>Timestamp :</strong>
                                         <div class="kx-mt--tiny">
-                                            {{installationOverview.aisData.messageTimestamp | date:'dd/MM/yyyy HH:mm'}}
+                                            {{installationOverview.aisData.messageTimestamp | date: appConstants.dateFormatWithTime}}
                                         </div>
                                     </div>
 
@@ -139,7 +133,7 @@
                                         <div class="kx-mt--tiny">
                                             <strong>ETA :</strong>
                                             <div class="kx-mt--tiny">
-                                                {{installationOverview.aisData.eta | date:'dd/MM/yyyy HH:mm'}}
+                                                {{installationOverview.aisData.eta | date: appConstants.dateFormatWithTime}}
                                             </div>
                                         </div>
                                     </div>

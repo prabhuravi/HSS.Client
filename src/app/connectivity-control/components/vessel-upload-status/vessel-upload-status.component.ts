@@ -26,6 +26,7 @@ export class VesselUploadStatusComponent implements OnInit {
   prevFiliterData: any;
   disableMarkForUpload: boolean = true;
   disableActivity: boolean;
+  appConstants = AppConstants;
   cols = [
 
     { field: 'FileUploadedDate', sortfield: 'VesselName', header: 'Uploaded Date', filterMatchMode: 'contains' },

@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as fileSaver from 'file-saver';
 import { take } from 'rxjs/operators';
+import { AppConstants } from 'src/app/app.constants';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
@@ -26,6 +27,7 @@ export class InstallationDocumentComponent implements OnInit {
   vesselId = 0;
   installationDocuments: IInstallationDocument[] = [];
   isDataLoading = false;
+  appConstants = AppConstants;
   
   ngOnInit() {
     this.getInstallationDocuments();

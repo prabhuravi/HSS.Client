@@ -9,6 +9,7 @@ import { Node } from 'src/app/models/Node';
 import { InstallationService } from 'src/app/services/installation.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { ConnectivityControlService } from 'src/app/services/connectivity-control.service';
+import { AppConstants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-operations-overview',
@@ -24,6 +25,7 @@ export class OperationsOverviewComponent implements OnInit {
   installationsDetail: Installation[] = [];
   selectedInstallation: Installation;
   installationOverview: Installation;
+  appConstants = AppConstants;
   showAISCard: boolean = false;
   showWhitelist: boolean = false;
   whiteListedCountries: IWhiteListedCountries[] = [];

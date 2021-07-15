@@ -62,7 +62,7 @@
                                     </a>
                                 </div>
                                 <div *ngSwitchCase="'LastSeen'">
-                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}
+                                    {{rowData[col.field] | date: appConstants.dateFormatWithTime}}
                                 </div>
                                 <div *ngSwitchDefault>{{rowData[col.field]}}</div>
                                 <div *ngSwitchCase="'CactiLink'">

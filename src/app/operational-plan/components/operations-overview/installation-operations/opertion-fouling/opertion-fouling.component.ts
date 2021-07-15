@@ -19,7 +19,7 @@ export class OpertionFoulingComponent implements OnInit {
               public fb: FormBuilder, private messageService: MessageService, private router: Router) { }
 
   isDataLoading = false;
- 
+  appConstants = AppConstants;
   @Input() sections: VesselSection[];
   foulingStates: any[]= [];
   @Input() operation: any;

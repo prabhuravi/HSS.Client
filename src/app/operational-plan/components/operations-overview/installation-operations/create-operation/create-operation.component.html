@@ -322,7 +322,7 @@
                                     <td style="text-align: center;">{{operator.operatorBooking ?
                                         operator.operatorBooking.status : ''}}</td>
                                     <td style="text-align: center;">{{operator.operatorBooking ?
-                                        (operator.operatorBooking.date | date:'MM/dd/yyyy HH:mm'): null}}</td>
+                                        (operator.operatorBooking.date | date: appConstants.dateFormatWithTime): null}}</td>
                                 </tr>
                             </tbody>
                         </table>

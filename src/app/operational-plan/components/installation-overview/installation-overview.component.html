@@ -57,7 +57,7 @@
         <td>{{ installationList.foulingState ? installationList.foulingState.State : '' }}</td>
         <td>{{ installationList.installationStatus ? installationList.installationStatus.name : '' }}</td>
         <td> {{ installationList.operation ? installationList.operation.OperationStatus.Name : '' }} </td>
-        <td> {{ installationList.operation ? (installationList.operation.Date | date: "dd/MM/yyyy") : ''}}</td>
+        <td> {{ installationList.operation ? (installationList.operation.Date | date:  appConstants.dateFormatWithoutTime) : ''}}</td>
         <td>{{ installationList.operation ? installationList.operation.PortLocation ?
           installationList.operation.PortLocation.PortName : '': ''}}</td>
         <td>
@@ -74,7 +74,7 @@
             </a>
           </div>
         </td>
-        <td>{{ installationList.aisData ? (installationList.aisData.eta | date: "dd/MM/yyyy") : ''}}</td>
+        <td>{{ installationList.aisData ? (installationList.aisData.eta | date: appConstants.dateFormatWithoutTime) : ''}}</td>
         <td>
           <div class="kx-icon kx-icon--size-base" style="width: 25px; margin-left: 54px; cursor: pointer;"
             (click)="viewAISCard($event, installationList)">
@@ -135,7 +135,7 @@
                   <div class="kx-col kx-col--4">
                     <strong>Timestamp :</strong>
                     <div class="kx-mt--tiny">
-                      {{currentInstallation.aisData.messageTimestamp | date:'dd/MM/yyyy HH:mm'}}
+                      {{currentInstallation.aisData.messageTimestamp | date: appConstants.dateFormatWithTime}}
                     </div>
                   </div>
 
@@ -149,7 +149,7 @@
                     <div class="kx-mt--tiny">
                       <strong>ETA :</strong>
                       <div class="kx-mt--tiny">
-                        {{currentInstallation.aisData.eta | date:'dd/MM/yyyy HH:mm'}}
+                        {{currentInstallation.aisData.eta | date: appConstants.dateFormatWithTime}}
                       </div>
                     </div>
                   </div>

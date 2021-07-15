@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
-import { OperationStatusEnum } from 'src/app/app.constants';
+import { AppConstants, OperationStatusEnum } from 'src/app/app.constants';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
@@ -15,6 +15,7 @@ export class ListOperationsComponent implements OnInit {
 
   vesselId: number = 0;
   isDataLoading = false;
+  appConstants = AppConstants;
   @Output() showCreateOperation = new EventEmitter<boolean>();
   @Output() operationEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() createOperation: EventEmitter<any> = new EventEmitter<any>();

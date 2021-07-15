@@ -131,7 +131,7 @@
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'Date'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
-                                    {{rowData[col.field] | date:'MM/dd/yyyy'}}</div>
+                                    {{rowData[col.field] | date: appConstants.dateFormatWithTime}}</div>
                             </div>
                             <div *ngSwitchCase="'Id'">
                                 <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"

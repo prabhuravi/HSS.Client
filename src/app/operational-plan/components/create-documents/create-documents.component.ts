@@ -26,6 +26,7 @@ export class CreateDocumentsComponent implements OnInit {
   installations: IVessel[] = [];
   selectedInstallation: IVessel = null;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  appConstants = AppConstants;
   form: FormGroup;
   file: File;
   isDataLoading = false;
