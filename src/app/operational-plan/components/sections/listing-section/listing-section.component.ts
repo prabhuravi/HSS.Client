@@ -4,8 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
-import { VesselSection, SectionStatus, SubSection } from 'src/app/models/Section';
-import { FromBuilderService } from 'src/app/services/from-builder-service';
+import { SubSection, VesselSection } from 'src/app/models/Section';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { SectionService } from 'src/app/services/section.service';
 
@@ -44,7 +43,6 @@ export class ListingSectionComponent implements OnInit {
       this.prepareInstallationService.setInstallationFromRoute(this.route);
     }
     this.loadVesselSections();
-
   }
 
   private loadVesselSections() {

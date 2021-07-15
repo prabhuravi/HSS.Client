@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import { VesselSection } from 'src/app/models/Section';
@@ -16,8 +16,7 @@ import { SectionService } from 'src/app/services/section.service';
 export class OpertionFoulingComponent implements OnInit {
   constructor(public sectionService: SectionService,
               private operationalPlanService: OperationalPlanService,
-              public fb: FormBuilder, private confirmationService: ConfirmationService, private route: ActivatedRoute,
-              private messageService: MessageService, private router: Router) { }
+              public fb: FormBuilder, private messageService: MessageService, private router: Router) { }
 
   isDataLoading = false;
  
@@ -67,7 +66,6 @@ export class OpertionFoulingComponent implements OnInit {
             operationSectionId = operationSec.Id;
             vesselSection = operationSec;
           }
-
         });
       });
       this.isDataLoading = true;

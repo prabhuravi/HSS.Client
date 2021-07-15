@@ -1,15 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
+import * as fileSaver from 'file-saver';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
-import { OperationDocument } from 'src/app/models/OperationDocument';
-import { OperationalPlanService } from 'src/app/services/operational-plan.service';
-import { saveAs } from 'file-saver';
-import { Mission } from 'src/app/models/mission';
-import { ConfigurationService } from '@kognifai/poseidon-ng-configurationservice';
 import { Configuration } from 'src/app/configuration';
-import * as fileSaver from 'file-saver';
+import { Mission } from 'src/app/models/mission';
+import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
   selector: 'app-operation-missions',
@@ -21,7 +19,6 @@ export class OperationMissionsComponent implements OnInit {
   constructor(public fb: FormBuilder,
               private operationalPlanService: OperationalPlanService,
               private router: Router,
-              private route: ActivatedRoute,
               private confirmationService: ConfirmationService,
               public configurationService: ConfigurationService<Configuration>,
               private messageService: MessageService) { }

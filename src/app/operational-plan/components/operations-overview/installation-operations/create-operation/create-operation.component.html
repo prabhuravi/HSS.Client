@@ -1,20 +1,8 @@
 <div class="kx-card kx-card--skin-default" *ngIf="config && config.formList && config.formList.length > 0">
     <div class="kx-p--tiny kx-p--medium@mob-m">
         <div class="kx-row kx-row--gutters">
-
-            <!-- <div *ngIf="selectedSections.length > 0" style="margin-left: 25px; margin-bottom: 10px;"> <b>Selected
-                    Sections:</b>
-                <span *ngFor="let section of selectedSections; let i = index;">
-                    {{section.name}}(<span
-                        *ngFor="let subSection of section.subSections; let i = index;">{{subSection.subSectionNumber}}<span
-                            *ngIf="i != section.subSections.length - 1">,</span>
-                    </span>)<span *ngIf="i != selectedSections.length - 1">,</span></span>
-            </div> -->
-
             <app-load *ngIf="isDataLoading"></app-load>
-           
             <form [formGroup]="formsData" class="kx-row kx-row--gutters" style="width: 100%">
-
                 <div formArrayName="formsArray">
                     <div class="kx-row kx-row--gutters" [formGroupName]="0" style="margin-bottom: -50px;">
                         <app-dynamic-form
@@ -23,15 +11,10 @@
                             [isFormSubmitted]="isFormSubmmited" [formValues]="form1Values"
                             [config]="formsArrayConfigs[0]" (formOnchangeEvent)="formOnchangeEvent($event)">
                         </app-dynamic-form>
-
-                        <!-- section/sub section here -->
                         <p-button (click)="showMaximizableDialog()" icon="pi pi-external-link" style="margin-top: 27px;"
                             [disabled]="disableForm" [ngClass]="disableForm ? 'disablePointerEvents' : 'none'"
                             label="{{editOperation? 'View Sections': 'Select Sections'}}"></p-button>
-
                         <div class="kx-col kx-col--7 kx-col--5@mob-m kx-col--8@tab-m kx-col--2@ltp-s">
-                            <!-- <label class="kx-label">Section & Sub-Section</label><small
-                                *ngIf="selectedSections.length == 0" class="u--textDanger">*</small> -->
                             <div class="kx-mt--tiny">
                                 <button (click)="showModalDialog()" style="margin-top: 18px; height: 37px;"
                                     class="kx-btn kx-btn--skin-primary kx-btn--size-base">
@@ -39,34 +22,6 @@
                                         <span class="kx-btn__txt">Operation Actions</span>
                                     </span>
                                 </button>
-                                <!-- <p-overlayPanel #op [showCloseIcon]="true">
-                                    <div class="kx-listgroup">
-                                        <ul class="kx-list kx-list--item-highlight">
-                                            <li class="kx-list-item u--cursorPointer"
-                                                (click)="addSecondaryOperationToList($event, op)">
-                                                <span class="kx-list-item__text">
-                                                    <span class="kx-list-item__primary-text">Add Secondary
-                                                        Operation</span>
-                                                </span>
-                                            </li>
-                                            <li class="kx-list-item u--cursorPointer">
-                                                <span class="kx-list-item__text">
-                                                    <span class="kx-list-item__primary-text">Plan Proposal</span>
-                                                </span>
-                                            </li>
-                                            <li class="kx-list-item u--cursorPointer">
-                                                <span class="kx-list-item__text">
-                                                    <span class="kx-list-item__primary-text">Port Request</span>
-                                                </span>
-                                            </li>
-                                            <li class="kx-list-item u--cursorPointer">
-                                                <span class="kx-list-item__text">
-                                                    <span class="kx-list-item__primary-text">Action 4</span>
-                                                </span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </p-overlayPanel> -->
                                 <p-dialog #actionDialog [(visible)]="displayActionModal" [style]="{width: '15vw'}"
                                     [baseZIndex]="10000" [draggable]="false" [resizable]="false">
                                     <div class="kx-listgroup">
@@ -78,24 +33,26 @@
                                                         Operation</span>
                                                 </span>
                                             </li>
-                                             <li class="kx-list-item u--cursorPointer"
-                                                (click)="openPlanProposalTemplate(documentTemplate)" *ngIf="editOperation">
+                                            <li class="kx-list-item u--cursorPointer"
+                                                (click)="openPlanProposalTemplate(documentTemplate)"
+                                                *ngIf="editOperation">
                                                 <span class="kx-list-item__text">
                                                     <span class="kx-list-item__primary-text">Plan Proposal</span>
                                                 </span>
                                             </li>
                                             <li class="kx-list-item u--cursorPointer"
-                                                (click)="openPortRequestTemplate(documentTemplate)" *ngIf="editOperation">
+                                                (click)="openPortRequestTemplate(documentTemplate)"
+                                                *ngIf="editOperation">
                                                 <span class="kx-list-item__text">
                                                     <span class="kx-list-item__primary-text">Port Request</span>
                                                 </span>
                                             </li>
                                             <li class="kx-list-item u--cursorPointer"
-                                            (click)="openRegularityKPIForm($event, actionDialog)">
-                                            <span class="kx-list-item__text">
-                                                <span class="kx-list-item__primary-text">Regularity KPI</span>
-                                            </span>
-                                        </li>
+                                                (click)="openRegularityKPIForm($event, actionDialog)">
+                                                <span class="kx-list-item__text">
+                                                    <span class="kx-list-item__primary-text">Regularity KPI</span>
+                                                </span>
+                                            </li>
                                         </ul>
                                     </div>
                                     <ng-template pTemplate="footer">
@@ -115,13 +72,6 @@
                                             <th colspan="90%">Subsections</th>
                                             <tr *ngFor="let row of opertionSections; let i=index;"
                                                 style="margin-top: 16px">
-                                                <!-- <button *ngIf="!row.selected && isBookedSection(row)" [disabled]="true"
-                                                    style="color: white;"
-                                                    class="u--bgDanger kx-btn kx-btn--size-base section">
-                                                    <span class="kx-btn__inner">
-                                                        <span class="kx-btn__txt">{{row.name}}</span>
-                                                    </span>
-                                                </button> -->
                                                 <button *ngIf="!row.selected"
                                                     class="kx-btn kx-btn--skin-secondary kx-btn--size-base section"
                                                     (click)="onSectionSelected(row)">
@@ -138,13 +88,6 @@
                                                     </span>
                                                 </button>
                                                 <td *ngFor="let col of row.subSections; let j=index">
-                                                    <!-- <button *ngIf="!col.selected && isBookedSubsection(col)"
-                                                        [disabled]="true" style="color: white;"
-                                                        class="u--bgDanger kx-btn kx-btn--size-base  subsection">
-                                                        <span class="kx-btn__inner">
-                                                            <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
-                                                        </span>
-                                                    </button> -->
                                                     <button *ngIf="!col.selected"
                                                         class="kx-btn kx-btn--skin-secondary kx-btn--size-base  subsection"
                                                         (click)="onSubSectionSelected(row, col)">
@@ -191,7 +134,6 @@
 
                         <div class="kx-col kx-col--12 kx-col--6@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
                             <label class="kx-label">Operator</label>
-                            <!-- <small *ngIf="!selectedOperator" class="u--textDanger">*</small> -->
                             <i class="kx-icon kx-icon--size-base" disabled="disableForm"
                                 [ngClass]="disableForm ? 'disablePointerEvents' : 'none'" title="Select operator">
                                 <a href="#" (click)="showAvailableOperators($event)">
@@ -210,13 +152,14 @@
                     </div>
                 </div>
 
-              
                 <div class="kx-card kx-card--skin-default" style="width: 100%; margin-left: 20px; margin-bottom: 20px;">
                     <div class="kx-row kx-row--gutters" style="margin-top: -10px; margin-bottom: -14px;">
                         <div class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
-                            <i class="kx-icon kx-icon--size-base" style="position: absolute; margin-top: 25px; margin-left: 85%; z-index: 9; cursor: pointer;" *ngIf="operationToEdit && operationToEdit.Id>0"
+                            <i class="kx-icon kx-icon--size-base"
+                                style="position: absolute; margin-top: 25px; margin-left: 85%; z-index: 9; cursor: pointer;"
+                                *ngIf="operationToEdit && operationToEdit.Id>0"
                                 [ngClass]="disableForm ? 'disablePointerEvents' : 'none'" title="Add port contacts">
-                                <a  (click)="showAddContactModalDialog()">
+                                <a (click)="showAddContactModalDialog()">
                                     <svg focusable="false" style="width: 32px;height: 25px;">
                                         <use href="./assets/img/icons/sprites/icons.svg#group"></use>
                                     </svg>
@@ -224,7 +167,6 @@
                             </i>
                             <div class="kx-card kx-card--skin-default"
                                 style="height: 250px; margin-top: 20px;padding: 5px;margin-left: 10px;">
-                              
                                 <!-- <b>INSTALLATION CONTACT DETAILS</b> -->
                                 <app-contact-listing #contactListing [isOperationScreen]="true"></app-contact-listing>
                             </div>
@@ -267,15 +209,6 @@
                                 </ng-template>
                             </span>
                         </button>
-                        <!-- <button (click)="onSubmit()" class="kx-btn kx-btn--skin-primary kx-btn--size-base"
-                            [disabled]="!formsData.valid || disableForm">
-                            <span class="kx-btn__inner">
-                                <span *ngIf="!editOperation; else elseBlock" class="kx-btn__txt">Add</span>
-                                <ng-template #elseBlock>
-                                    <span class="kx-btn__txt">Save</span>
-                                </ng-template>
-                            </span>
-                        </button> -->
                     </div>
                     <div class="kx-col kx-col--4 kx-col--4@mob-m kx-col--4@tab-m kx-col--4@ltp-s">
                         <button [disabled]="disableForm" class="kx-btn kx-btn--skin-secondary kx-btn--size-base"
@@ -298,7 +231,7 @@
         </div>
     </div>
 </div>
-<app-operation-document-templates  #documentTemplate [displayTemplate]="false" ></app-operation-document-templates>
+<app-operation-document-templates #documentTemplate [displayTemplate]="false"></app-operation-document-templates>
 <p-dialog header="HullSkater Regularity KPI" [(visible)]="displayRegularityKPI" [modal]="true" [style]="{width: '60vw'}"
     [maximizable]="true" [baseZIndex]="10000" [draggable]="true" [resizable]="true">
     <div class="container">
@@ -321,12 +254,13 @@
     </ng-template>
 </p-dialog>
 
-<p-dialog header="Add port contacts" [(visible)]="displayAddContactModal" [modal]="true"  [contentStyle]="{'overflow':'visible'}" [style]="{width: '75vw'}"
-  [draggable]="true">
-<app-contact-search style="margin-top: -20px;" #searchContact
-(contactSearched)="contactListing.onSearchContactEvent($event)"></app-contact-search>
-<app-create-contact *ngIf="operationToEdit" [isOperationScreen]="true" [operation]="operationToEdit" style="margin-top: -20px;" #createContact
-   (contactUpdated)="contactListing.onContactDataUpdated($event)"></app-create-contact>                      
+<p-dialog header="Add port contacts" [(visible)]="displayAddContactModal" [modal]="true"
+    [contentStyle]="{'overflow':'visible'}" [style]="{width: '75vw'}" [draggable]="true">
+    <app-contact-search style="margin-top: -20px;" #searchContact
+        (contactSearched)="contactListing.onSearchContactEvent($event)"></app-contact-search>
+    <app-create-contact *ngIf="operationToEdit" [isOperationScreen]="true" [operation]="operationToEdit"
+        style="margin-top: -20px;" #createContact (contactUpdated)="contactListing.onContactDataUpdated($event)">
+    </app-create-contact>
 </p-dialog>
 
 

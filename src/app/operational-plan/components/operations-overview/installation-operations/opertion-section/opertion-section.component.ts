@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { element } from 'protractor';
 import { take } from 'rxjs/operators';
@@ -45,6 +45,7 @@ export class OpertionSectionComponent implements OnInit {
   ngOnInit() {
     this.onOperationSectionLoad(null);
   }
+
   onOperationSectionLoad(op: any) {
     if (op) {
       this.operation = op;
@@ -130,7 +131,6 @@ export class OpertionSectionComponent implements OnInit {
       accept: () => {
         this.operationalPlanService.deleteOperationSubSection(operationSubSection.Id).pipe(take(1)).subscribe((data) => {
           this.isDataLoading = true;
-
           const sectionRow = this.operationSections.find((x) => x.Id === operationSubSection.OperationSectionId);
           let subsections = sectionRow.OperationSubSections;
           subsections = subsections.filter((x) => x !== operationSubSection);
@@ -140,7 +140,6 @@ export class OpertionSectionComponent implements OnInit {
           } else {
             this.operationSections = this.operationSections.filter((x) => x !== sectionRow);
           }
-
           this.isDataLoading = false;
           this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
         });
@@ -156,6 +155,7 @@ export class OpertionSectionComponent implements OnInit {
         detail
       });
   }
+  
   goToListOperations() {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate(['/operational-plan/operations-overview/' + this.operation.VesselId])

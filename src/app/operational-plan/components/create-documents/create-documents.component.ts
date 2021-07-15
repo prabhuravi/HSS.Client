@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
@@ -25,7 +25,6 @@ export class CreateDocumentsComponent implements OnInit {
   selectedDocument: any = null;
   installations: IVessel[] = [];
   selectedInstallation: IVessel = null;
-
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   form: FormGroup;
   file: File;
@@ -40,7 +39,6 @@ export class CreateDocumentsComponent implements OnInit {
     { field: 'DocumentName', sortfield: 'DocumentName', header: 'Document Name', filterMatchMode: 'contains' },
     { field: 'DocumentTypeName', sortfield: 'DocumentTypeName', header: 'Document Type', filterMatchMode: 'contains' },
     { field: 'UploadSource', sortfield: 'UploadSource', header: 'Upload Source', filterMatchMode: 'contains' },
-    // { field: 'CopyVesselId', sortfield: 'CopyVesselId', header: 'Upload Source', filterMatchMode: 'contains' },
     { field: 'FileName', sortfield: 'FileName', header: 'File', filterMatchMode: 'contains' },
     { field: 'Id', sortfield: '', header: 'Action' }
   ];
@@ -170,8 +168,7 @@ export class CreateDocumentsComponent implements OnInit {
       formData.append('VesselId', this.vesselId.toString());
       formData.append('CreatedBy', '');
       formData.append('InstallationName', this.prepareInstallationService.installation.displayName);
-      if (this.uploadFrom === 'Cloud' && this.selectedDocument !== null)
-      {
+      if (this.uploadFrom === 'Cloud' && this.selectedDocument !== null) {
         formData.append('DocumentId', this.selectedDocument.DocumentId);
         formData.append('CopyVesselId', this.selectedDocument.VesselId);
       }
@@ -279,7 +276,6 @@ export class CreateDocumentsComponent implements OnInit {
   }
 
   next(): void {
-    // this.nextActiveTab.emit(5);
     this.router.navigateByUrl('/operational-plan/prepare-installation/contacts/' + this.vesselId);
   }
 
@@ -291,7 +287,7 @@ export class CreateDocumentsComponent implements OnInit {
         detail
       });
   }
-  
+
   converDateToISOString(date: any): string {
     date = new Date(date.toString());
     date = new Date(date.toString().slice(0, date.toString().indexOf('GMT')) + 'GMT').toISOString();

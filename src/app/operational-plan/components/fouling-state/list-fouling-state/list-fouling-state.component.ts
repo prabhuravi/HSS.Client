@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
-import { Section, SubSection, VesselSection } from 'src/app/models/Section';
+import { SubSection, VesselSection } from 'src/app/models/Section';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { SectionService } from 'src/app/services/section.service';
@@ -17,9 +17,9 @@ import { SectionService } from 'src/app/services/section.service';
 export class ListFoulingStateComponent implements OnInit {
 
   constructor(public sectionService: SectionService,
-              private prepareInstallationService: PrepareInstallationService, private operationalPlanService: OperationalPlanService,
-              public fb: FormBuilder, private confirmationService: ConfirmationService, private route: ActivatedRoute,
-              private messageService: MessageService) { }
+    private prepareInstallationService: PrepareInstallationService, private operationalPlanService: OperationalPlanService,
+    public fb: FormBuilder, private route: ActivatedRoute,
+    private messageService: MessageService) { }
 
   isDataLoading = false;
   @Input() sections: VesselSection[];
@@ -87,6 +87,7 @@ export class ListFoulingStateComponent implements OnInit {
       this.getSectionwithFouling();
     });
   }
+  
   calculateVesselFoulingState() {
     if (this.sections.some((p) => p.foulingState.State === 'Not Rated')) {
       this.overallFoulingState = 'Not Rated';

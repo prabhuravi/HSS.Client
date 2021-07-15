@@ -1,11 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import { Installation, InstallationStatus, InstallationType, VesselType } from 'src/app/models/Installation';
-import { InstallationAdapter, NodeAdapter } from 'src/app/models/modelAdapter';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { InstallationService } from 'src/app/services/installation.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
@@ -32,7 +31,6 @@ export class CreateInstallationComponent implements OnInit {
   vesselTypes: VesselType[] = [];
   installationTypes: InstallationType[] = [];
   installationStatus: InstallationStatus[] = [];
-  // foulingStates: IFoulingState[] = [];
 
   constructor(private installationService: InstallationService,
     private router: Router,
@@ -40,8 +38,6 @@ export class CreateInstallationComponent implements OnInit {
     private formBuliderService: FromBuilderService,
     private prepareInstallationService: PrepareInstallationService,
     private route: ActivatedRoute,
-    private installationAdapter: InstallationAdapter,
-    private nodeAdapter: NodeAdapter,
     public fb: FormBuilder, public messageService: MessageService) { }
 
   ngOnInit() {

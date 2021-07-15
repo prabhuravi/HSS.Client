@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { take } from 'rxjs/operators';
+import { MessageService } from 'primeng/api';
 import { Template } from 'src/app/models/templateEnum';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { EmailServiceService } from 'src/app/services/email-service.service';
 
 @Component({

@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
-import { Table } from 'primeng/components/table/table';
-import { take } from 'rxjs/operators';
 import { EntitlementsQueryService } from '@kognifai/poseidon-ng-entitlements-query-service';
+import { take } from 'rxjs/operators';
 import { AppConstants, HSSRoleEnum } from 'src/app/app.constants';
 import { Installation, InstallationStatus } from 'src/app/models/Installation';
-import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { InstallationService } from 'src/app/services/installation.service';
 
 @Component({
@@ -31,9 +28,7 @@ export class InstallationOverviewComponent implements OnInit {
   accessPrepareInstallation = false;
   constructor(private installationService: InstallationService,
     private router: Router,
-    private entitlementsQueryService: EntitlementsQueryService,
-    private confirmationService: ConfirmationService,
-    private formBuliderService: FromBuilderService) { }
+    private entitlementsQueryService: EntitlementsQueryService) { }
 
   ngOnInit() {
     this.isDataLoading = true;

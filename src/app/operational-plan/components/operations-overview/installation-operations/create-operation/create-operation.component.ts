@@ -75,9 +75,7 @@ export class CreateOperationComponent implements OnInit {
   hsRegularityKPIConfigs = [{ Revision: 'v1.0.0', Description: 'Default template for HullSkater Regularity KPI' }];
   defaultHSRegularityKPIConfig;
   displayActionModal: boolean;
-
   displayModal: boolean;
-
   displayAddContactModal: boolean;
 
   ngOnInit() {
@@ -192,6 +190,7 @@ export class CreateOperationComponent implements OnInit {
     this.onFormReset();
     this.showListOperation.emit(false);
   }
+
   showModalDialog() {
     this.displayActionModal = true;
   }
@@ -225,7 +224,6 @@ export class CreateOperationComponent implements OnInit {
     this.secondaryListingComponent.editOperation = true;
     this.setEditRule(operation);
     const formsArrayAsAny = this.formsData.controls.formsArray as any;
-
     this.isDataLoading = true;
     this.operationalPlanService.getOperationSections(operation.Id).pipe(take(1)).subscribe((opSecdata) => {
       this.isDataLoading = false;

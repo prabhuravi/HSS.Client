@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Installation } from 'src/app/models/Installation';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { ContactComponent } from '../contact/contact.component';
 import { CreateDocumentsComponent } from '../create-documents/create-documents.component';

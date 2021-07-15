@@ -23,7 +23,6 @@ import { CreateDocumentsComponent } from './components/create-documents/create-d
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FoulingStateComponent } from './components/fouling-state/fouling-state.component';
 import { ListFoulingStateComponent } from './components/fouling-state/list-fouling-state/list-fouling-state.component';
-import { UpdateFoulingStateComponent } from './components/fouling-state/update-fouling-state/update-fouling-state.component';
 import {
   CreateInstallationComponent,
 } from './components/installation-information/create-installation/create-installation.component';
@@ -130,7 +129,6 @@ const routes: Routes = [
     ContactComponent,
     CreateContactComponent,
     ContactListingComponent,
-    UpdateFoulingStateComponent,
     ListFoulingStateComponent,
     OperationsOverviewComponent,
     InstallationOperationsComponent,
