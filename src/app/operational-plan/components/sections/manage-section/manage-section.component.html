@@ -8,12 +8,13 @@
             <th style="width: 3rem"></th>
             <th>
                 <form style="display: flex; align-items: center;">
-                    <input class="kx-field--size-base" style="height: 25px; min-width: 130px; width: 45%; margin-right: 5px;"
-                        type="text" [(ngModel)]="sectionName" name = "addSectionName" autocomplete="off"
+                    <input class="kx-field--size-base"
+                        style="height: 25px; min-width: 130px; width: 45%; margin-right: 5px;" type="text"
+                        [(ngModel)]="sectionName" name="addSectionName" autocomplete="off"
                         [placeholder]="sectionToEdit? 'Update Section': 'Add Section'" #addSectionName />
-                    <button *ngIf="!sectionToEdit" style="margin-right: 5px;" class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
-                        aria-label="Add Section" title="Add Section" (click)="addSection(addSectionName.value)"
-                        [disabled]="!sectionName">
+                    <button *ngIf="!sectionToEdit" style="margin-right: 5px;"
+                        class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Add Section"
+                        title="Add Section" (click)="addSection(addSectionName.value)" [disabled]="!sectionName">
                         <span class="kx-btn__inner">
                             <i class="kx-icon kx-icon--size-moderate">
                                 <svg focusable="true">
@@ -91,9 +92,11 @@
                 </div>
                 <div *ngIf="expanded">
                     <form style="display: flex; align-items: center;">
-                        <input class="kx-field--size-base" style="height: 25px; min-width: 130px; width: 50%; margin-right: 5px;"
-                            type="number" oninput="validity.valid || (value='');" min="1" name="subSectionNumbers[ri]"
-                            [(ngModel)]="subSectionNumbers[ri]" placeholder="Add sub-section" autocomplete="off" #subSectionNumber />
+                        <input class="kx-field--size-base"
+                            style="height: 25px; min-width: 130px; width: 50%; margin-right: 5px;" type="number"
+                            oninput="validity.valid || (value='');" min="1" name="subSectionNumbers[ri]"
+                            [(ngModel)]="subSectionNumbers[ri]" placeholder="Add sub-section" autocomplete="off"
+                            #subSectionNumber />
                         <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                             aria-label="Add sub-section" title="Add Sub-section"
                             (click)="addSubSection(subSectionNumber.value, rowData, ri)"
@@ -123,8 +126,8 @@
                 </p-cellEditor>
             </td>
             <td>
-                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" style="margin-right: 5px;" aria-label="Edit section name"
-                    title="Edit section name" (click)="onSectionRowEdit(rowData)">
+                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" style="margin-right: 5px;"
+                    aria-label="Edit section name" title="Edit section name" (click)="onSectionRowEdit(rowData)">
                     <span class="kx-btn__inner">
                         <i class="kx-icon kx-icon--size-moderate">
                             <svg focusable="true">
@@ -175,7 +178,7 @@
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <p-dropdown [options]="sectionStatus" [(ngModel)]="rowData.sectionStatus"
-                            (ngModelChange)="subSectionStatusChanged(rowData)" title="Click outside the cell to save" optionLabel="name"></p-dropdown>
+                            title="Click outside the cell to save" optionLabel="name"></p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
                         {{ rowData.sectionStatus.name }}
@@ -183,8 +186,8 @@
                 </p-cellEditor>
             </td>
             <td class="kx-col kx-col--12 kx-col--2@mob-m kx-col--2@tab-m kx-col--1@ltp-s">
-                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete sub-section"
-                    title="Delete sub-section" (click)="onSubSectionDelete(rowData)">
+                <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                    aria-label="Delete sub-section" title="Delete sub-section" (click)="onSubSectionDelete(rowData)">
                     <span class="kx-btn__inner">
                         <i class="kx-icon kx-icon--size-moderate">
                             <svg focusable="true">

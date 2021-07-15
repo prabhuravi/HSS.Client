@@ -173,13 +173,7 @@ export class ManageSectionComponent implements OnInit {
       });
     }
   }
-
-  sectionStatusChanged(rowData: VesselSection) {
-  }
   
-  subSectionStatusChanged(rowData: SubSection) {
-  }
-
   onSectionRowDelete(vesselSectionRow: VesselSection) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this section?',
