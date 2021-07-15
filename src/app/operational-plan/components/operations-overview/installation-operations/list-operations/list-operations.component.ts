@@ -1,12 +1,10 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { take, timeout } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { OperationStatusEnum } from 'src/app/app.constants';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
-import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-list-operations',

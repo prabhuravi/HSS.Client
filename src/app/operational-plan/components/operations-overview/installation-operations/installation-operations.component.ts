@@ -1,13 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TabView } from 'primeng/tabview';
-import { Operation, SecondaryOperation } from 'src/app/models/Operation';
+import { Operation } from 'src/app/models/Operation';
 import { CreateOperationComponent } from './create-operation/create-operation.component';
 import { OperationDocumentComponent } from './operation-document/operation-document.component';
 import { OperationMissionsComponent } from './operation-missions/operation-missions.component';
 import { OpertionFoulingComponent } from './opertion-fouling/opertion-fouling.component';
 import { OpertionSectionComponent } from './opertion-section/opertion-section.component';
-import { SecondryOperationListingComponent } from './secondry-operation-listing/secondry-operation-listing.component';
 
 @Component({
   selector: 'app-installation-operations',
@@ -27,21 +26,7 @@ export class InstallationOperationsComponent implements OnInit {
   @ViewChild('tabViewElement', { static: false }) tabViewElement: TabView;
 
   operationsRoutes: IRouteList[] = [];
-  operationalPlanMainRouteList: IRouteList[] = [
-    {
-      label: 'Installation',
-      route: '/operational-plan'
-    },
-    {
-      label: 'Hull Skater',
-      route: '/operational-plan/HullSkater'
-    },
-    {
-      label: 'Admin',
-      route: '/operational-plan/HullSkater'
-    }
-  ];
-
+  
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
