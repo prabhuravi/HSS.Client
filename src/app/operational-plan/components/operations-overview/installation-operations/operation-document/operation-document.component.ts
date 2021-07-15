@@ -43,7 +43,6 @@ export class OperationDocumentComponent implements OnInit {
     }
     this.operationalPlanService.getOperationDocuments(this.operation.Id).pipe(take(1)).subscribe((data) => {
       this.OperationDocuments = data;
-      console.log(this.OperationDocuments);
       this.isDataLoading = false;
     });
   }
@@ -51,9 +50,6 @@ export class OperationDocumentComponent implements OnInit {
     this.operationalPlanService.downloadOperationDocument(row.id).subscribe((response) => {
        const blob: any = new Blob([response], { type: response.type });
        fileSaver.saveAs(blob, row.file);
-      // saveAs(blob, row.file {
-      //    type: blob.type
-      // });
     });
   }
 

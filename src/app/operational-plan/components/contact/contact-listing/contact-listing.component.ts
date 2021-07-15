@@ -54,7 +54,6 @@ export class ContactListingComponent implements OnInit {
     const params = this.route.snapshot.paramMap.get('vesselId');
     vesselId = parseInt(params, null);
     this.contactService.getVesselContacts(vesselId).pipe(take(1)).subscribe((data) => {
-      console.log(data);
       this.isDataLoading = false;
       this.contacts = data;
     });
@@ -83,7 +82,6 @@ public seeDetailedInfo(rowData: Contact): string{
   }
 
   onContactDataUpdated(ContactData: Contact): void {
-    console.log(ContactData);
     this.loadVesselContacts();
     // let rowData = this.contacts.find((x) => x.id === ContactData.id);
     // if (rowData) {

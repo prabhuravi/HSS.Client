@@ -22,14 +22,12 @@ export class SectionsComponent implements OnInit {
                private messageService: MessageService) { }
 
   ngOnInit() {   
-    console.log(this.prepareInstallationService.installation);
   }
   cancel() {
     this.router.navigateByUrl('/operational-plan');
   }
 
   next(): void {
-    // this.nextActiveTab.emit(3);
     this.router.navigateByUrl('/operational-plan/prepare-installation/fouling-state/' + this.prepareInstallationService.installation.id);
   }
 

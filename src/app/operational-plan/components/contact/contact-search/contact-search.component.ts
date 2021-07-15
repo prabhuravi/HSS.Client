@@ -29,10 +29,8 @@ export class ContactSearchComponent implements OnInit, AfterViewInit {
   }
 
   searchContact(event: any) {
-    console.log(event.query);
     this.contactService.searchContacts(event.query).subscribe((data) => {
       this.contactSearch = data;
-      console.log(data);
     });
   }
 

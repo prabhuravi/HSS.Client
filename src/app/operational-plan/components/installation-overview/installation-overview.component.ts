@@ -38,11 +38,9 @@ export class InstallationOverviewComponent implements OnInit {
   ngOnInit() {
     this.isDataLoading = true;
     this.installationService.getInstallationOverviewData().pipe(take(1)).subscribe(async (data) => {
-      console.log(data);
       this.installationList = data[0];
       this.installationStatus = data[1];
       this.foulingStatus = data[2];
-      console.log(this.installationList);
 
       this.cols = [{ field: 'displayName', header: 'Name', sortfield: 'displayName', filterMatchMode: 'contains' },
       { field: 'foulingState.State', header: 'Fouling State', sortfield: 'foulingState.State', filterMatchMode: 'contains', options: this.foulingStatus, optionLabel: 'State' },
@@ -59,7 +57,6 @@ export class InstallationOverviewComponent implements OnInit {
     });
 
     this.entitlementsQueryService.getCurrentUserEntitlements().then((entitlements: any[]) => {
-      console.log(entitlements);
       if (entitlements.findIndex(x => x.name == HSSRoleEnum.OperatorManager) != -1) {
         this.accessPrepareInstallation = true;
       }
@@ -79,7 +76,6 @@ export class InstallationOverviewComponent implements OnInit {
 
   redirectToOperationsOverview(e: any, installation: Installation): void {
     e.preventDefault();
-    console.log(installation);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate(['/operational-plan/operations-overview/' + installation.id])
     );

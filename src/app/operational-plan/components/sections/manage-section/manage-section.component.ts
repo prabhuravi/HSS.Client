@@ -56,14 +56,12 @@ export class ManageSectionComponent implements OnInit {
         this.sectionService.getSectionStatus().pipe(take(1)).subscribe((data) => {
           this.isDataLoading = false;
           this.sectionStatus = data;
-          console.log(this.sectionStatus);
         });
       });
     }
   }
 
   onSectionRowEdit(rowData: VesselSection): void {
-    console.log(rowData);
     this.sectionName = rowData.name;
     this.sectionToEdit = rowData;
   }
@@ -71,10 +69,8 @@ export class ManageSectionComponent implements OnInit {
   onEditSaveSection(event) {
     event.data.sectionStatusId = event.data.sectionStatus.id;
     this.isDataLoading = true;
-    console.log(event.data);
     this.sectionService.UpdateVesselSection(event.data).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
-      // this.loadVesselSections();
       if (data) {
         this.triggerToast('success', 'Success Message', `Section updated successfully`);
       }
@@ -85,7 +81,6 @@ export class ManageSectionComponent implements OnInit {
   }
 
   onEditSaveSubSection(event) {
-    console.log(event.data);
     event.data.sectionStatusId = event.data.sectionStatus.id;
     this.isDataLoading = true;
     this.sectionService.UpdateVesselSubSection(event.data).pipe(take(1)).subscribe((data) => {
@@ -101,7 +96,6 @@ export class ManageSectionComponent implements OnInit {
   }
 
   addSection(sectionName: string) {
-    console.log(this.sectionName);
     if (this.sectionToEdit) {
       //update section name
       this.confirmationService.confirm({
@@ -163,7 +157,6 @@ export class ManageSectionComponent implements OnInit {
       this.sectionService.CreateVesselSubSection(newSubSection).pipe(take(1)).subscribe((data) => {
         this.isDataLoading = false;
         // this.loadVesselSections();
-        console.log(data);
         if (data.id) {
           this.subSectionNumbers[sectionRowIndex] = undefined;
           newSubSection.id = data.id;
@@ -182,10 +175,9 @@ export class ManageSectionComponent implements OnInit {
   }
 
   sectionStatusChanged(rowData: VesselSection) {
-    console.log(rowData);
   }
+  
   subSectionStatusChanged(rowData: SubSection) {
-    console.log(rowData);
   }
 
   onSectionRowDelete(vesselSectionRow: VesselSection) {

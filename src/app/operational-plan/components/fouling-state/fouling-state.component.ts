@@ -30,7 +30,6 @@ export class FoulingStateComponent implements OnInit {
   }
 
   next(): void {
-    // this.nextActiveTab.emit(4);
     this.router.navigateByUrl('/operational-plan/prepare-installation/create-documents/' + this.prepareInstallationService.installation.id);
   }
 

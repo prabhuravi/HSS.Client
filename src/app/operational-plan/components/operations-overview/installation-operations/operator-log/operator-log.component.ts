@@ -19,18 +19,15 @@ export class OperatorLogComponent implements OnInit {
   constructor(private operationalPlanService: OperationalPlanService, private messageService: MessageService) { }
 
   ngOnInit() {
-    console.log(this.operation);
     this.operatorLogLoading = true;
     this.operationalPlanService.getGetOperatorLogs(this.operation.Id).pipe(take(1)).subscribe((data) => {
       this.operatorLogLoading = false;
       this.operatorLogs = data;
-      console.log(this.operatorLogs);
     });
   }
 
   addOperatorLog()
   {
-    console.log(this.operatorNote);
     this.operatorLogLoading = true;
     this.operationalPlanService.addOperatorLog({OperationId: this.operation.Id, Note: this.operatorNote}).pipe(take(1)).subscribe((data) => {
       this.operatorLogLoading = false;

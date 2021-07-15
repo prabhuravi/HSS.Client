@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {CheckboxModule} from 'primeng/checkbox';
-import { OperationalPlanService } from 'src/app/services/operational-plan.service';
-import { ConnectivityControlService } from 'src/app/services/connectivity-control.service';
-import { take } from 'rxjs/operators';
-import { AppConstants } from 'src/app/app.constants';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { take } from 'rxjs/operators';
+import { AppConstants } from 'src/app/app.constants';
+import { ConnectivityControlService } from 'src/app/services/connectivity-control.service';
+import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
   selector: 'app-vessel-upload-status',
@@ -174,10 +173,7 @@ checkRowSelection(): void {
 }
 
 markSelectionForUpload(): void{
-  console.log(this.selectedRows);
   const markForUploadIds = this.selectedRows.map(({ Id }) => Id);
-  console.log(markForUploadIds);
-
   this.confirmationService.confirm({
     message: 'Are you sure that you want to mark the selected ' + this.selectedRows.length + ' file(s) for upload ?',
     accept: () => {
@@ -192,7 +188,6 @@ markSelectionForUpload(): void{
             this.isFormSubmitted = false;
         });
       });
-
     }
   });
 }

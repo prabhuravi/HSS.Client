@@ -40,7 +40,6 @@ export class OperationsOverviewComponent implements OnInit {
       this.installationsDetail = data;
       this.selectedInstallation = this.installationsDetail.find(p => p.id == this.vesselId);
       this.isDataLoading = false;
-      console.log(this.installationsDetail);
     });
 
     this.getInstallationOverview(this.vesselId);
@@ -70,20 +69,16 @@ export class OperationsOverviewComponent implements OnInit {
     this.installationService.getInstallationOverview(vesselId).pipe(take(1)).subscribe(async (data) => {
       this.installationOverview = data;
       this.isDataLoading = false;
-      console.log(this.installationOverview);
     });
   }
 
   showWhitelistDialog() {
     this.showWhitelist = !this.showWhitelist;
     this.isDataLoading = true;
-    console.log(this.installationOverview);
     this.connectivityControlService.getWhiteListedCountries(this.installationOverview.id).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       this.whiteListedCountries = data;
-      console.log(this.whiteListedCountries );
     });
-      // this.showWhitelist = true;
   }
 
   private setInstallationSteps() {
@@ -115,7 +110,6 @@ export class OperationsOverviewComponent implements OnInit {
     // if (componentReference.nextActiveTab !== undefined) {
     //   componentReference.nextActiveTab.subscribe((data) => {
     //     this.activeTab = data;
-    //     console.log(data);
     //   });
     // }
   }

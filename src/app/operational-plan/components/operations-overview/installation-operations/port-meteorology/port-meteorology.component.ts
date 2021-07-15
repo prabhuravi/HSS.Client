@@ -25,7 +25,6 @@ export class PortMeteorologyComponent implements OnInit {
     this.operationalPlanService.getPortMeteorology(this.operation.Id).pipe(take(1)).subscribe((data) => {
       this.portMeteorologyLoading = false;
       this.portMeteorology = data;
-      console.log(this.portMeteorology);
       this.getInstallationOverview(this.operation.VesselId);
     });
   }
@@ -35,7 +34,6 @@ export class PortMeteorologyComponent implements OnInit {
     this.installationService.getInstallationOverview(vesselId).pipe(take(1)).subscribe(async (data) => {
       this.installationOverview = data;
       this.portMeteorologyLoading = false;
-      console.log(this.installationOverview);
     });
   }
 
@@ -53,7 +51,6 @@ export class PortMeteorologyComponent implements OnInit {
   }
 
   refetchPortMeteorology() {
-    console.log(this.operation);
     if (this.operation.OperationStatus.Name === OperationStatusEnum.Completed || this.operation.OperationStatus.Name === OperationStatusEnum.Aborted) {
       this.triggerToast('error', 'Message', `No weather updates available once operation is Completed or Aborted`);
       return;
@@ -74,7 +71,6 @@ export class PortMeteorologyComponent implements OnInit {
     this.operationalPlanService.refetchPortMeteorology(this.operation.Id).pipe(take(1)).subscribe((data) => {
       this.portMeteorologyLoading = false;
       this.portMeteorology = data;
-      console.log(this.portMeteorology);
       if (this.portMeteorology)
         this.triggerToast('success', 'Success Message', `Meteorological data refetched`);
       else

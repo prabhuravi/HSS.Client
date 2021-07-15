@@ -44,20 +44,14 @@ export class InstallationDocumentComponent implements OnInit {
       this.isDataLoading = true;
       this.operationalPlanService.getInstallationDocuments(this.vesselId).pipe(take(1)).subscribe((data) => {
         this.installationDocuments = data;
-        console.log(this.installationDocuments);
         this.isDataLoading = false;
       });
     }
   }
   downloadDocument(row: IInstallationDocument) {
     this.operationalPlanService.downloadDocument(row.DocumentId).pipe(take(1)).subscribe((response) => {
-
       const blob: any = new Blob([response], { type: response.type });
       fileSaver.saveAs(blob, row.FileName);
-      console.log(blob);
-    //   saveAs(blob, row.FileName, {
-    //     type: blob.type
-    //  });
   });
 }
 }

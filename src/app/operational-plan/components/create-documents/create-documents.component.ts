@@ -94,11 +94,9 @@ export class CreateDocumentsComponent implements OnInit {
   }
 
   installationChanged() {
-    console.log(this.selectedInstallation);
     this.selectInstallationLoading = true;
     this.operationalPlanService.getInstallationDocuments(this.selectedInstallation.Id).pipe(take(1)).subscribe((data) => {
       this.selectedInstallationDocuments = data;
-      console.log(this.selectedInstallationDocuments);
       this.selectInstallationLoading = false;
     });
   }

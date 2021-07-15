@@ -30,7 +30,6 @@ export class OperationDocumentTemplatesComponent implements OnInit {
     this.displayTemplate = true;
     this.emailService.getPlanProposal(operationId).subscribe((data) => {
       this.isTemplateLoading = false;
-      console.log(data);
       this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
     });
   }
@@ -42,7 +41,6 @@ export class OperationDocumentTemplatesComponent implements OnInit {
     this.displayTemplate = true;
     this.emailService.getPortRequest(operationId).subscribe((data) => {
       this.isTemplateLoading = false;
-      console.log(data);
       this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
     });
   }
@@ -55,7 +53,6 @@ export class OperationDocumentTemplatesComponent implements OnInit {
         document.getElementById("edit").textContent  = "Use default";
         this.emailService.getPlanProposalEditable(this.opertionId).subscribe((data) => {
           this.isTemplateLoading = false;
-          console.log(data);
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
           this.templateType = Template.PlanProposalEditable
         });
@@ -65,7 +62,6 @@ export class OperationDocumentTemplatesComponent implements OnInit {
         document.getElementById("edit").textContent  = "Edit template";
         this.emailService.getPlanProposal(this.opertionId).subscribe((data) => {
           this.isTemplateLoading = false;
-          console.log(data);
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
           this.templateType = Template.PlanProposal
         });
@@ -75,7 +71,6 @@ export class OperationDocumentTemplatesComponent implements OnInit {
         document.getElementById("edit").textContent  = "Use default";
         this.emailService.getPortRequestEditable(this.opertionId).subscribe((data) => {
           this.isTemplateLoading = false;
-          console.log(data);
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
           this.templateType = Template.PortRequestEditable
         });
@@ -85,7 +80,6 @@ export class OperationDocumentTemplatesComponent implements OnInit {
         document.getElementById("edit").textContent  = "Edit template";
         this.emailService.getPortRequest(this.opertionId).subscribe((data) => {
           this.isTemplateLoading = false;
-          console.log(data);
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
           this.templateType = Template.PortRequest
         });
@@ -100,7 +94,6 @@ export class OperationDocumentTemplatesComponent implements OnInit {
       case(Template.PlanProposal || Template.PlanProposalEditable):{
         this.emailService.approvePlanProposal(this.opertionId).subscribe((data) => {
           this.isDataLoading = false;
-          console.log(data);
           this.triggerToast('success', 'Success Message', `Email queued for sending`);
         });
         break;
@@ -108,7 +101,6 @@ export class OperationDocumentTemplatesComponent implements OnInit {
       case(Template.PortRequest || Template.PortRequestEditable):{
         this.emailService.approvePortRequest(this.opertionId).subscribe((data) => {
           this.isDataLoading = false;
-          console.log(data);
           this.triggerToast('success', 'Success Message', `Email queued for sending`);
         });
         break;

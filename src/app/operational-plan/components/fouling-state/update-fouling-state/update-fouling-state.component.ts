@@ -51,7 +51,6 @@ export class UpdateFoulingStateComponent implements OnInit {
         this.isDataLoading = true;
         this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
           this.sections = data;
-          console.log(this.sections);
           this.isDataLoading = false;
           this.calculateVesselFoulingState();
           this.constructForm();
@@ -104,7 +103,6 @@ export class UpdateFoulingStateComponent implements OnInit {
         break;
       }
       default: {
-        // console.log('Form Item not found');
         break;
       }
     }
@@ -140,38 +138,22 @@ export class UpdateFoulingStateComponent implements OnInit {
   updateFoulingState(): void {
     let subSection: SubSection = this.formData.value.subSectionName;
     subSection.foulingId = this.formData.value.foulingState.Id;
-    // subSection.joturnFoulingId = this.editSubSection.joturnFoulingState.Id;
     subSection.joturnFoulingId = this.formData.value.subSectionName.joturnFoulingState.Id;
-    // subSection.sectionStatusId = this.editSubSection.sectionStatus.id;
     subSection.sectionStatusId = this.formData.value.subSectionName.sectionStatus.id;
     subSection.foulingState = this.formData.value.foulingState;
     this.isDataLoading = true;
-    console.log(subSection);
     this.operationalPlanService.updateSubSectionFoulingState(subSection.id, subSection).pipe(take(1)).subscribe((data) => {
       this.triggerToast('success', 'Success Message', `Sub Section fouling state updated successfully`);
       this.isDataLoading = false;
 
       this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
         this.sections = data;
-        console.log(this.sections);
         this.config.formList[0].options = this.sections;
         this.isDataLoading = false;
         this.calculateVesselFoulingState();
         this.foulingStateUpdated.emit(true);
         this.onFormReset();
       });
-
-      // console.log(this.formData.value.sectionName);
-      // this.operationalPlanService.reCalculateFoulingState({ VesselSectionId: this.formData.value.sectionName.id, VesselId: this.formData.value.sectionName.vesselId }).pipe(take(1)).subscribe((data) => {
-      //   this.sections = data;
-      //   console.log(this.sections);
-      //   this.config.formList[0].options = this.sections;
-      //   this.isDataLoading = false;
-      //   this.calculateVesselFoulingState();
-      //   this.foulingStateUpdated.emit(true);
-      //   this.onFormReset();
-      // });
-
     });
   }
 

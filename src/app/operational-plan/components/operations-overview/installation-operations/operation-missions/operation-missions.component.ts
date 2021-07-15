@@ -52,16 +52,14 @@ export class OperationMissionsComponent implements OnInit {
     this.isDataLoading = true;
     this.operationalPlanService.getOperationMissions(this.operation.Id).pipe(take(1)).subscribe((data) => {
       this.OperationMissions = data;
-      console.log(this.OperationMissions);
       this.isDataLoading = false;
     });
   }
 
   gotoFileManager(row: Mission) {
-    const fileManagerUrl = '';
-    console.log(row);
     window.location.href = `${this.configurationService.config.filemanagerLink}` + row.missionPath;
   }
+  
   downloadOperatorLog(row: Mission) {
     this.isDataLoading = true;
     this.operationalPlanService.downloadMissionLog(row.id).pipe(take(1)).subscribe((response) => {

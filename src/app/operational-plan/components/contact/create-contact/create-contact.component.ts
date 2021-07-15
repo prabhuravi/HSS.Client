@@ -137,24 +137,19 @@ export class CreateContactComponent implements OnInit {
   }
 
   formOnchangeEvent(changedItem: any): void {
-    console.log(this.formData);
     const key = changedItem.formItem.key;
-    console.log(key);
     switch (key) {
       case 'role': {
         this.onRoleChanged(changedItem.formValue);
         break;
       }
-
       default: {
-        console.log('form Item not found');
         break;
       }
     }
   }
 
   onRoleChanged(roleItem: ContactRole) {
-    console.log(roleItem);
     if (roleItem.name === 'Skate Operator') {
       this.formData.controls.tagTraining.enable();
     } else {
@@ -165,7 +160,6 @@ export class CreateContactComponent implements OnInit {
 
   onFormReset(): void {
     this.isFormSubmmited = false;
-    console.log('reset');
     this.formData.reset();
     this.formData.controls.tagTraining.disable();
     this.editMode = false;
@@ -189,9 +183,6 @@ export class CreateContactComponent implements OnInit {
   }
 
   saveContact(): void {
-    console.log('save');
-    console.log(this.formData.value);
-
     this.contact.name = this.formData.controls.name.value;
     this.contact.surName = this.formData.controls.surName.value;
     this.contact.email = this.formData.controls.email.value;
@@ -229,10 +220,8 @@ export class CreateContactComponent implements OnInit {
     if (this.formData.controls.alternativePhone.value != null) {
       newContact.alternativePhone = this.formData.controls.alternativePhone.value.e164Number;
     }
-    console.log(newContact);
     this.contactService.createVesselContact(newContact).pipe(take(1)).subscribe((data) => {
       newContact.id = data.id;
-      console.log(data);
       this.triggerToast('success', 'Success Message', `contact added successfully`);
       this.contactUpdated.emit(newContact);
     });

@@ -81,18 +81,9 @@ export class PrepareInstallationComponent implements OnInit, OnDestroy {
       this.activeTab = 4;
     else if (componentReference instanceof ContactComponent)
       this.activeTab = 5;
-
-    // componentReference.anyFunction();
-
-    // if (componentReference.nextActiveTab !== undefined) {
-    //   componentReference.nextActiveTab.subscribe((data) => {
-    //     this.activeTab = data;
-    //     console.log(data);
-    //   });
-    // }
   }
+  
   ngOnDestroy(): void {
-    console.log('destory');
     this.prepareInstallationService.updateInstallationDetail(null);
   }
 }

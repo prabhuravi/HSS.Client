@@ -48,11 +48,9 @@ export class CreateInstallationComponent implements OnInit {
     this.isDataLoading = true;
     this.installationService.getInstallationFormData().pipe(take(1)).subscribe(async (data) => {
       this.installationList = data[0];
-      console.log(this.installationList);
       this.vesselTypes = data[1];
       this.installationStatus = data[2];
       this.installationTypes = data[3];
-      // this.foulingStates = data[3];
       this.constructForm();
       this.formData = this.formBuliderService.buildForm(this.config);
       this.prepareInstallationService.setInstallationFromRoute(this.route);
@@ -157,29 +155,23 @@ export class CreateInstallationComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
       accept: () => {
-        console.log(formData);
       }
     });
   }
 
   formOnchangeEvent(changedItem: any): void {
     const key = changedItem.formItem.key;
-    console.log(key);
     switch (key) {
       case 'Installation': {
         this.onInstallationdropDownChanged(changedItem.formValue);
         break;
       }
-
       default: {
-        console.log('form Item not found');
         break;
       }
     }
   }
   onInstallationdropDownChanged(installation: Installation) {
-    console.log(installation);
-    // console.log(this.config.formList);
     this.setFormValue(installation);
     this.prepareInstallationService.updateInstallationDetail(installation);
 
@@ -188,8 +180,6 @@ export class CreateInstallationComponent implements OnInit {
   private setFormValue(installation: Installation) {
     this.onFormReset();
     if (installation) {
-      console.log(installation);
-
       if (installation.vesselType) {
         this.formData.controls.VesselType.setValue(installation.vesselType);
       }
@@ -240,13 +230,9 @@ export class CreateInstallationComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // this.nextActiveTab.emit(1);
-    console.log(this.formData);
     if (this.formData.valid) {
-
       const formValues = this.formData.getRawValue();
       const installationIformation: Installation = formValues.Installation;
-      // installationIformation.foulingState = formValues.FoulingState;
       if (formValues.VesselType) {
         installationIformation.vesselType = formValues.VesselType;
         installationIformation.vesselTypeId = formValues.VesselType.id;
@@ -260,7 +246,6 @@ export class CreateInstallationComponent implements OnInit {
       }
 
       installationIformation.imoNo = formValues.ImoNo;
-      // installationIformation.foulingId = formValues.FoulingState.Id;
       if (!formValues.imoNo) {
         installationIformation.imoNo = 0;
       }
@@ -277,9 +262,7 @@ export class CreateInstallationComponent implements OnInit {
           this.isDataLoading = false;
           this.router.navigateByUrl('/operational-plan/prepare-installation/trade-route/' + installationIformation.id);
         }
-
       });
-
     }
   }
 

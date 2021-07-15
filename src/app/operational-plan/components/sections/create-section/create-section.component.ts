@@ -47,7 +47,6 @@ export class CreateSectionComponent implements OnInit {
 
   ngOnInit() {
     this.sectionService.getSectionInformations().pipe(take(1)).subscribe((data) => {
-      console.log(data);
       this.sectionStatus = data[0];
       this.Sections = data[1];
       this.constructForm();
@@ -98,7 +97,6 @@ export class CreateSectionComponent implements OnInit {
     this.editMode = true;
     this.vesselSection = sectionData;
     this.vesselSection.sectionStatusId = this.formData.controls.sectionStatus.value.id;
-    console.log(this.Sections.find((x) => x.id === sectionData.sectionId));
     this.formData.controls.name.setValue(this.Sections.find((x) => x.id === sectionData.sectionId));
     this.formData.controls.sectionStatus.setValue(sectionData.sectionStatus);
     this.formData.controls.name.disable();
@@ -119,7 +117,6 @@ export class CreateSectionComponent implements OnInit {
     newSection.vesselId =  this.prepareInstallationService.installation.id;
     newSection.sectionId = this.formData.controls.name.value.id;
     newSection.sectionStatusId = this.formData.controls.sectionStatus.value.id;
-    console.log(newSection);
     newSection.name = this.formData.controls.name.value.name;
     this.sectionService.CreateVesselSection(newSection).pipe(take(1)).subscribe((data) => {
       newSection.id = data.id;

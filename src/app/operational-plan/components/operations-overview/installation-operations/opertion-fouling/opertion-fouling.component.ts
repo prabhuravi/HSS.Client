@@ -75,7 +75,6 @@ export class OpertionFoulingComponent implements OnInit {
         vesselSection.FoulingState = this.foulingStates.find((x) => x.Id === data.FoulingId);
         vesselSection.FoulingId = data.FoulingId;
         vesselSection.ModifiedDate = data.ModifiedDate;
-        console.log(data);
         rowData.SubSection.ModifiedDate = new Date();
         this.triggerToast('success', 'Success Message', `Fouling updated successfully`);
         this.isDataLoading = false;

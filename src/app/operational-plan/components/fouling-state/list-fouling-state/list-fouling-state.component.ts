@@ -57,7 +57,6 @@ export class ListFoulingStateComponent implements OnInit {
     this.isDataLoading = true;
     this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
-      console.log(data);
       this.sections = data;
       this.sections.forEach((opSection: VesselSection) => {
         opSection.subSections.sort((a, b) => (a.subSectionNumber < b.subSectionNumber ? -1 : 1));
@@ -81,7 +80,6 @@ export class ListFoulingStateComponent implements OnInit {
   }
   onFoulingStateChanged(rowdata: SubSection) {
     this.isDataLoading = true;
-    console.log(rowdata);
     rowdata.foulingId = rowdata.foulingState.Id;
     this.operationalPlanService.updateSubSectionFoulingState(rowdata.id, rowdata).pipe(take(1)).subscribe((data) => {
       this.triggerToast('success', 'Success Message', `Sub Section fouling state updated successfully`);

@@ -46,8 +46,6 @@ export class CreateSubSectionComponent implements OnInit {
 
   ngOnInit() {
     this.sectionService.getSectionStatus().pipe(take(1)).subscribe((data) => {
-
-      console.log(data);
       this.sectionStatus = data;
       this.constructForm();
       this.formData = this.formBuliderService.buildForm(this.config);
@@ -102,7 +100,6 @@ export class CreateSubSectionComponent implements OnInit {
   subSectionEditInit(subSectionData: any): void {
     this.editMode = true;
     this.subSection = subSectionData.rowData;
-    console.log(this.subSection);
     this.formData.controls.sectionName.setValue(subSectionData.sectionRow.name);
     this.formData.controls.subSectionNumber.setValue(this.subSection.subSectionNumber);
     this.formData.get('subSectionStatus').patchValue(this.subSection.sectionStatus);

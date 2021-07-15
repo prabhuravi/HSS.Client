@@ -1,26 +1,21 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TreeNode } from 'primeng/api';
-import { MessageService, ConfirmationService } from 'primeng/api';
 import * as moment from 'moment';
-import { take, timeout } from 'rxjs/operators';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { take } from 'rxjs/operators';
 import { FormType, OperationStatusEnum } from 'src/app/app.constants';
 import { Contact } from 'src/app/models/Contact';
-import { Operation, OperationStatus, OperationType, SecondaryOperation } from 'src/app/models/Operation';
-import { Section, SubSection, VesselSection } from 'src/app/models/Section';
+import { ContactAdapter } from 'src/app/models/modelAdapter';
+import { Operation, SecondaryOperation } from 'src/app/models/Operation';
+import { SubSection, VesselSection } from 'src/app/models/Section';
+import { Template } from 'src/app/models/templateEnum';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { OperatorBookingService } from 'src/app/services/operator-booking.service';
-import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
-import { ContactAdapter } from 'src/app/models/modelAdapter';
-import { SecondryOperationListingComponent } from '../secondry-operation-listing/secondry-operation-listing.component';
-import { CreateSecondryOperationComponent } from '../create-secondry-operation/create-secondry-operation.component';
-import { OpertionSectionComponent } from '../opertion-section/opertion-section.component';
-import { OpertionFoulingComponent } from '../opertion-fouling/opertion-fouling.component';
 import { OperationDocumentTemplatesComponent } from '../operation-document-templates/operation-document-templates.component';
-import { Template } from 'src/app/models/templateEnum';
+import { SecondryOperationListingComponent } from '../secondry-operation-listing/secondry-operation-listing.component';
 
 @Component({
   selector: 'app-create-operation',
@@ -30,7 +25,7 @@ import { Template } from 'src/app/models/templateEnum';
 export class CreateOperationComponent implements OnInit {
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService, private confirmationService: ConfirmationService,
-    private prepareInstallationService: PrepareInstallationService, private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
+    private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
     public fb: FormBuilder, public datepipe: DatePipe) { }
 
   get formsArray() {
@@ -82,7 +77,7 @@ export class CreateOperationComponent implements OnInit {
   displayActionModal: boolean;
 
   displayModal: boolean;
-  
+
   displayAddContactModal: boolean;
 
   ngOnInit() {
@@ -210,25 +205,20 @@ export class CreateOperationComponent implements OnInit {
     this.secondaryListingComponent.updateSecondaryOperationList(new SecondaryOperation(0, 0, 2, 1, '', null, null, null));
   }
 
-  openPlanProposalTemplate(documentTemplate: any){
-    console.log('Plan Proposal');
+  openPlanProposalTemplate(documentTemplate: any) {
     this.displayActionModal = false;
-    
     documentTemplate.templateType = Template.PlanProposal;
     documentTemplate.getPlanProposalTemplate(this.operationToEdit.Id);
   }
-  openPortRequestTemplate(documentTemplate: any){
+
+  openPortRequestTemplate(documentTemplate: any) {
     this.displayActionModal = false;
-    
     documentTemplate.templateType = Template.PortRequest;
     documentTemplate.getPortRequestTemplate(this.operationToEdit.Id);
   }
 
   onEditOperation(operation: Operation): void {
     this.isFormDirty = false;
-
-    console.log(operation);
-
     this.editOperation = true;
     this.selectedOperator = null;
     this.operationToEdit = operation;
@@ -246,10 +236,8 @@ export class CreateOperationComponent implements OnInit {
         this.secondaryOperationsForEdit = data;
         this.operationToEdit.SecondaryOperations = data;
         this.formAlteredEvent.emit(this.operationToEdit);
-        console.log(this.secondaryOperationsForEdit);
         this.secondaryOperationsForEdit.forEach((element) => {
           this.secondaryListingComponent.updateSecondaryOperationList(element);
-          // this.secondaryListingComponent.editOperation = true;
         });
         this.isDataLoading = false;
       });
@@ -267,7 +255,6 @@ export class CreateOperationComponent implements OnInit {
         requestedBy: operation.RequestedBy ? this.requestedBy.find((p) => p.Id === operation.RequestedBy.Id) : null,
         description: operation.Description
       });
-      console.log(this.operationToEdit.OperationSections);
       this.setSectionForOperation();
     });
   }
@@ -316,16 +303,13 @@ export class CreateOperationComponent implements OnInit {
     this.secondaryListingComponent.clearSecondaryListing();
     this.operationalPlanService.getSecondaryOperations(this.operationToEdit.Id).pipe(take(1)).subscribe((data) => {
       this.secondaryOperationsForEdit = data;
-      console.log(this.secondaryOperationsForEdit);
       this.secondaryOperationsForEdit.forEach((element) => {
         this.secondaryListingComponent.updateSecondaryOperationList(element);
-        // this.secondaryListingComponent.editOperation = true;
       });
     });
   }
 
   onSubmit(): void {
-    console.log(this.formsData);
     this.isFormSubmmited = true;
     const formsArrayAsAny = this.formsData.controls.formsArray as any;
     if ((formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Confirmed || formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Running || formsArrayAsAny.controls[0].controls.operationStatus.value.Name === OperationStatusEnum.Completed)
@@ -363,7 +347,6 @@ export class CreateOperationComponent implements OnInit {
       statusId: formsArrayAsAny.controls[0].controls.operationStatus.value.Id,
       portId: formsArrayAsAny.controls[1].controls.port.value ? formsArrayAsAny.controls[1].controls.port.value.Id : null,
       operatorId: this.selectedOperator ? this.selectedOperator.contactId : null,
-      // hullSkaterId: 1,
       requestedById: formsArrayAsAny.controls[1].controls.requestedBy.value ? formsArrayAsAny.controls[1].controls.requestedBy.value.Id : null,
       description: formsArrayAsAny.controls[1].controls.description.value ? formsArrayAsAny.controls[1].controls.description.value : '',
       operationName: formsArrayAsAny.controls[1].controls.description.value ? formsArrayAsAny.controls[1].controls.description.value : '',
@@ -389,7 +372,6 @@ export class CreateOperationComponent implements OnInit {
     } else {
       this.isDataLoading = true;
       this.operationalPlanService.createOperation(operation).pipe(take(1)).subscribe((data) => {
-        console.log(data);
         this.isDataLoading = false;
         this.triggerToast('success', 'Success Message', `Operation added successfully`);
         this.onFormReset();
@@ -433,7 +415,6 @@ export class CreateOperationComponent implements OnInit {
       this.operatorBookingService.getOperatorForVessel(this.vesselId, bookingDate).pipe(take(1)).subscribe((data) => {
         this.operatorList = data;
         this.isDataLoading = false;
-        console.log(this.operatorList);
       });
     } else {
       this.triggerToast('error', 'Message', `Please select date field first`);
@@ -505,7 +486,6 @@ export class CreateOperationComponent implements OnInit {
     if (!rowsection || !rowsection.subSections) {
       return false;
     }
-    let booked = true;
     rowsection.subSections.forEach((element) => {
       if (!element.selected) {
         return false;
