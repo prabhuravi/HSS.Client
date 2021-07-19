@@ -1,65 +1,83 @@
-import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { SharedModule } from '../shared/shared.module';
-import { TableModule } from 'primeng/table';
-import { TreeModule } from 'primeng/tree';
-import { DialogModule } from 'primeng/dialog';
-import {OverlayPanelModule} from 'primeng/overlaypanel';
-import { ToastModule } from 'primeng/toast';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
-import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TableModule } from 'primeng/table';
+import { TabViewModule } from 'primeng/tabview';
+import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import {TabViewModule} from 'primeng/tabview';
-
-
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { Routes, RouterModule } from '@angular/router';
-// import { ManagePlansComponent } from './components/manage-plans/manage-plans.component';
-// import { AddPlanComponent } from './components/add-plan/add-plan.component';
-import { OperatorComponent } from './components/operator/operator.component';
-import { OperationTypeComponent } from './components/operation-type/operation-type.component';
-import { VesselComponent } from './components/vessel/vessel.component';
-import { RobotSystemComponent } from './components/robot-system/robot-system.component';
-// import { SubOperationalPlanComponent } from './components/sub-operational-plan/sub-operational-plan.component';
-import { InstallationOverviewComponent } from './components/installation-overview/installation-overview.component';
-import { PrepareInstallationComponent } from './components/prepare-installation/prepare-installation.component';
-import { TradeRouteComponent } from './components/trade-route/trade-route.component';
-import { SectionsComponent } from './components/sections/sections.component';
-import { CreateDocumentsComponent } from './components/create-documents/create-documents.component';
-import { FoulingStateComponent } from './components/fouling-state/fouling-state.component';
-import { CreateInstallationComponent } from './components/installation-information/create-installation/create-installation.component';
-import { CreateSectionComponent } from './components/sections/create-section/create-section.component';
-import { CreateSubSectionComponent } from './components/sections/create-sub-section/create-sub-section.component';
-import { ListingSectionComponent } from './components/sections/listing-section/listing-section.component';
+import { TreeModule } from 'primeng/tree';
+import { SharedModule } from '../shared/shared.module';
+import { ContactListingComponent } from './components/contact/contact-listing/contact-listing.component';
+import { ContactSearchComponent } from './components/contact/contact-search/contact-search.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { CreateContactComponent } from './components/contact/create-contact/create-contact.component';
-import { ContactListingComponent } from './components/contact/contact-listing/contact-listing.component';
-import { UpdateFoulingStateComponent } from './components/fouling-state/update-fouling-state/update-fouling-state.component';
+import { CreateDocumentsComponent } from './components/create-documents/create-documents.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FoulingStateComponent } from './components/fouling-state/fouling-state.component';
 import { ListFoulingStateComponent } from './components/fouling-state/list-fouling-state/list-fouling-state.component';
+import {
+  CreateInstallationComponent,
+} from './components/installation-information/create-installation/create-installation.component';
+import { InstallationOverviewComponent } from './components/installation-overview/installation-overview.component';
+import {
+  HullskaterRegularityKpiComponent,
+} from './components/kpi/hullskater-regularity-kpi/hullskater-regularity-kpi.component';
+import {
+  InstallationContactComponent,
+} from './components/operations-overview/installation-contact/installation-contact.component';
+import {
+  InstallationDocumentComponent,
+} from './components/operations-overview/installation-document/installation-document.component';
+import {
+  CreateOperationComponent,
+} from './components/operations-overview/installation-operations/create-operation/create-operation.component';
+import {
+  InstallationOperationsComponent,
+} from './components/operations-overview/installation-operations/installation-operations.component';
+import {
+  ListOperationsComponent,
+} from './components/operations-overview/installation-operations/list-operations/list-operations.component';
+import {
+  OperationDocumentTemplatesComponent,
+} from './components/operations-overview/installation-operations/operation-document-templates/operation-document-templates.component';
+import {
+  OperationDocumentComponent,
+} from './components/operations-overview/installation-operations/operation-document/operation-document.component';
+import {
+  OperationMissionsComponent,
+} from './components/operations-overview/installation-operations/operation-missions/operation-missions.component';
+import {
+  OperatorLogComponent,
+} from './components/operations-overview/installation-operations/operator-log/operator-log.component';
+import {
+  OpertionFoulingComponent,
+} from './components/operations-overview/installation-operations/opertion-fouling/opertion-fouling.component';
+import {
+  OpertionSectionComponent,
+} from './components/operations-overview/installation-operations/opertion-section/opertion-section.component';
+import {
+  PortMeteorologyComponent,
+} from './components/operations-overview/installation-operations/port-meteorology/port-meteorology.component';
+import {
+  SecondryOperationListingComponent,
+} from './components/operations-overview/installation-operations/secondry-operation-listing/secondry-operation-listing.component';
+import {
+  InstallationTradeRouteComponent,
+} from './components/operations-overview/installation-trade-route/installation-trade-route.component';
 import { OperationsOverviewComponent } from './components/operations-overview/operations-overview.component';
-import { InstallationOperationsComponent } from './components/operations-overview/installation-operations/installation-operations.component';
-import { CreateOperationComponent } from './components/operations-overview/installation-operations/create-operation/create-operation.component';
-import { ListOperationsComponent } from './components/operations-overview/installation-operations/list-operations/list-operations.component';
-import { CreateSecondryOperationComponent } from './components/operations-overview/installation-operations/create-secondry-operation/create-secondry-operation.component';
-import { SecondryOperationListingComponent } from './components/operations-overview/installation-operations/secondry-operation-listing/secondry-operation-listing.component';
-import { OperatorLogComponent } from './components/operations-overview/installation-operations/operator-log/operator-log.component';
-import { ContactSearchComponent } from './components/contact/contact-search/contact-search.component';
-import { PrepareInstallationGuard} from '../applications-guard.service';
+import { PrepareInstallationComponent } from './components/prepare-installation/prepare-installation.component';
+import { ListingSectionComponent } from './components/sections/listing-section/listing-section.component';
 import { ManageSectionComponent } from './components/sections/manage-section/manage-section.component';
-import { OpertionSectionComponent } from './components/operations-overview/installation-operations/opertion-section/opertion-section.component';
-import { OpertionFoulingComponent } from './components/operations-overview/installation-operations/opertion-fouling/opertion-fouling.component';
-import { PortMeteorologyComponent } from './components/operations-overview/installation-operations/port-meteorology/port-meteorology.component';
-import { InstallationDocumentComponent } from './components/operations-overview/installation-document/installation-document.component';
-import { OperationDocumentComponent } from './components/operations-overview/installation-operations/operation-document/operation-document.component';
-import { OperationMissionsComponent } from './components/operations-overview/installation-operations/operation-missions/operation-missions.component';
-import { InstallationContactComponent } from './components/operations-overview/installation-contact/installation-contact.component';
-import { InstallationTradeRouteComponent } from './components/operations-overview/installation-trade-route/installation-trade-route.component';
-import { HullskaterRegularityKpiComponent } from './components/kpi/hullskater-regularity-kpi/hullskater-regularity-kpi.component';
-import { OperationDocumentTemplatesComponent } from './components/operations-overview/installation-operations/operation-document-templates/operation-document-templates.component';
+import { SectionsComponent } from './components/sections/sections.component';
+import { TradeRouteComponent } from './components/trade-route/trade-route.component';
 
 const routes: Routes = [
   {
@@ -87,39 +105,19 @@ const routes: Routes = [
         path: 'operations-overview/:vesselId', component: OperationsOverviewComponent, children: [
           { path: '', component: InstallationOperationsComponent, pathMatch: 'full' },
           {
-            path: 'installation-operations/:vesselId', component: InstallationOperationsComponent            
-            // , children: [
-            //   { path: '', component: ListOperationsComponent, pathMatch: 'full' },
-            //   { path: 'list-operations/:vesselId', component: ListOperationsComponent },
-            //   { path: 'create-operation/:vesselId', component: CreateOperationComponent }
-            // ]
+            path: 'installation-operations/:vesselId', component: InstallationOperationsComponent
           },
-          {path: 'installation-document/:vesselId', component: InstallationDocumentComponent},
-          {path: 'installation-contact/:vesselId', component: InstallationContactComponent},
-          {path: 'installation-trade-route/:vesselId', component: InstallationTradeRouteComponent}
+          { path: 'installation-document/:vesselId', component: InstallationDocumentComponent },
+          { path: 'installation-contact/:vesselId', component: InstallationContactComponent },
+          { path: 'installation-trade-route/:vesselId', component: InstallationTradeRouteComponent }
         ]
       },
-
-      // { path: 'ManagePlans', component: ManagePlansComponent },
-      // { path: 'sub-operational-plan/:planid', component: SubOperationalPlanComponent },
-      // { path: 'plan/:type/:id', component: AddPlanComponent },
-      { path: 'operator', component: OperatorComponent },
-      { path: 'operation-type', component: OperationTypeComponent },
-      { path: 'vessel', component: VesselComponent },
-      { path: 'robot-system', component: RobotSystemComponent }
     ]
   }
 ];
 
 @NgModule({
   declarations: [DashboardComponent,
-    // ManagePlansComponent,
-    // AddPlanComponent,
-    OperatorComponent,
-    OperationTypeComponent,
-    VesselComponent,
-    RobotSystemComponent,
-    // SubOperationalPlanComponent,
     InstallationOverviewComponent,
     PrepareInstallationComponent,
     TradeRouteComponent,
@@ -127,33 +125,29 @@ const routes: Routes = [
     FoulingStateComponent,
     CreateDocumentsComponent,
     CreateInstallationComponent,
-    CreateSectionComponent,
-    CreateSubSectionComponent,
     ListingSectionComponent,
     ContactComponent,
     CreateContactComponent,
     ContactListingComponent,
-    UpdateFoulingStateComponent,
     ListFoulingStateComponent,
     OperationsOverviewComponent,
     InstallationOperationsComponent,
     CreateOperationComponent,
     ListOperationsComponent,
-    CreateSecondryOperationComponent,
     SecondryOperationListingComponent,
     OperatorLogComponent,
-        ManageSectionComponent,
-        ContactSearchComponent,
-        OpertionSectionComponent,
-        OpertionFoulingComponent,
-        PortMeteorologyComponent,
-        InstallationDocumentComponent,
-        OperationDocumentComponent,
-        OperationMissionsComponent,
-        InstallationContactComponent,
-        InstallationTradeRouteComponent,
-        HullskaterRegularityKpiComponent,
-        OperationDocumentTemplatesComponent],
+    ManageSectionComponent,
+    ContactSearchComponent,
+    OpertionSectionComponent,
+    OpertionFoulingComponent,
+    PortMeteorologyComponent,
+    InstallationDocumentComponent,
+    OperationDocumentComponent,
+    OperationMissionsComponent,
+    InstallationContactComponent,
+    InstallationTradeRouteComponent,
+    HullskaterRegularityKpiComponent,
+    OperationDocumentTemplatesComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

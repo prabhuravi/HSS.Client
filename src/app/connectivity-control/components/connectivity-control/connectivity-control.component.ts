@@ -25,6 +25,7 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
   isDataLoading: boolean = true;
   isActionLogDataLoading: boolean = true;
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  appConstants = AppConstants;
   currentUTC: Date;
   dateTimeInterval = interval(60000);
   dateTimeIntervalSubscription: Subscription;

@@ -22,28 +22,6 @@ export class DashboardComponent implements OnInit {
       route: '/operational-plan/HullSkater'
     }
   ];
-  operationalPlanSubRouteList: IRouteList[] = [
-    {
-      label: 'Add Plan',
-      route: '/operational-plan/plan/add/0'
-    },
-    {
-      label: 'Add Operator',
-      route: '/operational-plan/operator'
-    },
-    {
-      label: 'Add Operation Type',
-      route: '/operational-plan/operation-type'
-    },
-    {
-      label: 'Add Vessel',
-      route: '/operational-plan/vessel'
-    },
-    {
-      label: 'Add Hull Skater',
-      route: '/operational-plan/robot-system'
-    }
-  ];
 
   constructor(
     private router: Router

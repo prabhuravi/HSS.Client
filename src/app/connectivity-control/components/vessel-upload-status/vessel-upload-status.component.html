@@ -162,15 +162,15 @@
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'FileUploadedDate'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
-                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
+                                    {{rowData[col.field] | date: appConstants.dateFormatWithTime}}</div>
                             </div>
                             <div *ngSwitchCase="'FileCreatedDate'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
-                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
+                                    {{rowData[col.field] | date: appConstants.dateFormatWithTime}}</div>
                             </div>
                             <div *ngSwitchCase="'FileModifiedDate'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
-                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
+                                    {{rowData[col.field] | date: appConstants.dateFormatWithTime}}</div>
                             </div>
                             <div *ngSwitchCase="'Mission'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">{{rowData[col.field]}}

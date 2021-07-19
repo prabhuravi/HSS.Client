@@ -1,13 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TabView } from 'primeng/tabview';
-import { Operation, SecondaryOperation } from 'src/app/models/Operation';
+import { Operation } from 'src/app/models/Operation';
 import { CreateOperationComponent } from './create-operation/create-operation.component';
 import { OperationDocumentComponent } from './operation-document/operation-document.component';
 import { OperationMissionsComponent } from './operation-missions/operation-missions.component';
 import { OpertionFoulingComponent } from './opertion-fouling/opertion-fouling.component';
 import { OpertionSectionComponent } from './opertion-section/opertion-section.component';
-import { SecondryOperationListingComponent } from './secondry-operation-listing/secondry-operation-listing.component';
 
 @Component({
   selector: 'app-installation-operations',
@@ -23,33 +22,17 @@ export class InstallationOperationsComponent implements OnInit {
   @ViewChild(OpertionSectionComponent, { static: false }) operationSectionComponent: OpertionSectionComponent;
   @ViewChild(OpertionFoulingComponent, { static: false }) operationFoulingComponent: OpertionFoulingComponent;
   @ViewChild(OperationDocumentComponent, { static: false }) OperationDocumentComponent: OperationDocumentComponent;
-    @ViewChild(OperationMissionsComponent, { static: false }) OperationMissionComponent: OperationMissionsComponent;
-    @ViewChild('tabViewElement', { static: false }) tabViewElement: TabView;
+  @ViewChild(OperationMissionsComponent, { static: false }) OperationMissionComponent: OperationMissionsComponent;
+  @ViewChild('tabViewElement', { static: false }) tabViewElement: TabView;
 
   operationsRoutes: IRouteList[] = [];
-  operationalPlanMainRouteList: IRouteList[] = [
-    {
-      label: 'Installation',
-      route: '/operational-plan'
-    },
-    {
-      label: 'Hull Skater',
-      route: '/operational-plan/HullSkater'
-    },
-    {
-      label: 'Admin',
-      route: '/operational-plan/HullSkater'
-    }
-  ];
-
+  
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
-    console.log(this.vesselId);
-
-    this.operationsRoutes = [ {
+    this.operationsRoutes = [{
       label: 'Operation',
       route: '/operational-plan/operations/' + this.vesselId
     },
@@ -69,7 +52,6 @@ export class InstallationOperationsComponent implements OnInit {
   }
 
   showCreateOperation(data: boolean): void {
-    console.log(this.viewCreateOperation);
     this.viewCreateOperation = data;
     this.isDataLoading = true;
     setTimeout(async () => {
@@ -84,9 +66,6 @@ export class InstallationOperationsComponent implements OnInit {
     this.viewCreateOperation = true;
     this.isDataLoading = true;
     this.index = 1;
-    // this.tabViewElement.tabs[1].selected = true;
-    // this.tabViewElement.tabs[0].selected = false;
-    // this.tabViewElement.tabs[2].selected = false;
     setTimeout(async () => {
       while (!this.createOperationComponentRef.isFormDataReady) {
         await new Promise((r) => setTimeout(r, 100));
@@ -96,34 +75,33 @@ export class InstallationOperationsComponent implements OnInit {
     }, 300);
   }
 
-  Sleep(ms  ) {
+  Sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   onActivate(componentReference) {
   }
+
   handleChange(e) {
-    console.log(e);
     if (this.createOperationComponentRef.isFormDirty || this.createOperationComponentRef.secondaryListingComponent.isFormDirty) {
       this.createOperationComponentRef.isFormDirty = false;
       this.createOperationComponentRef.secondaryListingComponent.isFormDirty = false;
       this.createOperationComponentRef.onSubmit();
-
-   }
+    }
     if (e.index === 0) {
-    this.createOperationComponentRef.setSectionForOperation();
-    this.createOperationComponentRef.SetSecondaryOperations();
-  }
+      this.createOperationComponentRef.setSectionForOperation();
+      this.createOperationComponentRef.SetSecondaryOperations();
+    }
     if (e.index === 3) {
-    this.OperationDocumentComponent.getOperationDocuments(this.createOperationComponentRef.operationToEdit);
-  }
+      this.OperationDocumentComponent.getOperationDocuments(this.createOperationComponentRef.operationToEdit);
+    }
     if (e.index === 4) {
-    this.OperationDocumentComponent.getOperationDocuments(this.createOperationComponentRef.operationToEdit);
+      this.OperationDocumentComponent.getOperationDocuments(this.createOperationComponentRef.operationToEdit);
+    }
   }
-}
-updateTabs(operation: any) {
-  this.operationSectionComponent.onOperationSectionLoad(operation);
-  this.operationFoulingComponent.onOperationSectionLoad(operation);
-}
+  updateTabs(operation: any) {
+    this.operationSectionComponent.onOperationSectionLoad(operation);
+    this.operationFoulingComponent.onOperationSectionLoad(operation);
+  }
 
 }

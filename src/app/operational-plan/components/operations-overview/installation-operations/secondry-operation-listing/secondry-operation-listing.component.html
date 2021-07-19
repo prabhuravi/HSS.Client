@@ -17,7 +17,6 @@
                         <button (click)="deleteSecondary(pointIndex)" style="color: white; height: 37px" class="u--bgDanger kx-btn kx-btn--size-base">
                             <span class="kx-btn__inner">
                                 <span class="kx-btn__txt">Delete Secondary</span>
-                                
                             </span>
                         </button>
                     </div>
@@ -35,13 +34,6 @@
                         <th>Sections</th>
                         <th colspan="90%">Subsections</th>
                         <tr *ngFor="let row of selectedVesselSection; let i=index;" style="margin-top: 16px">
-
-                            <!-- <button *ngIf="!row.selected && isBookedSection(row)" [disabled]="true"
-                                class="u--bgDanger kx-btn kx-btn--size-base section" style="color: white;">
-                                <span class="kx-btn__inner">
-                                    <span class="kx-btn__txt">{{row.name}}</span>
-                                </span>
-                            </button> -->
                             <button *ngIf="!row.selected"
                                 class="kx-btn kx-btn--skin-secondary kx-btn--size-base section"
                                 (click)="onSectionSelected(row)">
@@ -57,12 +49,6 @@
                                 </span>
                             </button>
                             <td *ngFor="let col of row.subSections; let j=index">
-                                <!-- <button *ngIf="!col.selected && isBookedSubsection(col)" [disabled]="true"
-                                    class="u--bgDanger kx-btn kx-btn--size-base  subsection" style="color: white;">
-                                    <span class="kx-btn__inner">
-                                        <span class="kx-btn__txt">{{col.subSectionNumber}}</span>
-                                    </span>
-                                </button> -->
                                 <button *ngIf="!col.selected"
                                     class="kx-btn kx-btn--skin-secondary kx-btn--size-base  subsection"
                                     (click)="onSubSectionSelected(row, col)">

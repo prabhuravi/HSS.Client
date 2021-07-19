@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
-import { Table } from 'primeng/components/table/table';
-import { take } from 'rxjs/operators';
 import { EntitlementsQueryService } from '@kognifai/poseidon-ng-entitlements-query-service';
+import { take } from 'rxjs/operators';
 import { AppConstants, HSSRoleEnum } from 'src/app/app.constants';
 import { Installation, InstallationStatus } from 'src/app/models/Installation';
-import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { InstallationService } from 'src/app/services/installation.service';
 
 @Component({
@@ -18,6 +15,7 @@ export class InstallationOverviewComponent implements OnInit {
 
   installationList: Installation[] = [];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  appConstants = AppConstants;
   installationStatus: InstallationStatus[] = [];
   foulingStatus = [];
   currentInstallation: Installation;
@@ -31,18 +29,14 @@ export class InstallationOverviewComponent implements OnInit {
   accessPrepareInstallation = false;
   constructor(private installationService: InstallationService,
     private router: Router,
-    private entitlementsQueryService: EntitlementsQueryService,
-    private confirmationService: ConfirmationService,
-    private formBuliderService: FromBuilderService) { }
+    private entitlementsQueryService: EntitlementsQueryService) { }
 
   ngOnInit() {
     this.isDataLoading = true;
     this.installationService.getInstallationOverviewData().pipe(take(1)).subscribe(async (data) => {
-      console.log(data);
       this.installationList = data[0];
       this.installationStatus = data[1];
       this.foulingStatus = data[2];
-      console.log(this.installationList);
 
       this.cols = [{ field: 'displayName', header: 'Name', sortfield: 'displayName', filterMatchMode: 'contains' },
       { field: 'foulingState.State', header: 'Fouling State', sortfield: 'foulingState.State', filterMatchMode: 'contains', options: this.foulingStatus, optionLabel: 'State' },
@@ -59,7 +53,6 @@ export class InstallationOverviewComponent implements OnInit {
     });
 
     this.entitlementsQueryService.getCurrentUserEntitlements().then((entitlements: any[]) => {
-      console.log(entitlements);
       if (entitlements.findIndex(x => x.name == HSSRoleEnum.OperatorManager) != -1) {
         this.accessPrepareInstallation = true;
       }
@@ -79,7 +72,6 @@ export class InstallationOverviewComponent implements OnInit {
 
   redirectToOperationsOverview(e: any, installation: Installation): void {
     e.preventDefault();
-    console.log(installation);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate(['/operational-plan/operations-overview/' + installation.id])
     );

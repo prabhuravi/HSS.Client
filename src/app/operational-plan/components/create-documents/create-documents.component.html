@@ -15,8 +15,7 @@
                     <label class="kx-label">Document Type</label><small class="u--textDanger">*</small>
                     <div class="kx-mt--tiny">
                         <p-dropdown styleClass="kx-p--tiny" [options]="documentTypes" [formControlName]="'documentType'"
-                            optionLabel="TypeName" filter="true"
-                            placeholder="Select document type"></p-dropdown>
+                            optionLabel="TypeName" filter="true" placeholder="Select document type"></p-dropdown>
                     </div>
                 </div>
 
@@ -132,7 +131,7 @@
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'Date'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
-                                    {{rowData[col.field] | date:'MM/dd/yyyy'}}</div>
+                                    {{rowData[col.field] | date: appConstants.dateFormatWithTime}}</div>
                             </div>
                             <div *ngSwitchCase="'Id'">
                                 <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
@@ -220,13 +219,16 @@
                             <tr>
                                 <th *ngFor="let col of columns" [ngSwitch]="col.field">
                                     <input *ngSwitchCase="'DocumentName'" pInputText type="text"
-                                        class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
+                                        class="kx-field kx-field--size-base u--field--size-small"
+                                        placeholder="Type to filter"
                                         (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                                     <input *ngSwitchCase="'DocumentTypeName'" pInputText type="text"
-                                        class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
+                                        class="kx-field kx-field--size-base u--field--size-small"
+                                        placeholder="Type to filter"
                                         (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                                     <input *ngSwitchCase="'FileName'" pInputText type="text"
-                                        class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
+                                        class="kx-field kx-field--size-base u--field--size-small"
+                                        placeholder="Type to filter"
                                         (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
                                 </th>
                             </tr>
@@ -236,8 +238,8 @@
                                 <td *ngFor="let col of columns">
                                     <div [ngSwitch]="col.field">
                                         <div *ngSwitchCase="'Id'" style="text-align: center;">
-                                                <input type="radio" name="selectDocument" value="rowData.VesselId"
-                                                    (change)="selectDocument(rowData)" />
+                                            <input type="radio" name="selectDocument" value="rowData.VesselId"
+                                                (change)="selectDocument(rowData)" />
                                         </div>
                                         <div *ngSwitchDefault>{{rowData[col.field]}}</div>
                                     </div>

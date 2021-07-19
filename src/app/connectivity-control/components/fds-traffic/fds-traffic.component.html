@@ -31,7 +31,6 @@
                             [dateFormat]="PRIMENG_CONSTANTS.datepickerFormat" [formControlName]="'ToDate'"
                             readonlyInput="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050"
                             selectOtherMonths="true" [minDate]="form.value['FromDate']">
-                            <!-- (onSelect)="form.controls.FromDate.setValue(form.controls.ToDate.value)"> -->
                         </p-calendar>
                     </div>
                 </div>
@@ -106,10 +105,6 @@
                             class="kx-field kx-field--size-base u--field--size-small" placeholder="File Type"
                             style="width: 115px;margin-right:5px;"
                             (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                        <!-- <input *ngSwitchCase="'UploadStatus'" pInputText type="text"
-                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Status"
-                            style="width: 115px;margin-right:5px;"
-                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)"> -->
                     </th>
                 </tr>
             </ng-template>
@@ -117,18 +112,10 @@
                 <tr>
                     <td *ngFor="let col of columns" class="kx-p--base u--fontXSmall">
                         <div [ngSwitch]="col.field">
-                            <!-- <div *ngSwitchCase="'FileUploadedDate'">
-                                <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
-                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
-                            </div> -->
                             <div *ngSwitchCase="'Date'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
-                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
+                                    {{rowData[col.field] | date: appConstants.dateFormatWithTime}}</div>
                             </div>
-                            <!-- <div *ngSwitchCase="'FileModifiedDate'">
-                                <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">
-                                    {{rowData[col.field] | date:'dd/MM/yyyy HH:mm'}}</div>
-                            </div> -->
                             <div *ngSwitchCase="'Mission'">
                                 <div class="u--withEllipsis" [pTooltip]="rowData[col.field]">{{rowData[col.field]}}
                                 </div>

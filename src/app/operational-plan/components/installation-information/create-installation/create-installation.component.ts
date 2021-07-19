@@ -1,11 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { FormType } from 'src/app/app.constants';
 import { Installation, InstallationStatus, InstallationType, VesselType } from 'src/app/models/Installation';
-import { InstallationAdapter, NodeAdapter } from 'src/app/models/modelAdapter';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { InstallationService } from 'src/app/services/installation.service';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
@@ -32,7 +31,6 @@ export class CreateInstallationComponent implements OnInit {
   vesselTypes: VesselType[] = [];
   installationTypes: InstallationType[] = [];
   installationStatus: InstallationStatus[] = [];
-  // foulingStates: IFoulingState[] = [];
 
   constructor(private installationService: InstallationService,
     private router: Router,
@@ -40,19 +38,15 @@ export class CreateInstallationComponent implements OnInit {
     private formBuliderService: FromBuilderService,
     private prepareInstallationService: PrepareInstallationService,
     private route: ActivatedRoute,
-    private installationAdapter: InstallationAdapter,
-    private nodeAdapter: NodeAdapter,
     public fb: FormBuilder, public messageService: MessageService) { }
 
   ngOnInit() {
     this.isDataLoading = true;
     this.installationService.getInstallationFormData().pipe(take(1)).subscribe(async (data) => {
       this.installationList = data[0];
-      console.log(this.installationList);
       this.vesselTypes = data[1];
       this.installationStatus = data[2];
       this.installationTypes = data[3];
-      // this.foulingStates = data[3];
       this.constructForm();
       this.formData = this.formBuliderService.buildForm(this.config);
       this.prepareInstallationService.setInstallationFromRoute(this.route);
@@ -157,29 +151,23 @@ export class CreateInstallationComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to perform this action?',
       accept: () => {
-        console.log(formData);
       }
     });
   }
 
   formOnchangeEvent(changedItem: any): void {
     const key = changedItem.formItem.key;
-    console.log(key);
     switch (key) {
       case 'Installation': {
         this.onInstallationdropDownChanged(changedItem.formValue);
         break;
       }
-
       default: {
-        console.log('form Item not found');
         break;
       }
     }
   }
   onInstallationdropDownChanged(installation: Installation) {
-    console.log(installation);
-    // console.log(this.config.formList);
     this.setFormValue(installation);
     this.prepareInstallationService.updateInstallationDetail(installation);
 
@@ -188,8 +176,6 @@ export class CreateInstallationComponent implements OnInit {
   private setFormValue(installation: Installation) {
     this.onFormReset();
     if (installation) {
-      console.log(installation);
-
       if (installation.vesselType) {
         this.formData.controls.VesselType.setValue(installation.vesselType);
       }
@@ -240,13 +226,9 @@ export class CreateInstallationComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // this.nextActiveTab.emit(1);
-    console.log(this.formData);
     if (this.formData.valid) {
-
       const formValues = this.formData.getRawValue();
       const installationIformation: Installation = formValues.Installation;
-      // installationIformation.foulingState = formValues.FoulingState;
       if (formValues.VesselType) {
         installationIformation.vesselType = formValues.VesselType;
         installationIformation.vesselTypeId = formValues.VesselType.id;
@@ -260,7 +242,6 @@ export class CreateInstallationComponent implements OnInit {
       }
 
       installationIformation.imoNo = formValues.ImoNo;
-      // installationIformation.foulingId = formValues.FoulingState.Id;
       if (!formValues.imoNo) {
         installationIformation.imoNo = 0;
       }
@@ -277,9 +258,7 @@ export class CreateInstallationComponent implements OnInit {
           this.isDataLoading = false;
           this.router.navigateByUrl('/operational-plan/prepare-installation/trade-route/' + installationIformation.id);
         }
-
       });
-
     }
   }
 

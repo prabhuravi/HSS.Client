@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
-import { FromBuilderService } from 'src/app/services/from-builder-service';
-import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contact',
@@ -13,13 +10,11 @@ import { PrepareInstallationService } from 'src/app/services/prepare-installatio
 export class ContactComponent implements OnInit {
 
   constructor(public fb: FormBuilder,
-              private router: Router,
-              private route: ActivatedRoute,
-              private prepareInstallationService: PrepareInstallationService) { }
+              private router: Router) { }
 
   ngOnInit() {
-    
   }
+  
   next(): void {
     this.router.navigateByUrl('/operational-plan');
   }
