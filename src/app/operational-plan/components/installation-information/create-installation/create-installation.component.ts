@@ -16,6 +16,7 @@ import { PrepareInstallationService } from 'src/app/services/prepare-installatio
 })
 export class CreateInstallationComponent implements OnInit {
 
+  vesselId: number = 0;
   isDataLoading = true;
   PrepareInstallation: boolean = false;
   formValues: any = null;
@@ -27,6 +28,7 @@ export class CreateInstallationComponent implements OnInit {
     className: 'kx-col kx-col--12 kx-col--12@mob-m kx-col--6@tab-m kx-col--4@ltp-s'
   };
   installationList: Installation[] = [];
+  node: Node;
   robotsystemList: IRobotSystemDetails[] = [];
   vesselTypes: VesselType[] = [];
   installationTypes: InstallationType[] = [];
@@ -51,18 +53,22 @@ export class CreateInstallationComponent implements OnInit {
       this.formData = this.formBuliderService.buildForm(this.config);
       this.prepareInstallationService.setInstallationFromRoute(this.route);
       if (this.route !== undefined && this.route !== null) {
-        let vesselId = 0;
         const params = this.route.snapshot.paramMap.get('vesselId');
-        vesselId = parseInt(params, null);
-        if (vesselId > 0) {
-          this.prepareInstallationService.getInstallationById(vesselId);
+        this.vesselId = parseInt(params, null);
+        if (this.vesselId > 0) {
+          this.prepareInstallationService.getInstallationById(this.vesselId);
+          this.prepareInstallationService.installationDetail.subscribe((x) => {
+            if (x) {
+              this.isDataLoading = true;
+              this.installationService.getNodeByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
+                const node = (data && data.Node) ? data.Node : null;
+                this.setFormValue(x, node);
+                this.isDataLoading = false;
+              });
+            }
+          });
         }
       }
-      this.prepareInstallationService.installationDetail.subscribe((x) => {
-        if (x) {
-          this.setFormValue(x);
-        }
-      });
       this.isDataLoading = false;
     });
   }
@@ -84,17 +90,17 @@ export class CreateInstallationComponent implements OnInit {
         label: 'IMO Number',
         value: '',
         key: 'ImoNo',
-        placeHolder: 'IMO Number',
-        disabled: false
+        placeHolder: 'Optional, auto populated from CRM',
+        disabled: true
       },
       {
         type: FormType.text,
         label: 'Installation Id',
         value: '',
         key: 'InstallationId',
-        validators: [Validators.required],
-        placeHolder: 'Installation Id',
-        disabled: false
+        // validators: [Validators.required],
+        placeHolder: 'Optional, auto populated from CRM',
+        disabled: true
       },
       {
         type: FormType.dropdown,
@@ -103,7 +109,7 @@ export class CreateInstallationComponent implements OnInit {
         value: '',
         key: 'VesselType',
         optionLabel: 'name',
-        placeHolder: 'Installation Type',
+        placeHolder: 'Optional',
         disabled: false
       },
       {
@@ -113,7 +119,7 @@ export class CreateInstallationComponent implements OnInit {
         value: '',
         key: 'InstallationType',
         optionLabel: 'name',
-        placeHolder: 'Installation Type General',
+        placeHolder: 'Optional',
         disabled: false
       },
       {
@@ -131,18 +137,18 @@ export class CreateInstallationComponent implements OnInit {
         label: 'Node Number',
         value: '',
         key: 'NodeNumber',
-        validators: [Validators.required],
-        placeHolder: 'Node Number',
-        disabled: false
+        // validators: [Validators.required],
+        placeHolder: 'Optional, auto populated from SSP',
+        disabled: true
       },
       {
         type: FormType.text,
         label: 'IP Address',
         value: '',
         key: 'robotIP',
-        validators: [Validators.required],
-        placeHolder: 'IP Address',
-        disabled: false
+        // validators: [Validators.required],
+        placeHolder: 'Optional, auto populated from SSP',
+        disabled: true
       }
     ];
   }
@@ -167,13 +173,17 @@ export class CreateInstallationComponent implements OnInit {
       }
     }
   }
-  onInstallationdropDownChanged(installation: Installation) {
-    this.setFormValue(installation);
-    this.prepareInstallationService.updateInstallationDetail(installation);
 
+  onInstallationdropDownChanged(installation: Installation) {
+    this.installationService.getNodeByVesselId(installation.id).pipe(take(1)).subscribe((data) => {
+      const node = (data && data.Node) ? data.Node : null;
+      console.log(node);
+      this.setFormValue(installation, node);
+    });
+    this.prepareInstallationService.updateInstallationDetail(installation);
   }
 
-  private setFormValue(installation: Installation) {
+  private setFormValue(installation: Installation, node) {
     this.onFormReset();
     if (installation) {
       if (installation.vesselType) {
@@ -186,11 +196,10 @@ export class CreateInstallationComponent implements OnInit {
 
       if (installation.imoNo > 0) {
         this.formData.controls.ImoNo.setValue(installation.imoNo);
-        this.formData.controls.ImoNo.disable();
       }
-      if (installation.node && installation.node.installationId !== '') {
-        this.formData.controls.InstallationId.setValue(installation.node.installationId);
-        this.formData.controls.InstallationId.disable();
+
+      if (installation.installationId) {
+        this.formData.controls.InstallationId.setValue(installation.installationId);
       }
 
       if (installation.installationStatus) {
@@ -199,30 +208,22 @@ export class CreateInstallationComponent implements OnInit {
         this.formData.controls.InstallationStatus.setValue(this.installationStatus[0]);
       }
 
-      if (installation.node && installation.node.nodeNumber > 0) {
-        this.formData.controls.NodeNumber.setValue(installation.node.nodeNumber);
-        this.formData.controls.NodeNumber.disable();
+      if (node && node.NodeNumber) {
+        this.formData.controls.NodeNumber.setValue(node.NodeNumber);
       }
 
-      if (installation.node && installation.node.robotIP !== '') {
-        this.formData.controls.robotIP.setValue(installation.node.robotIP);
-        this.formData.controls.robotIP.disable();
+      if (node && node.RobotIP) {
+        this.formData.controls.robotIP.setValue(node.RobotIP);
       }
+
       const selectedInstallation = this.installationList.find((x) => x.id === installation.id);
       this.formData.controls.Installation.setValue(selectedInstallation);
-
     }
-
   }
 
   onFormReset(): void {
     this.formData.reset();
     this.formData.controls.InstallationStatus.setValue(this.installationStatus);
-    this.formData.controls.ImoNo.enable();
-    this.formData.controls.InstallationId.enable();
-    this.formData.controls.NodeNumber.enable();
-    this.formData.controls.robotIP.enable();
-
   }
 
   onSubmit(): void {
@@ -242,12 +243,10 @@ export class CreateInstallationComponent implements OnInit {
       }
 
       installationIformation.imoNo = formValues.ImoNo;
-      if (!formValues.imoNo) {
+      if (!formValues.ImoNo) {
         installationIformation.imoNo = 0;
       }
-      installationIformation.node.nodeNumber = formValues.NodeNumber;
-      installationIformation.node.robotIP = formValues.robotIP;
-      installationIformation.node.installationId = formValues.InstallationId;
+      installationIformation.installationId = formValues.InstallationId;
       installationIformation.installationStatus = formValues.InstallationStatus;
       installationIformation.installationStatusId = formValues.InstallationStatus.id;
       this.isDataLoading = true;

@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {DialogModule} from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
 import { take } from 'rxjs/operators';
-import { AISData } from 'src/app/models/AISData';
-import { Installation, InstallationAISData, VesselType } from 'src/app/models/Installation';
-import { Node } from 'src/app/models/Node';
+import { Installation} from 'src/app/models/Installation';
 import { InstallationService } from 'src/app/services/installation.service';
-import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 import { ConnectivityControlService } from 'src/app/services/connectivity-control.service';
 import { AppConstants } from 'src/app/app.constants';
 
@@ -22,15 +17,15 @@ export class OperationsOverviewComponent implements OnInit {
   vesselId: number = 0;
   isDataLoading: boolean;
   operationsOverviewSteps: IRouteList[] = [];
-  installationsDetail: Installation[] = [];
-  selectedInstallation: Installation;
+  installationsDetail: IVessel[] = [];
+  selectedInstallation: IVessel;
   installationOverview: Installation;
   appConstants = AppConstants;
   showAISCard: boolean = false;
   showWhitelist: boolean = false;
   whiteListedCountries: IWhiteListedCountries[] = [];
 
-  constructor(private installationService: InstallationService, private prepareInstallationService: PrepareInstallationService, private router: Router, private route: ActivatedRoute,
+  constructor(private installationService: InstallationService, private router: Router, private route: ActivatedRoute,
     public connectivityControlService: ConnectivityControlService) { }
 
   ngOnInit() {
@@ -38,35 +33,30 @@ export class OperationsOverviewComponent implements OnInit {
     this.vesselId = parseInt(params, null);
     this.setInstallationSteps();
     this.isDataLoading = true;
-    this.installationService.getinstallations().pipe(take(1)).subscribe(async (data) => {
+    this.installationService.getPreparedInstallations().pipe(take(1)).subscribe((data) => {
       this.installationsDetail = data;
-      this.selectedInstallation = this.installationsDetail.find(p => p.id == this.vesselId);
+      this.selectedInstallation = this.installationsDetail.find(p => p.Id == this.vesselId);
       this.isDataLoading = false;
     });
-
     this.getInstallationOverview(this.vesselId);
   }
 
-  installationChanged()
-  {
-    this.getInstallationOverview(this.selectedInstallation.id);
+  installationChanged() {
+    this.getInstallationOverview(this.selectedInstallation.Id);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-    this.router.navigate(['/operational-plan/operations-overview/' + this.selectedInstallation.id]));
+      this.router.navigate(['/operational-plan/operations-overview/' + this.selectedInstallation.Id]));
   }
 
-  viewAISCard(e: any)
-  {
+  viewAISCard(e: any) {
     e.preventDefault();
-    this. toggleShowAISCard();
+    this.toggleShowAISCard();
   }
 
-  toggleShowAISCard()
-  {
+  toggleShowAISCard() {
     this.showAISCard = !this.showAISCard;
   }
 
-  getInstallationOverview(vesselId: number)
-  {
+  getInstallationOverview(vesselId: number) {
     this.isDataLoading = true;
     this.installationService.getInstallationOverview(vesselId).pipe(take(1)).subscribe(async (data) => {
       this.installationOverview = data;
@@ -87,19 +77,19 @@ export class OperationsOverviewComponent implements OnInit {
     this.operationsOverviewSteps = [
       {
         label: 'Operations',
-        route: '/operational-plan/operations-overview/'+ this.vesselId+'/installation-operations/' + this.vesselId
+        route: '/operational-plan/operations-overview/' + this.vesselId + '/installation-operations/' + this.vesselId
       },
       {
         label: 'Document',
-        route: '/operational-plan/operations-overview/' +  this.vesselId + '/installation-document/' + this.vesselId
+        route: '/operational-plan/operations-overview/' + this.vesselId + '/installation-document/' + this.vesselId
       },
       {
         label: 'Contact',
-        route: '/operational-plan/operations-overview/' +  this.vesselId + '/installation-contact/' + this.vesselId
+        route: '/operational-plan/operations-overview/' + this.vesselId + '/installation-contact/' + this.vesselId
       },
       {
         label: 'Trade Route',
-        route: '/operational-plan/operations-overview/' +  this.vesselId + '/installation-trade-route/' + this.vesselId
+        route: '/operational-plan/operations-overview/' + this.vesselId + '/installation-trade-route/' + this.vesselId
       }
     ];
   }

@@ -5,7 +5,7 @@
             <div class="kx-col kx-col--4 kx-col--2@tab-m kx-col--6@mob-m">
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [(ngModel)]="selectedInstallation"
-                        [options]="installationsDetail" optionLabel="displayName" filter="true"
+                        [options]="installationsDetail" optionLabel="DisplayName" filter="true"
                         (onChange)="installationChanged()" placeholder="Select installation">
                     </p-dropdown>
                 </div>
@@ -176,16 +176,6 @@
         </div>
     </div>
 </app-modal>
-
-<!-- <p-dialog header="Header" [(visible)]="showWhitelist" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-    [draggable]="false" [resizable]="false">
-    <p class="p-m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="showWhitelist=false" label="Ok" styleClass="p-button-text"></p-button>
-        </ng-template>
-</p-dialog> -->
 
 <app-modal [displayMe]="showWhitelist">
     <div class="modal-header">
