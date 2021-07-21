@@ -55,19 +55,17 @@ export class CreateInstallationComponent implements OnInit {
       if (this.route !== undefined && this.route !== null) {
         const params = this.route.snapshot.paramMap.get('vesselId');
         this.vesselId = parseInt(params, null);
-        if (this.vesselId > 0) {
-          this.prepareInstallationService.getInstallationById(this.vesselId);
-          this.prepareInstallationService.installationDetail.subscribe((x) => {
-            if (x) {
-              this.isDataLoading = true;
-              this.installationService.getNodeByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
-                const node = (data && data.Node) ? data.Node : null;
-                this.setFormValue(x, node);
-                this.isDataLoading = false;
-              });
-            }
-          });
-        }
+        this.prepareInstallationService.getInstallationById(this.vesselId);
+        this.prepareInstallationService.installationDetail.subscribe((x) => {
+          if (x) {
+            this.isDataLoading = true;
+            this.installationService.getNodeByVesselId(x.id).pipe(take(1)).subscribe((data) => {
+              const node = (data && data.Node) ? data.Node : null;
+              this.setFormValue(x, node);
+              this.isDataLoading = false;
+            });
+          }
+        });
       }
       this.isDataLoading = false;
     });
@@ -143,7 +141,7 @@ export class CreateInstallationComponent implements OnInit {
       },
       {
         type: FormType.text,
-        label: 'IP Address',
+        label: 'Skater IP',
         value: '',
         key: 'robotIP',
         // validators: [Validators.required],
@@ -175,11 +173,6 @@ export class CreateInstallationComponent implements OnInit {
   }
 
   onInstallationdropDownChanged(installation: Installation) {
-    this.installationService.getNodeByVesselId(installation.id).pipe(take(1)).subscribe((data) => {
-      const node = (data && data.Node) ? data.Node : null;
-      console.log(node);
-      this.setFormValue(installation, node);
-    });
     this.prepareInstallationService.updateInstallationDetail(installation);
   }
 
