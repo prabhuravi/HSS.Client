@@ -24,6 +24,7 @@ export class ConnectivityMonitoringComponent implements OnInit {
     { field: 'CactiLink', header: 'Cacti', sortfield: '' }
   ];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  appConstants = AppConstants;
   showLoader = true;
   constructor(
     public connectivityMonitoringService: ConnectivityMonitoringService,

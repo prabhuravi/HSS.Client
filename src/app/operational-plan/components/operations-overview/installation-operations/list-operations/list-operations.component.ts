@@ -1,12 +1,11 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { take, timeout } from 'rxjs/operators';
-import { OperationStatusEnum } from 'src/app/app.constants';
+import { take } from 'rxjs/operators';
+import { AppConstants, OperationStatusEnum } from 'src/app/app.constants';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
+import { InstallationService } from 'src/app/services/installation.service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
-import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-list-operations',
@@ -17,6 +16,7 @@ export class ListOperationsComponent implements OnInit {
 
   vesselId: number = 0;
   isDataLoading = false;
+  appConstants = AppConstants;
   @Output() showCreateOperation = new EventEmitter<boolean>();
   @Output() operationEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() createOperation: EventEmitter<any> = new EventEmitter<any>();
@@ -37,55 +37,19 @@ export class ListOperationsComponent implements OnInit {
   ];
 
   constructor(private operationalPlanService: OperationalPlanService, private confirmationService: ConfirmationService, private route: ActivatedRoute,
-    private messageService: MessageService) { }
+    private installationService: InstallationService, private messageService: MessageService) { }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
     this.vesselId = parseInt(params, null);
-    console.log('list op VesselId: ' + this.vesselId);
     this.loadOperations();
-
-    // this.route.params.subscribe(params => {
-    //   this.vesselId = params['vesselId'];
-    //   console.log(this.vesselId);
-    //   this.loadOperations();
-    // });
-
-  }
-
-  downloadOperatorLogs(missionId) {
-    this.isDataLoading = true;
-    this.operationalPlanService.downloadMissionLog(missionId).pipe(take(1)).subscribe((response) => {
-      let blob: any = new Blob([response], { type: 'text/csv; charset=utf-8' });
-      fileSaver.saveAs(blob, 'Test.csv');
-      this.isDataLoading = false;
-    },
-      err => {
-        this.isDataLoading = false;
-        console.log(err.message);
-        if (err.status == 404) {
-          this.triggerToast('error', 'Message', `No operator comments generated for the mission.`);
-        }
-        else {
-          this.confirmationService.confirm({
-            header: 'Error',
-            message: `<span class="u--bgDanger">${err.message}</span>`,
-            rejectVisible: false,
-            acceptLabel: 'Ok'
-          });
-        }
-      }
-    );
   }
 
   loadOperations() {
     this.isDataLoading = true;
     this.operationalPlanService.getOperations(this.vesselId).pipe(take(1)).subscribe((data) => {
-      console.log(data);
       this.operations = data;
-      console.log(this.operations);
       this.operations = this.operations.sort((a, b) => (a.Date < b.Date) ? 1 : -1);
-      console.log(this.operations);
       this.isDataLoading = false;
     });
   }
@@ -96,14 +60,12 @@ export class ListOperationsComponent implements OnInit {
 
   goToOperationSections(operation: Operation) {
     this.operationEdited.emit(operation);
-    console.log(operation);
   }
+
   goToSecondaryOperationSections(secOperation: SecondaryOperation) {
-    console.log(secOperation);
   }
 
   deleteOperation(operation: Operation) {
-    console.log(operation);
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the operation?',
       accept: () => {
@@ -123,7 +85,6 @@ export class ListOperationsComponent implements OnInit {
   }
 
   deleteSecondaryOperation(secondaryOperation: SecondaryOperation) {
-    console.log(secondaryOperation);
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the secondary operation?',
       accept: () => {
@@ -138,7 +99,22 @@ export class ListOperationsComponent implements OnInit {
   }
 
   goToCreateOperation() {
-    this.showCreateOperation.emit(true);
+    this.isDataLoading = true;
+    this.installationService.getNodeByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
+      const node = (data && data.Node) ? data.Node : null;
+      if (!node || (node && !node.RobotIP)) {
+        this.confirmationService.confirm({
+          message: 'No Skater IP mapped to the Installation. This is required to conduct the operation at later stage. You can still plan operations. Click Yes to proceed further.',
+          accept: () => {
+            this.showCreateOperation.emit(true);
+          }
+        });
+      }
+      else {
+        this.showCreateOperation.emit(true);
+      }
+      this.isDataLoading = false;
+    });
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

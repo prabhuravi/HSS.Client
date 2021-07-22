@@ -12,15 +12,12 @@
                     </p-autoComplete>
                 </div>
             </div>
-
             <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
                 <label class="kx-label">Order</label><small class="u--textDanger">*</small>
                 <div class="kx-mt--tiny">
                     <input class="kx-field kx-field--size-base" type="number" [(ngModel)]="portOrder" min="1"
                         max="{{maxPortOrder}}" oninput="validity.valid || (value='');" placeholder="Enter port order" />
                 </div>
-                <!-- min="1" max="{{maxPortOrder}}" -->
-                <!-- onKeyPress="if(this.value.length > 2) return false;" -->
             </div>
 
             <div class="kx-col kx-col--12 kx-col--3@tab-m kx-col--6@mob-m">
@@ -94,9 +91,6 @@
                     <td *ngFor="let col of columns">
                         <div [ngSwitch]="col.field">
                             <div *ngSwitchCase="'Id'">
-                                <!-- <input type="image" src="./assets/img/icons/sprites/icons.svg#trash" alt="Remove"
-                                    (click)="removePortFromTradeRoute(rowData)" [disabled]="disableActivity"
-                                    height="23px" width="23px" title="Delete"> -->
                                 <button *ngIf="!isOperationScreen"
                                     class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
                                     aria-label="Delete" title="Delete" (click)="removePortFromTradeRoute(rowData)">

@@ -128,6 +128,7 @@
         "endpoints": {
           "GetInstallations": "",
           "GetInstallationStatus": "/InstallationStatus",
+          "GetNodeByVesselId": "/GetNodeByVesselId",
           "GetVesselType": "/VesselType",
           "GetInstallationType": "/InstallationType",
           "GetInstallationOverview": "/Overview",
@@ -180,7 +181,6 @@
         "path": "/Vessel",
         "endpoints": {
           "GetVesselDetails": "",
-          "GetActiveVesselDetails": "/ActiveMapped",
           "AddVesselDetail": "",
           "UpdateVesselDetail": "",
           "UpsertVesselDetail": "/Upsert/MappedVessel",
@@ -267,7 +267,9 @@
         "path": "/Email",
         "endpoints": {
           "planProposalPreview": "/PlanProposalPreview",
+          "planProposalEditable": "/PlanProposalEditable",
           "portRequestPreview": "/PortRequestPreview",
+          "portRequestEditable": "/PortRequestEditable",
           "approvePortRequest": "/ApprovePortRequest",
           "approvePlanProposal": "/ApprovePlanProposal"
         }

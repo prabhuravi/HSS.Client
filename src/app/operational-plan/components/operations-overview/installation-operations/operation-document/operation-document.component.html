@@ -17,34 +17,33 @@
                 </tr>
                 <tr>
                     <th *ngFor="let col of columns">
-                   <input pInputText type="text" *ngIf="col.filterMatchMode && col.filterMatchMode !== ''"
-                       class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
-                       (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
-                       
-               </th>
-               
-             </tr>
+                        <input pInputText type="text" *ngIf="col.filterMatchMode && col.filterMatchMode !== ''"
+                            class="kx-field kx-field--size-base u--field--size-small" placeholder="Type to filter"
+                            (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
+                    </th>
+
+                </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
-                
+
                 <tr>
                     <td>{{ rowData.documentType.typeName }}</td>
                     <td>{{ rowData.file }}</td>
-                    <td>{{ rowData.createdDate | date:'MM/dd/yyyy'}}</td>
-                    <td>{{ rowData.modifiedDate | date:'MM/dd/yyyy' }}</td>
-                   <td> 
-                    <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
-                        aria-label="Download" title="Download" (click)="downloadDocument(rowData)">
-                        <span class="kx-btn__inner">
-                            <i class="kx-icon kx-icon--size-moderate">
-                                <svg focusable="true">
-                                    <use href="./assets/img/icons/sprites/icons.svg#cloud-download"></use>
-                                </svg>
-                            </i>
-                            <span class="kx-btn__txt kx-is-vishidden">Edit</span>
-                        </span>
-                    </button> 
-                </td>
+                    <td>{{ rowData.createdDate | date: appConstants.dateFormatWithoutTime}}</td>
+                    <td>{{ rowData.modifiedDate | date: appConstants.dateFormatWithoutTime}}</td>
+                    <td>
+                        <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon"
+                            aria-label="Download" title="Download" (click)="downloadDocument(rowData)">
+                            <span class="kx-btn__inner">
+                                <i class="kx-icon kx-icon--size-moderate">
+                                    <svg focusable="true">
+                                        <use href="./assets/img/icons/sprites/icons.svg#cloud-download"></use>
+                                    </svg>
+                                </i>
+                                <span class="kx-btn__txt kx-is-vishidden">Edit</span>
+                            </span>
+                        </button>
+                    </td>
                 </tr>
             </ng-template>
         </p-table>

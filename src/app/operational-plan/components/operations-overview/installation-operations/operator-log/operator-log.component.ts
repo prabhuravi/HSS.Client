@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Operation } from 'src/app/models/Operation';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import * as fileSaver from 'file-saver';
+import { AppConstants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-operator-log',
@@ -19,16 +20,15 @@ export class OperatorLogComponent implements OnInit {
   file: File;
   operatorLogs: IOperatorLog[] = [];
   operatorLogLoading = false;
+  appConstants = AppConstants;
 
   constructor(private operationalPlanService: OperationalPlanService, private messageService: MessageService) { }
 
   ngOnInit() {
-    console.log(this.operation);
     this.operatorLogLoading = true;
     this.operationalPlanService.getGetOperatorLogs(this.operation.Id).pipe(take(1)).subscribe((data) => {
       this.operatorLogLoading = false;
       this.operatorLogs = data;
-      console.log(this.operatorLogs);
     });
   }
 

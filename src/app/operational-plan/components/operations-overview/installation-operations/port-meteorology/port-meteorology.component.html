@@ -4,8 +4,8 @@
         <tbody>
             <tr style="margin-left: -12px;">
                 <td colspan="3" *ngIf="portMeteorology" style="width: 85%;">Collected at {{portMeteorology?.ModifiedDate |
-                    date:'MM/dd/yyyy HH:mm'}} for {{portMeteorology?.Date |
-                        date:'MM/dd/yyyy HH:mm'}}</td>
+                    date: appConstants.dateFormatWithTime}} for {{portMeteorology?.Date |
+                        date: appConstants.dateFormatWithTime}}</td>
                 <td colspan="3" *ngIf="!portMeteorology" style="width: 85%;">No weather update</td>
                 <td style="width: 15%;">
                     <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Manual update"

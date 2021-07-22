@@ -3,9 +3,9 @@
     <b>Vessel Fouling State:</b> &nbsp;
     {{overallFoulingState}}
 </div>
-<p-table *ngIf="sections && sections.length > 0" [columns]="cols" [value]="sections" dataKey="id" editMode="row" [paginator]="true" #tt
-    [rows]="PRIMENG_CONSTANTS.rowCount" [rowsPerPageOptions]="[5,10,20,50,100,200,500]" rowExpandMode="single"
-    tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
+<p-table *ngIf="sections && sections.length > 0" [columns]="cols" [value]="sections" dataKey="id" editMode="row"
+    [paginator]="true" #tt [rows]="PRIMENG_CONSTANTS.rowCount" [rowsPerPageOptions]="[5,10,20,50,100,200,500]"
+    rowExpandMode="single" tableStyleClass="kx-table kx-table--outer-border" autoLayout="true">
     <ng-template pTemplate="header" let-columns>
         <tr>
             <th style="width: 3rem"></th>
@@ -29,12 +29,6 @@
                     (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)">
             </th>
         </tr>
-        <!-- <tr>
-      <th style="width: 3rem"></th>
-      <th *ngFor="let col of columns">
-        {{ col.header }}
-      </th>
-    </tr> -->
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-expanded="expanded">
         <tr>
@@ -47,14 +41,15 @@
             </td>
             <td>{{ rowData.name }}</td>
             <td></td>
-            <td> {{ rowData.foulingState.State }}</td> 
-            <td> {{ rowData.modifiedDate | date:'MM/dd/yyyy HH:mm' }}</td>          
+            <td> {{ rowData.foulingState.State }}</td>
+            <td> {{ rowData.modifiedDate | date: appConstants.dateFormatWithTime}}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
         <tr>
             <td [attr.colspan]="5">
-                <div class="kx-table--outer-border" [ngStyle]="rowData.subSections.length > 0 ? {'padding-left': '37%'} : ''">
+                <div class="kx-table--outer-border"
+                    [ngStyle]="rowData.subSections.length > 0 ? {'padding-left': '37%'} : ''">
                     <app-no-data [displayme]="rowData.subSections && rowData.subSections.length === 0"></app-no-data>
                     <p-table [value]="rowData.subSections" tableStyleClass="kx-table" autoLayout="true">
                         <ng-template pTemplate="body" let-rowData>
@@ -62,22 +57,24 @@
             <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">{{ rowData.subSectionNumber }}
             </td>
             <td pEditableColumn [pEditableColumn]="rowData"
-            class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--5@ltp-s" style="margin-right: 0.8%;">
-            <p-cellEditor>
-                <ng-template pTemplate="input">
-                    <p-dropdown [options]="foulingStates" [(ngModel)]="rowData.foulingState" appendTo="body"
-                        (ngModelChange)="onFoulingStateChanged(rowData)" title="Click outside the cell to save" optionLabel="State"></p-dropdown>
-                </ng-template>
-                <ng-template pTemplate="output">
-                    <div class="wrapper-dropdown">
-                    {{ rowData.foulingState.State }}
-                </div>
-                </ng-template>
-            </p-cellEditor>
-        </td>
-           
-            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.modifiedDate | date:'MM/dd/yyyy HH:mm'}}
-            </td>            
+                class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--5@ltp-s" style="margin-right: 0.8%;">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-dropdown [options]="foulingStates" [(ngModel)]="rowData.foulingState" appendTo="body"
+                            (ngModelChange)="onFoulingStateChanged(rowData)" title="Click outside the cell to save"
+                            optionLabel="State"></p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        <div class="wrapper-dropdown">
+                            {{ rowData.foulingState.State }}
+                        </div>
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{ rowData.modifiedDate |
+                date: appConstants.dateFormatWithTime}}
+            </td>
         </tr>
     </ng-template>
 </p-table>

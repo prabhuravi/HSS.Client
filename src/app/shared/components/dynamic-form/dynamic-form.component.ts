@@ -40,12 +40,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.inputTypes = getInputTypes();
-    console.log(this.form);
-   // this.form = this.formBuliderService.buildForm(this.config);
-   // this.form = this.buildForm();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    // formvalues: obj sets default value received from parent component
     if (this.formValues !== null && this.formValues !== undefined) {
       setTimeout(() => {
         if (!this.formReset) {
@@ -56,7 +52,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
       });
     }
-    // formReset: boolean sets form values to empty state (mostly after form data postted successfully) received from parent component
     if (this.formReset && this.form) {
       this.form.reset();
       this.isFormSubmitted = false;
@@ -64,8 +59,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   }
 
   onchangeEvents(event: any, formItem: any) {
-    console.log(event);
-
     this.formOnchangeEvent.emit({ formItem, formValue: this.form.controls[formItem.key].value });
   }
 

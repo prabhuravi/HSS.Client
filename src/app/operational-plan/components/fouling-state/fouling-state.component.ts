@@ -1,8 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { timeout } from 'rxjs/operators';
-import { OperationalPlanService } from 'src/app/services/operational-plan.service';
+import { MessageService } from 'primeng/api';
 import { PrepareInstallationService } from 'src/app/services/prepare-installation.service';
 
 @Component({
@@ -14,8 +12,7 @@ export class FoulingStateComponent implements OnInit {
 
   @Output() nextActiveTab: EventEmitter<any> = new EventEmitter();
 
-  constructor(private operationalPlanService: OperationalPlanService, private router: Router,
-    private confirmationService: ConfirmationService,
+  constructor(private router: Router,
     private messageService: MessageService, private route: ActivatedRoute,
     private prepareInstallationService: PrepareInstallationService) { }
 
@@ -30,7 +27,6 @@ export class FoulingStateComponent implements OnInit {
   }
 
   next(): void {
-    // this.nextActiveTab.emit(4);
     this.router.navigateByUrl('/operational-plan/prepare-installation/create-documents/' + this.prepareInstallationService.installation.id);
   }
 

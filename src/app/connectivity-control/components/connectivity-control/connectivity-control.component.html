@@ -64,9 +64,9 @@
                             <div *ngSwitchCase="'LastAction'" class="kx-py--tiny">
                                 {{rowData['LastAction']}} at
                                 <span
-                                    *ngIf="rowData['IsUploadEnabled']">{{rowData['EnabledTime'] | date:'MM/dd/yyyy HH:mm'}}</span>
+                                    *ngIf="rowData['IsUploadEnabled']">{{rowData['EnabledTime'] | date: appConstants.dateFormatWithTime}}</span>
                                 <span
-                                    *ngIf="!rowData['IsUploadEnabled']">{{rowData['DisableRetainTime'] | date:'MM/dd/yyyy HH:mm'}}</span>
+                                    *ngIf="!rowData['IsUploadEnabled']">{{rowData['DisableRetainTime'] | date: appConstants.dateFormatWithTime}}</span>
                                 <i (click)="toggleActivityLogModal(); loadVesselActivityLog(rowData)"
                                     class="kx-icon kx-icon--size-base u--floatRight u--cursorPointer">
                                     <svg focusable="false">
@@ -120,13 +120,13 @@
                             <thead>
                                 <tr>
                                     <th>Action</th>
-                                    <th>Date Time (MM/dd/yyyy HH:mm, GMT) </th>
+                                    <th>Date Time (dd/MM/yyyy HH:mm, GMT) </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let logItem of vesselConnectivityActionLogList; let i = index;">
                                     <td>{{logItem.Action}} by {{logItem.User}}</td>
-                                    <td>{{logItem.ActionTime | date:'MM/dd/yyyy HH:mm'}}</td>
+                                    <td>{{logItem.ActionTime | date: appConstants.dateFormatWithTime}}</td>
                                 </tr>
                             </tbody>
                         </table>

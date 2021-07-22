@@ -1,14 +1,6 @@
 <div class="kx-row">
     <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
     </div>
-
-    <!-- <button aria-label="Download operator logs" title="Download operator logs" (click)="downloadOperatorLogs(2)">
-        <span class="kx-btn__inner">
-            <img src="./assets/micorsoft-csv.png" alt="Download" style="height: 25px; width: 25px;">
-            <span class="kx-btn__txt kx-is-vishidden">Download operator logs</span>
-        </span>
-    </button> -->
-
     <div class="kx-col kx-col--12 kx-col--12@mob-m kx-col--5@tab-m kx-col--2@ltp-s">
         <button class="kx-btn kx-btn--skin-primary kx-btn--size-base kx-mx--tiny kx-mt--base"
             (click)="goToCreateOperation()">
@@ -64,12 +56,12 @@
                         <p-button (click)="goToOperationSections(rowData)" class="viewsection"
                             icon="pi pi-external-link" label="View Sections"></p-button>
                     </td>
-                    <td>{{ rowData.Date | date:'MM/dd/yyyy HH:mm'}}</td>
+                    <td>{{ rowData.Date | date: appConstants.dateFormatWithTime}}</td>
                     <td style="text-align: justify;">{{ rowData.Description }}</td>
                     <td>{{ rowData.Operator ? (rowData.Operator.Name + ' ' + rowData.Operator.SurName) : ''}}</td>
                     <td>{{ (rowData.Operator && rowData.OperatorBooking)? rowData.OperatorBooking.Status : '' }}</td>
                     <td>{{ rowData.PortLocation?.PortName}}</td>
-                    <td>{{ rowData.ETB | date:'MM/dd/yyyy HH:mm'}}</td>
+                    <td>{{ rowData.ETB | date: appConstants.dateFormatWithTime}}</td>
                     <td>
                         <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit"
                             title="Edit" (click)="editOperation(rowData)">
@@ -113,10 +105,6 @@
                     <td style="width: 35%;">{{
                         rowData.OperationStatus?.Name}}
                     </td>
-                    <!-- <td>
-                        <p-button (click)="goToSecondaryOperationSections(rowData)" class="viewsection"
-                            icon="pi pi-external-link" label="View Sections"></p-button>
-                    </td> -->
                 </tr>
             </ng-template>
         </p-table>

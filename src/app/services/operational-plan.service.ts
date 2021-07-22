@@ -197,7 +197,6 @@ export class OperationalPlanService {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DeleteSecondaryOperation}/${id}`
     };
-    console.log(requestData);
     return this.http.deleteData(requestData);
   }
   getOperationSections(operationId: number): Observable<Operation> {
@@ -338,9 +337,6 @@ export class OperationalPlanService {
     const requestData = {
       endPoint: `${this.foulingStateApiUrl}${this.operationalPlanConfig.FoulingState.endpoints.GetFoulingStates}`
     };
-    console.log(requestData);
-    // return of([{ Id: 1, State: 'Good', Code: '', Category: '', CreatedBy: '' }, { Id: 2, State: 'Poor', Code: '', Category: '', CreatedBy: '' },
-    // { Id: 3, State: 'Fair', Code: '', Category: '', CreatedBy: '' }]);
     return this.http.getData(requestData);
   }
 

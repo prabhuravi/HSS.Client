@@ -97,8 +97,6 @@ export class SecondryOperationListingComponent implements OnInit {
     if (element.Id !== 0) {
       this.setEditRule(element, formGroup);
     }
-   // this.sections = element.VesselSectionModel;
-    // console.log(this.sections);
     this.secondaryconfigs.push(secondaryconfig);
     this.sections.forEach((sec) => {
       sec.subSections.forEach((sub) => {
@@ -234,7 +232,6 @@ export class SecondryOperationListingComponent implements OnInit {
   onSubSectionSelected(rowsection: VesselSection, rowsubSection: SubSection) {
     if(this.isEditOperation){
       this.isFormDirty = true;
-      console.log(this.isFormDirty);
     }
     if (rowsubSection.selected) {
       rowsubSection.selected = false;

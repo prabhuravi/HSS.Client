@@ -1,10 +1,11 @@
+<app-load *ngIf="isDataLoading"></app-load>
 <div style="margin-top: 5px;" class="kx-card kx-card--skin-default">
     <div class="kx-card__body">
         <div class="kx-row">
             <div class="kx-col kx-col--4 kx-col--2@tab-m kx-col--6@mob-m">
                 <div class="kx-mt--tiny">
                     <p-dropdown styleClass="kx-p--tiny" [(ngModel)]="selectedInstallation"
-                        [options]="installationsDetail" optionLabel="displayName" filter="true"
+                        [options]="installationsDetail" optionLabel="DisplayName" filter="true"
                         (onChange)="installationChanged()" placeholder="Select installation">
                     </p-dropdown>
                 </div>
@@ -39,12 +40,6 @@
             <div class="kx-col kx-col--4 kx-col--2@tab-m kx-col--6@mob-m kx-col--2@ltp-s" style="text-align: center;">
                 <label class="kx-label">
                     Destination
-                    <!-- <div class="kx-mt--tiny kx-icon kx-icon--size-base"
-                        style="width: 25px; margin-left: 54px; cursor: pointer;" (click)="viewAISCard($event)">
-                        <svg focusable="false">
-                            <use href="./assets/img/icons/sprites/icons.svg#map"></use>
-                        </svg>
-                    </div> -->
                 </label>
                 <div class="kx-mt--tiny">
                     {{(installationOverview && installationOverview.aisData)? installationOverview.aisData.destination:
@@ -55,7 +50,7 @@
                 <label class="kx-label">ETA</label>
                 <div class="kx-mt--tiny">
                     {{(installationOverview && installationOverview.aisData)? (installationOverview.aisData.eta |
-                    date:'dd/MM/yyyy HH:mm') : ''}}
+                    date: appConstants.dateFormatWithTime) : ''}}
                 </div>
             </div>
             <div class="kx-col kx-col--4 kx-col--1@tab-m kx-col--6@mob-m kx-col--1@ltp-s" style="text-align: center;margin-top: 4px;">
@@ -124,7 +119,7 @@
                                     <div class="kx-col kx-col--4">
                                         <strong>Timestamp :</strong>
                                         <div class="kx-mt--tiny">
-                                            {{installationOverview.aisData.messageTimestamp | date:'dd/MM/yyyy HH:mm'}}
+                                            {{installationOverview.aisData.messageTimestamp | date: appConstants.dateFormatWithTime}}
                                         </div>
                                     </div>
 
@@ -138,7 +133,7 @@
                                         <div class="kx-mt--tiny">
                                             <strong>ETA :</strong>
                                             <div class="kx-mt--tiny">
-                                                {{installationOverview.aisData.eta | date:'dd/MM/yyyy HH:mm'}}
+                                                {{installationOverview.aisData.eta | date: appConstants.dateFormatWithTime}}
                                             </div>
                                         </div>
                                     </div>
@@ -181,16 +176,6 @@
         </div>
     </div>
 </app-modal>
-
-<!-- <p-dialog header="Header" [(visible)]="showWhitelist" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-    [draggable]="false" [resizable]="false">
-    <p class="p-m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="showWhitelist=false" label="Ok" styleClass="p-button-text"></p-button>
-        </ng-template>
-</p-dialog> -->
 
 <app-modal [displayMe]="showWhitelist">
     <div class="modal-header">

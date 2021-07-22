@@ -28,7 +28,7 @@ export class TradeRouteComponent implements OnInit {
   @Input() isOperationScreen: boolean;
 
   cols = [
-    { field: 'PortName', sortfield: 'PortName', header: 'Port Name', filterMatchMode: 'contains' },
+    { field: 'PortName', sortfield: 'PortName', header: 'Port', filterMatchMode: 'contains' },
     { field: 'CountryName', sortfield: 'CountryName', header: 'Country', filterMatchMode: 'contains' },
     { field: 'Type', sortfield: 'Type', header: 'Type', filterMatchMode: 'contains' },
     { field: 'Coordinate', sortfield: '', header: 'Lat Long', filterMatchMode: 'contains' },
@@ -72,15 +72,11 @@ export class TradeRouteComponent implements OnInit {
     this.isDataLoading = true;
     this.operationalPlanService.getUnLocodeCountries().pipe(take(1)).subscribe((data) => {
       this.unLocodeCountries = data;
-      console.log(this.unLocodeCountries);
       this.isDataLoading = false;
       this.constructForm();
       this.formData = this.formBuliderService.buildForm(this.addPortConfig);
     });
-
     this.getVesselTradeRoute();
-    // this.constructForm();
-    // this.formData = this.formBuliderService.buildForm(this.addPortConfig);
   }
 
   onRowReorder(event) {
@@ -97,15 +93,6 @@ export class TradeRouteComponent implements OnInit {
         this.isDataLoading = false;
       });
     }
-
-    // if (event.dragIndex !== event.dropIndex) {
-    //   this.isDataLoading = true;
-    //   this.operationalPlanService.reorderTradeRoute({ VesselId: this.vesselId, DragId: this.clonedVesselTradeRoute[event.dragIndex].Id, DropId: this.clonedVesselTradeRoute[event.dropIndex].Id }).pipe(take(1)).subscribe((data) => {
-    //     this.vesselTradeRoute = data;
-    //     this.reAssignProperties();
-    //     this.isDataLoading = false;
-    //   });
-    // }
   }
 
   constructForm(): void {
@@ -172,7 +159,6 @@ export class TradeRouteComponent implements OnInit {
 
   showAddEditPort(e: any) {
     e.preventDefault();
-    console.log(this.port);
     this.displayAddEditPort = true
     this.formData.reset();
     this.formData.enable();
@@ -194,7 +180,6 @@ export class TradeRouteComponent implements OnInit {
   }
 
   addEditPort() {
-    console.log(this.formData);
     const portDetail = {
       PortName: this.formData.controls.portName.value,
       PortCode: this.formData.controls.portCode.value.toUpperCase(),
@@ -204,11 +189,9 @@ export class TradeRouteComponent implements OnInit {
       IsNewPort: !this.editPort ? true : this.port.IsNewPort,
       Description: this.formData.controls.description.value
     };
-    console.log(portDetail);
     if (this.editPort) // edit existing port
     {
       this.addEditPortLoading = true;
-      console.log(this.port);
       this.operationalPlanService.updatePort(this.port.Id, portDetail).subscribe((response) => {
         if (response)
           this.triggerToast('success', 'Success Message', `Port updated successfully`);
@@ -240,20 +223,9 @@ export class TradeRouteComponent implements OnInit {
   addPortToRoute() {
     if (this.vesselTradeRoute.findIndex((p) => p.PortId === this.port.Id) === -1) {
       this.isDataLoading = true;
-      console.log(this.port);
       this.operationalPlanService.addPortToRoute({ PortId: this.port.Id, Order: this.portOrder, VesselId: this.vesselId }).subscribe((data) => {
         this.triggerToast('success', 'Success Message', `Port added to route successfully`);
         this.isDataLoading = false;
-
-        // this.vesselTradeRoute.forEach(element => {
-        //   if(element.Order >= this.portOrder)
-        //   {
-        //     element.Order = element.Order + 1;
-        //   }
-        // });
-        // this.vesselTradeRoute.push({Id: null, VesselId: this.vesselId, PortId: this.port.Id, Order: this.portOrder, PortName: this.port.PortName, PortCode: this.port.PortCode.toString()});
-        // this.reAssignProperties()
-
         this.port = null;
         this.getVesselTradeRoute();
       });
@@ -298,7 +270,6 @@ export class TradeRouteComponent implements OnInit {
       this.isDataLoading = true;
       this.operationalPlanService.getTradeRouteByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
         this.vesselTradeRoute = data;
-        console.log(this.vesselTradeRoute);
         this.isDataLoading = false;
         this.reAssignProperties();
       });
@@ -323,7 +294,6 @@ export class TradeRouteComponent implements OnInit {
   }
 
   next(): void {
-    // this.nextActiveTab.emit(2);
     this.router.navigateByUrl('/operational-plan/prepare-installation/sections/' + this.vesselId);
   }
 

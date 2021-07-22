@@ -17,7 +17,6 @@ public installation: Installation;
 
   getInstallationById(vesselId: number) {
     this.installationService.getinstallationsById(vesselId).pipe(take(1)).subscribe((data) => {
-      console.log(data);
       this.installation = data;
       this.installationSource.next(data);
     });
@@ -29,7 +28,6 @@ public installation: Installation;
   public setInstallationFromRoute(route: ActivatedRoute) {
     if (route.firstChild && route.firstChild !== undefined && route.firstChild !== null) {
       const params = route.firstChild.snapshot.paramMap.get('vesselId');
-      console.log(params);
       const vesselId = parseInt(params, null);
       if (!this.installation) {
           if (vesselId > 0) {

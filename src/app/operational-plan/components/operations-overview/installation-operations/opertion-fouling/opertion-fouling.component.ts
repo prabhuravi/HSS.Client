@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
 import { VesselSection } from 'src/app/models/Section';
@@ -16,11 +16,10 @@ import { SectionService } from 'src/app/services/section.service';
 export class OpertionFoulingComponent implements OnInit {
   constructor(public sectionService: SectionService,
               private operationalPlanService: OperationalPlanService,
-              public fb: FormBuilder, private confirmationService: ConfirmationService, private route: ActivatedRoute,
-              private messageService: MessageService, private router: Router) { }
+              public fb: FormBuilder, private messageService: MessageService, private router: Router) { }
 
   isDataLoading = false;
- 
+  appConstants = AppConstants;
   @Input() sections: VesselSection[];
   foulingStates: any[]= [];
   @Input() operation: any;
@@ -67,7 +66,6 @@ export class OpertionFoulingComponent implements OnInit {
             operationSectionId = operationSec.Id;
             vesselSection = operationSec;
           }
-
         });
       });
       this.isDataLoading = true;
@@ -75,7 +73,6 @@ export class OpertionFoulingComponent implements OnInit {
         vesselSection.FoulingState = this.foulingStates.find((x) => x.Id === data.FoulingId);
         vesselSection.FoulingId = data.FoulingId;
         vesselSection.ModifiedDate = data.ModifiedDate;
-        console.log(data);
         rowData.SubSection.ModifiedDate = new Date();
         this.triggerToast('success', 'Success Message', `Fouling updated successfully`);
         this.isDataLoading = false;

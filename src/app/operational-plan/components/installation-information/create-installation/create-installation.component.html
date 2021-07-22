@@ -1,33 +1,35 @@
 <div class="kx-row">
     <div class="kx-col kx-col--12">
-      <app-load *ngIf="isDataLoading"></app-load>
-      <div class="kx-card kx-card--skin-default" *ngIf="config && config.formList && config.formList.length>0">
-        <form [formGroup]="formData" (ngSubmit)="onSubmit()">
-           <app-dynamic-form class="kx-row kx-row--gutters " style="margin-top: 10px;margin-bottom: 12px;" [form]="formData" [formValues]="formValues" [config]="config"
-            (formOnchangeEvent)="formOnchangeEvent($event)">
-          </app-dynamic-form>
-          <div class="kx-row" style="margin-bottom: 12px;">
-              <div class="kx-col kx-col--6" >
-                  <button type="button" class="kx-btn kx-btn--skin-secondary kx-btn--size-large" (click)="onFormReset()"  style="float: right;margin-right: 25px;">
-                      <span class="kx-btn__inner">
-                          <span class="kx-btn__txt">Cancel</span>
-                      </span>
-                  </button>
-              </div>
-  
-              <div class="kx-col kx-col--6" style="float: left;">
-                  <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-large" [disabled]="formData.invalid">
-                      <span class="kx-btn__inner">
-                          <span *ngIf="PrepareInstallation; else elseBlock"  class="kx-btn__txt">Next</span>
-                          <ng-template #elseBlock> <span class="kx-btn__txt">Save</span> </ng-template>
-                      </span>
-                  </button>
-              </div>
-             
-          </div>
-            
-        </form>
-      </div>
+        <app-load *ngIf="isDataLoading"></app-load>
+        <div class="kx-card kx-card--skin-default" *ngIf="config && config.formList && config.formList.length>0">
+            <form [formGroup]="formData" (ngSubmit)="onSubmit()">
+                <app-dynamic-form class="kx-row kx-row--gutters " style="margin-top: 10px;margin-bottom: 12px;"
+                    [form]="formData" [formValues]="formValues" [config]="config"
+                    (formOnchangeEvent)="formOnchangeEvent($event)">
+                </app-dynamic-form>
+                <div class="kx-row" style="margin-bottom: 12px;">
+                    <div class="kx-col kx-col--6">
+                        <button type="button" class="kx-btn kx-btn--skin-secondary kx-btn--size-large"
+                            (click)="onFormReset()" style="float: right;margin-right: 25px;">
+                            <span class="kx-btn__inner">
+                                <span class="kx-btn__txt">Cancel</span>
+                            </span>
+                        </button>
+                    </div>
+
+                    <div class="kx-col kx-col--6" style="float: left;">
+                        <button type="submit" class="kx-btn kx-btn--skin-primary kx-btn--size-large"
+                            [disabled]="formData.invalid">
+                            <span class="kx-btn__inner">
+                                <span *ngIf="PrepareInstallation; else elseBlock" class="kx-btn__txt">Next</span>
+                                <ng-template #elseBlock> <span class="kx-btn__txt">Save</span> </ng-template>
+                            </span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
     </div>
-  </div>
-  
+</div>

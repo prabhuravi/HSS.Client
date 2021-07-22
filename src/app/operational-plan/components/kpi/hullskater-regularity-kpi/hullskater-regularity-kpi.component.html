@@ -1,5 +1,6 @@
 <app-load *ngIf="isDataLoading"></app-load>
-<table class="kx-table kx-table--outer-border kx-table--slim-rows kx-table--zebra-stripes" style="margin-bottom:-1px; margin-top: 5px;">
+<table class="kx-table kx-table--outer-border kx-table--slim-rows kx-table--zebra-stripes"
+    style="margin-bottom:-1px; margin-top: 5px;">
     <tbody>
         <tr class="">
             <td>Report Id</td>
@@ -11,7 +12,7 @@
         </tr>
         <tr class="">
             <td>Operation Date</td>
-            <td>{{operation?.Date | date:'MM/dd/yyyy HH:mm'}}</td>
+            <td>{{operation?.Date | date: appConstants.dateFormatWithTime}}</td>
         </tr>
         <tr class="">
             <td>Requested By</td>
@@ -46,12 +47,12 @@
                     <div class="">
                         <p-dropdown *ngIf="kpiQuestion.HSRegularityKPIQuestionOptions.length > 0"
                             [options]="kpiQuestion.HSRegularityKPIQuestionOptions" autoWidth="false"
-                            [style]="{'width':'100%'}" [formControlName]="'control'+i" optionLabel="Option" filter="true"
-                            placeholder="Select option">
+                            [style]="{'width':'100%'}" [formControlName]="'control'+i" optionLabel="Option"
+                            filter="true" placeholder="Select option">
                         </p-dropdown>
                         <input *ngIf="!(kpiQuestion.HSRegularityKPIQuestionOptions.length > 0)"
-                            class="kx-field kx-field--size-base" style="width: 100%;" type="text" [formControlName]="'control'+i"
-                            [placeholder]="i == 3? 'hh:mm' : 'Optional comments' " />
+                            class="kx-field kx-field--size-base" style="width: 100%;" type="text"
+                            [formControlName]="'control'+i" [placeholder]="i == 3? 'hh:mm' : 'Optional comments' " />
                     </div>
                 </td>
             </tr>

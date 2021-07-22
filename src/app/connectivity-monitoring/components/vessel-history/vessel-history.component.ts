@@ -71,6 +71,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
       value: 0
     }];
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
+  appConstants = AppConstants;
   noData: string = 'No Data Available';
   snmpNoData: string = 'Missing SNMP';
   noGaugeData = false;
