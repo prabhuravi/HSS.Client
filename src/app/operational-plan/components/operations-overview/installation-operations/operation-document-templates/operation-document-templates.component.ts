@@ -17,6 +17,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
   templateHtml: any;
   isDataLoading: boolean = false;
   isTemplateLoading = false;
+  showEditText = true;
   constructor( private emailService: EmailServiceService, private sanitizer: DomSanitizer, private messageService: MessageService ) { }
 
   ngOnInit() {
@@ -49,7 +50,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
     this.isTemplateLoading = true;
     switch(this.templateType) {
       case Template.PlanProposal:{
-        document.getElementById("edit").textContent  = "Use default";
+        this.showEditText = false;
         this.emailService.getPlanProposalEditable(this.opertionId).subscribe((data) => {
           this.isTemplateLoading = false;
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
@@ -58,7 +59,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
         break;
       }
       case Template.PlanProposalEditable:{
-        document.getElementById("edit").textContent  = "Edit template";
+        this.showEditText = true;
         this.emailService.getPlanProposal(this.opertionId).subscribe((data) => {
           this.isTemplateLoading = false;
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
@@ -67,7 +68,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
         break;
       }
       case Template.PortRequest:{
-        document.getElementById("edit").textContent  = "Use default";
+        this.showEditText = false;
         this.emailService.getPortRequestEditable(this.opertionId).subscribe((data) => {
           this.isTemplateLoading = false;
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);
@@ -76,7 +77,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
         break;
       }
       case Template.PortRequestEditable:{
-        document.getElementById("edit").textContent  = "Edit template";
+        this.showEditText = true;
         this.emailService.getPortRequest(this.opertionId).subscribe((data) => {
           this.isTemplateLoading = false;
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(data);

@@ -7,7 +7,8 @@
         <p-footer>
             <p-button icon="pi pi-check" (click)="onApprovalOfTemplate()" label="Approve and send email"
                 styleClass="p-button-text"></p-button>
-            <p-button id=edit (click)="onEditTemplate()" label="Edit template" styleClass="p-button-text"></p-button>
+            <p-button (click)="onEditTemplate()" label="{{showEditText? 'Edit template' : 'Use default'}}"
+                styleClass="p-button-text"></p-button>
         </p-footer>
     </p-dialog>
 </div>

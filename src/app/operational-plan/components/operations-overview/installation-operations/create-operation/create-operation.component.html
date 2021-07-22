@@ -47,7 +47,7 @@
                                                     <span class="kx-list-item__primary-text">Port Request</span>
                                                 </span>
                                             </li>
-                                            <li class="kx-list-item u--cursorPointer"
+                                            <li *ngIf="editOperation" class="kx-list-item u--cursorPointer"
                                                 (click)="openRegularityKPIForm($event, actionDialog)">
                                                 <span class="kx-list-item__text">
                                                     <span class="kx-list-item__primary-text">Regularity KPI</span>
