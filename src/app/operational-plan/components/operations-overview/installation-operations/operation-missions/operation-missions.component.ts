@@ -63,6 +63,7 @@ export class OperationMissionsComponent implements OnInit {
     window.location.href = `${this.configurationService.config.filemanagerLink}` + row.missionPath;
   }
   downloadOperatorLog(row: Mission) {
+    
     this.isDataLoading = true;
     this.operationalPlanService.downloadMissionLog(row.id).pipe(take(1)).subscribe((response) => {
       const blob: any = new Blob([response], { type: 'text/csv; charset=utf-8' });
@@ -94,11 +95,13 @@ export class OperationMissionsComponent implements OnInit {
         detail
       });
   }
+  
 
   goToListOperations(){
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate(['/operational-plan/operations-overview/' + this.operation.VesselId])
     );
   }
+
 
 }

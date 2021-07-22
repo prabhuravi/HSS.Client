@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
+import {FileUploadModule} from 'primeng/fileupload';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -167,6 +168,7 @@ const routes: Routes = [
     CalendarModule,
     DropdownModule,
     CheckboxModule,
+    FileUploadModule,
     FormsModule,
     ReactiveFormsModule,
     TooltipModule,

@@ -39,7 +39,7 @@ approvePortRequest(operationId: number): Observable<any> {
 }
 approvePlanProposal(operationId: number): Observable<any> {
   const requestData = {
-    endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.approvePortRequest}/${operationId}`
+    endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.approvePlanProposal}/${operationId}`
   };
   return this.http.putData(requestData);
 }

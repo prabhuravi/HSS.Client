@@ -47,7 +47,7 @@ export class CreateContactComponent implements OnInit {
     this.contactService.getContactTypes().pipe(take(1)).subscribe((data) => {
       this.isDataLoading = false;
       if (this.operation) {
-        this.roleList = data.filter((x) => x.id >= 2 && x.id <= 5);
+        this.roleList = data.filter((x) => x.id >= 3 && x.id <= 5);
       } else {
         this.roleList = data;
       }

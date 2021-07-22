@@ -110,6 +110,7 @@
           "GetSecondaryOperationSections": "/GetSecondaryOperationSections",
           "GetSecondaryOperations": "/GetSecondaryOperations",
           "GetOperatorLogs": "/GetOperatorLogs",
+          "GetOperatorLogsImage": "/OperatorLog/Image",
           "AddOperatorLog": "/AddOperatorLog",
           "GetPortMeteorology": "/GetOperationPortMeteorology",
           "RefetchPortMeteorology": "/RefetchOperationPortMeteorology",
