@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants, OperationStatusEnum } from 'src/app/app.constants';
 import { Operation, SecondaryOperation } from 'src/app/models/Operation';
+import { InstallationService } from 'src/app/services/installation.service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 
 @Component({
@@ -36,7 +37,7 @@ export class ListOperationsComponent implements OnInit {
   ];
 
   constructor(private operationalPlanService: OperationalPlanService, private confirmationService: ConfirmationService, private route: ActivatedRoute,
-    private messageService: MessageService) { }
+    private installationService: InstallationService, private messageService: MessageService) { }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap.get('vesselId');
@@ -98,7 +99,22 @@ export class ListOperationsComponent implements OnInit {
   }
 
   goToCreateOperation() {
-    this.showCreateOperation.emit(true);
+    this.isDataLoading = true;
+    this.installationService.getNodeByVesselId(this.vesselId).pipe(take(1)).subscribe((data) => {
+      const node = (data && data.Node) ? data.Node : null;
+      if (!node || (node && !node.RobotIP)) {
+        this.confirmationService.confirm({
+          message: 'No Skater IP mapped to the Installation. This is required to conduct the operation at later stage. You can still plan operations. Click Yes to proceed further.',
+          accept: () => {
+            this.showCreateOperation.emit(true);
+          }
+        });
+      }
+      else {
+        this.showCreateOperation.emit(true);
+      }
+      this.isDataLoading = false;
+    });
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {

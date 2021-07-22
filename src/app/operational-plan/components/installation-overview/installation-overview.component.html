@@ -57,7 +57,8 @@
         <td>{{ installationList.foulingState ? installationList.foulingState.State : '' }}</td>
         <td>{{ installationList.installationStatus ? installationList.installationStatus.name : '' }}</td>
         <td> {{ installationList.operation ? installationList.operation.OperationStatus.Name : '' }} </td>
-        <td> {{ installationList.operation ? (installationList.operation.Date | date:  appConstants.dateFormatWithoutTime) : ''}}</td>
+        <td> {{ installationList.operation ? (installationList.operation.Date | date:
+          appConstants.dateFormatWithoutTime) : ''}}</td>
         <td>{{ installationList.operation ? installationList.operation.PortLocation ?
           installationList.operation.PortLocation.PortName : '': ''}}</td>
         <td>
@@ -73,8 +74,12 @@
               <span class="kx-pt--tiny" style="color:white;"> {{installationList.node.status}}</span>
             </a>
           </div>
+          <div *ngIf="!installationList.node" class="u--textCenter u--withBorderRadius" style="background-color: gray; width: 85%;">
+            <span class="kx-pt--tiny" style="color:white;">N/A</span>
+          </div>
         </td>
-        <td>{{ installationList.aisData ? (installationList.aisData.eta | date: appConstants.dateFormatWithoutTime) : ''}}</td>
+        <td>{{ installationList.aisData ? (installationList.aisData.eta | date: appConstants.dateFormatWithoutTime) :
+          ''}}</td>
         <td>
           <div class="kx-icon kx-icon--size-base" style="width: 25px; margin-left: 54px; cursor: pointer;"
             (click)="viewAISCard($event, installationList)">

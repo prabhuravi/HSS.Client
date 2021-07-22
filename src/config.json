@@ -127,6 +127,7 @@
         "endpoints": {
           "GetInstallations": "",
           "GetInstallationStatus": "/InstallationStatus",
+          "GetNodeByVesselId": "/GetNodeByVesselId",
           "GetVesselType": "/VesselType",
           "GetInstallationType": "/InstallationType",
           "GetInstallationOverview": "/Overview",
@@ -179,7 +180,6 @@
         "path": "/Vessel",
         "endpoints": {
           "GetVesselDetails": "",
-          "GetActiveVesselDetails": "/ActiveMapped",
           "AddVesselDetail": "",
           "UpdateVesselDetail": "",
           "UpsertVesselDetail": "/Upsert/MappedVessel",
