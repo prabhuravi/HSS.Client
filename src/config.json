@@ -270,7 +270,9 @@
           "portRequestPreview": "/PortRequestPreview",
           "portRequestEditable": "/PortRequestEditable",
           "approvePortRequest": "/ApprovePortRequest",
-          "approvePlanProposal": "/ApprovePlanProposal"
+          "approvePortRequestEditable": "/ApprovePortRequestEditable",
+          "approvePlanProposal": "/ApprovePlanProposal",
+          "approvePlanProposalEditable": "/ApprovePlanProposalEditable"
         }
       },
       "GetTimeZone": [

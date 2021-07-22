@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import { Template } from 'src/app/models/templateEnum';
@@ -13,6 +13,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
 
   @Input() displayTemplate: boolean;
   @Input() templateType: Template;
+  @ViewChild('templateHtmlDiv', { static: false }) templateHtmlDiv: ElementRef;
   opertionId: number;
   templateHtml: any;
   isDataLoading: boolean = false;
@@ -91,15 +92,29 @@ export class OperationDocumentTemplatesComponent implements OnInit {
   onApprovalOfTemplate(){
     this.displayTemplate = false;
     switch(this.templateType){
-      case(Template.PlanProposal || Template.PlanProposalEditable):{
+      case(Template.PlanProposal):{
         this.emailService.approvePlanProposal(this.opertionId).subscribe((data) => {
           this.isDataLoading = false;
           this.triggerToast('success', 'Success Message', `Email queued for sending`);
         });
         break;
       }
-      case(Template.PortRequest || Template.PortRequestEditable):{
+      case(Template.PortRequest):{
         this.emailService.approvePortRequest(this.opertionId).subscribe((data) => {
+          this.isDataLoading = false;
+          this.triggerToast('success', 'Success Message', `Email queued for sending`);
+        });
+        break;
+      }
+      case(Template.PlanProposalEditable):{
+        this.emailService.approvePlanProposalEditable(this.opertionId, {TemplateHtml: this.templateHtmlDiv.nativeElement.innerHTML}).subscribe((data) => {
+          this.isDataLoading = false;
+          this.triggerToast('success', 'Success Message', `Email queued for sending`);
+        });
+        break;
+      }
+      case(Template.PortRequestEditable):{
+        this.emailService.approvePortRequestEditable(this.opertionId, {TemplateHtml: this.templateHtmlDiv.nativeElement.innerHTML}).subscribe((data) => {
           this.isDataLoading = false;
           this.triggerToast('success', 'Success Message', `Email queued for sending`);
         });
