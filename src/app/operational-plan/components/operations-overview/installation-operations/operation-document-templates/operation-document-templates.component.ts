@@ -40,11 +40,11 @@ export class OperationDocumentTemplatesComponent implements OnInit {
     this.mailRecipients = '';
     this.invalidEmail = false;
     this.emailService.getPlanProposal(operationId).subscribe((htmlTemplate) => {
-      this.isTemplateLoading = false;
       this.emailService.getPlanProposalMailRecipients(vesselId).subscribe((data) => {
         this.mailRecipientList = data;
         this.formatMailRecipients();
         this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(this.insertEmailAddressee(htmlTemplate));
+        this.isTemplateLoading = false;
       });
     });
   }
@@ -58,11 +58,11 @@ export class OperationDocumentTemplatesComponent implements OnInit {
     this.mailRecipients = '';
     this.invalidEmail = false;
     this.emailService.getPortRequest(operationId).subscribe((htmlTemplate) => {
-      this.isTemplateLoading = false;
       this.emailService.getPortRequestMailRecipients(operationId).subscribe((data) => {
         this.mailRecipientList = data;
         this.formatMailRecipients();
         this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(this.insertEmailAddressee(htmlTemplate));
+        this.isTemplateLoading = false;
       });
     });
   }
@@ -74,36 +74,36 @@ export class OperationDocumentTemplatesComponent implements OnInit {
       case Template.PlanProposal: {
         this.showEditText = false;
         this.emailService.getPlanProposalEditable(this.opertionId).subscribe((htmlTemplate) => {
-          this.isTemplateLoading = false;
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(this.insertEmailAddressee(htmlTemplate));
-          this.templateType = Template.PlanProposalEditable
+          this.templateType = Template.PlanProposalEditable;
+          this.isTemplateLoading = false;
         });
         break;
       }
       case Template.PlanProposalEditable: {
         this.showEditText = true;
         this.emailService.getPlanProposal(this.opertionId).subscribe((htmlTemplate) => {
-          this.isTemplateLoading = false;
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(this.insertEmailAddressee(htmlTemplate));
-          this.templateType = Template.PlanProposal
+          this.templateType = Template.PlanProposal;
+          this.isTemplateLoading = false;
         });
         break;
       }
       case Template.PortRequest: {
         this.showEditText = false;
         this.emailService.getPortRequestEditable(this.opertionId).subscribe((htmlTemplate) => {
-          this.isTemplateLoading = false;
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(this.insertEmailAddressee(htmlTemplate));
-          this.templateType = Template.PortRequestEditable
+          this.templateType = Template.PortRequestEditable;
+          this.isTemplateLoading = false;
         });
         break;
       }
       case Template.PortRequestEditable: {
         this.showEditText = true;
         this.emailService.getPortRequest(this.opertionId).subscribe((htmlTemplate) => {
-          this.isTemplateLoading = false;
           this.templateHtml = this.sanitizer.bypassSecurityTrustHtml(this.insertEmailAddressee(htmlTemplate));
-          this.templateType = Template.PortRequest
+          this.templateType = Template.PortRequest;
+          this.isTemplateLoading = false;
         });
         break;
       }

@@ -7,11 +7,17 @@
                 [(ngModel)]="mailRecipients" placeholder="Email addresses separated by semicolon (;)" /> </div>
         <div #templateHtmlDiv [innerHTML]="templateHtml" style="min-height: 50%; min-width: 50%;"></div>
         <p-footer>
-            <span *ngIf="invalidEmail" style="margin-right: 10px;" class="u--textDanger">Enter valid email addresses separated by semicolon (;)</span>
-            <p-button icon="pi pi-check" (click)="onApprovalOfTemplate()" label="Approve and send email"
-                styleClass="p-button-text"></p-button>
+            <span *ngIf="invalidEmail" style="margin-right: 10px;" class="u--textDanger">Enter valid email addresses
+                separated by semicolon (;)</span>
+            <button pButton pRipple type="button" (click)="onApprovalOfTemplate()" label="Approve and send"
+                class="p-button-raised" [disabled]="isTemplateLoading"></button>
+            <button pButton pRipple type="button" (click)="onEditTemplate()"
+                label="{{showEditText? 'Edit email' : 'Use default'}}" class="p-button-raised"
+                [disabled]="isTemplateLoading"></button>
+            <!-- <p-button icon="pi pi-check" (click)="onApprovalOfTemplate()" label="Approve and send email"
+                styleClass="p-button-text" disabled="isTemplateLoading"></p-button>
             <p-button (click)="onEditTemplate()" label="{{showEditText? 'Edit email' : 'Use default'}}"
-                styleClass="p-button-text"></p-button>
+                styleClass="p-button-text" disabled="isTemplateLoading"></p-button> -->
         </p-footer>
     </p-dialog>
 </div>
