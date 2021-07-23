@@ -209,7 +209,7 @@ export class CreateOperationComponent implements OnInit {
     this.displayActionModal = false;
     documentTemplate.showEditText = true;
     documentTemplate.templateType = Template.PlanProposal;
-    documentTemplate.getPlanProposalTemplate(this.operationToEdit.Id);
+    documentTemplate.getPlanProposalTemplate(this.operationToEdit.Id, this.vesselId);
   }
 
   openPortRequestTemplate(documentTemplate: any) {

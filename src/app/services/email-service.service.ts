@@ -17,37 +17,38 @@ export class EmailServiceService {
     this.emailConfig = this.operationalPlanConfig.Email;
   }
 
-  getPortRequest(operationId: number): Observable<any> {
+  getPortRequest(operationId: number): Observable<string> {
     const requestData = {
       endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.portRequestPreview}/${operationId}`
     };
     return this.http.getMediaData(requestData, 'text');
   }
 
-  getPortRequestEditable(operationId: number): Observable<any> {
+  getPortRequestEditable(operationId: number): Observable<string> {
     const requestData = {
       endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.portRequestEditable}/${operationId}`
     };
     return this.http.getMediaData(requestData, 'text');
   }
 
-  getPlanProposal(operationId: number): Observable<any> {
+  getPlanProposal(operationId: number): Observable<string> {
     const requestData = {
       endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.planProposalPreview}/${operationId}`
     };
     return this.http.getMediaData(requestData, 'text');
   }
 
-  getPlanProposalEditable(operationId: number): Observable<any> {
+  getPlanProposalEditable(operationId: number): Observable<string> {
     const requestData = {
       endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.planProposalEditable}/${operationId}`
     };
     return this.http.getMediaData(requestData, 'text');
   }
 
-  approvePortRequest(operationId: number): Observable<any> {
+  approvePortRequest(operationId: number, data: any): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.approvePortRequest}/${operationId}`
+      endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.approvePortRequest}/${operationId}`,
+      data: data
     };
     return this.http.putData(requestData);
   }
@@ -60,9 +61,10 @@ export class EmailServiceService {
     return this.http.putData(requestData);
   }
 
-  approvePlanProposal(operationId: number): Observable<any> {
+  approvePlanProposal(operationId: number, data: any): Observable<any> {
     const requestData = {
-      endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.approvePlanProposal}/${operationId}`
+      endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.approvePlanProposal}/${operationId}`,
+      data : data
     };
     return this.http.putData(requestData);
   }
@@ -73,6 +75,20 @@ export class EmailServiceService {
       data: data
     };
     return this.http.putData(requestData);
+  }
+
+  getPlanProposalMailRecipients(vesselId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.getPlanProposalMailRecipients}/${vesselId}`
+    };
+    return this.http.getData(requestData);
+  }
+
+  getPortRequestMailRecipients(operationId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationalPlanConfig.domainURL}${this.emailConfig.path}${this.emailConfig.endpoints.getPortRequestMailRecipients}/${operationId}`
+    };
+    return this.http.getData(requestData);
   }
 
 }

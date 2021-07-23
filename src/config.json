@@ -272,7 +272,9 @@
           "approvePortRequest": "/ApprovePortRequest",
           "approvePortRequestEditable": "/ApprovePortRequestEditable",
           "approvePlanProposal": "/ApprovePlanProposal",
-          "approvePlanProposalEditable": "/ApprovePlanProposalEditable"
+          "approvePlanProposalEditable": "/ApprovePlanProposalEditable",
+          "getPlanProposalMailRecipients": "/GetPlanProposalMailRecipients",
+          "getPortRequestMailRecipients": "/GetPortRequestMailRecipients"
         }
       },
       "GetTimeZone": [
