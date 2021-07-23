@@ -9,7 +9,7 @@
         <p-footer>
             <span *ngIf="invalidEmail" style="margin-right: 10px;" class="u--textDanger">Enter valid email addresses
                 separated by semicolon (;)</span>
-            <button pButton pRipple type="button" (click)="onApprovalOfTemplate()" label="Approve and send"
+            <button icon="pi pi-check" pButton pRipple type="button" (click)="onApprovalOfTemplate()" label="Approve and send"
                 class="p-button-raised" [disabled]="isTemplateLoading"></button>
             <button pButton pRipple type="button" (click)="onEditTemplate()"
                 label="{{showEditText? 'Edit email' : 'Use default'}}" class="p-button-raised"
