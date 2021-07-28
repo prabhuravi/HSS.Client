@@ -1,34 +1,69 @@
-
 <form class="kx-flex" style="margin-bottom: 5px; width: 100%;">
-    <div class="kx-mt--tiny" style="width: 100%;">
-        <input class="kx-field kx-field--size-base" style="width: 100%;" type="text" [(ngModel)]="operatorNote" name="operatorNote" placeholder="Enter a note" autocomplete="off" />
-    </div>
-    <button style="height: 34px; margin-top: 4px; width: 80px; margin-left: 4px;" (click)="addOperatorLog()" [disabled]="!operatorNote"
-        class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+  <div class="kx-mt--tiny" style="width: 100%;">
+    <input class="kx-field kx-field--size-base" style="width: 100%;" type="text" [(ngModel)]="operatorNote"
+      name="operatorNote" placeholder="Enter a note" autocomplete="off" />
+  </div>
+  <div class="kx-mt--tiny">
+    <!-- <input #fileInput type="file" style="display: inline-block;" 
+            (change)="incomingFile($event)" placeholder="Upload image"
+            accept="image/*"> -->
+    <div class="image-upload">
+      <label for="file-input">
         <span class="kx-btn__inner">
-            <span class="kx-btn__txt">Save</span>
+          <i class="kx-icon kx-icon--size-medium">
+            <svg focusable="true">
+              <use href="./assets/img/icons/sprites/icons.svg#attachment"></use>
+            </svg>
+          </i>
+          <span class="kx-btn__txt kx-is-vishidden">Add Image</span>
         </span>
-    </button>
+      </label>
+
+      <input style="display: none;" id="file-input" #fileInput type="file" (change)="incomingFile($event)" accept="image/*" />
+    </div>
+  </div>
+  <button style="height: 34px; margin-top: 4px; width: 80px; margin-left: 4px;" (click)="addOperatorLog()"
+    [disabled]="!operatorNote" class="kx-btn kx-btn--skin-primary kx-btn--size-base">
+    <span class="kx-btn__inner">
+      <span class="kx-btn__txt">Save</span>
+    </span>
+  </button>
 </form>
 
 <app-load *ngIf="operatorLogLoading"></app-load>
 <div *ngIf="operatorLogs.length == 0" class="kx-card kx-card--skin-default kx-p--small">
-    No notes added
+  No notes added
 </div>
 <div *ngIf="operatorLogs.length > 0"
-    style="border: thin solid #c3c3c4f0; border-radius: 3px; height: 163px;overflow-y: auto;">
-    <table class="kx-table kx-table--outer-border kx-table--slim-rows">
-        <thead>
-            <tr>
-                <th style="width: 30%;">Date </th>
-                <th style="width: 70%;">Note</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let log of operatorLogs; let i = index;">
-                <td style="width: 30%;">{{log.Date | date: appConstants.dateFormatWithTime}}</td>
-                <td style="width: 70%;">{{log.Note}}</td>
-            </tr>
-        </tbody>
-    </table>
+  style="border: thin solid #c3c3c4f0; border-radius: 3px; height: 163px;overflow-y: auto;">
+  <table class="kx-table kx-table--outer-border kx-table--slim-rows">
+    <thead>
+      <tr>
+        <th style="width: 30%;">Date </th>
+        <th style="width: 70%;">Note</th>
+        <th style="width: 5%;">Image</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let log of operatorLogs; let i = index;">
+        <td style="width: 30%;">{{log.Date | date:'MM/dd/yyyy HH:mm'}}</td>
+        <td style="width: 65%;">{{log.Note}}</td>
+        <td style="width: 5%;">
+          <div *ngIf="log.HasImage">
+            <button class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Download"
+              title="Download" (click)="downloadDocument(log)">
+              <span class="kx-btn__inner">
+                <i class="kx-icon kx-icon--size-moderate">
+                  <svg focusable="true">
+                    <use href="./assets/img/icons/sprites/icons.svg#cloud-download"></use>
+                  </svg>
+                </i>
+                <span class="kx-btn__txt kx-is-vishidden">Edit</span>
+              </span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

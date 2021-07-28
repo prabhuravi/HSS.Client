@@ -172,6 +172,14 @@ export class OperationalPlanService {
     return this.http.postData(requestData);
   }
 
+  downloadOperatorLogImage(operatorLogId: number): Observable<any> {
+    const requestData = {
+      endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.GetOperatorLogsImage}/${operatorLogId}`
+    };
+    // return of("test");
+    return this.http.getMediaData(requestData, 'blob');
+  }
+
   downloadMissionLog(missionId: number): Observable<any> {
     const requestData = {
       endPoint: `${this.operationPlanApiUrl}${this.operationalPlanConfig.OperationPlan.endpoints.DownloadMissionLogFile}/${missionId}`,
@@ -270,7 +278,7 @@ export class OperationalPlanService {
       endPoint: `${this.documentApiUrl}${this.operationalPlanConfig.Document.endpoints.GetDocumentForDownload}/${documentId}`
     };
     // return of("test");
-    return this.http.getData(requestData);
+    return this.http.getMediaData(requestData, 'blob');
   }
   downloadOperationDocument(documentId: number): Observable<any> {
     const requestData = {
@@ -279,6 +287,8 @@ export class OperationalPlanService {
     // return of("test");
     return this.http.getMediaData(requestData, 'blob');
   }
+
+  
 
   AddDocumentAsync(data: any): Observable<any> {
     const requestData = {

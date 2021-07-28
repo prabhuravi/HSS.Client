@@ -168,13 +168,17 @@
         "path": "/Contact",
         "endpoints": {
           "GetVesselContacts": "/VesselContact",
+          "GetOperationContact": "/OperationContact",
           "GetContactTypes": "/ContactType",
           "CreateVesselContact": "/VesselContact",
+          "CreateOperationContact": "/OperationContact",
           "UpdateContact": "",
           "DeleteVesselContact": "/VesselContact",
-          "SeachContact": "/Search"
+          "DeleteOperationContact": "/OperationContact",
+          "SeachContact": "/Search",
+          "SeachOperationContact": "/Operation/Search"
         }
-      }, 
+      },
       "Vessel": {
         "path": "/Vessel",
         "endpoints": {

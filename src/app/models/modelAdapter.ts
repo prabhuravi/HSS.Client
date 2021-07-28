@@ -202,6 +202,7 @@ export class ContactAdapter implements IModelAdapter<Contact> {
     adapt(item: any): Contact {
         return new Contact(item.Id ? item.Id : item.id ? item.id : 0,
             item.VesselId ? item.VesselId : item.vesselId ? item.vesselId : 0,
+            item.OperationId ? item.OperationId : item.operationId ? item.operationId : 0,
             item.contactId ? item.contactId : item.ContactId ? item.ContactId : 0,
             item.VesselContactId ? item.VesselContactId : item.vesselContactId ? item.vesselContactId : 0,
             item.ContactTypeId ? item.ContactTypeId : item.contactTypeId ? item.contactTypeId : 0,

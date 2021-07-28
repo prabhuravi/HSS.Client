@@ -18,6 +18,7 @@ export class ContactListingComponent implements OnInit {
   @Input() excludeSearch: boolean;
   @Input() isnonEditable: boolean;
   @Input() isOperationScreen: boolean;
+  @Input() operation: any;
 
   PRIMENG_CONSTANTS = AppConstants.PRIMENG_CONSTANTS;
   @Output() contactOnEdit: EventEmitter<any> = new EventEmitter<any>();
@@ -33,10 +34,10 @@ export class ContactListingComponent implements OnInit {
   contactSearch: Contact[];
   contacts: Contact[] = [];
   constructor(private confirmationService: ConfirmationService,
-    private messageService: MessageService,
-    private contactService: ContactService,
-    private prepareInstallationService: PrepareInstallationService,
-    private route: ActivatedRoute) { }
+              private messageService: MessageService,
+              private contactService: ContactService,
+              private prepareInstallationService: PrepareInstallationService,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
     if (!this.isnonEditable) {
@@ -45,7 +46,24 @@ export class ContactListingComponent implements OnInit {
     if (!this.prepareInstallationService.installation) {
       this.prepareInstallationService.setInstallationFromRoute(this.route);
     }
-    this.loadVesselContacts();
+    console.log('new code');
+    if (this.operation) {
+      this.loadOperationContacts();
+    } else {
+      this.loadVesselContacts();
+    }
+
+  }
+
+  private loadOperationContacts() {
+    if (this.operation.Id > 0) {
+      this.isDataLoading = true;
+
+      this.contactService.getOperationContacts(this.operation.Id ).pipe(take(1)).subscribe((data) => {
+        this.isDataLoading = false;
+        this.contacts = data;
+      });
+    }
   }
 
   private loadVesselContacts() {
@@ -72,20 +90,34 @@ export class ContactListingComponent implements OnInit {
       message: 'Are you sure you want to remove this contact?',
       accept: () => {
         this.isDataLoading = true;
+        if (this.operation.Id > 0) {
+          this.contactService.deleteOperationContact(rowData.id).pipe(take(1)).subscribe((data) => {
+            this.isDataLoading = false;
+            this.loadOperationContacts();
+            this.triggerToast('success', 'Success Message', `contact removed successfully`);
+          });
+      } else {
         this.contactService.deleteVesselContact(rowData.vesselContactId).pipe(take(1)).subscribe((data) => {
           this.isDataLoading = false;
           this.loadVesselContacts();
           this.triggerToast('success', 'Success Message', `contact removed successfully`);
         });
       }
+      }
     });
   }
 
   onContactDataUpdated(ContactData: Contact): void {
-    this.loadVesselContacts();
+ console.log('contact updated');
+ if (this.operation) {
+      this.loadOperationContacts();
+    } else {
+      this.loadVesselContacts();
+    }
   }
 
   onSearchContactEvent(event: Contact) {
+    console.log('debug contact search');
     const selectedContact = event;
     const existingContact = this.contacts.filter((x) => x.id === selectedContact.id);
     if (existingContact.length === 0) {
@@ -93,13 +125,24 @@ export class ContactListingComponent implements OnInit {
         message: 'Would you like to add this contact to this installation?',
         accept: () => {
           selectedContact.contactId = selectedContact.id;
-          selectedContact.vesselId = this.prepareInstallationService.installation.id;
           this.isDataLoading = true;
+          if (this.operation.Id > 0) {
+            selectedContact.operationId = this.operation.Id;
+            this.contactService.createOperationContact(selectedContact).pipe(take(1)).subscribe((data) => {
+              this.onContactEditInit(selectedContact);
+              this.loadOperationContacts();
+              this.isDataLoading = false;
+              this.triggerToast('success', 'Success Message', `contact added successfully`);
+            });
+          } else {
+          selectedContact.vesselId = this.prepareInstallationService.installation.id;
           this.contactService.createVesselContact(selectedContact).pipe(take(1)).subscribe((data) => {
-            this.loadVesselContacts();
-            this.isDataLoading = false;
-            this.triggerToast('success', 'Success Message', `contact added successfully`);
-          });
+              this.onContactEditInit(selectedContact);
+              this.loadOperationContacts();
+              this.isDataLoading = false;
+              this.triggerToast('success', 'Success Message', `contact added successfully`);
+            });
+          }
         }
       });
     } else {

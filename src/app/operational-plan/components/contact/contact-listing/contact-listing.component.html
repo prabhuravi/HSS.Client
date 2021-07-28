@@ -45,7 +45,7 @@
           [binary]="true"></p-checkbox>
       </td>
       <td *ngIf="!isnonEditable">
-        <button *ngIf="isOperationScreen && (rowData.ContactType.id >=2 && rowData.ContactType.id<=5)"
+        <button *ngIf="!isOperationScreen || ( isOperationScreen && (rowData.ContactType.id >=2 && rowData.ContactType.id<=5))"
           class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Edit contact"
           title="Edit contact" (click)="onContactEditInit(rowData)">
           <span class="kx-btn__inner">
@@ -57,7 +57,7 @@
             <span class="kx-btn__txt kx-is-vishidden">Edit contact</span>
           </span>
         </button>
-        <button *ngIf="isOperationScreen && (rowData.ContactType.id >=2 && rowData.ContactType.id<=5)"
+        <button *ngIf="!isOperationScreen || (isOperationScreen && (rowData.ContactType.id >=2 && rowData.ContactType.id<=5))"
           class="kx-btn kx-btn--skin-secondary kx-btn--size-tiny kx-btn--icon" aria-label="Delete contact"
           title="Delete contact" (click)="onContactDelete(rowData)">
           <span class="kx-btn__inner">

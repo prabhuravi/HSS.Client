@@ -14,6 +14,8 @@ import { Template } from 'src/app/models/templateEnum';
 import { FromBuilderService } from 'src/app/services/from-builder-service';
 import { OperationalPlanService } from 'src/app/services/operational-plan.service';
 import { OperatorBookingService } from 'src/app/services/operator-booking.service';
+import { ContactListingComponent } from '../../../contact/contact-listing/contact-listing.component';
+import { CreateContactComponent } from '../../../contact/create-contact/create-contact.component';
 import { OperationDocumentTemplatesComponent } from '../operation-document-templates/operation-document-templates.component';
 import { SecondryOperationListingComponent } from '../secondry-operation-listing/secondry-operation-listing.component';
 
@@ -25,8 +27,8 @@ import { SecondryOperationListingComponent } from '../secondry-operation-listing
 export class CreateOperationComponent implements OnInit {
 
   constructor(private operationalPlanService: OperationalPlanService, private formBuliderService: FromBuilderService, private messageService: MessageService, private confirmationService: ConfirmationService,
-    private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
-    public fb: FormBuilder, public datepipe: DatePipe) { }
+              private route: ActivatedRoute, private operatorBookingService: OperatorBookingService, private contactAdapter: ContactAdapter,
+              public fb: FormBuilder, public datepipe: DatePipe) { }
 
   get formsArray() {
     return this.formsData.get('formsArray') as FormArray;
@@ -35,7 +37,7 @@ export class CreateOperationComponent implements OnInit {
   operationStatus: IOperationStatus[] = [];
   requestedBy: IRequestedBy[] = [];
   isFormSubmmited: boolean = false;
-  appConstants = AppConstants
+  appConstants = AppConstants;
   isFormDirty = false;
   vesselId: number = 0;
   operationToEdit: any;
@@ -58,6 +60,8 @@ export class CreateOperationComponent implements OnInit {
   disableForm = false;
   @ViewChild(SecondryOperationListingComponent, { static: false }) secondaryListingComponent: SecondryOperationListingComponent;
   @ViewChild(OperationDocumentTemplatesComponent, { static: false }) templatePreviewComponent: OperationDocumentTemplatesComponent;
+  @ViewChild(CreateContactComponent, { static: false }) createContactComponent: CreateContactComponent;
+  @ViewChild(ContactListingComponent, { static: false }) contactListingComponent: ContactListingComponent;
 
   config = {
     formList: [],
@@ -330,8 +334,7 @@ export class CreateOperationComponent implements OnInit {
               this.submitOperation();
             }
           });
-        }
-        else {
+        } else {
           this.submitOperation();
         }
       }
@@ -493,6 +496,18 @@ export class CreateOperationComponent implements OnInit {
       }
     });
     return true;
+  }
+
+  onOperationContactUpdated(data: any) {
+  this.contactListingComponent.onContactDataUpdated(data);
+  this.displayAddContactModal = false;
+  }
+    onOperationContactEdited(data: any) {
+      this.displayAddContactModal = true;
+      this.createContactComponent.sectionEditInit(data);
+  }
+  onContactSearched(data: any){
+    this.contactListingComponent.onSearchContactEvent(data);
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {
