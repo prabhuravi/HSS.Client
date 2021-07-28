@@ -34,9 +34,7 @@ export class InstallationOverviewComponent implements OnInit {
   ngOnInit() {
     this.isDataLoading = true;
     this.installationService.getInstallationOverviewData().pipe(take(1)).subscribe(async (data) => {
-      console.log(data[0]);
       this.installationList = data[0];
-      console.log(this.installationList);
       this.installationStatus = data[1];
       this.foulingStatus = data[2];
 
