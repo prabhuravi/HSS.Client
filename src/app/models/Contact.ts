@@ -2,6 +2,7 @@ export class Contact {
     constructor(
         public id: number,
         public vesselId: number,
+        public operationId: number,
         public contactId: number,
         public vesselContactId: number,
         public contactTypeId: number,

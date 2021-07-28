@@ -152,7 +152,7 @@
                     </div>
                 </div>
 
-                <div class="kx-card kx-card--skin-default" style="width: 100%; margin-left: 20px; margin-bottom: 20px;">
+                <div  *ngIf="operationToEdit" class="kx-card kx-card--skin-default" style="width: 100%; margin-left: 20px; margin-bottom: 20px;">
                     <div class="kx-row kx-row--gutters" style="margin-top: -10px; margin-bottom: -14px;">
                         <div class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
                             <i class="kx-icon kx-icon--size-base"
@@ -168,7 +168,7 @@
                             <div class="kx-card kx-card--skin-default"
                                 style="height: 250px; margin-top: 20px;padding: 5px;margin-left: 10px;">
                                 <!-- <b>INSTALLATION CONTACT DETAILS</b> -->
-                                <app-contact-listing #contactListing [isOperationScreen]="true"></app-contact-listing>
+                                <app-contact-listing *ngIf="operationToEdit" #contactListing [isOperationScreen]="true" [operation]="operationToEdit" (contactOnEdit)="onOperationContactEdited($event)"></app-contact-listing>
                             </div>
                         </div>
                         <div *ngIf="editOperation" class="kx-col kx-col--4 kx-col--4@tab-m kx-col--6@mob-m">
@@ -256,10 +256,10 @@
 
 <p-dialog header="Add port contacts" [(visible)]="displayAddContactModal" [modal]="true"
     [contentStyle]="{'overflow':'visible'}" [style]="{width: '75vw'}" [draggable]="true">
-    <app-contact-search style="margin-top: -20px;" #searchContact
-        (contactSearched)="contactListing.onSearchContactEvent($event)"></app-contact-search>
+    <app-contact-search style="margin-top: -20px;" #searchContact [isOperationScreen] = "true"
+        (contactSearched)="onContactSearched($event)"></app-contact-search>
     <app-create-contact *ngIf="operationToEdit" [isOperationScreen]="true" [operation]="operationToEdit"
-        style="margin-top: -20px;" #createContact (contactUpdated)="contactListing.onContactDataUpdated($event)">
+        style="margin-top: -20px;" #createContact (contactUpdated)="onOperationContactUpdated($event)">
     </app-create-contact>
 </p-dialog>
 

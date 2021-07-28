@@ -32,11 +32,11 @@ export class CreateContactComponent implements OnInit {
   roleList: ContactRole[] = [];
 
   constructor(private formBuliderService: FromBuilderService,
-    private contactAdapter: ContactAdapter,
-    private contactService: ContactService,
-    private messageService: MessageService,
-    private prepareInstallationService: PrepareInstallationService,
-    public fb: FormBuilder) { }
+              private contactAdapter: ContactAdapter,
+              private contactService: ContactService,
+              private messageService: MessageService,
+              private prepareInstallationService: PrepareInstallationService,
+              public fb: FormBuilder) { }
 
   ngOnInit() {
     this.isDataLoading = true;
@@ -146,17 +146,23 @@ export class CreateContactComponent implements OnInit {
 
   onRoleChanged(roleItem: ContactRole) {
     if (roleItem.name === 'Skate Operator') {
-      this.formData.controls.tagTraining.enable();
+      if (this.formData.controls.tagTraining) {
+        this.formData.controls.tagTraining.enable();
+      }
     } else {
+      if (this.formData.controls.tagTraining) {
       this.formData.controls.tagTraining.disable();
       this.formData.controls.tagTraining.setValue(false);
+      }
     }
   }
 
   onFormReset(): void {
     this.isFormSubmmited = false;
     this.formData.reset();
+    if (this.formData.controls.tagTraining) {
     this.formData.controls.tagTraining.disable();
+    }
     this.editMode = false;
   }
 
@@ -169,12 +175,14 @@ export class CreateContactComponent implements OnInit {
     this.formData.controls.phone.setValue(contactData.phone);
     this.formData.controls.alternativePhone.setValue(contactData.alternativePhone);
     this.formData.controls.role.setValue(contactData.ContactType);
+    if (this.formData.controls.tagTraining) {
     this.formData.controls.tagTraining.setValue(contactData.tagTraining);
     if (contactData.ContactType.name === 'Skate Operator') {
       this.formData.controls.tagTraining.enable();
     } else {
       this.formData.controls.tagTraining.disable();
     }
+  }
   }
 
   saveContact(): void {
@@ -186,12 +194,15 @@ export class CreateContactComponent implements OnInit {
     this.contact.ContactType = this.formData.controls.role.value;
     this.contact.contactTypeId = this.formData.controls.role.value.id;
     if (this.operation) {
-      this.contact.vesselId = this.operation.VesselId;
+      this.contact.operationId = this.operation.Id;
     } else {
       this.contact.vesselId = this.prepareInstallationService.installation.id;
     }
-
+    if (this.formData.controls.tagTraining) {
     this.contact.tagTraining = this.formData.controls.tagTraining.value;
+    } else {
+      this.contact.tagTraining = false;
+    }
     this.contactService.updateVesselContact(this.contact).pipe(take(1)).subscribe((data) => {
       this.onFormReset();
       this.editMode = false;
@@ -200,10 +211,11 @@ export class CreateContactComponent implements OnInit {
   }
 
   addNewContact(): void {
+    console.log('Add contact Operation');
     const newContact = this.contactAdapter.adapt(this.formData.value);
     newContact.contactTypeId = this.formData.controls.role.value.id;
     if (this.operation) {
-      newContact.vesselId = this.operation.VesselId;
+      newContact.operationId = this.operation.Id;
     } else {
       newContact.vesselId = this.prepareInstallationService.installation.id;
     }
@@ -214,11 +226,20 @@ export class CreateContactComponent implements OnInit {
     if (this.formData.controls.alternativePhone.value != null) {
       newContact.alternativePhone = this.formData.controls.alternativePhone.value.e164Number;
     }
-    this.contactService.createVesselContact(newContact).pipe(take(1)).subscribe((data) => {
-      newContact.id = data.id;
-      this.triggerToast('success', 'Success Message', `contact added successfully`);
-      this.contactUpdated.emit(newContact);
-    });
+    if (!this.operation) {
+      this.contactService.createVesselContact(newContact).pipe(take(1)).subscribe((data) => {
+        newContact.id = data.id;
+        this.triggerToast('success', 'Success Message', `contact added successfully`);
+        this.contactUpdated.emit(newContact);
+      });
+    } else {
+      this.contactService.createOperationContact(newContact).pipe(take(1)).subscribe((data) => {
+        newContact.id = data.id;
+        this.triggerToast('success', 'Success Message', `contact added successfully`);
+        this.contactUpdated.emit(newContact);
+      });
+    }
+
   }
 
   triggerToast(severity: string, summary: string, detail: string): void {
