@@ -55,7 +55,10 @@ export class CreateInstallationComponent implements OnInit {
       if (this.route !== undefined && this.route !== null) {
         const params = this.route.snapshot.paramMap.get('vesselId');
         this.vesselId = parseInt(params, null);
-        this.prepareInstallationService.getInstallationById(this.vesselId);
+        if(this.vesselId > 0)
+        {
+          this.prepareInstallationService.getInstallationById(this.vesselId);
+        }
         this.prepareInstallationService.installationDetail.subscribe((x) => {
           if (x) {
             this.isDataLoading = true;
