@@ -27,7 +27,7 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns">
 
                 <tr>
-                    <td>{{ rowData.documentType.typeName }}</td>
+                    <td>{{ rowData.documentType.id == 5 ? 'Request' : rowData.documentType.id == 10 ? 'Request': rowData.documentType.typeName }}</td>
                     <td>{{ rowData.file }}</td>
                     <td>{{ rowData.createdDate | date: appConstants.dateFormatWithoutTime}}</td>
                     <td>{{ rowData.modifiedDate | date: appConstants.dateFormatWithoutTime}}</td>

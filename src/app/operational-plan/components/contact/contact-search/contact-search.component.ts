@@ -25,15 +25,18 @@ export class ContactSearchComponent implements OnInit, AfterViewInit {
   }
 
   searchContact(event: any) {
-    if (this.isOperationScreen) {
-      this.contactService.searchOperationContacts(event.query).subscribe((data) => {
+
+    if(event.query && event.query.trim()){
+      if (this.isOperationScreen) {
+        this.contactService.searchOperationContacts(event.query).subscribe((data) => {
+          this.contactSearch = data;
+        });
+      } else {
+      this.contactService.searchContacts(event.query).subscribe((data) => {
         this.contactSearch = data;
       });
-    } else {
-    this.contactService.searchContacts(event.query).subscribe((data) => {
-      this.contactSearch = data;
-    });
-    }
+      }
+   }
   }
 
   onSelectContact(event: Contact) {

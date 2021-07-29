@@ -201,7 +201,11 @@ export class CreateOperationComponent implements OnInit {
   }
 
   showAddContactModalDialog() {
-    this.displayAddContactModal = true;
+    if (this.operationToEdit.PortId && this.operationToEdit.PortId > 0) {
+      this.displayAddContactModal = true;
+    } else {
+      this.triggerToast('warn', 'Warn Message', `Please select a port before adding contact`);
+    }
   }
 
   addSecondaryOperationToList(event, element) {
@@ -506,7 +510,7 @@ export class CreateOperationComponent implements OnInit {
       this.displayAddContactModal = true;
       this.createContactComponent.sectionEditInit(data);
   }
-  onContactSearched(data: any){
+  onContactSearched(data: any) {
     this.contactListingComponent.onSearchContactEvent(data);
   }
 
