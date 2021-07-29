@@ -46,7 +46,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let log of operatorLogs; let i = index;">
-        <td style="width: 30%;">{{log.Date | date:'MM/dd/yyyy HH:mm'}}</td>
+        <td style="width: 30%;">{{log.Date | date: appConstants.dateFormatWithTime}}</td>
         <td style="width: 65%;">{{log.Note}}</td>
         <td style="width: 5%;">
           <div *ngIf="log.HasImage">

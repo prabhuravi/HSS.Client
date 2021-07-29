@@ -111,6 +111,7 @@ export class ContactListingComponent implements OnInit {
  console.log('contact updated');
  if (this.operation) {
       this.loadOperationContacts();
+      this.triggerToast('success', 'Success Message', `contact list updated successfully`);
     } else {
       this.loadVesselContacts();
     }
@@ -119,10 +120,10 @@ export class ContactListingComponent implements OnInit {
   onSearchContactEvent(event: Contact) {
     console.log('debug contact search');
     const selectedContact = event;
-    const existingContact = this.contacts.filter((x) => x.id === selectedContact.id);
+    const existingContact = this.contacts.filter((x) => x.contactId === selectedContact.id);
     if (existingContact.length === 0) {
       this.confirmationService.confirm({
-        message: 'Would you like to add this contact to this installation?',
+        message: 'Would you like to add this contact?',
         accept: () => {
           selectedContact.contactId = selectedContact.id;
           this.isDataLoading = true;
@@ -132,7 +133,6 @@ export class ContactListingComponent implements OnInit {
               this.onContactEditInit(selectedContact);
               this.loadOperationContacts();
               this.isDataLoading = false;
-              this.triggerToast('success', 'Success Message', `contact added successfully`);
             });
           } else {
           selectedContact.vesselId = this.prepareInstallationService.installation.id;
