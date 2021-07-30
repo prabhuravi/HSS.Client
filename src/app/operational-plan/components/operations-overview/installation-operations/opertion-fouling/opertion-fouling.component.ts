@@ -70,9 +70,11 @@ export class OpertionFoulingComponent implements OnInit {
       });
       this.isDataLoading = true;
       this.operationalPlanService.UpdateOperationFouling(operationSectionId, rowData).pipe(take(1)).subscribe((data) => {
-        vesselSection.FoulingState = this.foulingStates.find((x) => x.Id === data.FoulingId);
-        vesselSection.FoulingId = data.FoulingId;
-        vesselSection.ModifiedDate = data.ModifiedDate;
+        const newVesselSectionFouling = this.foulingStates.find((x) => x.Id === data.FoulingId);
+        vesselSection.VesselSectionNewFoulingState.State = newVesselSectionFouling.State;
+        vesselSection.VesselSectionNewFoulingState.Id = newVesselSectionFouling.Id;
+        vesselSection.VesselSectionNewFoulingId = data.FoulingId;
+        vesselSection.VesselSection.ModifiedDate = data.ModifiedDate;
         rowData.SubSection.ModifiedDate = new Date();
         this.triggerToast('success', 'Success Message', `Fouling updated successfully`);
         this.isDataLoading = false;

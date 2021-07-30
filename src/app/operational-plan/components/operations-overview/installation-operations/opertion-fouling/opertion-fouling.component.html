@@ -64,7 +64,7 @@
                 class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--3@ltp-s" style="padding-left: 3.9vw;">
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <p-dropdown [options]="foulingStates" [(ngModel)]="rowData.SubSectionNewFoulingState"
+                        <p-dropdown [options]="foulingStates" dataKey="State"  [placeholder]="rowData.SubSectionNewFoulingState.State"[(ngModel)]="rowData.SubSectionNewFoulingState"
                             appendTo="body" (ngModelChange)="onFoulingStateChanged(rowData)"
                             title="Click outside the cell to save" optionLabel="State"></p-dropdown>
                     </ng-template>
