@@ -212,6 +212,14 @@ export class CreateInstallationComponent implements OnInit {
         this.formData.controls.robotIP.setValue(node.RobotIP);
       }
 
+      if(!node || (node && !installation.imoNo || !installation.installationId || !node.NodeNumber || !node.RobotIP ))
+      {
+        this.formData.controls.InstallationStatus.disable();
+      }
+      else{
+        this.formData.controls.InstallationStatus.enable();
+      }
+
       const selectedInstallation = this.installationList.find((x) => x.id === installation.id);
       this.formData.controls.Installation.setValue(selectedInstallation);
     }
