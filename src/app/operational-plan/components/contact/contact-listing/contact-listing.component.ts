@@ -56,7 +56,7 @@ export class ContactListingComponent implements OnInit {
   }
 
   private loadOperationContacts() {
-    if (this.operation.Id > 0) {
+    if (this.operation && this.operation.Id > 0) {
       this.isDataLoading = true;
 
       this.contactService.getOperationContacts(this.operation.Id ).pipe(take(1)).subscribe((data) => {
@@ -90,7 +90,7 @@ export class ContactListingComponent implements OnInit {
       message: 'Are you sure you want to remove this contact?',
       accept: () => {
         this.isDataLoading = true;
-        if (this.operation.Id > 0) {
+        if (this.operation && this.operation.Id > 0) {
           this.contactService.deleteOperationContact(rowData.id).pipe(take(1)).subscribe((data) => {
             this.isDataLoading = false;
             this.loadOperationContacts();
@@ -127,7 +127,7 @@ export class ContactListingComponent implements OnInit {
         accept: () => {
           selectedContact.contactId = selectedContact.id;
           this.isDataLoading = true;
-          if (this.operation.Id > 0) {
+          if (this.operation && this.operation.Id > 0) {
             selectedContact.operationId = this.operation.Id;
             this.contactService.createOperationContact(selectedContact).pipe(take(1)).subscribe((data) => {
               this.onContactEditInit(selectedContact);
