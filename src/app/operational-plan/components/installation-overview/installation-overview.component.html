@@ -74,7 +74,7 @@
               <span class="kx-pt--tiny" style="color:white;"> {{installationList.node.status}}</span>
             </a>
           </div>
-          <div *ngIf="!installationList.node" class="u--textCenter u--withBorderRadius" style="background-color: gray; width: 85%;">
+          <div *ngIf="!installationList.node || (installationList.node.status != 'Up' && installationList.node.status != 'Down')" class="u--textCenter u--withBorderRadius" style="background-color: gray; width: 85%;">
             <span class="kx-pt--tiny" style="color:white;">N/A</span>
           </div>
         </td>

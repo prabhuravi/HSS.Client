@@ -1,7 +1,7 @@
 <div class="kx-p--small@mob-m kx-p--tiny">
     <nav class="kx-breadcrumb">
         <ol class="kx-breadcrumb__list">
-            <li class="kx-breadcrumb__item" [ngClass]="{'u--disableTab':vesselId===0 && i!==0}"
+            <li class="kx-breadcrumb__item" [ngClass]="{'u--disableTab':installationStatusId===0 && i!==0}"
                 *ngFor="let routeItem of prepareInstallationSteps; let i = index;" (click)="tabClicked(i)">
                 <a [ngClass]="{'u--selectedTab':activeTab===i}" [routerLink]="routeItem.route"
                     class="kx-breadcrumb__label u--fontLarge">{{routeItem.label}}</a>
