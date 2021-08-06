@@ -18,6 +18,7 @@ export class PrepareInstallationComponent implements OnInit, OnDestroy {
 
   activeTab: number = 0;
   vesselId: number = 0;
+  installationStatusId: number = 0;
 
   prepareInstallationSteps: IRouteList[] = [];
 
@@ -29,6 +30,7 @@ export class PrepareInstallationComponent implements OnInit, OnDestroy {
     this.prepareInstallationService.installationDetail.subscribe((x) => {
       if (x) {
         this.vesselId = x.id;
+        this.installationStatusId = x.installationStatusId;
       }
       this.setInstallationSteps();
     });
