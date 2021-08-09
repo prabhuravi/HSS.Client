@@ -33,8 +33,7 @@ export class ListFoulingStateComponent implements OnInit {
     { field: 'name', header: 'Section', sortfield: 'name', filterMatchMode: 'contains' },
     { field: 'subSections', header: 'Sub-Section', sortfield: '', filterMatchMode: '' },
     { field: 'foulingState.State', header: 'Fouling State', sortfield: 'foulingState.State', filterMatchMode: 'contains' },
-    { field: 'modifiedDate', header: 'Modified Date', sortfield: 'modifiedDate', filterMatchMode: 'contains' },
-    { field: 'action', header: 'Action', sortfield: '', filterMatchMode: '' }
+    { field: 'modifiedDate', header: 'Modified Date', sortfield: 'modifiedDate', filterMatchMode: 'contains' }
   ];
 
   vesselId = 0;
