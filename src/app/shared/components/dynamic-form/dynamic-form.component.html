@@ -54,7 +54,7 @@
                 <p-calendar hideOnDateTimeSelect="true" [formControlName]="formItem.key"
                     inputStyleClass="kx-field kx-field--size-small" showTime="true" hourFormat="24"
                     [minDate]="formItem.mindate" showButtonBar="true"
-                    [placeholder]="formItem.format? formItem.format: PRIMENG_CONSTANTS.datepickerFormat"
+                    [placeholder]="formItem.placeHolder? formItem.placeHolder: PRIMENG_CONSTANTS.datepickerFormat"
                     [dateFormat]="formItem.format? formItem.format: PRIMENG_CONSTANTS.datepickerFormat"
                     [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050" selectOtherMonths="true"
                     readonlyInput="true">
