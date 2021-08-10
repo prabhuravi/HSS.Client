@@ -170,7 +170,8 @@ export class CreateOperationComponent implements OnInit {
         value: '',
         key: 'operationDate',
         disabled: false,
-        format: 'mm/dd/yy'
+        format: 'dd/mm/yy',
+        placeHolder: 'dd/MM/yyyy HH:mm'
       },
       {
         type: FormType.datepicker,
@@ -178,7 +179,8 @@ export class CreateOperationComponent implements OnInit {
         value: '',
         key: 'vesselETB',
         disabled: false,
-        format: 'mm/dd/yy'
+        format: 'dd/mm/yy',
+        placeHolder: 'dd/MM/yyyy HH:mm'
       },
       {
         type: FormType.textarea,
