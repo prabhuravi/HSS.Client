@@ -25,4 +25,12 @@ export class OperatorBookingService {
                 };
                 return this.http.getData(requestData).pipe(map((data: any[]) =>  data.map((item) =>  this.contactAdapter.adapt(item))));
               }
+
+              deleteOperationBooking(id: number): Observable<any> {
+                const requestData = {
+                  endPoint: `${this.operationalPlanConfig.domainURL}${this.operatorBookingConfig.path}/${this.operatorBookingConfig.endpoints.DeleteOperatorBooking}${id}`
+                };
+                // return of(true);
+                return this.http.deleteData(requestData);
+              }
 }

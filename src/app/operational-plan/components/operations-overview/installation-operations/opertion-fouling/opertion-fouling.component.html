@@ -36,59 +36,56 @@
                             <i [ngClass]="
                 expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
               "></i>
-                        </a>
-                    </td>
-                    <td>{{ rowData.VesselSection.Name }}</td>
-                    <td></td>
-                    <td> {{ rowData.VesselSectionOldFoulingState.State }}</td>
-                    <td> {{ rowData.VesselSectionNewFoulingState.State }}</td>
-                    <td> {{ rowData.VesselSection.ModifiedDate | date: appConstants.dateFormatWithoutTime }}</td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
-                <tr>
-                    <td [attr.colspan]="6">
-                        <div class="kx-table--outer-border"
-                            [ngStyle]="rowData.OperationSubSections.length > 0 ? {'padding-left': '24vw'} : ''">
-                            <app-no-data
-                                [displayme]="rowData.OperationSubSections && rowData.OperationSubSections.length === 0">
-                            </app-no-data>
-                            <p-table [value]="rowData.OperationSubSections" tableStyleClass="kx-table"
-                                autoLayout="true">
-                                <ng-template pTemplate="body" let-rowData>
-                <tr class="kx-row">
-                    <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">{{
-                        rowData.SubSection.SubSectionNumber }}
-                    </td>
-                    <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{
-                        rowData.SubSectionOldFoulingState.State }}
-                    </td>
-                    <td pEditableColumn [pEditableColumn]="rowData"
-                        class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--3@ltp-s"
-                        style="padding-left: 3.9vw;">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <p-dropdown [options]="foulingStates" [(ngModel)]="rowData.SubSectionNewFoulingState"
-                                    appendTo="body" (ngModelChange)="onFoulingStateChanged(rowData)"
-                                    title="Click outside the cell to save" optionLabel="State"></p-dropdown>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ rowData.SubSectionNewFoulingState.State }}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s"
-                        style="padding-left: 6vw;">{{
-                        rowData.SubSection.ModifiedDate | date: appConstants.dateFormatWithTime}}
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-    </td>
-    </tr>
+                </a>
+            </td>
+            <td>{{ rowData.VesselSection.Name }}</td>
+            <td></td>
+            <td> {{ rowData.VesselSectionOldFoulingState.State }}</td>
+            <td> {{ rowData.VesselSectionNewFoulingState.State }}</td>
+            <td> {{ rowData.VesselSection.ModifiedDate | date: appConstants.dateFormatWithoutTime }}</td>
+        </tr>
     </ng-template>
-    </p-table>
+    <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+        <tr>
+            <td [attr.colspan]="6">
+                <div class="kx-table--outer-border"
+                    [ngStyle]="rowData.OperationSubSections.length > 0 ? {'padding-left': '24vw'} : ''">
+                    <app-no-data
+                        [displayme]="rowData.OperationSubSections && rowData.OperationSubSections.length === 0">
+                    </app-no-data>
+                    <p-table [value]="rowData.OperationSubSections" tableStyleClass="kx-table" autoLayout="true">
+                        <ng-template pTemplate="body" let-rowData>
+        <tr class="kx-row">
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--2@ltp-s">{{
+                rowData.SubSection.SubSectionNumber }}
+            </td>
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s">{{
+                rowData.SubSectionOldFoulingState.State }}
+            </td>
+            <td pEditableColumn [pEditableColumn]="rowData"
+                class="kx-col kx-col--12 kx-col--5@mob-m kx-col--4@tab-m kx-col--3@ltp-s" style="padding-left: 3.9vw;">
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <p-dropdown [options]="foulingStates" dataKey="State"  [placeholder]="rowData.SubSectionNewFoulingState.State"[(ngModel)]="rowData.SubSectionNewFoulingState"
+                            appendTo="body" (ngModelChange)="onFoulingStateChanged(rowData)"
+                            title="Click outside the cell to save" optionLabel="State"></p-dropdown>
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{ rowData.SubSectionNewFoulingState.State }}
+                    </ng-template>
+                </p-cellEditor>
+            </td>
+            <td class="kx-col kx-col--12 kx-col--5@mob-m kx-col--3@tab-m kx-col--3@ltp-s" style="padding-left: 6vw;">{{
+                rowData.SubSection.ModifiedDate | date: appConstants.dateFormatWithTime}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>
 
     <app-no-data [displayme]="operationSections && operationSections.length === 0"></app-no-data>
 

@@ -392,12 +392,25 @@ export class CreateOperationComponent implements OnInit {
   formOnchangeEvent(changedItem: any): void {
     const key = changedItem.formItem.key;
     switch (key) {
-      case 'section': {
+      case 'operationDate': {
+        this.onOperationDateChanged();
         break;
       }
       default: {
         break;
       }
+    }
+  }
+
+  onOperationDateChanged() {
+    if (this.operationToEdit && this.operationToEdit.OperatorBooking) {
+      // const formsArrayAsAny = this.formsData.controls.formsArray as any;
+      // const bookingDate = this.datepipe.transform(formsArrayAsAny.controls[1].controls.operationDate.value, 'yyyy-MM-dd');
+      this.selectedOperator = null;
+      this.isDataLoading = true;
+      this.operatorBookingService.deleteOperationBooking(this.operationToEdit.OperatorBooking.OperationBookingId).pipe(take(1)).subscribe((data) => {
+        this.isDataLoading = false;
+      });
     }
   }
 
@@ -432,7 +445,18 @@ export class CreateOperationComponent implements OnInit {
   }
 
   changeOperator(operator: Contact) {
-    this.selectedOperator = operator;
+    if (this.operationToEdit && this.operationToEdit.OperatorBooking) {
+      this.selectedOperator = null;
+      this.isDataLoading = true;
+      this.operatorBookingService.deleteOperationBooking(this.operationToEdit.OperatorBooking.OperationBookingId).pipe(take(1)).subscribe((data) => {
+        this.isDataLoading = false;
+        this.selectedOperator = operator;
+      });
+    } else {
+      this.selectedOperator = operator;
+    }
+    
+   
   }
 
   showMaximizableDialog() {

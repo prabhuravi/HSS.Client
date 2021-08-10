@@ -140,7 +140,8 @@
         "path": "/OperatorBooking",
         "endpoints": {
           "GetOperatorForVessel": "GetOperatorForVessel",
-          "GetOperatorBookings": ""
+          "GetOperatorBookings": "",
+          "DeleteOperatorBooking":""
         }
       },
       "Fouling": {

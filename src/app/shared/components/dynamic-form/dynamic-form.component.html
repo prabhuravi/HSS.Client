@@ -57,7 +57,7 @@
                     [placeholder]="formItem.placeHolder? formItem.placeHolder: PRIMENG_CONSTANTS.datepickerFormat"
                     [dateFormat]="formItem.format? formItem.format: PRIMENG_CONSTANTS.datepickerFormat"
                     [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050" selectOtherMonths="true"
-                    readonlyInput="true">
+                    readonlyInput="true" (onSelect)="onchangeEvents($event,formItem)">
                 </p-calendar>
             </div>
         </div>
