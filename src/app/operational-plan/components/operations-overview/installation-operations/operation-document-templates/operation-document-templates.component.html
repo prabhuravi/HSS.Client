@@ -1,7 +1,8 @@
 <div>
-    <p-dialog [header]="templateType ==1 ? 'Plan Proposal':'Port Request'" [(visible)]="displayTemplate" [modal]="false"
-        [style]="{width: '75vw'}" [maximizable]="true" [contentStyle]="{minHeight: '300px', maxHeight: '500px'}"
-        [baseZIndex]="10000" [draggable]="true" [responsive]="true" [resizable]="true">
+    <p-dialog [header]="(templateType==1 || templateType==2)? 'Plan Proposal':'Port Request'"
+        [(visible)]="displayTemplate" [modal]="false" [style]="{width: '75vw'}" [maximizable]="true"
+        [contentStyle]="{minHeight: '300px', maxHeight: '500px'}" [baseZIndex]="10000" [draggable]="true"
+        [responsive]="true" [resizable]="true">
         <app-load *ngIf="isTemplateLoading"></app-load>
         <div>Email recipient(s): <input type="text" style="width: 50%;" pInputText [disabled]="showEditText"
                 [(ngModel)]="mailRecipients" placeholder="Email addresses separated by semicolon (;)" /> </div>
@@ -9,15 +10,11 @@
         <p-footer>
             <span *ngIf="invalidEmail" style="margin-right: 10px;" class="u--textDanger">Enter valid email addresses
                 separated by semicolon (;)</span>
-            <button icon="pi pi-check" pButton pRipple type="button" (click)="onApprovalOfTemplate()" label="Approve and send"
-                class="p-button-raised" [disabled]="isTemplateLoading"></button>
+            <button icon="pi pi-check" pButton pRipple type="button" (click)="onApprovalOfTemplate()"
+                label="Approve and send" class="p-button-raised" [disabled]="isTemplateLoading"></button>
             <button pButton pRipple type="button" (click)="onEditTemplate()"
                 label="{{showEditText? 'Edit email' : 'Use default'}}" class="p-button-raised"
                 [disabled]="isTemplateLoading"></button>
-            <!-- <p-button icon="pi pi-check" (click)="onApprovalOfTemplate()" label="Approve and send email"
-                styleClass="p-button-text" disabled="isTemplateLoading"></p-button>
-            <p-button (click)="onEditTemplate()" label="{{showEditText? 'Edit email' : 'Use default'}}"
-                styleClass="p-button-text" disabled="isTemplateLoading"></p-button> -->
         </p-footer>
     </p-dialog>
 </div>
