@@ -143,7 +143,8 @@ export class SecondryOperationListingComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the secondary operation?',
       accept: () => {
-        if (this.secondaryoperations[index].OperationStatus.Name === OperationStatusEnum.Requested || this.secondaryoperations[index].OperationStatus.Name === OperationStatusEnum.Pending) {
+        if (this.secondaryoperations[index].Id == 0 || this.secondaryoperations[index].OperationStatus.Name === OperationStatusEnum.Requested || this.secondaryoperations[index].OperationStatus.Name === OperationStatusEnum.Pending)
+        {
           this.secondaryoperations.splice(index, 1);
           this.secondaryItems.removeAt(index);
           this.secondaryconfigs.splice(index, 1);
