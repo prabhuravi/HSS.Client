@@ -182,6 +182,7 @@ export class ManageSectionComponent implements OnInit {
         this.sectionService.deleteVesselSection(vesselSectionRow.id).pipe(take(1)).subscribe((data) => {
           this.isDataLoading = false;
           this.loadVesselSections();
+          this.cancelEditSection();
           this.triggerToast('success', 'Success Message', `Section deleted successfully`);
         });
       }

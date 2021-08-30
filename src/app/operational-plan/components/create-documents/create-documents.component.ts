@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { AppConstants } from 'src/app/app.constants';
@@ -208,7 +209,7 @@ export class CreateDocumentsComponent implements OnInit {
       documentName: rowData.DocumentName,
       documentType: this.documentTypes.find(p => p.Id == rowData.DocumentTypeId),
       version: rowData.Version,
-      documentDate: new Date(rowData.Date).toLocaleDateString(),
+      documentDate: rowData.Date ? moment(rowData.Date).toDate() : null,
       uploadSource: this.uploadFromOptions.find(p => p.Option == (rowData.CopyVesselId === 0 ? 'Local' : 'Cloud')),
       localFile: ''
     });
