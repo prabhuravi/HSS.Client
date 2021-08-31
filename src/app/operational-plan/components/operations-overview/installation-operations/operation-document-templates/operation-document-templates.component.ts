@@ -70,6 +70,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
   onEditTemplate() {
     this.templateHtml = null;
     this.isTemplateLoading = true;
+    this.invalidEmail = false;
     switch (this.templateType) {
       case Template.PlanProposal: {
         this.showEditText = false;
@@ -165,7 +166,7 @@ export class OperationDocumentTemplatesComponent implements OnInit {
       if (this.mailRecipients == '')
         this.mailRecipients = this.mailRecipients + recipient.EMail;
       else
-        this.mailRecipients = this.mailRecipients + '; ' + recipient.EMail;
+        this.mailRecipients = this.mailRecipients + ';' + recipient.EMail;
     });
   }
 
