@@ -56,6 +56,7 @@ export class OperationMissionsComponent implements OnInit {
   }
 
   gotoFileManager(row: Mission) {
+    console.log( `${this.configurationService.config.filemanagerLink}` + row.missionPath);
     window.location.href = `${this.configurationService.config.filemanagerLink}` + row.missionPath;
   }
   

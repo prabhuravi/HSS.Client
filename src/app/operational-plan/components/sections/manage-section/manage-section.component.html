@@ -117,7 +117,7 @@
                 class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--1@ltp-s">
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <p-dropdown [options]="sectionStatus" [(ngModel)]="rowData.sectionStatus" optionLabel="name">
+                        <p-dropdown [options]="sectionStatus" [(ngModel)]="rowData.sectionStatus" appendTo="body" optionLabel="name">
                         </p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
@@ -177,7 +177,7 @@
                 class="kx-col kx-col--12 kx-col--3@mob-m kx-col--3@tab-m kx-col--1@ltp-s" style="margin-right: 6.2%;">
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <p-dropdown [options]="sectionStatus" [(ngModel)]="rowData.sectionStatus"
+                        <p-dropdown [options]="sectionStatus" [(ngModel)]="rowData.sectionStatus" appendTo="body"
                             title="Click outside the cell to save" optionLabel="name"></p-dropdown>
                     </ng-template>
                     <ng-template pTemplate="output">
