@@ -62,6 +62,7 @@ export class ListFoulingStateComponent implements OnInit {
         opSection.subSections.sort((a, b) => (a.subSectionNumber < b.subSectionNumber ? -1 : 1));
         this.calculateVesselFoulingState();
       });
+      this.calculateVesselFoulingState();
     });
   }
 
@@ -70,15 +71,6 @@ export class ListFoulingStateComponent implements OnInit {
     this.foulingStateEdited.emit({ section, subSection });
   }
 
-  onSubSectionFoulingStateUpdated(data: boolean): void {
-    if (data) {
-      this.isDataLoading = true;
-      this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
-        this.isDataLoading = false;
-        this.sections = data;
-      });
-    }
-  }
   onFoulingStateChanged(rowdata: SubSection) {
     this.isDataLoading = true;
     rowdata.foulingId = rowdata.foulingState.Id;
