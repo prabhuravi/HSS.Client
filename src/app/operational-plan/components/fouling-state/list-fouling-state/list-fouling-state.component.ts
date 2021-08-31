@@ -60,6 +60,7 @@ export class ListFoulingStateComponent implements OnInit {
       this.sections = data;
       this.sections.forEach((opSection: VesselSection) => {
         opSection.subSections.sort((a, b) => (a.subSectionNumber < b.subSectionNumber ? -1 : 1));
+        this.calculateVesselFoulingState();
       });
     });
   }
