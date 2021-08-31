@@ -43,7 +43,6 @@ import { SecondryOperationListingComponent } from './components/operations-overv
 import { InstallationTradeRouteComponent } from './components/operations-overview/installation-trade-route/installation-trade-route.component';
 import { OperationsOverviewComponent } from './components/operations-overview/operations-overview.component';
 import { PrepareInstallationComponent } from './components/prepare-installation/prepare-installation.component';
-import { ListingSectionComponent } from './components/sections/listing-section/listing-section.component';
 import { ManageSectionComponent } from './components/sections/manage-section/manage-section.component';
 import { SectionsComponent } from './components/sections/sections.component';
 import { TradeRouteComponent } from './components/trade-route/trade-route.component';
@@ -75,22 +74,6 @@ const routes: Routes = [
             component: CreateDocumentsComponent
           },
           { path: 'contacts/:vesselId', component: ContactComponent }
-        ]
-      },
-      {
-        path: 'operations',
-        component: CreateOperationComponent,
-        children: [
-          {
-            path: ':vesselId',
-            component: CreateOperationComponent,
-            pathMatch: 'full'
-          },
-          { path: 'sections/:vesselId', component: ListingSectionComponent },
-          {
-            path: 'fouling-state/:vesselId',
-            component: ListFoulingStateComponent
-          }
         ]
       },
       {
@@ -134,7 +117,6 @@ const routes: Routes = [
     FoulingStateComponent,
     CreateDocumentsComponent,
     CreateInstallationComponent,
-    ListingSectionComponent,
     ContactComponent,
     CreateContactComponent,
     ContactListingComponent,
