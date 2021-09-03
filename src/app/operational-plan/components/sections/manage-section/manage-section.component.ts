@@ -173,17 +173,22 @@ export class ManageSectionComponent implements OnInit {
       });
     }
   }
-  
+
   onSectionRowDelete(vesselSectionRow: VesselSection) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this section?',
       accept: () => {
         this.isDataLoading = true;
-        this.sectionService.deleteVesselSection(vesselSectionRow.id).pipe(take(1)).subscribe((data) => {
+        this.sectionService.deleteVesselSection(vesselSectionRow.id).pipe(take(1)).subscribe((response) => {
           this.isDataLoading = false;
-          this.loadVesselSections();
-          this.cancelEditSection();
-          this.triggerToast('success', 'Success Message', `Section deleted successfully`);
+          if (response) {
+            this.loadVesselSections();
+            this.cancelEditSection();
+            this.triggerToast('success', 'Success Message', `Section deleted successfully`);
+          }
+          else {
+            this.triggerToast('error', 'Message', `Cannot delete section as it is already used in operation`);
+          }
         });
       }
     });
@@ -194,10 +199,15 @@ export class ManageSectionComponent implements OnInit {
       message: 'Are you sure you want to delete this sub-section?',
       accept: () => {
         this.isDataLoading = true;
-        this.sectionService.deleteSubSection(subSectionRow.id).pipe(take(1)).subscribe((data) => {
+        this.sectionService.deleteSubSection(subSectionRow.id).pipe(take(1)).subscribe((response) => {
           this.isDataLoading = false;
-          this.loadVesselSections();
-          this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
+          if (response) {
+            this.loadVesselSections();
+            this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
+          }
+          else {
+            this.triggerToast('error', 'Message', `Cannot delete sub-section as it is already used in operation`);
+          }
         });
       }
     });
