@@ -1,3 +1,8 @@
+/*
+ * KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+ */
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { getInputTypes } from '../../../app.constants';
@@ -16,7 +21,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   @Input() formValues: any;
   @Input() formReset: any;
   separateDialCode = false;
- 
+
 
   @Output() formOnchangeEvent: EventEmitter<any> = new EventEmitter<any>();
   inputTypes: any;
@@ -30,7 +35,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 	TooltipLabel = TooltipLabel;
 	CountryISO = CountryISO;
 	preferredCountries: CountryISO[] = [];
-  
+
   constructor(
     public fb: FormBuilder,
     public operationalPlanService: OperationalPlanService

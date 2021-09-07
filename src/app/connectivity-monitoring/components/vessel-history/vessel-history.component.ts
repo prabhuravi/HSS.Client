@@ -1,3 +1,8 @@
+/*
+ * KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+ */
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ConnectivityMonitoringService } from 'src/app/services/connectivity-monitoring.service';
 import { GoogleChartComponent } from 'angular-google-charts';
@@ -56,7 +61,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     // }, {
     //   name: 'Last 2 Hours',
     //   value: 2
-    // }, 
+    // },
     {
       name: 'Last Day',
       value: 24
@@ -89,7 +94,7 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     public router: Router
   ) {
   }
-  
+
   ngOnInit(): void {
     if (this.route && this.route.params) {
       this.route.params.subscribe((params) => {
@@ -111,11 +116,11 @@ export class VesselHistoryComponent implements OnInit, OnDestroy {
     this.aisCardLoading = true;
     this.connectivityMonitoringService.getImoNumberByNodeNumber(nodeNumber).subscribe((data: any) => {
       this.imoNumber = data;
-      
+
       this.aisCardLoading = false;
       this.connectivityMonitoringService.getGetLatestAISRecord(this.imoNumber).subscribe((aisData: any) => {
         this.aisData = aisData;
-       
+
         this.aisCardLoading = false;
       });
     });

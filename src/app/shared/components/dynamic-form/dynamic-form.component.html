@@ -1,3 +1,8 @@
+<!--
+KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+-->
 <h3 *ngIf="config.formTitle" class="u--capitalize">{{config.formTitle}}</h3>
 <hr *ngIf="config.formTitle" class="kx-my--small" />
 <div [formGroup]="form"
@@ -78,7 +83,7 @@
                 <label class="kx-ui kx-selector kx-selector__checkbox">
                     <input type="checkbox" [formControlName]="formItem.key" />
                     <div class="kx-selector__indicator"></div>
-                  
+
                 </label>
             </div>
         </div>
@@ -116,7 +121,7 @@
 			    </ngx-intl-tel-input>
 		    </div>
         </div>
-        
+
         <div *ngSwitchDefault class="kx-col kx-col--5">
             {{formItem.type}} : input type is not handled
         </div>

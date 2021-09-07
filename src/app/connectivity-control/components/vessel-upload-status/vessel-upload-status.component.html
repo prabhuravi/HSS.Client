@@ -1,3 +1,8 @@
+<!--
+KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+-->
 <app-load *ngIf="!vesselListLoaded"></app-load>
 <div *ngIf="vesselListLoaded" class="kx-card kx-card--skin-default">
     <div class="kx-p--tiny kx-p--medium@mob-m">
@@ -95,14 +100,14 @@
                 <div class="kx-col">
                     <strong>Last Contact Date : </strong>{{vesselHistoricalUploadStatus.LastContactDate}}
                 </div>
-              
+
                 <button type="button" (click)="markSelectionForUpload()" [disabled]="disableMarkForUpload"
                 class="markforUploadbtn kx-btn kx-btn--skin-primary kx-btn--size-base kx-mt--tiny kx-mt--small@mob-m kx-mr--tiny">
                 <span class="kx-btn__inner">
-                    <span class="kx-btn__txt">Mark for upload</span>    
+                    <span class="kx-btn__txt">Mark for upload</span>
                 </span>
             </button>
-        
+
             </div>
         </div>
     </div>
@@ -152,11 +157,11 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr [pSelectableRow]="rowData">
                     <td>
-                        <span *ngIf="rowData.MarkedForUpload" pTooltip="File already marked for upload"> <i class="pi pi-cloud-upload" style="font-size: 1.5rem"></i></span> 
-                     
+                        <span *ngIf="rowData.MarkedForUpload" pTooltip="File already marked for upload"> <i class="pi pi-cloud-upload" style="font-size: 1.5rem"></i></span>
+
                     <p-tableCheckbox *ngIf="(rowData.FileName.includes('.upload_later') && rowData.MarkedForUpload==false)" ngDefaultControl  [value]="rowData" >
                     </p-tableCheckbox>
-            
+
                   </td>
                     <td *ngFor="let col of columns" class="kx-p--small u--fontXSmall">
                         <div [ngSwitch]="col.field">

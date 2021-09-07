@@ -1,3 +1,8 @@
+/*
+ * KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+ */
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -59,9 +64,9 @@ export class OperationMissionsComponent implements OnInit {
     console.log( `${this.configurationService.config.filemanagerLink}` + row.missionPath);
     window.location.href = `${this.configurationService.config.filemanagerLink}` + row.missionPath;
   }
-  
+
   downloadOperatorLog(row: Mission) {
-    
+
     this.isDataLoading = true;
     this.operationalPlanService.downloadMissionLog(row.id).pipe(take(1)).subscribe((response) => {
       const blob: any = new Blob([response], { type: 'text/csv; charset=utf-8' });
@@ -93,7 +98,7 @@ export class OperationMissionsComponent implements OnInit {
         detail
       });
   }
-  
+
 
   goToListOperations(){
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
