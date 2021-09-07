@@ -153,7 +153,7 @@ export class ManageSectionComponent implements OnInit {
   addSubSection(subSectionNumber: string, vesselSection: VesselSection, sectionRowIndex): void {
     if (this.vesselSections.some(p => p.subSections.some(q => q.subSectionNumber == Number(subSectionNumber)))) {
       this.subSectionNumbers[sectionRowIndex] = undefined;
-      this.triggerToast('error', 'Message', `Section number should be unique across all sections`);
+      this.triggerToast('error', 'Message', `Sub-section should be unique across all sections`);
     }
     else {
       const newSubSection = new SubSection(0, vesselSection.id, 1, 1, 1,
