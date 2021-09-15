@@ -99,12 +99,14 @@ export class SecondryOperationListingComponent implements OnInit {
     }
     this.secondaryconfigs.push(secondaryconfig);
     this.sections.forEach((sec) => {
+      sec.selected = true;
       sec.subSections.forEach((sub) => {
        const item =  element.VesselSectionModel.find((x) => x.Id === sec.id && x.SubSections.find((x) => x.Id === sub.id));
        if(item){
          sub.selected = true;
        } else{
          sub.selected = false;
+         sec.selected  = false;
        }
        if (sub.selected) {
           this.gobalSelectedSubSectionId.push(sub.id);

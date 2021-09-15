@@ -18,7 +18,7 @@ export class InstallationOperationsComponent implements OnInit {
   index = 0;
   viewCreateOperation = false;
   isDataLoading = false;
-  @ViewChild(CreateOperationComponent, { static: false }) createOperationComponentRef: CreateOperationComponent;
+  @ViewChild(CreateOperationComponent, { static: false }) createOperation: CreateOperationComponent;
   @ViewChild(OpertionSectionComponent, { static: false }) operationSectionComponent: OpertionSectionComponent;
   @ViewChild(OpertionFoulingComponent, { static: false }) operationFoulingComponent: OpertionFoulingComponent;
   @ViewChild(OperationDocumentComponent, { static: false }) OperationDocumentComponent: OperationDocumentComponent;
@@ -55,7 +55,7 @@ export class InstallationOperationsComponent implements OnInit {
     this.viewCreateOperation = data;
     this.isDataLoading = true;
     setTimeout(async () => {
-      while (!this.createOperationComponentRef.isFormDataReady) {
+      while (!this.createOperation.isFormDataReady) {
         await new Promise((r) => setTimeout(r, 100));
       }
       this.isDataLoading = false;
@@ -67,10 +67,10 @@ export class InstallationOperationsComponent implements OnInit {
     this.isDataLoading = true;
     this.index = 1;
     setTimeout(async () => {
-      while (!this.createOperationComponentRef.isFormDataReady) {
+      while (!this.createOperation.isFormDataReady) {
         await new Promise((r) => setTimeout(r, 100));
       }
-      this.createOperationComponentRef.onEditOperation(operation);
+      this.createOperation.onEditOperation(operation);
       this.isDataLoading = false;
     }, 300);
   }
@@ -83,25 +83,30 @@ export class InstallationOperationsComponent implements OnInit {
   }
 
   handleChange(e) {
-    if (this.createOperationComponentRef.isFormDirty || this.createOperationComponentRef.secondaryListingComponent.isFormDirty) {
-      this.createOperationComponentRef.isFormDirty = false;
-      this.createOperationComponentRef.secondaryListingComponent.isFormDirty = false;
-      this.createOperationComponentRef.onSubmit();
+    if (this.createOperation.isFormDirty || this.createOperation.secondaryListingComponent.isFormDirty) {
+      this.createOperation.isFormDirty = false;
+      this.createOperation.secondaryListingComponent.isFormDirty = false;
+      this.createOperation.onSubmit();
     }
     if (e.index === 0) {
-      this.createOperationComponentRef.setSectionForOperation();
-      this.createOperationComponentRef.SetSecondaryOperations();
+      this.createOperation.setSectionForOperation();
+      this.createOperation.SetSecondaryOperations();
     }
     if (e.index === 3) {
-      this.OperationDocumentComponent.getOperationDocuments(this.createOperationComponentRef.operationToEdit);
+      this.OperationDocumentComponent.getOperationDocuments(this.createOperation.operationToEdit);
     }
     if (e.index === 4) {
-      this.OperationDocumentComponent.getOperationDocuments(this.createOperationComponentRef.operationToEdit);
+      this.OperationDocumentComponent.getOperationDocuments(this.createOperation.operationToEdit);
     }
   }
+
   updateTabs(operation: any) {
     this.operationSectionComponent.onOperationSectionLoad(operation);
     this.operationFoulingComponent.onOperationSectionLoad(operation);
+  }
+
+  sectionDeleted(operation: any) {
+    this.createOperation.onEditOperation(operation);
   }
 
 }

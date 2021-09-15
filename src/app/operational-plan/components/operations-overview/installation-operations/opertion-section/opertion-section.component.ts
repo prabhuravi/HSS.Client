@@ -117,6 +117,8 @@ export class OpertionSectionComponent implements OnInit {
           this.isDataLoading = true;
           this.operationSections = this.operationSections.filter((x) => x !== operationSection);
           this.triggerToast('success', 'Success Message', `Section deleted successfully`);
+          this.operation.OperationSections =  this.operationSections;
+          this.sectionOnEdit.emit(this.operation);
           this.isDataLoading = false;
         });
 
@@ -141,6 +143,8 @@ export class OpertionSectionComponent implements OnInit {
             this.operationSections = this.operationSections.filter((x) => x !== sectionRow);
           }
           this.isDataLoading = false;
+          this.operation.OperationSections =  this.operationSections;
+          this.sectionOnEdit.emit(this.operation);
           this.triggerToast('success', 'Success Message', `Sub-section deleted successfully`);
         });
       }

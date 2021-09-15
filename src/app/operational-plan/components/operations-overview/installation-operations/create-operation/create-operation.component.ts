@@ -290,24 +290,35 @@ export class CreateOperationComponent implements OnInit {
   }
 
   setSectionForOperation() {
-    const opSection = this.operationToEdit.OperationSections;
-    this.opertionSections.forEach((sec) => {
-      const secItem = opSection.find((x) => x.VesselSection.Id === sec.id);
-      if (secItem && !secItem.SecondaryOperationId) {
-        sec.subSections.forEach((sub) => {
-          const item = opSection.find((x) => x.VesselSection.Id === sec.id && x.VesselSection.SubSections.find((x) => x.Id === sub.id));
-          if (item) {
-            sub.selected = true;
-          } else {
-            sub.selected = false;
-          }
-          if (sub.selected) {
-            this.gobalSelectedSubSectionId.push(sub.id);
-          }
-        });
-      }
+  this.opertionSections = [];
+  const opSection = this.operationToEdit.OperationSections;
+  this.vesselSectionArray = [];
+  this.operationalPlanService.getSectionFoulingState(this.vesselId).pipe(take(1)).subscribe((data) => {
+      this.sections = data;
+      this.opertionSections = JSON.parse(JSON.stringify(data)) as VesselSection[];
+
+      this.opertionSections.forEach((sec) => {
+        const secItem = opSection.find((x) => x.VesselSection.Id === sec.id);
+        sec.selected = true;
+        if (secItem && !secItem.SecondaryOperationId) {
+          sec.subSections.forEach((sub) => {
+            const item = opSection.find((x) => x.VesselSection.Id === sec.id && x.VesselSection.SubSections.find((x) => x.Id === sub.id));
+            if (item) {
+              sub.selected = true;
+            } else {
+              sub.selected = false;
+              sec.selected = false;
+            }
+            if (sub.selected) {
+              this.gobalSelectedSubSectionId.push(sub.id);
+            }
+          });
+        } else {
+          sec.selected = false;
+        }
+      });
+      this.selectSectionSubsection();
     });
-    this.selectSectionSubsection();
   }
 
   SetSecondaryOperations() {
@@ -455,8 +466,7 @@ export class CreateOperationComponent implements OnInit {
     } else {
       this.selectedOperator = operator;
     }
-    
-   
+
   }
 
   showMaximizableDialog() {

@@ -12,7 +12,7 @@
     </p-tabPanel>
     <p-tabPanel header="Section" *ngIf="createOperation.editOperation">
       <app-opertion-section #operationSections [vesselSections]="createOperation.sections"
-        [operation]="createOperation.operationToEdit"
+        [operation]="createOperation.operationToEdit" (sectionOnEdit)="sectionDeleted($event)"
         [gobalSelectedSubSectionId]="createOperation.gobalSelectedSubSectionId">
       </app-opertion-section>
     </p-tabPanel>
