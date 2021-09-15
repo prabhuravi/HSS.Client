@@ -1,6 +1,6 @@
 interface IUnLocodeCountry {
-    Id: number,
-    Countrycode: string,
-    CountryName: string,
-    Country: string,
+    Id: number;
+    Countrycode: string;
+    CountryName: string;
+    Country: string;
 }
