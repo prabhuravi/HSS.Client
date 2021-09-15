@@ -1,3 +1,8 @@
+<!--
+KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+-->
 <div class="kx-card kx-card--skin-default" *ngIf="config && config.formList && config.formList.length > 0">
     <div class="kx-p--tiny kx-p--medium@mob-m">
         <div class="kx-row kx-row--gutters">
@@ -46,13 +51,7 @@
                                                 <span class="kx-list-item__text">
                                                     <span class="kx-list-item__primary-text">Port Request</span>
                                                 </span>
-                                            </li>
-                                            <li *ngIf="editOperation" class="kx-list-item u--cursorPointer"
-                                                (click)="openRegularityKPIForm($event, actionDialog)">
-                                                <span class="kx-list-item__text">
-                                                    <span class="kx-list-item__primary-text">Regularity KPI</span>
-                                                </span>
-                                            </li>
+                                            </li>                                            
                                         </ul>
                                     </div>
                                     <ng-template pTemplate="footer">

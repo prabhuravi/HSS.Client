@@ -1,3 +1,8 @@
+<!--
+KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+-->
 <app-load *ngIf="isDataLoading"></app-load>
 <p-table *ngIf="contacts.length > 0" [columns]="cols" [value]="contacts" dataKey="id" editMode="row"
   [resizableColumns]="true" #tt [scrollable]="true" [scrollHeight]="isOperationScreen?'170px': ''"

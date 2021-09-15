@@ -1,3 +1,8 @@
+/*
+ * KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+ */
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -148,7 +153,7 @@ export class ManageSectionComponent implements OnInit {
   addSubSection(subSectionNumber: string, vesselSection: VesselSection, sectionRowIndex): void {
     if (this.vesselSections.some(p => p.subSections.some(q => q.subSectionNumber == Number(subSectionNumber)))) {
       this.subSectionNumbers[sectionRowIndex] = undefined;
-      this.triggerToast('error', 'Message', `Section number should be unique across all sections`);
+      this.triggerToast('error', 'Message', `Sub-section should be unique across all sections`);
     }
     else {
       const newSubSection = new SubSection(0, vesselSection.id, 1, 1, 1,

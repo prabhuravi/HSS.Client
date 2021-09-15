@@ -1,3 +1,8 @@
+/*
+ * KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+ */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConnectivityControlService } from '../../../services/connectivity-control.service';
 import { take } from 'rxjs/operators';
@@ -96,7 +101,7 @@ export class ConnectivityControlComponent implements OnInit, OnDestroy {
       data.DisableTime = data.DisableTime.toString().slice(0, data.DisableTime.toString().indexOf('GMT')) + 'GMT';
       data.DisableTime = new Date(data.DisableTime).toISOString();
     }
-    
+
     this.connectivityControlService.UpdateVessel(data).pipe(take(1)).subscribe(() => {
       this.loadData();
     });

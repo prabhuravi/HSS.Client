@@ -1,3 +1,8 @@
+/*
+ * KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+ */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -65,7 +70,7 @@ export class OpertionSectionComponent implements OnInit {
       }
     }
   }
-  
+
   isBookedSubsection(rowsubSection: SubSection) {
     return this.gobalSelectedSubSectionId.find((x) => x === rowsubSection.id);
   }
@@ -159,7 +164,7 @@ export class OpertionSectionComponent implements OnInit {
         detail
       });
   }
-  
+
   goToListOperations() {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate(['/operational-plan/operations-overview/' + this.operation.VesselId])

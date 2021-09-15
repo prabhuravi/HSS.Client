@@ -1,3 +1,8 @@
+/*
+ * KONGSBERG PROPRIETARY. This document and its accompanying elements, contain KONGSBERG information which is proprietary and confidential.
+Any disclosure, copying, distribution or use is prohibited if not otherwise explicitly agreed with KONGSBERG in writing.
+Any authorized reproduction, in whole or in part, must include this legend. © [year of creation] KONGSBERG – All rights reserved.
+ */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -79,7 +84,7 @@ export class ListFoulingStateComponent implements OnInit {
       this.getSectionwithFouling();
     });
   }
-  
+
   calculateVesselFoulingState() {
     if (this.sections.some((p) => p.foulingState.State === 'Not Rated')) {
       this.overallFoulingState = 'Not Rated';
