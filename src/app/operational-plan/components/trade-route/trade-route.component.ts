@@ -21,9 +21,9 @@ import { PrepareInstallationService } from 'src/app/services/prepare-installatio
 export class TradeRouteComponent implements OnInit {
   port: IPortLocation = null;
   portOrder: number = 1;
-  maxPortOrder: number = 1
+  maxPortOrder: number = 1;
   portLocations: IPortLocation[] = [];
-  unLocodeCountries: IUnLocodeCountry[] = [];
+  unLocodeCountries: any; //IUnLocodeCountry[] = [];
   vesselTradeRoute: ITradeRoute[] = [];
   clonedVesselTradeRoute: ITradeRoute[];
   isDataLoading = false;
@@ -52,10 +52,10 @@ export class TradeRouteComponent implements OnInit {
   displayAddEditPort = false;
 
   constructor(private operationalPlanService: OperationalPlanService, private router: Router,
-    private confirmationService: ConfirmationService,
-    private prepareInstallationService: PrepareInstallationService,
-    private route: ActivatedRoute, private messageService: MessageService,
-    private formBuliderService: FromBuilderService) {
+              private confirmationService: ConfirmationService,
+              private prepareInstallationService: PrepareInstallationService,
+              private route: ActivatedRoute, private messageService: MessageService,
+              private formBuliderService: FromBuilderService) {
   }
 
   ngOnInit() {
@@ -85,9 +85,9 @@ export class TradeRouteComponent implements OnInit {
   }
 
   onRowReorder(event) {
-    let tradeRouteIds: {}[] = [];
-    this.vesselTradeRoute.forEach(element => {
-      tradeRouteIds.push(element.Id)
+    const tradeRouteIds: Array<{}> = [];
+    this.vesselTradeRoute.forEach((element) => {
+      tradeRouteIds.push(element.Id);
     });
 
     if (event.dragIndex !== event.dropIndex) {
@@ -164,13 +164,13 @@ export class TradeRouteComponent implements OnInit {
 
   showAddEditPort(e: any) {
     e.preventDefault();
-    this.displayAddEditPort = true
+    this.displayAddEditPort = true;
     this.formData.reset();
     this.formData.enable();
     if (this.editPort) {
       this.formData.setValue({
         portName: this.port.PortName,
-        countryCode: this.unLocodeCountries.find(p => p.Id == this.port.CountryId),
+        countryCode: this.unLocodeCountries.find((p) => p.Id === this.port.CountryId),
         portCode: this.port.PortCode,
         coordinate: this.port.Coordinate ? this.port.Coordinate : '',
         portType: this.port.Type ? this.portTypes.find((p) => p.Name === this.port.Type) : null,
@@ -194,26 +194,25 @@ export class TradeRouteComponent implements OnInit {
       IsNewPort: !this.editPort ? true : this.port.IsNewPort,
       Description: this.formData.controls.description.value
     };
-    if (this.editPort) // edit existing port
-    {
+    if (this.editPort) {
       this.addEditPortLoading = true;
       this.operationalPlanService.updatePort(this.port.Id, portDetail).subscribe((response) => {
-        if (response)
+        if (response) {
           this.triggerToast('success', 'Success Message', `Port updated successfully`);
-        else
+        } else {
           this.triggerToast('error', 'Error Message', `Port not updated`);
+        }
         this.addEditPortLoading = false;
       });
-    }
-    else { //Add new port
+    } else { // Add new port
       this.addEditPortLoading = true;
       this.operationalPlanService.addNewPort(portDetail).subscribe((response) => {
         if (response) {
           this.triggerToast('success', 'Success Message', `Port added to route successfully`);
           this.formData.reset();
-        }
-        else
+        } else {
           this.triggerToast('error', 'Error Message', `Port already exists with this country code and port code`);
+        }
         this.addEditPortLoading = false;
       });
     }
@@ -260,9 +259,8 @@ export class TradeRouteComponent implements OnInit {
     this.clonedVesselTradeRoute = Object.assign([], this.vesselTradeRoute);
     if (this.vesselTradeRoute.length > 0) {
       this.portOrder = this.vesselTradeRoute[this.vesselTradeRoute.length - 1].Order + 1;
-      this.maxPortOrder = this.vesselTradeRoute[this.vesselTradeRoute.length - 1].Order + 1
-    }
-    else {
+      this.maxPortOrder = this.vesselTradeRoute[this.vesselTradeRoute.length - 1].Order + 1;
+    } else {
       this.portOrder = 1;
       this.maxPortOrder = 1;
     }
@@ -282,10 +280,11 @@ export class TradeRouteComponent implements OnInit {
   }
 
   disableAddToRoute(port: any): boolean {
-    if ((port !== null && typeof port !== 'object') || port === null || port === '')
+    if ((port !== null && typeof port !== 'object') || port === null || port === '') {
       this.editPort = false;
-    else
+    } else {
       this.editPort = true;
+    }
 
     return (port !== null && typeof port !== 'object') || port === null || port === '' || this.portOrder === null;
   }

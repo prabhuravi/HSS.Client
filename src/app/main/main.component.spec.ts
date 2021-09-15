@@ -35,6 +35,7 @@ describe('BodyComponent', () => {
     getNavigationItems : () => [],
     setActive: (item: INavigationItem) => {},
     setActiveByPath: (path: string) => new NavigationItem('', '', '', ''),
+    setDefaultFloatingMenuVisibility: (navigationItems: INavigationItem[]) => [],
     activeItem: new BehaviorSubject<INavigationItem>(null)
 };
 

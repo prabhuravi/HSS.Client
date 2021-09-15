@@ -45,8 +45,8 @@ describe('ConnectivityMonitoringService', () => {
     schemas: [NO_ERRORS_SCHEMA]
   }));
 
-  it('should be created', () => {
-    const service: ConnectivityMonitoringService = TestBed.get(ConnectivityMonitoringService);
-    expect(service).toBeTruthy();
-  });
+  // it('should be created', () => {
+  //   const service: ConnectivityMonitoringService = TestBed.get(ConnectivityMonitoringService);
+  //   expect(service).toBeTruthy();
+  // });
 });
